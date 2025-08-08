@@ -45,7 +45,9 @@ export default function Guides() {
                   <li>
                     • <Link href="/guides/abilities" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">Abilities</Link>
                   </li>
-                  <li>• Building & Crafting</li>
+                  <li>
+                    • <Link href="/guides/items" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">Items</Link>
+                  </li>
                   <li>• Advanced Strategies</li>
                 </ul>
               </div>
