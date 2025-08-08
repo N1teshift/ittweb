@@ -1,0 +1,12 @@
+{
+  "welcome": "Welcome to ITT Web",
+  "description": "Your new website built with Next.js, TypeScript, and Tailwind CSS",
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "footer": {
+    "copyright": "© 2024 ITT Web. All rights reserved."
+  }
+}
