@@ -2,6 +2,7 @@ import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticP
 import logger from '@/features/shared/utils/loggerUtils';
 import Layout from '@/features/shared/components/Layout';
 import { useFallbackTranslation } from '@/features/shared/hooks/useFallbackTranslation';
+import Link from 'next/link';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
@@ -38,9 +39,12 @@ export default function Guides() {
               <div className="text-left">
                 <h2 className="font-medieval-brand text-2xl mb-4">Available Guides</h2>
                 <ul className="text-gray-300 space-y-2">
-                  <li>• Getting Started Guide</li>
-                  <li>• Troll Classes Overview</li>
-                  <li>• Combat Mechanics</li>
+                  <li>
+                    • <Link href="/guides/troll-classes" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">Troll Classes Overview</Link>
+                  </li>
+                  <li>
+                    • <Link href="/guides/abilities" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">Abilities</Link>
+                  </li>
                   <li>• Building & Crafting</li>
                   <li>• Advanced Strategies</li>
                 </ul>

@@ -47,3 +47,4 @@ next-env.d.ts
 # Additional directories
 .next/
 node_modules/
+external/
