@@ -30,7 +30,7 @@ export default function Guides() {
             <p className="text-lg md:text-xl text-gray-300 mb-4 leading-relaxed">
               Welcome to the Island Troll Tribes Guides section!
               <br />
-              Here you'll find comprehensive guides for all aspects of the game.
+              Here you&apos;ll find comprehensive guides for all aspects of the game.
             </p>
             
             {/* Placeholder Content */}
