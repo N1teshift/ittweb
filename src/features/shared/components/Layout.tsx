@@ -1,5 +1,7 @@
 ﻿import React from 'react';
 import { TranslationNamespaceContext } from '../lib/TranslationNamespaceContext';
+import Header from './Header';
+import Footer from './Footer';
 
 interface LayoutProps {
     children?: React.ReactNode;
@@ -7,13 +9,13 @@ interface LayoutProps {
 }
 
 /**
- * A minimal layout component that wraps page content and provides translation context.
- * Ready for future layout instructions.
+ * A layout component that wraps page content with a top navigation bar and provides translation context.
+ * Includes navigation, search, and user login functionality.
  *
  * @param props The component props.
  * @param props.children The content to be rendered within the layout.
  * @param props.pageTranslationNamespaces Optional. Namespace(s) required for the page content. Defaults to ["common"].
- * @returns A React element representing the page layout.
+ * @returns A React element representing the page layout with navigation.
  */
 export default function Layout({ children, pageTranslationNamespaces = ["common"] }: LayoutProps) {
     const contextValue = {
@@ -28,8 +30,15 @@ export default function Layout({ children, pageTranslationNamespaces = ["common"
 
     return (
         <TranslationNamespaceContext.Provider value={contextValue}>
-            <div className="min-h-screen">
-                {children}
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+                <Header />
+                
+                {/* Main Content */}
+                <main className="flex-1">
+                    {children}
+                </main>
+
+                <Footer />
             </div>
         </TranslationNamespaceContext.Provider>
     );

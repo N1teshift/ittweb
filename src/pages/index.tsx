@@ -21,7 +21,7 @@ export default function Home() {
 
   return (
     <Layout pageTranslationNamespaces={pageNamespaces}>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center">
+      <div className="flex items-center justify-center min-h-[calc(100vh-8rem)]">
         <div className="text-center max-w-2xl mx-auto px-6 py-12">
           {/* Main Heading */}
           <h1 className="text-5xl md:text-6xl font-bold text-amber-400 mb-8 font-medieval">
@@ -50,11 +50,6 @@ export default function Home() {
                 Join Discord
               </a>
             </div>
-          </div>
-          
-          {/* Footer */}
-          <div className="text-gray-500 text-sm">
-            <p>© 2024 Island Troll Tribes. All rights reserved.</p>
           </div>
         </div>
       </div>

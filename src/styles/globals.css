@@ -174,3 +174,13 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .font-medieval-brand {
+    @apply text-amber-400 font-medieval font-bold;
+  }
+  
+  .font-medieval-brand-hover {
+    @apply text-amber-400 hover:text-amber-300 font-medieval font-bold transition-colors;
+  }
+}
