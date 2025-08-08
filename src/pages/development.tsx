@@ -2,6 +2,7 @@ import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticP
 import logger from '@/features/shared/utils/loggerUtils';
 import Layout from '@/features/shared/components/Layout';
 import { useFallbackTranslation } from '@/features/shared/hooks/useFallbackTranslation';
+import Link from 'next/link';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
@@ -30,7 +31,7 @@ export default function Development() {
             <p className="text-lg md:text-xl text-gray-300 mb-4 leading-relaxed">
               Welcome to the Island Troll Tribes Development section!
               <br />
-              Stay updated with the latest development progress and upcoming features.
+              Stay updated with the latest development progress.
             </p>
             
             {/* Placeholder Content */}
@@ -38,11 +39,16 @@ export default function Development() {
               <div className="text-left">
                 <h2 className="font-medieval-brand text-2xl mb-4">Development Updates</h2>
                 <ul className="text-gray-300 space-y-2">
-                  <li>• Latest Build Notes</li>
-                  <li>• Upcoming Features</li>
-                  <li>• Bug Reports</li>
-                  <li>• Community Feedback</li>
-                  <li>• Development Roadmap</li>
+                  <li>
+                    <Link href="/development/map" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">
+                      • Map Development
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/development/website" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">
+                      • Website Development
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>
