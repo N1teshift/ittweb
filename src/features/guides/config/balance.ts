@@ -22,4 +22,19 @@ export const ATTR_START_MULTIPLIER: Record<ClassTier, number> = {
   super: 11,
 };
 
+// Attribute conversion constants (WC3-inspired defaults)
+export const HP_PER_STRENGTH = 25;
+export const MANA_PER_INTELLIGENCE = 15;
+export const ARMOR_PER_AGILITY = 0.2;
+
+// Armor damage reduction formula (Warcraft III style)
+// reductionFraction = (0.06 * armor) / (1 + 0.06 * |armor|)
+// negative armor yields negative reduction (i.e., damage amplification)
+export function getArmorDamageReductionPercent(armor: number): number {
+  const numerator = 0.06 * armor;
+  const denominator = 1 + 0.06 * Math.abs(armor);
+  const fraction = numerator / denominator;
+  return fraction * 100;
+}
+
 

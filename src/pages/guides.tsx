@@ -40,7 +40,7 @@ export default function Guides() {
                 <h2 className="font-medieval-brand text-2xl mb-4">Available Guides</h2>
                 <ul className="text-gray-300 space-y-2">
                   <li>
-                    • <Link href="/guides/troll-classes" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">Troll Classes Overview</Link>
+                    • <Link href="/guides/troll-classes" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">Troll Classes</Link>
                   </li>
                   <li>
                     • <Link href="/guides/abilities" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">Abilities</Link>
@@ -48,7 +48,9 @@ export default function Guides() {
                   <li>
                     • <Link href="/guides/items" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">Items</Link>
                   </li>
-                  <li>• Advanced Strategies</li>
+                  <li>
+                    • <Link href="/guides/buildings" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">Buildings</Link>
+                  </li>
                 </ul>
               </div>
             </div>

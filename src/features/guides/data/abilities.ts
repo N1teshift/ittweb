@@ -96,6 +96,40 @@ export const ABILITIES: AbilityData[] = [
     damage: '100-150 area damage',
     effects: ['Area of effect damage']
   },
+  {
+    id: 'battle_armor',
+    name: 'Battle Armor',
+    category: 'hunter',
+    classRequirement: 'Warrior',
+    description: 'Increases armor and magic resistance.',
+    manaCost: 30,
+    cooldown: 5,
+    duration: 60,
+    effects: ['+5 armor', '+25% magic resistance', 'Stacks with other buffs']
+  },
+  {
+    id: 'detect_tracks',
+    name: 'Detect Tracks',
+    category: 'hunter',
+    classRequirement: 'Tracker',
+    description: 'Reveals footprint trails of enemies.',
+    manaCost: 20,
+    cooldown: 15,
+    duration: 30,
+    effects: ['Shows enemy movement trails', 'Tracks recent paths', 'Counter-thief ability']
+  },
+  {
+    id: 'true_sight',
+    name: 'True Sight',
+    category: 'hunter',
+    classRequirement: 'Tracker',
+    description: 'Reveals invisible and cloaked units in area.',
+    manaCost: 35,
+    cooldown: 20,
+    range: 800,
+    duration: 15,
+    effects: ['Reveals invisible units', 'Counters cloak', 'Area detection']
+  },
 
   // Beastmaster Abilities
   {
@@ -151,6 +185,52 @@ export const ABILITIES: AbilityData[] = [
     cooldown: 5,
     duration: 45,
     effects: ['Stealth/prowl', 'Critical strike chance', 'Cannot use items']
+  },
+  {
+    id: 'shapeshift_tiger',
+    name: 'Shapeshift - Tiger',
+    category: 'beastmaster',
+    classRequirement: 'Shapeshifter',
+    description: 'Transform into a tiger form with fierce attacks.',
+    manaCost: 20,
+    cooldown: 5,
+    duration: 45,
+    effects: ['High damage', 'Fast attack speed', 'Cannot use items']
+  },
+  {
+    id: 'devour',
+    name: 'Devour',
+    category: 'beastmaster',
+    classRequirement: 'Jungle Tyrant',
+    description: 'Consumes an animal to gain its abilities permanently.',
+    manaCost: 40,
+    cooldown: 30,
+    range: 200,
+    effects: ['Gains animal abilities', 'Permanent effect', 'Stacks multiple animals']
+  },
+  {
+    id: 'entangle',
+    name: 'Entangle',
+    category: 'beastmaster',
+    classRequirement: 'Druid',
+    description: 'Roots target enemy with vines.',
+    manaCost: 25,
+    cooldown: 10,
+    range: 500,
+    duration: 8,
+    effects: ['Immobilizes target', 'Nature damage over time', 'Prevents escape abilities']
+  },
+  {
+    id: 'rejuvenation',
+    name: 'Rejuvenation',
+    category: 'beastmaster',
+    classRequirement: 'Druid',
+    description: 'Heals target over time.',
+    manaCost: 30,
+    cooldown: 5,
+    range: 400,
+    duration: 20,
+    effects: ['Healing over time', 'Works on pets', 'Stacks with other heals']
   },
 
   // Mage Abilities
@@ -212,6 +292,63 @@ export const ABILITIES: AbilityData[] = [
     duration: 8,
     effects: ['Mind control enemy', 'Enemy fights for you']
   },
+  {
+    id: 'energy_drain',
+    name: 'Energy Drain',
+    category: 'mage',
+    classRequirement: 'Hypnotist',
+    description: 'Drains mana from target enemy.',
+    manaCost: 20,
+    cooldown: 5,
+    range: 500,
+    effects: ['Steals enemy mana', 'Restores your mana', 'Disables enemy abilities']
+  },
+  {
+    id: 'sleep_spell',
+    name: 'Sleep',
+    category: 'mage',
+    classRequirement: 'Dreamwalker',
+    description: 'Puts target enemy to sleep.',
+    manaCost: 35,
+    cooldown: 12,
+    range: 400,
+    duration: 10,
+    effects: ['Target cannot move/attack', 'Breaks on damage', 'Regenerates target health']
+  },
+  {
+    id: 'nightmare',
+    name: 'Nightmare',
+    category: 'mage',
+    classRequirement: 'Dreamwalker',
+    description: 'Causes target to lose health over time.',
+    manaCost: 40,
+    cooldown: 15,
+    range: 400,
+    duration: 15,
+    effects: ['Health drain over time', 'Mana drain over time', 'Vision reduction']
+  },
+  {
+    id: 'ice_bolt',
+    name: 'Ice Bolt',
+    category: 'mage',
+    classRequirement: 'Elementalist',
+    description: 'Deals cold damage and slows target.',
+    manaCost: 30,
+    cooldown: 6,
+    range: 500,
+    damage: '100-140 cold damage',
+    effects: ['Cold damage', 'Slows movement speed', 'Slows attack speed']
+  },
+  {
+    id: 'metronome',
+    name: 'Metronome',
+    category: 'mage',
+    classRequirement: 'Dementia Master',
+    description: 'Casts a random spell effect.',
+    manaCost: 50,
+    cooldown: 20,
+    effects: ['Random spell effect', 'Unpredictable results', 'Can be very powerful']
+  },
 
   // Priest Abilities
   {
@@ -259,6 +396,49 @@ export const ABILITIES: AbilityData[] = [
     range: 400,
     effects: ['Heals all allies in area', '80-120 health restored']
   },
+  {
+    id: 'brilliance_aura',
+    name: 'Brilliance Aura',
+    category: 'priest',
+    classRequirement: 'Priest',
+    description: 'Increases mana regeneration of nearby allies.',
+    manaCost: 0,
+    cooldown: 0,
+    effects: ['Passive aura', 'Increased mana regen for allies', 'Stacks with other auras']
+  },
+  {
+    id: 'inner_fire',
+    name: 'Inner Fire',
+    category: 'priest',
+    classRequirement: 'Booster',
+    description: 'Increases damage and armor of target ally.',
+    manaCost: 35,
+    cooldown: 5,
+    range: 400,
+    duration: 45,
+    effects: ['+damage boost', '+armor boost', 'Long duration buff']
+  },
+  {
+    id: 'mix_herbs',
+    name: 'Mix Herbs',
+    category: 'priest',
+    classRequirement: 'Master Healer',
+    description: 'Creates healing potions from herbs.',
+    manaCost: 20,
+    cooldown: 3,
+    effects: ['Creates healing potions', 'Uses available herbs', 'No mixing pot required']
+  },
+  {
+    id: 'restore_mana',
+    name: 'Restore Mana',
+    category: 'priest',
+    classRequirement: 'Master Healer',
+    description: 'Restores mana to target ally.',
+    manaCost: 0,
+    cooldown: 5,
+    range: 400,
+    effects: ['Restores ally mana', 'Uses your mana to restore theirs', 'Efficient transfer']
+  },
 
   // Thief Abilities
   {
@@ -293,6 +473,48 @@ export const ABILITIES: AbilityData[] = [
     cooldown: 8,
     range: 200,
     effects: ['Steals random item', 'Works on buildings too']
+  },
+  {
+    id: 'panic',
+    name: 'Panic',
+    category: 'thief',
+    classRequirement: 'Escape Artist',
+    description: 'Greatly increases movement speed when health is low.',
+    manaCost: 0,
+    cooldown: 0,
+    effects: ['Passive ability', 'Activates at low health', 'Massive speed boost']
+  },
+  {
+    id: 'teleport_other',
+    name: 'Teleport Other',
+    category: 'thief',
+    classRequirement: 'TeleThief',
+    description: 'Teleports target enemy to a random location.',
+    manaCost: 40,
+    cooldown: 15,
+    range: 400,
+    effects: ['Teleports enemy away', 'Random destination', 'Disrupts enemy plans']
+  },
+  {
+    id: 'dimension_door',
+    name: 'Dimension Door',
+    category: 'thief',
+    classRequirement: 'TeleThief',
+    description: 'Creates a portal for quick travel between two points.',
+    manaCost: 60,
+    cooldown: 30,
+    duration: 60,
+    effects: ['Creates two-way portal', 'Team can use portal', 'Long distance travel']
+  },
+  {
+    id: 'contortion',
+    name: 'Contortion',
+    category: 'thief',
+    classRequirement: 'Contortionist',
+    description: 'Escapes from any immobilizing effect.',
+    manaCost: 25,
+    cooldown: 12,
+    effects: ['Removes roots/nets/stuns', 'Brief invulnerability', 'Emergency escape']
   },
   {
     id: 'backstab',
@@ -344,6 +566,28 @@ export const ABILITIES: AbilityData[] = [
     duration: 60,
     effects: ['Invisible until triggered', 'Immobilizes enemy', 'Limited uses']
   },
+  {
+    id: 'reveal',
+    name: 'Reveal',
+    category: 'scout',
+    classRequirement: 'Observer',
+    description: 'Reveals a large area permanently.',
+    manaCost: 40,
+    cooldown: 15,
+    range: 1000,
+    effects: ['Large area revealed', 'Permanent vision', 'Reveals invisible units']
+  },
+  {
+    id: 'detect_magic',
+    name: 'Detect Magic',
+    category: 'scout',
+    classRequirement: 'Spy',
+    description: 'Shows magical auras and enchantments.',
+    manaCost: 25,
+    cooldown: 10,
+    duration: 30,
+    effects: ['Reveals magical effects', 'Shows buff/debuff auras', 'Detects magic items']
+  },
 
   // Gatherer Abilities
   {
@@ -377,6 +621,93 @@ export const ABILITIES: AbilityData[] = [
     manaCost: 15,
     cooldown: 3,
     effects: ['Create potions anywhere', 'Uses herb combinations']
+  },
+  {
+    id: 'philosophers_stone',
+    name: 'Philosopher\'s Stone',
+    category: 'gatherer',
+    classRequirement: 'Alchemist',
+    description: 'Conjures potion effects using stored energy.',
+    manaCost: 0,
+    cooldown: 0,
+    effects: ['Uses stone energy instead of mana', 'Can create any potion effect', 'Rechargeable stone']
+  },
+  {
+    id: 'item_radar',
+    name: 'Item Radar',
+    category: 'gatherer',
+    classRequirement: 'Omnigatherer',
+    description: 'Shows all items on the map.',
+    manaCost: 30,
+    cooldown: 20,
+    duration: 45,
+    effects: ['Reveals all items globally', 'Shows item types', 'Long range detection']
+  },
+  {
+    id: 'warp_item',
+    name: 'Warp Item',
+    category: 'gatherer',
+    classRequirement: 'Omnigatherer',
+    description: 'Teleports any item to your location.',
+    manaCost: 35,
+    cooldown: 10,
+    range: 2000,
+    effects: ['Teleports any item', 'Works across map', 'No line of sight needed']
+  },
+
+  // Superclass Abilities
+  {
+    id: 'rampage',
+    name: 'Rampage',
+    category: 'superclass',
+    classRequirement: 'Juggernaut',
+    description: 'Increases attack and movement speed with each kill.',
+    manaCost: 0,
+    cooldown: 0,
+    effects: ['Passive ability', 'Stacks with kills', 'Massive speed/damage boost']
+  },
+  {
+    id: 'spell_immunity',
+    name: 'Spell Immunity',
+    category: 'superclass',
+    classRequirement: 'Juggernaut',
+    description: 'Becomes immune to magic for a short time.',
+    manaCost: 75,
+    cooldown: 45,
+    duration: 10,
+    effects: ['Magic immunity', 'Spell resistance', 'Temporary effect']
+  },
+  {
+    id: 'dark_ritual',
+    name: 'Dark Ritual',
+    category: 'superclass',
+    classRequirement: 'Dementia Master',
+    description: 'Sacrifices health to gain mana.',
+    manaCost: 0,
+    cooldown: 5,
+    effects: ['Converts health to mana', 'Efficient mana gain', 'Risk vs reward']
+  },
+  {
+    id: 'omnislash',
+    name: 'Omnislash',
+    category: 'superclass',
+    classRequirement: 'Assassin',
+    description: 'Teleports between enemies dealing massive damage.',
+    manaCost: 100,
+    cooldown: 60,
+    range: 800,
+    damage: 'Massive damage per hit',
+    effects: ['Multiple teleport strikes', 'Hits multiple enemies', 'Ultimate ability']
+  },
+  {
+    id: 'sage_wisdom',
+    name: 'Sage Wisdom',
+    category: 'superclass',
+    classRequirement: 'Sage',
+    description: 'Reduces cooldowns of all abilities.',
+    manaCost: 0,
+    cooldown: 0,
+    effects: ['Passive ability', 'Reduces all cooldowns', 'Stacks with items']
   },
 
   // Building Abilities
@@ -417,6 +748,44 @@ export const ABILITIES: AbilityData[] = [
     effects: ['Process hides', 'Create leather items', 'Craft coats']
   },
 
+  // Additional Class Abilities
+  {
+    id: 'ensnare',
+    name: 'Ensnare',
+    category: 'hunter',
+    classRequirement: 'Hunter',
+    description: 'Alternative to net with different properties.',
+    manaCost: 18,
+    cooldown: 10,
+    range: 450,
+    duration: 5,
+    effects: ['Immobilizes air and ground units', 'Longer duration than net']
+  },
+  {
+    id: 'mage_masher',
+    name: 'Mage Masher',
+    category: 'hunter',
+    classRequirement: 'Warrior',
+    description: 'Deals extra damage to mages and silences them.',
+    manaCost: 30,
+    cooldown: 15,
+    range: 128,
+    damage: 'Extra damage vs mages',
+    effects: ['Bonus damage to mages', 'Silences target', 'Anti-mage ability']
+  },
+  {
+    id: 'poison_spear',
+    name: 'Poison Spear',
+    category: 'hunter',
+    classRequirement: 'Tracker',
+    description: 'Throws a poisoned spear that deals damage over time.',
+    manaCost: 25,
+    cooldown: 8,
+    range: 600,
+    damage: 'Initial + poison damage',
+    effects: ['Poison damage over time', 'Long range attack', 'Stackable poison']
+  },
+
   // Item Abilities
   {
     id: 'mana_crystal',
@@ -453,6 +822,26 @@ export const ABILITIES: AbilityData[] = [
     manaCost: 50,
     cooldown: 30,
     effects: ['Set teleport point', 'Teleport to beacon', 'Long range travel']
+  },
+  {
+    id: 'spirit_wind',
+    name: 'Spirit Wind',
+    category: 'item',
+    description: 'Increases movement speed temporarily.',
+    manaCost: 0,
+    cooldown: 0,
+    duration: 15,
+    effects: ['Increased movement speed', 'Consumable item', 'Stacks with other speed boosts']
+  },
+  {
+    id: 'stone_skin_potion',
+    name: 'Stone Skin Potion',
+    category: 'item',
+    description: 'Increases armor and magic resistance.',
+    manaCost: 0,
+    cooldown: 0,
+    duration: 45,
+    effects: ['Increased armor', 'Magic resistance', 'Temporary defensive buff']
   }
 ];
 

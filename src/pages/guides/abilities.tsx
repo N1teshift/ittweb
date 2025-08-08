@@ -13,58 +13,60 @@ interface AbilityCardProps {
 
 function AbilityCard({ ability }: AbilityCardProps) {
   return (
-    <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-4 hover:border-amber-400/50 transition-colors">
-      <div className="flex justify-between items-start mb-2">
-        <h3 className="font-medieval text-xl text-amber-400">{ability.name}</h3>
-        {ability.classRequirement && (
-          <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded">
-            {ability.classRequirement}
-          </span>
+    <Link href={`/guides/abilities/${ability.id}`} className="block">
+      <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-4 hover:border-amber-400/50 transition-colors">
+        <div className="flex justify-between items-start mb-2">
+          <h3 className="font-medieval text-xl text-amber-400">{ability.name}</h3>
+          {ability.classRequirement && (
+            <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded">
+              {ability.classRequirement}
+            </span>
+          )}
+        </div>
+        
+        <p className="text-gray-300 text-sm mb-3">{ability.description}</p>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3 text-xs">
+          {ability.manaCost !== undefined && (
+            <div className="text-blue-300">
+              <span className="text-gray-400">Mana:</span> {ability.manaCost}
+            </div>
+          )}
+          {ability.cooldown !== undefined && (
+            <div className="text-purple-300">
+              <span className="text-gray-400">Cooldown:</span> {ability.cooldown}s
+            </div>
+          )}
+          {ability.range !== undefined && (
+            <div className="text-green-300">
+              <span className="text-gray-400">Range:</span> {ability.range}
+            </div>
+          )}
+          {ability.duration !== undefined && (
+            <div className="text-orange-300">
+              <span className="text-gray-400">Duration:</span> {ability.duration}s
+            </div>
+          )}
+        </div>
+        
+        {ability.damage && (
+          <div className="text-red-300 text-sm mb-2">
+            <span className="text-gray-400">Damage:</span> {ability.damage}
+          </div>
+        )}
+        
+        {ability.effects && ability.effects.length > 0 && (
+          <div className="text-xs">
+            <span className="text-gray-400">Effects:</span>
+            <ul className="list-disc list-inside text-gray-300 mt-1">
+              {ability.effects.map((effect, index) => (
+                <li key={index}>{effect}</li>
+              ))}
+            </ul>
+          </div>
         )}
       </div>
-      
-      <p className="text-gray-300 text-sm mb-3">{ability.description}</p>
-      
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3 text-xs">
-        {ability.manaCost !== undefined && (
-          <div className="text-blue-300">
-            <span className="text-gray-400">Mana:</span> {ability.manaCost}
-          </div>
-        )}
-        {ability.cooldown !== undefined && (
-          <div className="text-purple-300">
-            <span className="text-gray-400">Cooldown:</span> {ability.cooldown}s
-          </div>
-        )}
-        {ability.range !== undefined && (
-          <div className="text-green-300">
-            <span className="text-gray-400">Range:</span> {ability.range}
-          </div>
-        )}
-        {ability.duration !== undefined && (
-          <div className="text-orange-300">
-            <span className="text-gray-400">Duration:</span> {ability.duration}s
-          </div>
-        )}
-      </div>
-      
-      {ability.damage && (
-        <div className="text-red-300 text-sm mb-2">
-          <span className="text-gray-400">Damage:</span> {ability.damage}
-        </div>
-      )}
-      
-      {ability.effects && ability.effects.length > 0 && (
-        <div className="text-xs">
-          <span className="text-gray-400">Effects:</span>
-          <ul className="list-disc list-inside text-gray-300 mt-1">
-            {ability.effects.map((effect, index) => (
-              <li key={index}>{effect}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+    </Link>
   );
 }
 
