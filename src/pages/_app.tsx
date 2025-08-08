@@ -7,7 +7,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
-import logger from "@/config/logger";
+import logger from "@/features/shared/utils/loggerUtils";
 
 // Initialize logging
 if (typeof window !== 'undefined') {

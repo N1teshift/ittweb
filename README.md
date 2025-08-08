@@ -8,14 +8,14 @@ A modern website built with Next.js, TypeScript, Tailwind CSS, and international
 - **TypeScript** - Type safety and better development experience
 - **Tailwind CSS** - Utility-first CSS framework
 - **i18next** - Internationalization support
-- **Winston** - Logging framework
+- **Console Logging** - Lightweight logging system
 
 ## Features
 
 - ✅ **TypeScript** - Full type safety
 - ✅ **Tailwind CSS** - Modern styling with utility classes
 - ✅ **Internationalization** - Multi-language support (currently English, expandable)
-- ✅ **Logging** - Structured logging with Winston
+- ✅ **Logging** - Lightweight console logging with error categorization
 - ✅ **ESLint** - Code quality and consistency
 - ✅ **Responsive Design** - Mobile-first approach
 - ✅ **Dark Mode Support** - Automatic theme switching
@@ -25,15 +25,13 @@ A modern website built with Next.js, TypeScript, Tailwind CSS, and international
 ```
 ittweb/
 ├── src/
-│   ├── config/          # Configuration files (logger, etc.)
 │   ├── features/        # Feature-based components
+│   │   └── shared/     # Shared utilities and components
 │   ├── pages/          # Next.js pages
-│   ├── shared/         # Shared components and utilities
 │   ├── styles/         # Global styles
 │   └── types/          # TypeScript type definitions
 ├── public/
 │   └── locales/        # Translation files
-└── logs/              # Application logs
 ```
 
 ## Getting Started
@@ -84,9 +82,10 @@ The project uses i18next for internationalization. Currently supports English, b
 
 ## Logging
 
-The application uses Winston for structured logging. Logs are written to:
-- `logs/combined.log` - All logs
-- `logs/error.log` - Error logs only
+The application uses a lightweight console-based logging system with:
+- Environment-aware logging levels
+- Error categorization (VALIDATION, NETWORK, DATABASE, etc.)
+- Component-specific logging
 - Console output in development mode
 
 ## Development
