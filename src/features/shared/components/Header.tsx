@@ -35,11 +35,11 @@ export default function Header() {
                         <Link href="/development" className="font-medieval-brand-hover px-3 py-2 rounded-md text-lg">
                             Development
                         </Link>
-                        <Link href="/download" className="font-medieval-brand-hover px-3 py-2 rounded-md text-lg">
-                            Download
-                        </Link>
                         <Link href="/tools" className="font-medieval-brand-hover px-3 py-2 rounded-md text-lg">
                             Tools
+                        </Link>
+                        <Link href="/download" className="font-medieval-brand-hover px-3 py-2 rounded-md text-lg">
+                            Download
                         </Link>
                     </nav>
 
@@ -69,11 +69,11 @@ export default function Header() {
                             <Link href="/development" className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg">
                                 Development
                             </Link>
-                            <Link href="/download" className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg">
-                                Download
-                            </Link>
                             <Link href="/tools" className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg">
                                 Tools
+                            </Link>
+                            <Link href="/download" className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg">
+                                Download
                             </Link>
                         </div>
                     </div>

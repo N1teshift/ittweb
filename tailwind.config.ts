@@ -14,6 +14,9 @@ export default {
       },
       fontFamily: {
         'medieval': ['MedievalSharp', 'cursive'],
+        'medieval-brand': ['MedievalSharp', 'cursive'],
+        'cinzel': ['Cinzel', 'serif'],
+        'unifraktur': ['UnifrakturMaguntia', 'cursive'],
       },
     },
   },

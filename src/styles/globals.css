@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=MedievalSharp:wght@400;700&family=UnifrakturMaguntia&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -178,9 +178,13 @@ body {
 @layer components {
   .font-medieval-brand {
     @apply text-amber-400 font-medieval font-bold;
+    font-family: 'MedievalSharp', cursive;
+    font-weight: 700;
   }
   
   .font-medieval-brand-hover {
     @apply text-amber-400 hover:text-amber-300 font-medieval font-bold transition-colors;
+    font-family: 'MedievalSharp', cursive;
+    font-weight: 700;
   }
 }
