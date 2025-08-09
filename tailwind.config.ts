@@ -19,7 +19,7 @@ export default {
         'cinzel': ['Cinzel', 'serif'],
         'unifraktur': ['UnifrakturMaguntia', 'cursive'],
       },
-      typography: ({ theme }) => ({
+      typography: ({ theme }: { theme: (path: string) => any }) => ({
         DEFAULT: {
           css: {
             color: theme('colors.gray.800'),
