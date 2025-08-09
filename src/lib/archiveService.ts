@@ -28,6 +28,10 @@ const ARCHIVE_COLLECTION = 'archives';
 const COMPRESSION_THRESHOLD = 2 * 1024 * 1024; // 2MB
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
 
+// Replay upload constants
+const MAX_REPLAY_SIZE = 50 * 1024 * 1024; // 50MB
+const ALLOWED_REPLAY_EXTENSIONS = ['.w3g'];
+
 // Compress image if needed
 const compressImage = async (file: File): Promise<File> => {
   if (file.size <= COMPRESSION_THRESHOLD) {
@@ -89,6 +93,38 @@ export const uploadImage = async (file: File): Promise<string> => {
   return downloadURL;
 };
 
+// Upload multiple images
+export const uploadImages = async (files: File[]): Promise<string[]> => {
+  const uploads = files.map((f) => uploadImage(f));
+  return Promise.all(uploads);
+};
+
+// Upload replay to Firebase Storage
+export const uploadReplay = async (file: File): Promise<string> => {
+  if (!isClient) {
+    throw new Error('Upload is only available on the client side');
+  }
+
+  if (file.size > MAX_REPLAY_SIZE) {
+    throw new Error('Replay file too large. Maximum size is 50MB.');
+  }
+
+  const fileNameLower = file.name.toLowerCase();
+  const hasAllowedExtension = ALLOWED_REPLAY_EXTENSIONS.some((ext) => fileNameLower.endsWith(ext));
+  if (!hasAllowedExtension) {
+    throw new Error('Invalid replay file type. Please upload a .w3g file.');
+  }
+
+  const timestamp = Date.now();
+  const fileName = `archives/replays/${timestamp}_${file.name}`;
+  const storageRef = ref(storage, fileName);
+
+  await uploadBytes(storageRef, file);
+  const downloadURL = await getDownloadURL(storageRef);
+
+  return downloadURL;
+};
+
 // Extract YouTube video ID from URL
 export const extractYouTubeId = (url: string): string | null => {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -141,6 +177,10 @@ export const getArchiveEntries = async (): Promise<ArchiveEntry[]> => {
       author: data.author,
       mediaUrl: data.mediaUrl,
       mediaType: data.mediaType,
+      images: data.images,
+      videoUrl: data.videoUrl,
+      replayUrl: data.replayUrl,
+      sectionOrder: data.sectionOrder,
       dateInfo: data.dateInfo,
       createdAt: data.createdAt.toDate().toISOString(),
       updatedAt: data.updatedAt.toDate().toISOString()

@@ -42,7 +42,7 @@ export default function TrollClassDetail({ cls }: Props) {
     <Layout pageTranslationNamespaces={pageNamespaces}>
       <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6">
-          <Link href="/guides/troll-classes" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">← Troll Classes Overview</Link>
+          <Link href="/guides/troll-classes" className="text-amber-400 hover:text-amber-300">← Troll Classes Overview</Link>
         </div>
 
         <ClassHeader slug={cls.slug} name={cls.name} summary={cls.summary} />
@@ -68,7 +68,7 @@ export default function TrollClassDetail({ cls }: Props) {
             <ul className="text-gray-300 list-disc pl-5 space-y-1">
               {subs.map((s) => (
                 <li key={s.slug}>
-                  <Link href={`/guides/subclasses/${s.slug}`} className="underline underline-offset-4 text-amber-400 hover:text-amber-300">{s.name}</Link>
+                  <Link href={`/guides/subclasses/${s.slug}`} className="text-amber-400 hover:text-amber-300">{s.name}</Link>
                 </li>
               ))}
             </ul>
@@ -80,7 +80,7 @@ export default function TrollClassDetail({ cls }: Props) {
               {supers.length > 0 ? (
                 supers.map((s) => (
                   <li key={s.slug}>
-                    <Link href={`/guides/supers/${s.slug}`} className="underline underline-offset-4 text-amber-400 hover:text-amber-300">{s.name}</Link>
+                    <Link href={`/guides/supers/${s.slug}`} className="text-amber-400 hover:text-amber-300">{s.name}</Link>
                   </li>
                 ))
               ) : (

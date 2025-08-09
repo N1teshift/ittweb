@@ -9,6 +9,8 @@ export default function Document() {
         <meta name="description" content="Island Troll Tribes - Official website for the Island Troll Tribes game community" />
         <meta name="robots" content="max-image-preview:large" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </Head>
       <body>
         <Main />

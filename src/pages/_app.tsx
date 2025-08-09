@@ -7,6 +7,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
+import { SessionProvider } from "next-auth/react";
 import logger from "@/features/shared/utils/loggerUtils";
 
 // Initialize logging
@@ -31,9 +32,9 @@ if (typeof window !== 'undefined') {
  */
 function App({ Component, pageProps }: AppProps) {
     return (
-        <>
+        <SessionProvider session={(pageProps as any)?.session}>
             <Component {...pageProps} />
-        </>
+        </SessionProvider>
     );
 }
 

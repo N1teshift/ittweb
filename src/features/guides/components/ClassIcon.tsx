@@ -1,5 +1,6 @@
 import React from 'react';
-import Image from 'next/image';
+import GuideIcon from '@/features/guides/components/GuideIcon';
+import { ITTIconCategory } from '@/features/guides/utils/iconUtils';
 
 type Props = {
   slug: string;
@@ -9,8 +10,14 @@ type Props = {
 };
 
 export default function ClassIcon({ slug, name, size = 56, className = '' }: Props) {
-  const [failed, setFailed] = React.useState(false);
   const dimensionStyle = { width: size, height: size } as React.CSSProperties;
+
+  const mapping: Record<string, { category: ITTIconCategory; displayName: string } | { src: string }> = {
+    hunter: { src: '/icons/itt/trolls/btnforesttroll.png' },
+    scout: { src: '/icons/itt/trolls/btnchaoswarlockgreen.png' },
+  };
+
+  const mapped = mapping[slug];
 
   return (
     <div
@@ -18,19 +25,12 @@ export default function ClassIcon({ slug, name, size = 56, className = '' }: Pro
       style={dimensionStyle}
       aria-label={`${name} icon`}
     >
-      {!failed ? (
-        <Image
-          src={`/class-icons/${slug}.png`}
-          alt={`${name} icon`}
-          width={size}
-          height={size}
-          onError={() => setFailed(true)}
-          className="object-cover w-full h-full"
-        />
+      {mapped ? (
+        'src' in mapped
+          ? <GuideIcon category={'trolls'} name={name} size={size} src={mapped.src} />
+          : <GuideIcon category={mapped.category} name={mapped.displayName} size={size} />
       ) : (
-        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-700 text-amber-300 font-medieval-brand text-xl">
-          {name?.charAt(0) ?? '?'}
-        </div>
+        <GuideIcon category={'trolls'} name={name} size={size} />
       )}
     </div>
   );

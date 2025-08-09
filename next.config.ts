@@ -32,12 +32,13 @@ const nextConfig: NextConfig = {
                         value: [
                             "default-src 'self'",
                             "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.youtube.com https://s.ytimg.com",
-                            "style-src 'self' 'unsafe-inline' https://www.youtube.com https://s.ytimg.com",
+                            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.youtube.com https://s.ytimg.com",
+                            "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com",
+                            "font-src 'self' data: https://fonts.gstatic.com",
                             "frame-src 'self' https://www.youtube.com",
                             "img-src 'self' data: https: blob:",
                             "media-src 'self' https:",
                             "connect-src 'self' https:",
-                            "font-src 'self' data:",
                         ].join('; ')
                     }
                 ]

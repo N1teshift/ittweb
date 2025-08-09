@@ -3,70 +3,65 @@ import Layout from '@/features/shared/components/Layout';
 import Link from 'next/link';
 import { useState } from 'react';
 import { ABILITIES, ABILITY_CATEGORIES, AbilityCategory, AbilityData, getAbilitiesByCategory, searchAbilities } from '@/features/guides/data/abilities';
+import GuideCard from '@/features/guides/components/GuideCard';
+import GuideIcon from '@/features/guides/components/GuideIcon';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
 
-interface AbilityCardProps {
-  ability: AbilityData;
-}
+function AbilityCard({ ability }: { ability: AbilityData }) {
+  const primaryBadges = [
+    ability.manaCost !== undefined
+      ? { label: `Mana: ${ability.manaCost}`, variant: 'blue' as const }
+      : null,
+    ability.cooldown !== undefined
+      ? { label: `Cooldown: ${ability.cooldown}s`, variant: 'purple' as const }
+      : null,
+    ability.range !== undefined
+      ? { label: `Range: ${ability.range}`, variant: 'green' as const }
+      : null,
+    ability.duration !== undefined
+      ? { label: `Duration: ${ability.duration}s`, variant: 'amber' as const }
+      : null,
+    ability.damage
+      ? { label: `Damage: ${ability.damage}`, variant: 'red' as const }
+      : null,
+  ].filter(Boolean) as { label: string; variant: any }[];
 
-function AbilityCard({ ability }: AbilityCardProps) {
+  const secondaryBadges = [
+    ability.classRequirement
+      ? { label: ability.classRequirement, variant: 'amber' as const }
+      : null,
+    ability.category
+      ? { label: ABILITY_CATEGORIES[ability.category] || ability.category, variant: 'gray' as const }
+      : null,
+  ].filter(Boolean) as { label: string; variant: any }[];
+
+  const footer = ability.effects && ability.effects.length > 0 && (
+    <div className="text-xs">
+      <span className="text-gray-400">Effects:</span>
+      <ul className="list-disc list-inside text-gray-300 mt-1">
+        {ability.effects.map((effect, index) => (
+          <li key={index}>{effect}</li>
+        ))}
+      </ul>
+    </div>
+  );
+
+  const icon = (
+    <GuideIcon category="abilities" name={ability.name} size={48} />
+  );
+
   return (
-    <Link href={`/guides/abilities/${ability.id}`} className="block">
-      <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-4 hover:border-amber-400/50 transition-colors">
-        <div className="flex justify-between items-start mb-2">
-          <h3 className="font-medieval text-xl text-amber-400">{ability.name}</h3>
-          {ability.classRequirement && (
-            <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded">
-              {ability.classRequirement}
-            </span>
-          )}
-        </div>
-        
-        <p className="text-gray-300 text-sm mb-3">{ability.description}</p>
-        
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3 text-xs">
-          {ability.manaCost !== undefined && (
-            <div className="text-blue-300">
-              <span className="text-gray-400">Mana:</span> {ability.manaCost}
-            </div>
-          )}
-          {ability.cooldown !== undefined && (
-            <div className="text-purple-300">
-              <span className="text-gray-400">Cooldown:</span> {ability.cooldown}s
-            </div>
-          )}
-          {ability.range !== undefined && (
-            <div className="text-green-300">
-              <span className="text-gray-400">Range:</span> {ability.range}
-            </div>
-          )}
-          {ability.duration !== undefined && (
-            <div className="text-orange-300">
-              <span className="text-gray-400">Duration:</span> {ability.duration}s
-            </div>
-          )}
-        </div>
-        
-        {ability.damage && (
-          <div className="text-red-300 text-sm mb-2">
-            <span className="text-gray-400">Damage:</span> {ability.damage}
-          </div>
-        )}
-        
-        {ability.effects && ability.effects.length > 0 && (
-          <div className="text-xs">
-            <span className="text-gray-400">Effects:</span>
-            <ul className="list-disc list-inside text-gray-300 mt-1">
-              {ability.effects.map((effect, index) => (
-                <li key={index}>{effect}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-    </Link>
+    <GuideCard
+      href={`/guides/abilities/${ability.id}`}
+      title={ability.name}
+      icon={icon}
+      description={ability.description}
+      primaryTagGroup={primaryBadges.length ? { badges: primaryBadges } : undefined}
+      secondaryTagGroup={secondaryBadges.length ? { badges: secondaryBadges } : undefined}
+      footer={footer || undefined}
+    />
   );
 }
 
@@ -86,7 +81,7 @@ export default function AbilitiesPage() {
     <Layout pageTranslationNamespaces={pageNamespaces}>
       <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-7xl mx-auto">
         <div className="mb-6">
-          <Link href="/guides" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">← Back to Guides</Link>
+          <Link href="/guides" className="text-amber-400 hover:text-amber-300">← Back to Guides</Link>
         </div>
 
         <h1 className="font-medieval-brand text-4xl md:text-5xl mb-6">Abilities</h1>

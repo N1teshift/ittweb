@@ -48,3 +48,9 @@ next-env.d.ts
 .next/
 node_modules/
 external/
+
+# local asset caches
+/converted-icons/
+/temp-icons/
+@converted-icons/
+@temp-icons/

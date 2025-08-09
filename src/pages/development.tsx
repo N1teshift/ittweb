@@ -40,12 +40,12 @@ export default function Development() {
                 <h2 className="font-medieval-brand text-2xl mb-4">Development Updates</h2>
                 <ul className="text-gray-300 space-y-2">
                   <li>
-                    <Link href="/development/map" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">
+                    <Link href="/development/map" className="text-amber-400 hover:text-amber-300">
                       • Map Development
                     </Link>
                   </li>
                   <li>
-                    <Link href="/development/website" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">
+                    <Link href="/development/website" className="text-amber-400 hover:text-amber-300">
                       • Website Development
                     </Link>
                   </li>

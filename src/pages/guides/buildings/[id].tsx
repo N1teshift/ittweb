@@ -29,8 +29,8 @@ export default function BuildingDetail({ building }: Props) {
     <Layout pageTranslationNamespaces={pageNamespaces}>
       <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6 space-x-4">
-          <Link href="/guides/buildings" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">← Buildings</Link>
-          <Link href="/guides" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">Guides</Link>
+          <Link href="/guides/buildings" className="text-amber-400 hover:text-amber-300">← Buildings</Link>
+          <Link href="/guides" className="text-amber-400 hover:text-amber-300">Guides</Link>
         </div>
 
         <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">

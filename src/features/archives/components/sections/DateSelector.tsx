@@ -13,7 +13,7 @@ export default function DateSelector({ dateType, singleDate, startDate, endDate,
   return (
     <div>
       <label className="block text-amber-500 mb-2">Date Information</label>
-      <div className="space-y-3">
+      <div className="flex flex-wrap gap-4">
         <label className="flex items-center">
           <input
             type="radio"

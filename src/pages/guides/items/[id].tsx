@@ -42,7 +42,7 @@ export default function ItemDetailPage({ item }: Props) {
     <Layout pageTranslationNamespaces={pageNamespaces}>
       <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6">
-          <Link href="/guides/items" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">← Items Overview</Link>
+          <Link href="/guides/items" className="text-amber-400 hover:text-amber-300">← Items Overview</Link>
         </div>
 
         <header className="mb-6">

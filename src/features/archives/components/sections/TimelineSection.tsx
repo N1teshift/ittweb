@@ -6,7 +6,7 @@ interface TimelineSectionProps {
   title: string;
   entries: ArchiveEntryType[];
   titleClassName?: string;
-  onEdit: (entry: ArchiveEntryType) => void;
+  onEdit?: (entry: ArchiveEntryType) => void;
   onImageClick: (url: string, title: string) => void;
 }
 

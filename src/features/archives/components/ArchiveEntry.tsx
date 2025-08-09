@@ -31,42 +31,95 @@ export default function ArchiveEntry({ entry, onEdit, onImageClick }: ArchiveEnt
     }
   };
 
-  const renderMedia = () => {
-    if (!entry.mediaUrl || entry.mediaType === 'none') return null;
+  const renderSectionedMediaAndText = () => {
+    const imageUrls = entry.images && entry.images.length > 0
+      ? entry.images
+      : entry.mediaType === 'image' && entry.mediaUrl
+      ? [entry.mediaUrl]
+      : [];
 
-                   if (entry.mediaType === 'image') {
-        return (
-          <div className="mb-4">
-                         <div 
-               className="relative w-full rounded-lg border border-amber-500/30 overflow-hidden cursor-pointer hover:border-amber-500/50 transition-colors"
-               onClick={() => onImageClick && entry.mediaUrl ? onImageClick(entry.mediaUrl, entry.title) : null}
-             >
-              <Image
-                src={entry.mediaUrl}
-                alt={entry.title}
-                width={800}
-                height={600}
-                className="w-full h-auto max-h-96 object-contain"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                onError={(e) => {
-                  // Silently handle image load errors
-                }}
-              />
-              <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors flex items-center justify-center">
-                <div className="bg-black/50 text-white px-3 py-1 rounded-full text-sm opacity-0 hover:opacity-100 transition-opacity">
-                  Click to enlarge
-                </div>
+    const video = entry.videoUrl || (entry.mediaType === 'video' ? entry.mediaUrl : undefined);
+    const replay = entry.replayUrl || (entry.mediaType === 'replay' ? entry.mediaUrl : undefined);
+
+    const defaultOrder: Array<'images' | 'video' | 'replay' | 'text'> = ['images', 'video', 'replay', 'text'];
+    const order = entry.sectionOrder && entry.sectionOrder.length ? entry.sectionOrder : defaultOrder;
+
+    return (
+      <div className="space-y-4">
+        {order.map((section, idx) => {
+          if (section === 'images' && imageUrls.length > 0) {
+            return (
+              <div key={`section-images-${idx}`} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {imageUrls.map((url, i) => (
+                  <div
+                    key={url + i}
+                    className="relative w-full rounded-lg border border-amber-500/30 overflow-hidden cursor-pointer hover:border-amber-500/50 transition-colors"
+                    onClick={() => onImageClick ? onImageClick(url, entry.title) : undefined}
+                  >
+                    <Image
+                      src={url}
+                      alt={entry.title}
+                      width={800}
+                      height={600}
+                      className="w-full h-auto max-h-96 object-contain"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors flex items-center justify-center">
+                      <div className="bg-black/50 text-white px-3 py-1 rounded-full text-sm opacity-0 hover:opacity-100 transition-opacity">
+                        Click to enlarge
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-          </div>
-        );
-      }
+            );
+          }
 
-    if (entry.mediaType === 'video') {
-      return <YouTubeEmbed url={entry.mediaUrl} title={entry.title} />;
-    }
+          if (section === 'video' && video) {
+            return (
+              <div key={`section-video-${idx}`}>
+                <YouTubeEmbed url={video} title={entry.title} />
+              </div>
+            );
+          }
 
-    return null;
+          if (section === 'replay' && replay) {
+            return (
+              <div key={`section-replay-${idx}`}>
+                <a
+                  href={replay}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 underline"
+                >
+                  Download replay (.w3g)
+                </a>
+              </div>
+            );
+          }
+
+          if (section === 'text') {
+            return (
+              <div key={`section-text-${idx}`} className="prose prose-invert max-w-none">
+                <p className="text-gray-300 leading-relaxed whitespace-pre-wrap">
+                  {displayText}
+                  {shouldTruncate && (
+                    <button
+                      onClick={() => setIsExpanded(!isExpanded)}
+                      className="ml-2 text-amber-400 hover:text-amber-300 underline font-medium transition-colors"
+                    >
+                      {isExpanded ? 'Show Less' : 'Show More'}
+                    </button>
+                  )}
+                </p>
+              </div>
+            );
+          }
+
+          return null;
+        })}
+      </div>
+    );
   };
 
   const getDateBadgeColor = () => {
@@ -91,31 +144,11 @@ export default function ArchiveEntry({ entry, onEdit, onImageClick }: ArchiveEnt
           <span className={`px-3 py-1 rounded-full text-sm font-medium ${getDateBadgeColor()}`}>
             {formatDate(entry.dateInfo)}
           </span>
-          {entry.dateInfo.type === 'undated' && entry.dateInfo.approximateText && (
-            <span className="text-gray-400 text-sm">
-              ({entry.dateInfo.approximateText})
-            </span>
-          )}
         </div>
       </div>
 
-      {/* Media */}
-      {renderMedia()}
-
-      {/* Content */}
-      <div className="prose prose-invert max-w-none">
-        <p className="text-gray-300 leading-relaxed whitespace-pre-wrap">
-          {displayText}
-          {shouldTruncate && (
-            <button
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="ml-2 text-amber-400 hover:text-amber-300 underline font-medium transition-colors"
-            >
-              {isExpanded ? 'Show Less' : 'Show More'}
-            </button>
-          )}
-        </p>
-      </div>
+      {/* Media and Text in Saved Order */}
+      {renderSectionedMediaAndText()}
 
              {/* Footer */}
        <div className="mt-4 pt-4 border-t border-amber-500/20">

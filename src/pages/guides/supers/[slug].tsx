@@ -33,9 +33,9 @@ export default function SuperclassDetail({ cls }: Props) {
     <Layout pageTranslationNamespaces={pageNamespaces}>
       <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6 space-x-4">
-          <Link href="/guides/troll-classes" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">← Troll Classes Overview</Link>
+          <Link href="/guides/troll-classes" className="text-amber-400 hover:text-amber-300">← Troll Classes Overview</Link>
           {parent && (
-            <Link href={`/guides/classes/${parent.slug}`} className="text-amber-400 hover:text-amber-300 underline underline-offset-4">{parent.name}</Link>
+            <Link href={`/guides/classes/${parent.slug}`} className="text-amber-400 hover:text-amber-300">{parent.name}</Link>
           )}
         </div>
 

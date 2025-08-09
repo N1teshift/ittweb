@@ -3,6 +3,7 @@ import logger from '@/features/shared/utils/loggerUtils';
 import Layout from '@/features/shared/components/Layout';
 import { useFallbackTranslation } from '@/features/shared/hooks/useFallbackTranslation';
 import { useState, useEffect, useCallback } from 'react';
+import { useSession, signIn } from 'next-auth/react';
 import { getArchiveEntries, sortArchiveEntries } from '@/lib/archiveService';
 import { ArchiveEntry as ArchiveEntryType } from '@/types/archive';
 import { ArchiveEntry, ArchiveForm, ArchiveEditForm } from '@/features/archives/components';
@@ -15,6 +16,7 @@ export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
 
 export default function Archives() {
   const { t } = useFallbackTranslation(pageNamespaces);
+  const { status } = useSession();
   const [entries, setEntries] = useState<ArchiveEntryType[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -53,6 +55,10 @@ export default function Archives() {
   };
 
   const handleEdit = (entry: ArchiveEntryType) => {
+    if (status !== 'authenticated') {
+      signIn('discord');
+      return;
+    }
     setEditingEntry(entry);
     setShowEditForm(true);
   };
@@ -97,7 +103,7 @@ export default function Archives() {
   return (
     <Layout pageTranslationNamespaces={pageNamespaces}>
       <div className="min-h-[calc(100vh-8rem)]">
-        {/* Header */}
+        {/* Header (scrolls away) */}
         <div className="text-center py-12 px-6">
           <h1 className="font-medieval-brand text-5xl md:text-6xl mb-8">
             Archives
@@ -107,92 +113,112 @@ export default function Archives() {
             Explore the history and legacy of our game development, 
             and contribute your own memories to this living timeline.
           </p>
-          
-                     {/* Add Entry Button */}
-           <button
-             onClick={() => setShowForm(true)}
-             className="bg-amber-600 hover:bg-amber-500 text-white px-8 py-3 rounded-lg border border-amber-500 font-medium transition-colors mb-8"
-           >
-             Become an Archivist
-           </button>
-
-            {/* Sort Order Toggle */}
-            {entries.length > 0 && (
-              <SortToggle sortOrder={sortOrder} onChange={handleSortOrderChange} />
-            )}
         </div>
 
-        {/* Error Message */}
-        {error && (
-          <div className="max-w-4xl mx-auto px-6 mb-8">
-            <div className="bg-red-900/50 border border-red-500 rounded p-4 text-red-300">
-              {error}
+        <div className="sticky top-16 z-40 bg-gray-900/80 backdrop-blur supports-[backdrop-filter]:bg-gray-900/60 border-y border-amber-500/20">
+          <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+            {status === 'authenticated' ? (
+              <button
+                onClick={() => setShowForm(true)}
+                className="bg-amber-600 hover:bg-amber-500 text-white px-6 py-2 rounded-lg border border-amber-500 font-medium transition-colors"
+              >
+                Become an Archivist
+              </button>
+            ) : (
+              <button
+                onClick={() => signIn('discord')}
+                className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2 rounded-lg border border-indigo-500 font-medium transition-colors"
+              >
+                Sign in with Discord to contribute
+              </button>
+            )}
+            <div className="ml-auto">
+              {entries.length > 0 && (
+                <SortToggle sortOrder={sortOrder} onChange={handleSortOrderChange} />
+              )}
             </div>
           </div>
-        )}
+        </div>
 
-        {/* Loading State */}
-        {loading && (
-          <div className="max-w-4xl mx-auto px-6">
+        {/* Page Content (scrolls with page) */}
+        <div className="max-w-4xl mx-auto px-6">
+          {/* Error Message */}
+          {error && (
+            <div className="mb-8">
+              <div className="bg-red-900/50 border border-red-500 rounded p-4 text-red-300">
+                {error}
+              </div>
+            </div>
+          )}
+
+          {/* Loading State */}
+          {loading && (
             <div className="text-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500 mx-auto mb-4"></div>
               <p className="text-gray-400">Loading archives...</p>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Timeline */}
-        {!loading && (
-          <div className="max-w-4xl mx-auto px-6">
-            <TimelineSection 
-              title="Timeline"
-              entries={datedEntries}
-              onEdit={handleEdit}
-              onImageClick={handleImageClick}
-            />
+          {/* Timeline */}
+          {!loading && (
+            <div className="pb-12">
+              <TimelineSection 
+                title="Timeline"
+                entries={datedEntries}
+                onEdit={status === 'authenticated' ? handleEdit : undefined}
+                onImageClick={handleImageClick}
+              />
 
-            <TimelineSection 
-              title="Undated Archives"
-              titleClassName="text-gray-400"
-              entries={undatedEntries}
-              onEdit={handleEdit}
-              onImageClick={handleImageClick}
-            />
+              <TimelineSection 
+                title="Undated Archives"
+                titleClassName="text-gray-400"
+                entries={undatedEntries}
+                onEdit={status === 'authenticated' ? handleEdit : undefined}
+                onImageClick={handleImageClick}
+              />
 
-            {/* Empty State */}
-            {entries.length === 0 && !loading && (
-              <div className="text-center py-12">
-                <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-8">
-                  <h3 className="font-medieval-brand text-2xl mb-4 text-amber-400">
-                    No Archives Yet
-                  </h3>
-                  <p className="text-gray-300 mb-6">
-                    Be the first to contribute to our archives! 
-                    Share your memories, screenshots, or videos from your Island Troll Tribes experience.
-                  </p>
-                  <button
-                    onClick={() => setShowForm(true)}
-                    className="bg-amber-600 hover:bg-amber-500 text-white px-6 py-2 rounded border border-amber-500 transition-colors"
-                  >
-                    Add First Entry
-                  </button>
+              {/* Empty State */}
+              {entries.length === 0 && !loading && (
+                <div className="text-center py-12">
+                  <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-8">
+                    <h3 className="font-medieval-brand text-2xl mb-4 text-amber-400">
+                      No Archives Yet
+                    </h3>
+                    <p className="text-gray-300 mb-6">
+                      Be the first to contribute to our archives! 
+                      Share your memories, screenshots, or videos from your Island Troll Tribes experience.
+                    </p>
+                    {status === 'authenticated' ? (
+                      <button
+                        onClick={() => setShowForm(true)}
+                        className="bg-amber-600 hover:bg-amber-500 text-white px-6 py-2 rounded border border-amber-500 transition-colors"
+                      >
+                        Add First Entry
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => signIn('discord')}
+                        className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2 rounded border border-indigo-500 transition-colors"
+                      >
+                        Sign in with Discord to add the first entry
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
-             {/* Archive Form Modal */}
-       {showForm && (
+       {status === 'authenticated' && showForm && (
          <ArchiveForm
            onSuccess={handleAddSuccess}
            onCancel={handleAddCancel}
          />
        )}
 
-       {/* Archive Edit Form Modal */}
-       {showEditForm && editingEntry && (
+       {status === 'authenticated' && showEditForm && editingEntry && (
          <ArchiveEditForm
            entry={editingEntry}
            onSuccess={handleEditSuccess}

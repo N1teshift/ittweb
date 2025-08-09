@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { ITEMS_DATA, getItemsByCategory, getItemsBySubcategory, searchItems } from '@/features/guides/data/items';
 import { ItemData, ItemSubcategory } from '@/types/items';
+import GuideCard from '@/features/guides/components/GuideCard';
+import GuideIcon from '@/features/guides/components/GuideIcon';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
@@ -43,50 +45,28 @@ const subcategoryEmojis: Record<ItemSubcategory, string> = {
 };
 
 function BuildingCard({ building }: { building: ItemData }) {
+  const icon = (
+    <GuideIcon category="buildings" name={building.name} size={48} />
+  );
+
+  const recipeBadges = (building.recipe || []).map((ingredient) => ({
+    label: ingredient.replace('-', ' '),
+    variant: 'amber' as const,
+  }));
+
+  const effectBadges = building.stats?.other?.length
+    ? building.stats.other.map((e) => ({ label: e, variant: 'green' as const }))
+    : [];
+
   return (
-    <Link href={`/guides/buildings/${building.id}`} className="block">
-      <div className="bg-black/40 backdrop-blur-sm border border-amber-500/30 rounded-lg p-4 hover:border-amber-400/50 transition-colors">
-        <div className="flex items-start justify-between mb-2">
-          <h3 className="font-medieval-brand text-lg text-amber-400">{building.name}</h3>
-          {building.subcategory && (
-            <span className="text-xs bg-amber-500/20 text-amber-200 px-2 py-1 rounded flex items-center gap-1">
-              <span>{subcategoryEmojis[building.subcategory]}</span>
-              {subcategoryLabels[building.subcategory]}
-            </span>
-          )}
-        </div>
-
-        <p className="text-gray-300 text-sm mb-3 leading-relaxed">
-          {building.description}
-        </p>
-
-        {building.recipe && building.recipe.length > 0 && (
-          <div className="mb-3">
-            <h4 className="text-amber-300 text-sm font-semibold mb-1">Recipe:</h4>
-            <div className="flex flex-wrap gap-1">
-              {building.recipe.map((ingredient, index) => (
-                <span key={index} className="text-xs bg-amber-500/20 text-amber-200 px-2 py-1 rounded">
-                  {ingredient.replace('-', ' ')}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {building.stats && building.stats.other && building.stats.other.length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-2">
-            {building.stats.other.map((effect, index) => (
-              <span
-                key={index}
-                className="text-xs bg-green-500/20 text-green-200 px-2 py-1 rounded"
-              >
-                {effect}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-    </Link>
+    <GuideCard
+      href={`/guides/buildings/${building.id}`}
+      title={building.name}
+      icon={icon}
+      description={building.description}
+      primaryTagGroup={recipeBadges.length ? { label: 'Recipe:', badges: recipeBadges } : undefined}
+      secondaryTagGroup={effectBadges.length ? { badges: effectBadges } : undefined}
+    />
   );
 }
 
@@ -140,7 +120,7 @@ export default function BuildingsPage() {
     <Layout pageTranslationNamespaces={pageNamespaces}>
       <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-7xl mx-auto">
         <div className="mb-6">
-          <Link href="/guides" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">← Back to Guides</Link>
+          <Link href="/guides" className="text-amber-400 hover:text-amber-300">← Back to Guides</Link>
         </div>
 
         <div className="mb-8">

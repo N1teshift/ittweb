@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useState, useMemo } from 'react';
 import { ITEMS_DATA, ITEMS_BY_CATEGORY, searchItems } from '@/features/guides/data/items';
 import { ItemCategory, ItemData } from '@/types/items';
+import GuideCard from '@/features/guides/components/GuideCard';
+import GuideIcon from '@/features/guides/components/GuideIcon';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
@@ -29,73 +31,43 @@ const categoryEmojis: Record<ItemCategory, string> = {
 };
 
 function ItemCard({ item }: { item: ItemData }) {
+  const recipeBadges = (item.recipe || []).map((ingredient) => ({
+    label: ingredient.replace('-', ' '),
+    variant: 'amber' as const,
+  }));
+
+  const craftedAtBadges = item.craftedAt
+    ? [{ label: item.craftedAt, variant: 'blue' as const }]
+    : [];
+
+  const statBadges: { label: string; variant: any }[] = [];
+  if (item.stats) {
+    if (typeof item.stats.damage === 'number') statBadges.push({ label: `Damage: ${item.stats.damage}`, variant: 'red' });
+    if (typeof item.stats.armor === 'number') statBadges.push({ label: `Armor: ${item.stats.armor}`, variant: 'blue' });
+    if (typeof item.stats.health === 'number') statBadges.push({ label: `Health: +${item.stats.health}`, variant: 'green' });
+    if (typeof item.stats.mana === 'number') statBadges.push({ label: `Mana: +${item.stats.mana}`, variant: 'purple' });
+  }
+
+  const otherEffects = item.stats?.other && item.stats.other.length > 0
+    ? item.stats.other.map((e) => ({ label: e, variant: 'green' as const }))
+    : [];
+
+  const icon = (
+    <GuideIcon category="items" name={item.name} size={48} />
+  );
+
   return (
-    <Link href={`/guides/items/${item.id}`} className="group block focus:outline-none focus:ring-2 focus:ring-amber-400 rounded-lg">
-      <div className="bg-black/40 backdrop-blur-sm border border-amber-500/30 rounded-lg p-4 hover:border-amber-400/50 transition-colors cursor-pointer">
-        <div className="flex items-start justify-between mb-2">
-          <h3 className="font-medieval-brand text-lg text-amber-400 group-hover:text-amber-300">{item.name}</h3>
-          <span className="text-2xl">{categoryEmojis[item.category]}</span>
-        </div>
-        
-        <p className="text-gray-300 text-sm mb-3 leading-relaxed">
-          {item.description}
-        </p>
-
-        {item.recipe && item.recipe.length > 0 && (
-          <div className="mb-3">
-            <h4 className="text-amber-300 text-sm font-semibold mb-1">Recipe:</h4>
-            <div className="flex flex-wrap gap-1">
-              {item.recipe.map((ingredient, index) => (
-                <span
-                  key={index}
-                  className="text-xs bg-amber-500/20 text-amber-200 px-2 py-1 rounded"
-                >
-                  {ingredient.replace('-', ' ')}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {item.craftedAt && (
-          <div className="mb-3">
-            <h4 className="text-amber-300 text-sm font-semibold mb-1">Crafted at:</h4>
-            <span className="text-xs bg-blue-500/20 text-blue-200 px-2 py-1 rounded">
-              {item.craftedAt}
-            </span>
-          </div>
-        )}
-
-        {item.stats && (
-          <div className="space-y-1">
-            {item.stats.damage && (
-              <div className="text-sm text-red-300">⚔️ Damage: {item.stats.damage}</div>
-            )}
-            {item.stats.armor && (
-              <div className="text-sm text-blue-300">🛡️ Armor: {item.stats.armor}</div>
-            )}
-            {item.stats.health && (
-              <div className="text-sm text-green-300">❤️ Health: +{item.stats.health}</div>
-            )}
-            {item.stats.mana && (
-              <div className="text-sm text-purple-300">🔮 Mana: +{item.stats.mana}</div>
-            )}
-            {item.stats.other && item.stats.other.length > 0 && (
-              <div className="flex flex-wrap gap-1 mt-2">
-                {item.stats.other.map((effect, index) => (
-                  <span
-                    key={index}
-                    className="text-xs bg-green-500/20 text-green-200 px-2 py-1 rounded"
-                  >
-                    {effect}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    </Link>
+    <GuideCard
+      href={`/guides/items/${item.id}`}
+      title={item.name}
+      icon={icon}
+      description={item.description}
+      primaryTagGroup={recipeBadges.length ? { label: 'Recipe:', badges: recipeBadges } : undefined}
+      secondaryTagGroup={{
+        label: craftedAtBadges.length ? 'Crafted at:' : undefined,
+        badges: [...craftedAtBadges, ...statBadges, ...otherEffects],
+      }}
+    />
   );
 }
 
@@ -173,7 +145,7 @@ export default function ItemsPage() {
     <Layout pageTranslationNamespaces={pageNamespaces}>
       <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-7xl mx-auto">
         <div className="mb-6">
-          <Link href="/guides" className="text-amber-400 hover:text-amber-300 underline underline-offset-4">← Back to Guides</Link>
+          <Link href="/guides" className="text-amber-400 hover:text-amber-300">← Back to Guides</Link>
         </div>
 
         <div className="mb-8">

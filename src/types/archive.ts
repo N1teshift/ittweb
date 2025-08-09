@@ -3,8 +3,15 @@ export interface ArchiveEntry {
   title: string;
   content: string;
   author: string;
+  // Deprecated single-media fields kept for backward compatibility
   mediaUrl?: string;
-  mediaType?: 'image' | 'video' | 'none';
+  mediaType?: 'image' | 'video' | 'replay' | 'none';
+  // New multi-media fields
+  images?: string[];
+  videoUrl?: string;
+  replayUrl?: string;
+  // Optional ordered section layout
+  sectionOrder?: Array<'images' | 'video' | 'replay' | 'text'>;
   dateInfo: DateInfo;
   createdAt: string;
   updatedAt: string;
@@ -22,9 +29,16 @@ export interface CreateArchiveEntry {
   title: string;
   content: string;
   author: string;
-  mediaType?: 'image' | 'video' | 'none';
-  dateInfo: DateInfo;
+  // Deprecated single-media fields kept for backward compatibility
+  mediaType?: 'image' | 'video' | 'replay' | 'none';
   mediaUrl?: string;
+  // New multi-media fields
+  images?: string[];
+  videoUrl?: string;
+  replayUrl?: string;
+  // Optional ordered section layout
+  sectionOrder?: Array<'images' | 'video' | 'replay' | 'text'>;
+  dateInfo: DateInfo;
 }
 
 export interface ArchiveFilters {
@@ -32,6 +46,6 @@ export interface ArchiveFilters {
     start: string;
     end: string;
   };
-  mediaType?: 'image' | 'video' | 'none' | 'all';
+  mediaType?: 'image' | 'video' | 'replay' | 'none' | 'all';
   includeUndated?: boolean;
 }
