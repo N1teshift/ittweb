@@ -17,12 +17,12 @@ const DEFAULT_LEVEL = 1;
 const MAX_LEVEL = 60;
 
 
-export default function DamageCalculator() {
+export default function DuelSimulator() {
   const { t } = useFallbackTranslation(pageNamespaces);
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
-      logger.info('Damage Calculator page visited', {
+      logger.info('Duel Simulator page visited', {
         path: window.location.pathname,
         timestamp: new Date().toISOString(),
       });
@@ -95,7 +95,7 @@ export default function DamageCalculator() {
   return (
     <Layout pageTranslationNamespaces={pageNamespaces}>
       <div className="min-h-[calc(100vh-8rem)] px-4 md:px-8 py-8 md:py-10">
-        <h1 className="font-medieval-brand text-4xl md:text-5xl mb-6 text-center">Damage Calculator</h1>
+        <h1 className="font-medieval-brand text-4xl md:text-5xl mb-6 text-center">Duel Simulator</h1>
 
         <div className="grid grid-cols-1 xl:grid-cols-[1fr_minmax(320px,420px)_1fr] gap-6 items-start">
           {/* Troll 1 */}

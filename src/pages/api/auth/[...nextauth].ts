@@ -26,10 +26,12 @@ export const authOptions: NextAuthOptions = {
         console.log('[NextAuth signIn]', message);
       }
     },
-    async error(message) {
+  },
+  logger: {
+    error(code, ...metadata) {
       if (process.env.NODE_ENV === 'development') {
         // eslint-disable-next-line no-console
-        console.error('[NextAuth error]', message);
+        console.error('[NextAuth error]', code, ...metadata);
       }
     },
   },

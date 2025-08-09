@@ -40,8 +40,8 @@ export default function Tools() {
                 <h2 className="font-medieval-brand text-2xl mb-4">Available Tools</h2>
                 <ul className="text-gray-300 space-y-2">
                   <li>
-                    <Link href="/tools/damage-calculator" className="text-amber-400 hover:text-amber-300">
-                      • Damage Calculator
+                    <Link href="/tools/duel-simulator" className="text-amber-400 hover:text-amber-300">
+                      • Duel Simulator
                     </Link>
                   </li>
                   <li>
