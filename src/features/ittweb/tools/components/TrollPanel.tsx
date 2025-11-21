@@ -1,11 +1,11 @@
 import React from 'react';
-import ClassIcon from '@/features/guides/components/ClassIcon';
-import InventoryGrid from '@/features/tools/components/InventoryGrid';
-import type { DragPayload, TrollSide, TrollLoadout } from '@/features/tools/types';
-import { BASE_TROLL_CLASSES, getClassBySlug, TrollClassData } from '@/features/guides/data/classes';
-import { ATTR_START_MULTIPLIER, MOVESPEED_PER_LEVEL, getMoveSpeedOffset, HP_PER_STRENGTH, MANA_PER_INTELLIGENCE, ARMOR_PER_AGILITY, getArmorDamageReductionPercent } from '@/features/guides/config/balance';
+import ClassIcon from '@/features/ittweb/guides/components/ClassIcon';
+import InventoryGrid from '@/features/ittweb/tools/components/InventoryGrid';
+import type { DragPayload, TrollSide, TrollLoadout } from '@/features/ittweb/tools/types';
+import { BASE_TROLL_CLASSES, getClassBySlug, TrollClassData } from '@/features/ittweb/guides/data/classes';
+import { ATTR_START_MULTIPLIER, MOVESPEED_PER_LEVEL, getMoveSpeedOffset, HP_PER_STRENGTH, MANA_PER_INTELLIGENCE, ARMOR_PER_AGILITY, getArmorDamageReductionPercent } from '@/features/ittweb/guides/config/balance';
 import type { ItemData } from '@/types/items';
-import StatsPanel, { TrollComputedStats } from '@/features/tools/components/StatsPanel';
+import StatsPanel, { TrollComputedStats } from '@/features/ittweb/tools/components/StatsPanel';
 
 export default function TrollPanel({
   title,

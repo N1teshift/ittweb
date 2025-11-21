@@ -6,6 +6,8 @@ export type DerivedClassData = {
   parentSlug: string; // base class slug
   type: DerivedClassType;
   summary: string;
+  // Optional explicit icon path, e.g. "/icons/itt/trolls/btnorcwarlock.png"
+  iconSrc?: string;
   tips?: string[];
   growth: { strength: number; agility: number; intelligence: number };
   baseAttackSpeed: number;
@@ -54,10 +56,10 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
   { slug: 'spy', name: 'Spy', parentSlug: 'scout', type: 'super', summary: 'Best radar and reveals; hiding from Spy is nearly impossible.', growth: { strength: 1.8, agility: 2.2, intelligence: 1.9 }, baseAttackSpeed: 1.7, baseMoveSpeed: 330, baseHp: 210, baseMana: 210 },
 
   // Gatherer tree
-  { slug: 'radar-gatherer', name: 'Radar Gatherer', parentSlug: 'gatherer', type: 'sub', summary: 'Improved item radar; Tele-Gather to fires (no herbs).', growth: { strength: 1.25, agility: 1.35, intelligence: 1.5 }, baseAttackSpeed: 1.8, baseMoveSpeed: 310, baseHp: 192, baseMana: 192 },
-  { slug: 'herb-master', name: 'Herb Master', parentSlug: 'gatherer', type: 'sub', summary: 'Tele-Gather herbs and mix anywhere.', growth: { strength: 1.35, agility: 1.25, intelligence: 1.5 }, baseAttackSpeed: 1.8, baseMoveSpeed: 300, baseHp: 192, baseMana: 192 },
+  { slug: 'radar-gatherer', name: 'Radar Gatherer', parentSlug: 'gatherer', type: 'sub', summary: 'Improved item radar; Tele-Gather to fires (no herbs).', iconSrc: '/icons/itt/trolls/BTNTerrorTroll.png', growth: { strength: 1.25, agility: 1.35, intelligence: 1.5 }, baseAttackSpeed: 1.8, baseMoveSpeed: 310, baseHp: 192, baseMana: 192 },
+  { slug: 'herb-master', name: 'Herb Master', parentSlug: 'gatherer', type: 'sub', summary: 'Tele-Gather herbs and mix anywhere.', iconSrc: '/icons/itt/trolls/btnicetrollshadowpriest.png', growth: { strength: 1.35, agility: 1.25, intelligence: 1.5 }, baseAttackSpeed: 1.8, baseMoveSpeed: 300, baseHp: 192, baseMana: 192 },
   { slug: 'alchemist', name: 'Alchemist', parentSlug: 'gatherer', type: 'sub', summary: 'Uses Philosopher’s Stone energy to conjure potion effects.', growth: { strength: 1.1, agility: 1.2, intelligence: 2.0 }, baseAttackSpeed: 1.8, baseMoveSpeed: 310, baseHp: 192, baseMana: 192 },
-  { slug: 'omnigatherer', name: 'OmniGatherer', parentSlug: 'gatherer', type: 'super', summary: 'Has all gatherer abilities and can warp items around.', growth: { strength: 2.0, agility: 2.0, intelligence: 2.0 }, baseAttackSpeed: 1.7, baseMoveSpeed: 300, baseHp: 210, baseMana: 210 },
+  { slug: 'omnigatherer', name: 'OmniGatherer', parentSlug: 'gatherer', type: 'super', summary: 'Has all gatherer abilities and can warp items around.', iconSrc: '/icons/itt/trolls/BTNTerrorTroll.png', growth: { strength: 2.0, agility: 2.0, intelligence: 2.0 }, baseAttackSpeed: 1.7, baseMoveSpeed: 300, baseHp: 210, baseMana: 210 },
 ];
 
 export const SUBCLASS_SLUGS = DERIVED_CLASSES.filter(c => c.type === 'sub').map(c => c.slug);

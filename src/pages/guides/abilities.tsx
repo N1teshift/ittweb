@@ -2,9 +2,9 @@ import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticP
 import Layout from '@/features/shared/components/Layout';
 import Link from 'next/link';
 import { useState } from 'react';
-import { ABILITIES, ABILITY_CATEGORIES, AbilityCategory, AbilityData, getAbilitiesByCategory, searchAbilities } from '@/features/guides/data/abilities';
-import GuideCard from '@/features/guides/components/GuideCard';
-import GuideIcon from '@/features/guides/components/GuideIcon';
+import { ABILITIES, ABILITY_CATEGORIES, AbilityCategory, AbilityData, getAbilitiesByCategory, searchAbilities } from '@/features/ittweb/guides/data/abilities';
+import GuideCard from '@/features/ittweb/guides/components/GuideCard';
+import GuideIcon from '@/features/ittweb/guides/components/GuideIcon';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);

@@ -2,14 +2,12 @@ import React from 'react';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import logger from '@/features/shared/utils/loggerUtils';
 import Layout from '@/features/shared/components/Layout';
-import { useFallbackTranslation } from '@/features/shared/hooks/useFallbackTranslation';
-import TerrainVisualizerContainer from '@/features/map-analyzer/components/TerrainVisualizerContainer';
+import TerrainVisualizerContainer from '@/features/ittweb/map-analyzer/components/TerrainVisualizerContainer';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
 
 export default function MapAnalyzer() {
-  const { t } = useFallbackTranslation(pageNamespaces);
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {

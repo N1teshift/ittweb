@@ -2,8 +2,8 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Layout from '@/features/shared/components/Layout';
 import Link from 'next/link';
-import { AbilityData } from '@/features/guides/data/abilities';
-import { ABILITIES, ABILITY_CATEGORIES, getAbilityById } from '@/features/guides/data/abilities';
+import { AbilityData } from '@/features/ittweb/guides/data/abilities';
+import { ABILITIES, ABILITY_CATEGORIES, getAbilityById } from '@/features/ittweb/guides/data/abilities';
 
 type Props = { ability: AbilityData };
 

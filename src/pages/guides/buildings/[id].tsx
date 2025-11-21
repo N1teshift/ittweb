@@ -3,7 +3,7 @@ import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticP
 import Layout from '@/features/shared/components/Layout';
 import Link from 'next/link';
 import { ItemData } from '@/types/items';
-import { ITEMS_DATA, getItemById } from '@/features/guides/data/items';
+import { ITEMS_DATA, getItemById } from '@/features/ittweb/guides/data/items';
 
 type Props = { building: ItemData };
 

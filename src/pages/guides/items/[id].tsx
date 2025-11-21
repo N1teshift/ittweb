@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Layout from '@/features/shared/components/Layout';
 import Link from 'next/link';
-import { ITEMS_DATA, getItemById } from '@/features/guides/data/items';
+import { ITEMS_DATA, getItemById } from '@/features/ittweb/guides/data/items';
 import { ItemData } from '@/types/items';
 
 type Props = { item: ItemData };

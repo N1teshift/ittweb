@@ -2,9 +2,9 @@ import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticP
 import Layout from '@/features/shared/components/Layout';
 import { useFallbackTranslation } from '@/features/shared/hooks/useFallbackTranslation';
 import Link from 'next/link';
-import { BASE_TROLL_CLASSES } from '@/features/guides/data/classes';
-import GuideCard from '@/features/guides/components/GuideCard';
-import ClassIcon from '@/features/guides/components/ClassIcon';
+import { BASE_TROLL_CLASSES } from '@/features/ittweb/guides/data/classes';
+import GuideCard from '@/features/ittweb/guides/components/GuideCard';
+import ClassIcon from '@/features/ittweb/guides/components/ClassIcon';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);

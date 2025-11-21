@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "check:items": "node scripts/check-items.cjs",
+    "gen:items:external": "node scripts/generate-external-items.cjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

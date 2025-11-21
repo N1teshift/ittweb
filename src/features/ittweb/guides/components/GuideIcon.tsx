@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useState, useMemo } from 'react';
-import { getIconPath, getDisabledIconPath, getIconCandidates, ITTIconCategory, ITTIconState } from '@/features/guides/utils/iconUtils';
-import { resolveExplicitIcon } from '@/features/guides/utils/iconMap';
+import { getIconPath, getDisabledIconPath, getIconCandidates, ITTIconCategory, ITTIconState } from '@/features/ittweb/guides/utils/iconUtils';
+import { resolveExplicitIcon } from '@/features/ittweb/guides/utils/iconMap';
 
 type GuideIconProps = {
   category: ITTIconCategory;

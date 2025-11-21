@@ -1,20 +1,21 @@
 import React from 'react';
-import GuideIcon from '@/features/guides/components/GuideIcon';
-import { ITTIconCategory } from '@/features/guides/utils/iconUtils';
+import GuideIcon from '@/features/ittweb/guides/components/GuideIcon';
+import { ITTIconCategory } from '@/features/ittweb/guides/utils/iconUtils';
 
 type Props = {
   slug: string;
   name: string;
+  iconSrc?: string;
   size?: number; // pixels
   className?: string;
 };
 
-export default function ClassIcon({ slug, name, size = 56, className = '' }: Props) {
+export default function ClassIcon({ slug, name, iconSrc, size = 56, className = '' }: Props) {
   const dimensionStyle = { width: size, height: size } as React.CSSProperties;
 
   const mapping: Record<string, { category: ITTIconCategory; displayName: string } | { src: string }> = {
     hunter: { src: '/icons/itt/trolls/btnforesttroll.png' },
-    scout: { src: '/icons/itt/trolls/btnchaoswarlockgreen.png' },
+    scout: { src: '/icons/itt/trolls/BTNTrollScout.png' },
   };
 
   const mapped = mapping[slug];
@@ -30,7 +31,7 @@ export default function ClassIcon({ slug, name, size = 56, className = '' }: Pro
           ? <GuideIcon category={'trolls'} name={name} size={size} src={mapped.src} />
           : <GuideIcon category={mapped.category} name={mapped.displayName} size={size} />
       ) : (
-        <GuideIcon category={'trolls'} name={name} size={size} />
+        <GuideIcon category={'trolls'} name={name} size={size} src={iconSrc} />
       )}
     </div>
   );

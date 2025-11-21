@@ -2,12 +2,12 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Layout from '@/features/shared/components/Layout';
 import Link from 'next/link';
-import { BASE_TROLL_CLASS_SLUGS, getClassBySlug, TrollClassData } from '@/features/guides/data/classes';
-import { getSubclassesByParentSlug, getSupersByParentSlug } from '@/features/guides/data/derivedClasses';
-import ClassModel from '@/features/guides/components/ClassModel';
-import ClassHeader from '@/features/guides/components/ClassHeader';
-import StatsCard from '@/features/guides/components/StatsCard';
-import { MOVESPEED_PER_LEVEL, getMoveSpeedOffset, ATTR_START_MULTIPLIER } from '@/features/guides/config/balance';
+import { BASE_TROLL_CLASS_SLUGS, getClassBySlug, TrollClassData } from '@/features/ittweb/guides/data/classes';
+import { getSubclassesByParentSlug, getSupersByParentSlug } from '@/features/ittweb/guides/data/derivedClasses';
+import ClassModel from '@/features/ittweb/guides/components/ClassModel';
+import ClassHeader from '@/features/ittweb/guides/components/ClassHeader';
+import StatsCard from '@/features/ittweb/guides/components/StatsCard';
+import { MOVESPEED_PER_LEVEL, getMoveSpeedOffset, ATTR_START_MULTIPLIER } from '@/features/ittweb/guides/config/balance';
 
 type Props = { cls: TrollClassData };
 
@@ -45,7 +45,7 @@ export default function TrollClassDetail({ cls }: Props) {
           <Link href="/guides/troll-classes" className="text-amber-400 hover:text-amber-300">← Troll Classes Overview</Link>
         </div>
 
-        <ClassHeader slug={cls.slug} name={cls.name} summary={cls.summary} />
+        <ClassHeader slug={cls.slug} name={cls.name} summary={cls.summary} iconSrc={cls.iconSrc} />
 
         <StatsCard
           level1={{

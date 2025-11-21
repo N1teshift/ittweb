@@ -8,6 +8,8 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
 import { SessionProvider } from "next-auth/react";
+import type { Session } from "next-auth";
+import Layout from "@/features/shared/components/Layout";
 import logger from "@/features/shared/utils/loggerUtils";
 
 // Initialize logging
@@ -16,6 +18,12 @@ if (typeof window !== 'undefined') {
     userAgent: navigator.userAgent,
     timestamp: new Date().toISOString()
   });
+}
+
+// Extended pageProps interface to include translation namespaces
+interface ExtendedPageProps {
+  session?: Session;
+  translationNamespaces?: string[];
 }
 
 /**
@@ -31,9 +39,15 @@ if (typeof window !== 'undefined') {
  * @returns {JSX.Element} The rendered App component with the current page.
  */
 function App({ Component, pageProps }: AppProps) {
+    // Extract translation namespaces from pageProps, fallback to ["common"]
+    const extendedProps = pageProps as ExtendedPageProps;
+    const translationNamespaces = extendedProps?.translationNamespaces || ["common"];
+    
     return (
-        <SessionProvider session={(pageProps as any)?.session}>
-            <Component {...pageProps} />
+        <SessionProvider session={extendedProps?.session}>
+            <Layout pageTranslationNamespaces={translationNamespaces}>
+                <Component {...pageProps} />
+            </Layout>
         </SessionProvider>
     );
 }

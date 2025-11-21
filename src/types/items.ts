@@ -27,6 +27,7 @@ export type ItemData = {
   description: string;
   recipe?: string[];
   craftedAt?: string;
+  iconPath?: string;
   stats?: {
     damage?: number;
     armor?: number;

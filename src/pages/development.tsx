@@ -1,14 +1,21 @@
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import logger from '@/features/shared/utils/loggerUtils';
-import Layout from '@/features/shared/components/Layout';
-import { useFallbackTranslation } from '@/features/shared/hooks/useFallbackTranslation';
 import Link from 'next/link';
+import type { GetStaticProps } from 'next';
 
 const pageNamespaces = ["common"];
-export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const withI18n = getStaticPropsWithTranslations(pageNamespaces);
+  const i18nResult = await withI18n({ locale: locale as string });
+  return {
+    props: {
+      ...(i18nResult.props || {}),
+      translationNamespaces: pageNamespaces,
+    },
+  };
+};
 
 export default function Development() {
-  const { t } = useFallbackTranslation(pageNamespaces);
 
   if (typeof window !== 'undefined') {
     logger.info('Development page visited', {
@@ -17,8 +24,7 @@ export default function Development() {
     });
   }
 
-  return (
-    <Layout pageTranslationNamespaces={pageNamespaces}>
+      return (
       <div className="flex items-center justify-center min-h-[calc(100vh-8rem)]">
         <div className="text-center max-w-2xl mx-auto px-6 py-12">
           {/* Main Heading */}
@@ -55,6 +61,5 @@ export default function Development() {
           </div>
         </div>
       </div>
-    </Layout>
-  );
+    );
 }

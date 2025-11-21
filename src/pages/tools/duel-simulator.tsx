@@ -3,11 +3,12 @@ import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticP
 import logger from '@/features/shared/utils/loggerUtils';
 import Layout from '@/features/shared/components/Layout';
 import { useFallbackTranslation } from '@/features/shared/hooks/useFallbackTranslation';
-import TrollPanel from '@/features/tools/components/TrollPanel';
-import ItemsPalette from '@/features/tools/components/ItemsPalette';
-import type { TrollLoadout, TrollSide, DragPayload } from '@/features/tools/types';
-import { BASE_TROLL_CLASS_SLUGS } from '@/features/guides/data/classes';
-import { ITEMS_DATA } from '@/features/guides/data/items';
+import TrollPanel from '@/features/ittweb/tools/components/TrollPanel';
+import ItemsPalette from '@/features/ittweb/tools/components/ItemsPalette';
+import SimulationPanel from '@/features/ittweb/tools/components/SimulationPanel';
+import type { TrollLoadout, TrollSide, DragPayload } from '@/features/ittweb/tools/types';
+import { BASE_TROLL_CLASS_SLUGS } from '@/features/ittweb/guides/data/classes';
+import { ITEMS_DATA } from '@/features/ittweb/guides/data/items';
 import type { ItemData } from '@/types/items';
 
 const pageNamespaces = ["common"];
@@ -97,8 +98,13 @@ export default function DuelSimulator() {
         <h1 className="font-medieval-brand text-4xl md:text-5xl mb-6 text-center">Duel Simulator</h1>
 
         <div className="grid grid-cols-1 xl:grid-cols-[1fr_minmax(320px,420px)_1fr] gap-6 items-start">
+          {/* Simulation */}
+          <div className="order-1 xl:col-span-3">
+            <SimulationPanel />
+          </div>
+
           {/* Troll 1 */}
-          <div className="order-1">
+          <div className="order-2">
             <TrollPanel
               title="Troll 1"
               side="left"
@@ -120,12 +126,12 @@ export default function DuelSimulator() {
           </div>
 
           {/* Items Palette */}
-          <div className="order-3 xl:order-2">
+          <div className="order-4 xl:order-2">
             <ItemsPalette />
           </div>
 
           {/* Troll 2 */}
-          <div className="order-2 xl:order-3">
+          <div className="order-3 xl:order-3">
             <TrollPanel
               title="Troll 2"
               side="right"

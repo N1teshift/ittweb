@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ArchiveEntry } from '@/types/archive';
-import { extractFilenameFromUrl } from '../../archives/utils/archiveFormUtils';
+import { extractFilenameFromUrl } from '../utils/archiveFormUtils';
 
 export type SectionKey = 'images' | 'video' | 'replay' | 'text';
 

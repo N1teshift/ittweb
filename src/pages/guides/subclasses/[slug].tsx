@@ -2,12 +2,12 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Layout from '@/features/shared/components/Layout';
 import Link from 'next/link';
-import { DERIVED_CLASSES, getDerivedBySlug, SUBCLASS_SLUGS, DerivedClassData } from '@/features/guides/data/derivedClasses';
-import { getClassBySlug } from '@/features/guides/data/classes';
-import ClassHeader from '@/features/guides/components/ClassHeader';
-import ClassModel from '@/features/guides/components/ClassModel';
-import StatsCard from '@/features/guides/components/StatsCard';
-import { MOVESPEED_PER_LEVEL, getMoveSpeedOffset, ATTR_START_MULTIPLIER } from '@/features/guides/config/balance';
+import { DERIVED_CLASSES, getDerivedBySlug, SUBCLASS_SLUGS, DerivedClassData } from '@/features/ittweb/guides/data/derivedClasses';
+import { getClassBySlug } from '@/features/ittweb/guides/data/classes';
+import ClassHeader from '@/features/ittweb/guides/components/ClassHeader';
+import ClassModel from '@/features/ittweb/guides/components/ClassModel';
+import StatsCard from '@/features/ittweb/guides/components/StatsCard';
+import { MOVESPEED_PER_LEVEL, getMoveSpeedOffset, ATTR_START_MULTIPLIER } from '@/features/ittweb/guides/config/balance';
 
 type Props = { cls: DerivedClassData };
 
@@ -39,7 +39,7 @@ export default function SubclassDetail({ cls }: Props) {
           )}
         </div>
 
-        <ClassHeader slug={cls.slug} name={cls.name} summary={cls.summary} />
+        <ClassHeader slug={cls.slug} name={cls.name} summary={cls.summary} iconSrc={cls.iconSrc} />
 
         <StatsCard
           level1={{

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { DragPayload, TrollSide } from '@/features/tools/types';
+import type { DragPayload, TrollSide } from '@/features/ittweb/tools/types';
 import type { ItemData } from '@/types/items';
 
 export default function InventoryGrid({

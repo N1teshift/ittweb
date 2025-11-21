@@ -2,6 +2,8 @@ export type TrollClassData = {
   slug: string;
   name: string;
   summary: string;
+  // Optional explicit icon path, e.g. "/icons/itt/trolls/btnorcwarlock.png"
+  iconSrc?: string;
   subclasses: string[];
   superclasses?: string[];
   tips?: string[];
