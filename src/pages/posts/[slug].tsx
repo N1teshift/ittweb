@@ -56,6 +56,19 @@ export default function PostPage({ title, date, author, postId, createdByDiscord
       });
 
       if (response.ok) {
+        // Revalidate the homepage to ensure fresh data
+        try {
+          await fetch('/api/revalidate', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ path: '/' }),
+          });
+        } catch (revalidateError) {
+          // Log but don't fail the deletion if revalidation fails
+          console.error('Failed to revalidate homepage:', revalidateError);
+        }
         router.push('/');
       } else {
         const error = await response.json();

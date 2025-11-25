@@ -15,3 +15,4 @@ const nextI18NextConfig: UserConfig = {
 
 export default nextI18NextConfig;
 
+

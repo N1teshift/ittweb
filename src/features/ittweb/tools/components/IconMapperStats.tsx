@@ -41,3 +41,4 @@ export default function IconMapperStats({ stats, selectedCategory }: IconMapperS
   );
 }
 
+

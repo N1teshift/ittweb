@@ -29,6 +29,12 @@ export default function TwitchClipEmbed({ url, title }: TwitchClipEmbedProps) {
     }
   }, []);
 
+  const embedUrl = useMemo(() => {
+    if (!clipId || !hostname) return null;
+    const parentQuery = buildParentParams(hostname);
+    return `https://clips.twitch.tv/embed?clip=${encodeURIComponent(clipId)}&${parentQuery}&autoplay=false`;
+  }, [clipId, hostname]);
+
   if (!clipId) {
     return (
       <div className="text-sm text-red-300">
@@ -37,13 +43,11 @@ export default function TwitchClipEmbed({ url, title }: TwitchClipEmbedProps) {
     );
   }
 
-  const parentQuery = buildParentParams(hostname);
-  const embedUrl = `https://clips.twitch.tv/embed?clip=${encodeURIComponent(clipId)}&${parentQuery}&autoplay=false`;
-
   return (
     <div className="relative w-full overflow-hidden rounded-lg border border-amber-500/30 bg-black/40">
-      {hostname ? (
+      {embedUrl ? (
         <iframe
+          key={embedUrl}
           src={embedUrl}
           title={title}
           allowFullScreen

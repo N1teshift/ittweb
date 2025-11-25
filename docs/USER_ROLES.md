@@ -163,3 +163,4 @@ But `false` for:
 - The `removeUndefined()` function ensures undefined roles are not saved to Firestore
 - When checking roles, `undefined` is treated as `'user'` (the default role)
 
+

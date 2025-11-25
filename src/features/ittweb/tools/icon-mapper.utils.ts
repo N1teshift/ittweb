@@ -99,3 +99,4 @@ export function exportMappingsAsCode(mappings: IconMapping): string {
 };`;
 }
 
+

@@ -126,6 +126,21 @@ export function useEditPostForm(postId: string, initialPost: PostFormState | nul
 
       setSuccessMessage('Post updated successfully. Redirecting...');
       logger.info('Post updated via UI', { postId, slug: formState.slug });
+      
+      // Revalidate the homepage to ensure fresh data (in case title/excerpt changed)
+      try {
+        await fetch('/api/revalidate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ path: '/' }),
+        });
+      } catch (revalidateError) {
+        // Log but don't fail the update if revalidation fails
+        logger.error('Failed to revalidate homepage', revalidateError instanceof Error ? revalidateError : new Error(String(revalidateError)), { postId, slug: formState.slug });
+      }
+      
       setTimeout(() => {
         router.push(`/posts/${formState.slug}`).catch(() => undefined);
       }, 1200);

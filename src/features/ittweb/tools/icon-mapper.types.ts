@@ -19,3 +19,4 @@ export type CategoryStat = {
   percentage: number;
 };
 
+

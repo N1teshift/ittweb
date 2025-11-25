@@ -116,6 +116,21 @@ export function useNewPostForm() {
 
       setSuccessMessage('Post created successfully. Redirecting to home…');
       logger.info('Post created via UI', { slug: formState.slug });
+      
+      // Revalidate the homepage to ensure fresh data
+      try {
+        await fetch('/api/revalidate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ path: '/' }),
+        });
+      } catch (revalidateError) {
+        // Log but don't fail the creation if revalidation fails
+        logger.error('Failed to revalidate homepage', revalidateError instanceof Error ? revalidateError : new Error(String(revalidateError)), { slug: formState.slug });
+      }
+      
       setTimeout(() => {
         router.push('/').catch(() => undefined);
       }, 1200);
