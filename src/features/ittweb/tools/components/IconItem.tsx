@@ -3,8 +3,8 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import { ITTIconCategory } from '@/features/ittweb/guides/utils/iconUtils';
-import { getSuggestions } from './icon-mapper.utils';
-import type { IconFile, IconMapping } from './icon-mapper.types';
+import { getSuggestions } from '@/features/ittweb/tools/icon-mapper.utils';
+import type { IconFile, IconMapping } from '@/features/ittweb/tools/icon-mapper.types';
 
 type IconItemProps = {
   icon: IconFile;

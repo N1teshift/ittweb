@@ -1,4 +1,4 @@
-import type { CategoryStat } from './icon-mapper.types';
+import type { CategoryStat } from '@/features/ittweb/tools/icon-mapper.types';
 
 type IconMapperStatsProps = {
   stats: CategoryStat[];

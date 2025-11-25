@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { ITTIconCategory } from '@/features/ittweb/guides/utils/iconUtils';
-import type { IconMapping } from './icon-mapper.types';
+import type { IconMapping } from '@/features/ittweb/tools/icon-mapper.types';
 
 type IconMapperMappingsListProps = {
   selectedCategory: string;

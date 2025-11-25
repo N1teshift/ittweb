@@ -3,11 +3,11 @@
 import { useState, useMemo } from 'react';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import { ITTIconCategory } from '@/features/ittweb/guides/utils/iconUtils';
-import { useIconMapperData } from './useIconMapperData';
-import { exportMappingsAsCode } from './icon-mapper.utils';
-import IconItem from './IconItem';
-import IconMapperStats from './IconMapperStats';
-import IconMapperMappingsList from './IconMapperMappingsList';
+import { useIconMapperData } from '@/features/ittweb/tools/useIconMapperData';
+import { exportMappingsAsCode } from '@/features/ittweb/tools/icon-mapper.utils';
+import IconItem from '@/features/ittweb/tools/components/IconItem';
+import IconMapperStats from '@/features/ittweb/tools/components/IconMapperStats';
+import IconMapperMappingsList from '@/features/ittweb/tools/components/IconMapperMappingsList';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
