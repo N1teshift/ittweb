@@ -106,6 +106,7 @@ export async function getUserDataByDiscordId(discordId: string): Promise<UserDat
       globalName: data.globalName,
       displayName: data.displayName,
       role: data.role,
+      dataCollectionNoticeAccepted: data.dataCollectionNoticeAccepted,
       createdAt: data.createdAt,
       updatedAt: data.updatedAt,
       lastLoginAt: data.lastLoginAt,
@@ -149,6 +150,7 @@ export async function getUserDataById(id: string): Promise<UserData | null> {
       globalName: data.globalName,
       displayName: data.displayName,
       role: data.role,
+      dataCollectionNoticeAccepted: data.dataCollectionNoticeAccepted,
       createdAt: data.createdAt,
       updatedAt: data.updatedAt,
       lastLoginAt: data.lastLoginAt,
@@ -189,6 +191,36 @@ export async function deleteUserData(discordId: string): Promise<void> {
     logError(err, 'Failed to delete user data', {
       component: 'userDataService',
       operation: 'deleteUserData',
+      discordId,
+    });
+    throw err;
+  }
+}
+
+/**
+ * Update the data collection notice acceptance status for a user
+ */
+export async function updateDataCollectionNoticeAcceptance(
+  discordId: string,
+  accepted: boolean
+): Promise<void> {
+  try {
+    logger.info('Updating data collection notice acceptance', { discordId, accepted });
+
+    const db = getFirestoreInstance();
+    const docRef = doc(db, USER_DATA_COLLECTION, discordId);
+    
+    await updateDoc(docRef, {
+      dataCollectionNoticeAccepted: accepted,
+      updatedAt: serverTimestamp(),
+    });
+
+    logger.info('Data collection notice acceptance updated', { discordId, accepted });
+  } catch (error) {
+    const err = error as Error;
+    logError(err, 'Failed to update data collection notice acceptance', {
+      component: 'userDataService',
+      operation: 'updateDataCollectionNoticeAcceptance',
       discordId,
     });
     throw err;

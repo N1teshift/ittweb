@@ -126,14 +126,18 @@ export function useNewPostForm() {
           },
           body: JSON.stringify({ path: '/' }),
         });
+        // Force a full page reload to fetch the revalidated page
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1200);
       } catch (revalidateError) {
         // Log but don't fail the creation if revalidation fails
         logger.error('Failed to revalidate homepage', revalidateError instanceof Error ? revalidateError : new Error(String(revalidateError)), { slug: formState.slug });
+        // Still navigate even if revalidation fails
+        setTimeout(() => {
+          router.push('/').catch(() => undefined);
+        }, 1200);
       }
-      
-      setTimeout(() => {
-        router.push('/').catch(() => undefined);
-      }, 1200);
     } catch (error) {
       const err = error as Error;
       logger.error('Failed to create post', err, { slug: formState.slug });

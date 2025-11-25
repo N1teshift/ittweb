@@ -16,6 +16,7 @@ export interface UserData {
   globalName?: string; // Discord global name
   displayName?: string; // Discord display name
   role?: UserRole; // User role that controls website functionality (defaults to 'user')
+  dataCollectionNoticeAccepted?: boolean; // Whether user has accepted the data collection notice
   createdAt: Timestamp | Date;
   updatedAt: Timestamp | Date;
   lastLoginAt: Timestamp | Date;
@@ -31,6 +32,7 @@ export interface CreateUserData {
   globalName?: string;
   displayName?: string;
   role?: UserRole; // User role that controls website functionality
+  dataCollectionNoticeAccepted?: boolean; // Whether user has accepted the data collection notice
 }
 
 

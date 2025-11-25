@@ -2,100 +2,137 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-
-const NOTICE_STORAGE_KEY = 'dataCollectionNoticeAccepted';
-
-interface DataCollectionNoticeProps {
-  onAccept?: () => void;
-}
+import { useSession } from 'next-auth/react';
 
 /**
- * Data collection notice component that displays a modal/banner
- * informing users about data collection when they first visit the site.
- * Uses localStorage to remember if the user has already seen and accepted the notice.
+ * Data collection notice component that displays a non-intrusive banner
+ * informing users about data collection when they log in.
+ * Checks user data to see if they've already accepted the notice.
+ * Only shows when user is authenticated.
  */
-export default function DataCollectionNotice({ onAccept }: DataCollectionNoticeProps) {
+export default function DataCollectionNotice() {
+  const { data: session, status } = useSession();
   const [isVisible, setIsVisible] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-    // Check if user has already accepted the notice
-    const hasAccepted = localStorage.getItem(NOTICE_STORAGE_KEY);
-    if (!hasAccepted) {
-      setIsVisible(true);
-    }
-  }, []);
+    
+    // Only check if user is authenticated
+    if (status === 'authenticated' && session?.discordId) {
+      const checkUserData = async () => {
+        try {
+          setIsLoading(true);
+          const response = await fetch('/api/user/data-notice-status');
+          
+          if (response.ok) {
+            const data = await response.json();
+            // Show notice if user hasn't accepted it yet
+            if (!data.accepted) {
+              setIsVisible(true);
+            }
+          } else {
+            // If we can't fetch status, show the notice to be safe
+            console.error('Failed to fetch data notice status');
+            setIsVisible(true);
+          }
+        } catch (error) {
+          // If we can't fetch user data, show the notice to be safe
+          console.error('Failed to fetch user data for notice:', error);
+          setIsVisible(true);
+        } finally {
+          setIsLoading(false);
+        }
+      };
 
-  const handleAccept = () => {
-    localStorage.setItem(NOTICE_STORAGE_KEY, 'true');
-    setIsVisible(false);
-    if (onAccept) {
-      onAccept();
+      checkUserData();
+    } else {
+      setIsVisible(false);
+      setIsLoading(false);
+    }
+  }, [status, session?.discordId]);
+
+  const handleAccept = async () => {
+    try {
+      const response = await fetch('/api/user/accept-data-notice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        setIsVisible(false);
+      } else {
+        console.error('Failed to accept data notice');
+        // Still hide it to avoid blocking the user
+        setIsVisible(false);
+      }
+    } catch (error) {
+      console.error('Error accepting data notice:', error);
+      // Still hide it to avoid blocking the user
+      setIsVisible(false);
     }
   };
 
-  // Don't render until mounted to avoid hydration mismatch
-  if (!isMounted || !isVisible) {
+  const handleDismiss = () => {
+    // Just hide it temporarily for this session, don't save to user data
+    setIsDismissed(true);
+    setIsVisible(false);
+  };
+
+  // Don't render until mounted, loaded, or if not visible
+  if (!isMounted || isLoading || isDismissed || !isVisible || status !== 'authenticated') {
     return null;
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-      <div 
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm" 
-        aria-hidden="true"
-        onClick={handleAccept}
-      />
-      <div className="relative w-full max-w-2xl rounded-lg border border-amber-500/40 bg-gray-900/95 backdrop-blur-md p-6 md:p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
-        <div className="mb-6">
-          <h3 className="text-2xl md:text-3xl font-semibold text-white mb-4">
-            Data Collection Notice
-          </h3>
-          <div className="space-y-4 text-gray-300 text-sm md:text-base">
-            <p>
-              We collect certain information when you log in to our website using Discord to provide you with our services.
-            </p>
-            <p>
-              <strong className="text-white">Information we collect:</strong> Discord ID, email address, name, username, 
-              avatar, and account activity timestamps.
-            </p>
-            <p>
-              <strong className="text-white">How we use it:</strong> To authenticate your account, personalize your experience, 
-              and provide website functionality.
-            </p>
-            <p>
-              <strong className="text-white">Your rights:</strong> You have the right to access, correct, or delete your personal data at any time. 
-              You can view your data in Settings or contact us to exercise your rights under GDPR.
-            </p>
-            <p>
-              By continuing to use our website, you acknowledge that you have read and understood our{' '}
-              <Link 
-                href="/privacy" 
-                className="text-amber-400 hover:text-amber-300 underline"
-                onClick={(e) => e.stopPropagation()}
+    <div className="fixed bottom-0 left-0 right-0 z-40 px-4 pb-4 pointer-events-none">
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-gray-800/95 backdrop-blur-sm border border-amber-500/40 rounded-lg p-4 shadow-lg pointer-events-auto">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="flex-1">
+              <p className="text-sm text-gray-300">
+                We collect information when you log in to provide our services. 
+                View your data in{' '}
+                <Link 
+                  href="/settings" 
+                  className="text-amber-400 hover:text-amber-300 underline"
+                >
+                  Settings
+                </Link>
+                {' '}or read our{' '}
+                <Link 
+                  href="/privacy" 
+                  className="text-amber-400 hover:text-amber-300 underline"
+                >
+                  Privacy Policy
+                </Link>
+                .
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={handleAccept}
+                className="px-4 py-2 text-sm font-medium text-white bg-amber-600 hover:bg-amber-500 rounded-md transition-colors"
               >
-                Privacy Policy
-              </Link>
-              .
-            </p>
+                Got it
+              </button>
+              <button
+                type="button"
+                onClick={handleDismiss}
+                className="px-3 py-2 text-sm text-gray-400 hover:text-gray-300 transition-colors"
+                aria-label="Dismiss"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col sm:flex-row justify-end gap-4">
-          <Link
-            href="/privacy"
-            className="rounded-md border border-gray-600 px-4 py-2 text-sm font-medium text-gray-200 transition-colors hover:bg-gray-700/50 text-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            Read Privacy Policy
-          </Link>
-          <button
-            type="button"
-            onClick={handleAccept}
-            className="rounded-md border border-amber-600 bg-amber-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-amber-500"
-          >
-            I Understand
-          </button>
         </div>
       </div>
     </div>

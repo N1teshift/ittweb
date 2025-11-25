@@ -65,11 +65,14 @@ export default function PostPage({ title, date, author, postId, createdByDiscord
             },
             body: JSON.stringify({ path: '/' }),
           });
+          // Force a full page reload to fetch the revalidated page
+          window.location.href = '/';
         } catch (revalidateError) {
           // Log but don't fail the deletion if revalidation fails
           console.error('Failed to revalidate homepage:', revalidateError);
+          // Still navigate even if revalidation fails
+          router.push('/');
         }
-        router.push('/');
       } else {
         const error = await response.json();
         setDeleteError(error.error || 'Failed to delete post');
