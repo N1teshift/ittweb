@@ -1,7 +1,6 @@
 import React from 'react';
-import { ITEMS_DATA } from '@/features/ittweb/guides/data/items';
+import { ITEMS_DATA, getItemIconPathFromRecord } from '@/features/ittweb/guides/data/items';
 import GuideIcon from '@/features/ittweb/guides/components/GuideIcon';
-import { getItemIconPathFromRecord } from '@/features/ittweb/guides/data/itemIcon';
 import type { ItemCategory } from '@/types/items';
 
 export default function ItemsPalette() {

@@ -17,7 +17,7 @@ export default function ArchiveForm({ onSuccess, onCancel }: ArchiveFormProps) {
   const handleSubmit = async (payload: CreateArchiveEntry | Partial<CreateArchiveEntry>) => {
     const entryPayload: CreateArchiveEntry = {
       ...(payload as CreateArchiveEntry),
-      createdByDiscordId: (session as any)?.discordId || null,
+      createdByDiscordId: session?.discordId || null,
       createdByName: session?.user?.name || defaultAuthor,
     };
     await createArchiveEntry(entryPayload);

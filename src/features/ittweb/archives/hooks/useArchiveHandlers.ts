@@ -134,7 +134,7 @@ export function useArchiveHandlers({
       handleTwitchUrlChange(e);
       return;
     }
-    handleInputChange(e as any);
+    handleInputChange(e as React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>);
   };
 
   const handleRemoveExistingImage = (index: number) => {

@@ -37,11 +37,20 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
 
         const combinedClassName = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
 
+        if (Component === 'a') {
+            return (
+                <a
+                    ref={ref as React.Ref<HTMLAnchorElement>}
+                    className={combinedClassName}
+                    {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+                />
+            );
+        }
         return (
-            <Component
-                ref={ref as any}
+            <button
+                ref={ref as React.Ref<HTMLButtonElement>}
                 className={combinedClassName}
-                {...(props as any)}
+                {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
             />
         );
     }

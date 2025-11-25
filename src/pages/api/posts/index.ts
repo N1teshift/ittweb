@@ -38,8 +38,8 @@ export default async function handler(
       // Add user info from session
       const postWithUser: CreatePost = {
         ...postData,
-        createdByDiscordId: (session as any).discordId || null,
-        createdByName: session.user?.name || null,
+        createdByDiscordId: session.discordId || null,
+        createdByName: session.user?.name ?? undefined,
         published: postData.published ?? true,
       };
 
@@ -54,7 +54,7 @@ export default async function handler(
     const err = error as Error;
     logError(err, 'API request failed', {
       component: 'api/posts',
-      method: req.method,
+      operation: req.method || 'unknown',
     });
     return res.status(500).json({ 
       error: process.env.NODE_ENV === 'production' 

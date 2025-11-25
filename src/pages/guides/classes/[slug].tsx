@@ -1,8 +1,9 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
+import Layout from '@/features/shared/components/Layout';
 import Link from 'next/link';
-import { BASE_TROLL_CLASS_SLUGS, getClassBySlug, TrollClassData } from '@/features/ittweb/guides/data/classes';
-import { getSubclassesByParentSlug, getSupersByParentSlug } from '@/features/ittweb/guides/data/derivedClasses';
+import { BASE_TROLL_CLASS_SLUGS, getClassBySlug, TrollClassData } from '@/features/ittweb/guides/data/units';
+import { getSubclassesByParentSlug, getSupersByParentSlug } from '@/features/ittweb/guides/data/units';
 import ClassModel from '@/features/ittweb/guides/components/ClassModel';
 import ClassHeader from '@/features/ittweb/guides/components/ClassHeader';
 import StatsCard from '@/features/ittweb/guides/components/StatsCard';
@@ -20,7 +21,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) 
   const base = await getStaticPropsWithTranslations(pageNamespaces)({ locale: locale as string });
   return {
     props: {
-      ...(base as any).props,
+      ...base.props,
       cls,
     },
   };
@@ -38,7 +39,8 @@ export default function TrollClassDetail({ cls }: Props) {
   const supers = getSupersByParentSlug(cls.slug);
   const msOffset = getMoveSpeedOffset('base');
   return (
-    <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
+    <Layout pageTranslationNamespaces={pageNamespaces}>
+      <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6">
           <Link href="/guides/troll-classes" className="text-amber-400 hover:text-amber-300">← Troll Classes Overview</Link>
         </div>
@@ -99,6 +101,7 @@ export default function TrollClassDetail({ cls }: Props) {
 
         <ClassModel slug={cls.slug} name={cls.name} className="mt-8" />
       </div>
+    </Layout>
   );
 }
 

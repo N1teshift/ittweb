@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function MapFileUploader({ onJsonLoaded }: { onJsonLoaded?: (data: any) => void }) {
+export default function MapFileUploader({ onJsonLoaded }: { onJsonLoaded?: (data: unknown) => void }) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = React.useState<string>("");
   const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
@@ -42,11 +42,11 @@ export default function MapFileUploader({ onJsonLoaded }: { onJsonLoaded?: (data
           import('buffer'),
           import('wc3maptranslator'),
         ]);
-        const { TerrainTranslator } = wc3 as unknown as { TerrainTranslator: { warToJson: (buf: any) => { json: unknown } } };
+        const { TerrainTranslator } = wc3 as unknown as { TerrainTranslator: { warToJson: (buf: Buffer) => { json: unknown } } };
         const buf = Buffer.from(arrayBuf);
         const result = TerrainTranslator.warToJson(buf);
         if (!result || !('json' in result)) throw new Error('Translator returned no JSON');
-        const parsed = (result as any).json;
+        const parsed = result.json;
         const id = `${file.name.replace(/\.[^/.]+$/, '')}_${Date.now().toString(36)}`;
         try { localStorage.setItem(`itt_map_data_${id}`, JSON.stringify(parsed)); } catch {}
         persistList([{ id, name: file.name }, ...saved.filter(s => s.id !== id)].slice(0, 50));

@@ -6,7 +6,7 @@ import TrollPanel from '@/features/ittweb/tools/components/TrollPanel';
 import ItemsPalette from '@/features/ittweb/tools/components/ItemsPalette';
 import SimulationPanel from '@/features/ittweb/tools/components/SimulationPanel';
 import type { TrollLoadout, TrollSide, DragPayload } from '@/features/ittweb/tools/types';
-import { BASE_TROLL_CLASS_SLUGS } from '@/features/ittweb/guides/data/classes';
+import { BASE_TROLL_CLASS_SLUGS } from '@/features/ittweb/guides/data/units/classes';
 import { ITEMS_DATA } from '@/features/ittweb/guides/data/items';
 import type { ItemData } from '@/types/items';
 

@@ -10,7 +10,7 @@ import CliffLegend from './CliffLegend';
 import WaterLegend from './WaterLegend';
 import TerrainLegendCard from './TerrainLegendCard';
 import HeightDistributionChart from './HeightDistributionChart';
-import type { SimpleMapData } from '../types/map';
+import type { SimpleMapData, SimpleTile } from '../types/map';
 import { normalizeJsonToSimpleMap } from '../utils/mapUtils';
 
 export default function TerrainVisualizer({
@@ -30,7 +30,7 @@ export default function TerrainVisualizer({
   initialSliceEnabled,
   onSliceEnabledChange,
 }: {
-  map: any | null;
+  map: unknown | null;
   initialZoom?: number;
   onZoomChange?: (z: number) => void;
   initialScroll?: { left: number; top: number };
@@ -72,7 +72,8 @@ export default function TerrainVisualizer({
       setSimpleMap(normalized);
     } catch (e) {
       // If map is already normalized SimpleMapData, accept it
-      if ((map as any)?.width && (map as any)?.height && Array.isArray((map as any)?.tiles)) {
+      const mapObj = map as Record<string, unknown>;
+      if (typeof mapObj?.width === 'number' && typeof mapObj?.height === 'number' && Array.isArray(mapObj?.tiles)) {
         setSimpleMap(map as SimpleMapData);
       } else {
         console.warn('Unsupported JSON format for visualizer', e);
@@ -97,7 +98,7 @@ export default function TerrainVisualizer({
     return { x, y, ...t };
   }, [simpleMap, selectedTile]);
 
-  const [hoverUi, setHoverUi] = React.useState<{ x: number; y: number; data: any } | null>(null);
+  const [hoverUi, setHoverUi] = React.useState<{ x: number; y: number; data: SimpleTile & { x: number; y: number } } | null>(null);
 
   const cliffCounts = React.useMemo(() => {
     if (!simpleMap) return undefined;
@@ -118,8 +119,8 @@ export default function TerrainVisualizer({
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[180px] mb-4">
         <MapInfoPanel map={simpleMap} />
-        <TileInfoPanel title="Hovered Tile" tile={hoveredTile} details={hoveredDetails as any} />
-        <TileInfoPanel title="Selected Tile" tile={selectedTile} details={selectedDetails as any} />
+        <TileInfoPanel title="Hovered Tile" tile={hoveredTile} details={hoveredDetails ?? undefined} />
+        <TileInfoPanel title="Selected Tile" tile={selectedTile} details={selectedDetails ?? undefined} />
       </div>
 
       <div className="flex flex-wrap gap-4 items-center justify-between mb-4">

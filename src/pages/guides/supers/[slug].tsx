@@ -1,8 +1,8 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Link from 'next/link';
-import { DERIVED_CLASSES, getDerivedBySlug, SUPERCLASS_SLUGS, DerivedClassData } from '@/features/ittweb/guides/data/derivedClasses';
-import { getClassBySlug } from '@/features/ittweb/guides/data/classes';
+import { DERIVED_CLASSES, getDerivedBySlug, SUPERCLASS_SLUGS, DerivedClassData } from '@/features/ittweb/guides/data/units/derivedClasses';
+import { getClassBySlug } from '@/features/ittweb/guides/data/units/classes';
 import ClassHeader from '@/features/ittweb/guides/components/ClassHeader';
 import ClassModel from '@/features/ittweb/guides/components/ClassModel';
 import StatsCard from '@/features/ittweb/guides/components/StatsCard';
@@ -18,7 +18,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) 
     return { notFound: true };
   }
   const base = await getStaticPropsWithTranslations(pageNamespaces)({ locale: locale as string });
-  return { props: { ...(base as any).props, cls } };
+  return { props: { ...base.props, cls } };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

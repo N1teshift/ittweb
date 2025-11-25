@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useCallback, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { Logger } from '@/features/infrastructure/logging';
 import { PageHero } from '@/features/shared/components';
+import type { ArchiveEntry } from '@/types/archive';
 import { 
-  ArchiveEntry, 
   ArchiveForm, 
   ArchiveEditForm,
   ArchivesToolbar,
@@ -72,7 +72,7 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces }) => {
     let isMounted = true;
 
     const fetchUserRole = async () => {
-      if (status !== 'authenticated' || !(session as any)?.discordId) {
+      if (status !== 'authenticated' || !session?.discordId) {
         if (isMounted) {
           setUserRole(undefined);
         }
@@ -80,7 +80,7 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces }) => {
       }
 
       try {
-        const userData = await getUserDataByDiscordId((session as any).discordId);
+        const userData = await getUserDataByDiscordId(session.discordId);
         if (isMounted) {
           setUserRole(userData?.role);
         }
@@ -144,7 +144,7 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces }) => {
   }, [setShowForm]);
 
   const isAuthenticated = useMemo(() => status === 'authenticated', [status]);
-  const currentDiscordId = (session as any)?.discordId as string | undefined;
+  const currentDiscordId = session?.discordId;
   const canManageEntries = useMemo(() => isAdmin(userRole), [userRole]);
   const handleRequestDelete = useCallback((entry: ArchiveEntry) => {
     setEntryPendingDelete(entry);

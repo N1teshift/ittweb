@@ -14,7 +14,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) 
     return { notFound: true };
   }
   const base = await getStaticPropsWithTranslations(pageNamespaces)({ locale: locale as string });
-  return { props: { ...(base as any).props, building } };
+  return { props: { ...base.props, building } };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

@@ -1,5 +1,9 @@
 import { DateInfo, CreateArchiveEntry } from '@/types/archive';
 
+export type SectionKey = 'images' | 'video' | 'twitch' | 'replay' | 'text';
+
+const CANONICAL_SECTION_ORDER: SectionKey[] = ['images', 'video', 'twitch', 'replay', 'text'];
+
 export function buildDateInfo(params: {
   dateType: 'single' | 'interval' | 'undated';
   singleDate: string;
@@ -21,14 +25,28 @@ export function computeEffectiveSectionOrder(
   sectionOrder: Array<'images' | 'video' | 'twitch' | 'replay' | 'text'>,
   flags: { hasImages: boolean; hasVideo: boolean; hasTwitch: boolean; hasReplay: boolean; hasText: boolean }
 ): Array<'images' | 'video' | 'twitch' | 'replay' | 'text'> {
+  const normalizedOrder = normalizeSectionOrder(sectionOrder);
   const { hasImages, hasVideo, hasTwitch, hasReplay, hasText } = flags;
-  return sectionOrder.filter((s) =>
+  return normalizedOrder.filter((s) =>
     (s === 'images' && hasImages) ||
     (s === 'video' && hasVideo) ||
     (s === 'twitch' && hasTwitch) ||
     (s === 'replay' && hasReplay) ||
     (s === 'text' && hasText)
   );
+}
+
+export function normalizeSectionOrder(order?: SectionKey[]): SectionKey[] {
+  const incoming = Array.isArray(order) ? order : [];
+  const unique = incoming.filter((section, index) => {
+    return (
+      CANONICAL_SECTION_ORDER.includes(section) &&
+      incoming.indexOf(section) === index
+    );
+  }) as SectionKey[];
+
+  const missing = CANONICAL_SECTION_ORDER.filter((section) => !unique.includes(section));
+  return [...unique, ...missing];
 }
 
 export function extractFilenameFromUrl(url: string): string {

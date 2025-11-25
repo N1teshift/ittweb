@@ -2,7 +2,7 @@ import React from 'react';
 import ClassIcon from '@/features/ittweb/guides/components/ClassIcon';
 import InventoryGrid from '@/features/ittweb/tools/components/InventoryGrid';
 import type { DragPayload, TrollSide, TrollLoadout } from '@/features/ittweb/tools/types';
-import { BASE_TROLL_CLASSES, getClassBySlug, TrollClassData } from '@/features/ittweb/guides/data/classes';
+import { BASE_TROLL_CLASSES, getClassBySlug, TrollClassData } from '@/features/ittweb/guides/data/units/classes';
 import { ATTR_START_MULTIPLIER, MOVESPEED_PER_LEVEL, getMoveSpeedOffset, HP_PER_STRENGTH, MANA_PER_INTELLIGENCE, ARMOR_PER_AGILITY, getArmorDamageReductionPercent } from '@/features/ittweb/guides/config/balance';
 import type { ItemData } from '@/types/items';
 import StatsPanel, { TrollComputedStats } from '@/features/ittweb/tools/components/StatsPanel';

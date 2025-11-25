@@ -34,7 +34,26 @@ function BuildingCard({ building }: { building: BuildingData }) {
 }
 
 export default function BuildingsPage() {
+  const [searchQuery, setSearchQuery] = useState('');
   const hasBuildingData = BUILDINGS.length > 0;
+
+  const filteredBuildings = useMemo(() => {
+    const term = searchQuery.trim().toLowerCase();
+    if (!term) return BUILDINGS;
+
+    return BUILDINGS.filter((building) => {
+      const haystack = [
+        building.name,
+        building.description,
+        ...(building.craftableItems || []),
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+
+      return haystack.includes(term);
+    });
+  }, [searchQuery]);
 
   if (!hasBuildingData) {
     return (
@@ -56,26 +75,6 @@ export default function BuildingsPage() {
       </div>
     );
   }
-
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const filteredBuildings = useMemo(() => {
-    const term = searchQuery.trim().toLowerCase();
-    if (!term) return BUILDINGS;
-
-    return BUILDINGS.filter((building) => {
-      const haystack = [
-        building.name,
-        building.description,
-        ...(building.craftableItems || []),
-      ]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase();
-
-      return haystack.includes(term);
-    });
-  }, [searchQuery]);
 
   const totalBuildings = BUILDINGS.length;
   const totalCraftableLinks = BUILDINGS.reduce((acc, b) => acc + (b.craftableItems?.length || 0), 0);

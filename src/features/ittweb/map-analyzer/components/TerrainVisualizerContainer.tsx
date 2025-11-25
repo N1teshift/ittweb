@@ -58,10 +58,15 @@ export default function TerrainVisualizerContainer() {
     } catch {}
     setMap(null);
   };
+
+  const handleJsonLoaded = (data: unknown) => {
+    setMap(data as SimpleMapData | null);
+  };
+
   return (
     <div className="container mx-auto p-4">
       <div className="max-w-2xl mx-auto mb-2">
-        <MapFileUploader onJsonLoaded={setMap} />
+        <MapFileUploader onJsonLoaded={handleJsonLoaded} />
       </div>
       <div className="max-w-2xl mx-auto mb-6 flex items-center justify-between text-sm text-gray-300">
         <span>Uploaded map is saved locally and will persist after refresh.</span>

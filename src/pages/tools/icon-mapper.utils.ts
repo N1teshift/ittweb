@@ -1,8 +1,8 @@
 import { ITTIconCategory } from '@/features/ittweb/guides/utils/iconUtils';
 import { ITEMS_DATA } from '@/features/ittweb/guides/data/items';
 import { ABILITIES } from '@/features/ittweb/guides/data/abilities';
-import { BASE_TROLL_CLASSES } from '@/features/ittweb/guides/data/classes';
-import { DERIVED_CLASSES } from '@/features/ittweb/guides/data/derivedClasses';
+import { BASE_TROLL_CLASSES } from '@/features/ittweb/guides/data/units/classes';
+import { DERIVED_CLASSES } from '@/features/ittweb/guides/data/units/derivedClasses';
 import { BUILDINGS } from '@/features/ittweb/guides/data/buildings';
 import type { IconMapping } from './icon-mapper.types';
 
@@ -63,7 +63,7 @@ export function getSuggestions(category: ITTIconCategory, input: string, allMapp
   const gameNames = getGameNamesForCategory(category);
 
   // Combine and deduplicate
-  const allNames = [...new Set([...existingNames, ...gameNames])];
+  const allNames = Array.from(new Set([...existingNames, ...gameNames]));
 
   // Find matches
   for (const name of allNames) {

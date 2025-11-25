@@ -25,7 +25,7 @@ function AbilityCard({ ability }: { ability: AbilityData }) {
     ability.damage
       ? { label: `Damage: ${ability.damage}`, variant: 'red' as const }
       : null,
-  ].filter(Boolean) as { label: string; variant: any }[];
+  ].filter(Boolean) as { label: string; variant: 'blue' | 'purple' | 'green' | 'amber' | 'red' }[];
 
   const secondaryBadges = [
     ability.classRequirement
@@ -34,7 +34,7 @@ function AbilityCard({ ability }: { ability: AbilityData }) {
     ability.category
       ? { label: ABILITY_CATEGORIES[ability.category] || ability.category, variant: 'gray' as const }
       : null,
-  ].filter(Boolean) as { label: string; variant: any }[];
+  ].filter(Boolean) as { label: string; variant: 'amber' | 'gray' }[];
 
   const footer = ability.effects && ability.effects.length > 0 && (
     <div className="text-xs">
@@ -65,6 +65,8 @@ function AbilityCard({ ability }: { ability: AbilityData }) {
 }
 
 export default function AbilitiesPage() {
+  const [selectedCategory, setSelectedCategory] = useState<AbilityCategory | 'all'>('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const hasAbilityData = ABILITIES.length > 0;
 
   if (!hasAbilityData) {
@@ -87,9 +89,6 @@ export default function AbilitiesPage() {
       </div>
     );
   }
-
-  const [selectedCategory, setSelectedCategory] = useState<AbilityCategory | 'all'>('all');
-  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredAbilities = searchQuery
     ? searchAbilities(searchQuery)

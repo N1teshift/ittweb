@@ -24,7 +24,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) 
   const base = await getStaticPropsWithTranslations(pageNamespaces)({ locale: locale as string });
   return {
     props: {
-      ...(base as any).props,
+      ...base.props,
       item,
     },
   };

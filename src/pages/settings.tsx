@@ -64,7 +64,7 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
           <div className="bg-gray-800/50 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6 space-y-6">
             {/* Profile Section */}
             <div className="flex items-center gap-4 pb-6 border-b border-amber-500/20">
-              {'avatarUrl' in userData && userData.avatarUrl && (
+              {'avatarUrl' in userData && Boolean(userData.avatarUrl) && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={userData.avatarUrl as string}
@@ -79,7 +79,7 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
                     (userData.username as string) ||
                     'User'}
                 </h2>
-                {'role' in userData && userData.role && (
+                {'role' in userData && Boolean(userData.role) && (
                   <span className="inline-block mt-1 px-3 py-1 text-xs font-semibold rounded-full bg-amber-600/30 text-amber-300 border border-amber-500/50">
                     {(userData.role as string).charAt(0).toUpperCase() + (userData.role as string).slice(1)}
                   </span>
@@ -94,49 +94,49 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
                 <p className="mt-1 text-white font-mono text-sm">{userData.discordId as string}</p>
               </div>
 
-              {'email' in userData && userData.email && (
+              {'email' in userData && Boolean(userData.email) && (
                 <div>
                   <label className="text-sm font-medium text-gray-400">Email</label>
                   <p className="mt-1 text-white">{userData.email as string}</p>
                 </div>
               )}
 
-              {'username' in userData && userData.username && (
+              {'username' in userData && Boolean(userData.username) && (
                 <div>
                   <label className="text-sm font-medium text-gray-400">Discord Username</label>
                   <p className="mt-1 text-white">{userData.username as string}</p>
                 </div>
               )}
 
-              {'globalName' in userData && userData.globalName && (
+              {'globalName' in userData && Boolean(userData.globalName) && (
                 <div>
                   <label className="text-sm font-medium text-gray-400">Global Name</label>
                   <p className="mt-1 text-white">{userData.globalName as string}</p>
                 </div>
               )}
 
-              {'displayName' in userData && userData.displayName && (
+              {'displayName' in userData && Boolean(userData.displayName) && (
                 <div>
                   <label className="text-sm font-medium text-gray-400">Display Name</label>
                   <p className="mt-1 text-white">{userData.displayName as string}</p>
                 </div>
               )}
 
-              {'preferredName' in userData && userData.preferredName && (
+              {'preferredName' in userData && Boolean(userData.preferredName) && (
                 <div>
                   <label className="text-sm font-medium text-gray-400">Preferred Name</label>
                   <p className="mt-1 text-white">{userData.preferredName as string}</p>
                 </div>
               )}
 
-              {'createdAt' in userData && userData.createdAt && (
+              {'createdAt' in userData && Boolean(userData.createdAt) && (
                 <div>
                   <label className="text-sm font-medium text-gray-400">Account Created</label>
                   <p className="mt-1 text-white">{formatDate(userData.createdAt as string)}</p>
                 </div>
               )}
 
-              {'lastLoginAt' in userData && userData.lastLoginAt && (
+              {'lastLoginAt' in userData && Boolean(userData.lastLoginAt) && (
                 <div>
                   <label className="text-sm font-medium text-gray-400">Last Login</label>
                   <p className="mt-1 text-white">{formatDate(userData.lastLoginAt as string)}</p>
@@ -195,7 +195,7 @@ const serializeUserData = (data: UserData | null): SerializedUserData => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  if (!session || !(session as any).discordId) {
+  if (!session || !session.discordId) {
     return {
       props: {
         userData: null,
@@ -204,7 +204,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   try {
-    const userData = await getUserDataByDiscordId((session as any).discordId);
+    const userData = await getUserDataByDiscordId(session.discordId);
     const serializedUserData = serializeUserData(userData);
 
     return {

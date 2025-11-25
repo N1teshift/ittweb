@@ -7,10 +7,13 @@ import { getAllPosts, getPostBySlug, getLatestPost } from './postService';
 import type { Post } from '@/types/post';
 
 export type PostMeta = {
+  id?: string;
   title: string;
   date: string; // ISO string preferred
   slug: string;
   excerpt?: string;
+  author?: string;
+  createdByDiscordId?: string | null;
 };
 
 export type LoadedPost = {
@@ -28,10 +31,13 @@ export type SerializedPost = {
  */
 function postToMeta(post: Post): PostMeta {
   return {
+    id: post.id,
     title: post.title,
     date: post.date,
     slug: post.slug,
     excerpt: post.excerpt,
+    author: post.createdByName,
+    createdByDiscordId: post.createdByDiscordId,
   };
 }
 

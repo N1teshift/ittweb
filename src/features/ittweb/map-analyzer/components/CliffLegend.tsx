@@ -12,7 +12,7 @@ export default function CliffLegend({ visible = false, counts }: { visible?: boo
     3: [160, 120, 80],
     4: [140, 100, 60],
     5: [120, 80, 40],
-  } as any;
+  } as Record<number, [number, number, number]>;
 
   const levels = [-1, 0, 1, 2, 3, 4, 5];
   return (

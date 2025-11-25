@@ -10,6 +10,9 @@ export type ItemCategory =
 export type ItemSubcategory =
   | 'herbs'
   | 'materials'
+  | 'animal-parts'
+  | 'essences'
+  | 'metals'
   | 'healing-potions'
   | 'mana-potions'
   | 'special-potions'

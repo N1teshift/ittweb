@@ -39,7 +39,7 @@ function ItemCard({ item }: { item: ItemData }) {
     ? [{ label: item.craftedAt, variant: 'blue' as const }]
     : [];
 
-  const statBadges: { label: string; variant: any }[] = [];
+  const statBadges: { label: string; variant: 'red' | 'blue' | 'green' | 'purple' }[] = [];
   if (item.stats) {
     if (typeof item.stats.damage === 'number') statBadges.push({ label: `Damage: ${item.stats.damage}`, variant: 'red' });
     if (typeof item.stats.armor === 'number') statBadges.push({ label: `Armor: ${item.stats.armor}`, variant: 'blue' });
@@ -103,31 +103,9 @@ function CategorySection({ category, items }: { category: ItemCategory; items: I
 }
 
 export default function ItemsPage() {
-  const hasItemData = ITEMS_DATA.length > 0;
-
-  if (!hasItemData) {
-    return (
-      <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-5xl mx-auto">
-        <div className="mb-6">
-          <Link href="/guides" className="text-amber-400 hover:text-amber-300">← Back to Guides</Link>
-        </div>
-
-        <h1 className="font-medieval-brand text-4xl md:text-5xl mb-4">Items</h1>
-        <p className="text-gray-300 mb-6">Item data has not been generated yet.</p>
-
-        <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-6 text-amber-100">
-          <p className="font-semibold mb-2">No item entries available.</p>
-          <p className="text-sm text-amber-100/90">
-            Run <code className="px-1 py-0.5 bg-black/40 rounded text-amber-200">python src/features/infrastructure/extraction/scripts/current/manage_extraction.py pipeline</code>
-            {' '}to rebuild <code className="px-1 py-0.5 bg-black/40 rounded text-amber-200">items.ts</code> and its category files before viewing this page.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<ItemCategory | 'all'>('all');
+  const hasItemData = ITEMS_DATA.length > 0;
 
   const filteredItems = useMemo(() => {
     let items = ITEMS_DATA;
@@ -162,6 +140,27 @@ export default function ItemsPage() {
 
     return result;
   }, [filteredItems]);
+
+  if (!hasItemData) {
+    return (
+      <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-5xl mx-auto">
+        <div className="mb-6">
+          <Link href="/guides" className="text-amber-400 hover:text-amber-300">← Back to Guides</Link>
+        </div>
+
+        <h1 className="font-medieval-brand text-4xl md:text-5xl mb-4">Items</h1>
+        <p className="text-gray-300 mb-6">Item data has not been generated yet.</p>
+
+        <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-6 text-amber-100">
+          <p className="font-semibold mb-2">No item entries available.</p>
+          <p className="text-sm text-amber-100/90">
+            Run <code className="px-1 py-0.5 bg-black/40 rounded text-amber-200">python src/features/infrastructure/extraction/scripts/current/manage_extraction.py pipeline</code>
+            {' '}to rebuild <code className="px-1 py-0.5 bg-black/40 rounded text-amber-200">items.ts</code> and its category files before viewing this page.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-7xl mx-auto">

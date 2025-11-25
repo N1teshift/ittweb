@@ -42,17 +42,34 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, account, profile }) {
       // On initial sign-in we have both account and profile
       if (account && profile) {
-        const anyProfile = profile as any;
-        token.discordId = anyProfile.id;
+        interface DiscordProfile {
+          id: string;
+          email?: string;
+          name?: string;
+          username?: string;
+          global_name?: string;
+          display_name?: string;
+          image_url?: string;
+          avatar_url?: string;
+          avatar?: string;
+        }
+        const discordProfile = profile as DiscordProfile;
+        token.discordId = discordProfile.id;
 
         // Prefer guild nickname (if we can fetch it), otherwise Discord display name, then username/name
         let preferredName: string | undefined =
-          anyProfile.global_name || anyProfile.display_name || anyProfile.username || profile.name || (token as any).name;
+          discordProfile.global_name || discordProfile.display_name || discordProfile.username || profile.name || token.name;
+
+        interface DiscordAccount {
+          access_token?: string;
+          providerAccountId: string;
+        }
+        const discordAccount = account as DiscordAccount;
 
         // If configured, try to fetch the user's nickname from a specific guild
         try {
           const guildId = process.env.DISCORD_GUILD_ID;
-          const accessToken = (account as any).access_token as string | undefined;
+          const accessToken = discordAccount.access_token;
           if (guildId && accessToken) {
             const res = await fetch(`https://discord.com/api/v10/users/@me/guilds/${guildId}/member`, {
               headers: { Authorization: `Bearer ${accessToken}` },
@@ -68,30 +85,30 @@ export const authOptions: NextAuthOptions = {
           // Silently ignore nickname fetch failures and fallback to display name/username
         }
 
-        (token as any).name = preferredName;
+        token.name = preferredName;
 
         // Try to ensure we have a usable avatar URL
-        const existingPicture = (token as any).picture as string | undefined;
-        const candidatePicture = anyProfile.image_url || anyProfile.avatar_url || existingPicture;
+        const existingPicture = token.picture;
+        const candidatePicture = discordProfile.image_url || discordProfile.avatar_url || existingPicture;
         const finalAvatarUrl = candidatePicture || 
-          (anyProfile.id && anyProfile.avatar 
-            ? `https://cdn.discordapp.com/avatars/${anyProfile.id}/${anyProfile.avatar}.png`
+          (discordProfile.id && discordProfile.avatar 
+            ? `https://cdn.discordapp.com/avatars/${discordProfile.id}/${discordProfile.avatar}.png`
             : undefined);
         if (finalAvatarUrl) {
-          (token as any).picture = finalAvatarUrl;
+          token.picture = finalAvatarUrl;
         }
 
         // Update user data in Firestore with complete information including preferred name
         try {
           await saveUserData({
-            discordId: anyProfile.id || account.providerAccountId,
-            email: anyProfile.email || profile.email,
+            discordId: discordProfile.id || discordAccount.providerAccountId,
+            email: discordProfile.email || profile.email,
             name: profile.name,
             preferredName: preferredName,
             avatarUrl: finalAvatarUrl,
-            username: anyProfile.username,
-            globalName: anyProfile.global_name,
-            displayName: anyProfile.display_name,
+            username: discordProfile.username,
+            globalName: discordProfile.global_name,
+            displayName: discordProfile.display_name,
           });
         } catch (error) {
           // Log error but don't fail the auth process
@@ -103,7 +120,7 @@ export const authOptions: NextAuthOptions = {
             console.error('[NextAuth JWT] Error details:', {
               message: error.message,
               stack: error.stack,
-              discordId: anyProfile.id || account.providerAccountId,
+              discordId: discordProfile.id || discordAccount.providerAccountId,
             });
           }
         }
@@ -112,10 +129,10 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       // Expose Discord ID and ensure session.user fields reflect our JWT
-      (session as any).discordId = (token as any).discordId;
+      session.discordId = token.discordId;
       if (session.user) {
-        session.user.name = ((token as any).name as string | undefined) || session.user.name || 'User';
-        session.user.image = ((token as any).picture as string | undefined) || session.user.image || undefined;
+        session.user.name = (token.name as string | undefined) || session.user.name || 'User';
+        session.user.image = (token.picture as string | undefined) || session.user.image || undefined;
       }
       return session;
     },

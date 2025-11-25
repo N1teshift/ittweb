@@ -202,7 +202,7 @@ export default function MapContainer({
       3: [160, 120, 80],
       4: [140, 100, 60],
       5: [120, 80, 40],
-    } as any;
+    } as Record<number, [number, number, number]>;
     const c = palette[level as keyof typeof palette] || [200, 200, 200];
     return `rgb(${c[0]},${c[1]},${c[2]})`;
   }
@@ -236,7 +236,7 @@ export default function MapContainer({
     <div
       ref={containerRef}
       className={`relative w-full overflow-auto border border-amber-500/30 rounded select-none ${isDraggingRef.current ? 'cursor-grabbing' : 'cursor-grab'}`}
-      style={{ height: viewportHeightPx, overscrollBehavior: 'contain' as any }}
+      style={{ height: viewportHeightPx, overscrollBehavior: 'contain' }}
       onPointerDown={(e) => {
         if (e.button !== 0) return; // left button only
         isDraggingRef.current = true;
@@ -248,7 +248,11 @@ export default function MapContainer({
             top: containerRef.current.scrollTop,
           };
         }
-        try { (e.currentTarget as any).setPointerCapture?.(e.pointerId); } catch {}
+        try { 
+          if (e.currentTarget.setPointerCapture) {
+            e.currentTarget.setPointerCapture(e.pointerId);
+          }
+        } catch {}
         e.preventDefault();
       }}
       onPointerMove={(e) => {
@@ -267,7 +271,11 @@ export default function MapContainer({
         isDraggingRef.current = false;
         dragStartMouseRef.current = null;
         dragStartScrollRef.current = null;
-        try { (e.currentTarget as any).releasePointerCapture?.(e.pointerId); } catch {}
+        try { 
+          if (e.currentTarget.releasePointerCapture) {
+            e.currentTarget.releasePointerCapture(e.pointerId);
+          }
+        } catch {}
         // briefly pause hover after drag end to avoid post-drag flicker
         dragPausedRef.current = true;
         if (dragPauseTimerRef.current) {

@@ -52,7 +52,11 @@ export function useNewPostForm() {
   const handleFieldChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value, type, checked } = event.target;
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+    const type = 'type' in target ? target.type : undefined;
+    const checked = 'checked' in target ? target.checked : undefined;
     if (name === 'slug') {
       setSlugManuallyEdited(true);
     }

@@ -40,7 +40,7 @@ export async function saveUserData(userData: CreateUserData): Promise<void> {
     const docSnap = await getDoc(docRef);
     
     // Remove undefined values before saving (Firestore doesn't allow undefined)
-    const cleanedUserData = removeUndefined(userData);
+    const cleanedUserData = removeUndefined(userData as unknown as Record<string, unknown>);
     const userDataWithTimestamps = {
       ...cleanedUserData,
       updatedAt: serverTimestamp(),

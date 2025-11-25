@@ -1,8 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ArchiveEntry } from '@/types/archive';
-import { extractFilenameFromUrl } from '../utils/archiveFormUtils';
+import {
+  extractFilenameFromUrl,
+  normalizeSectionOrder,
+  type SectionKey as FormSectionKey,
+} from '../utils/archiveFormUtils';
 
-export type SectionKey = 'images' | 'video' | 'twitch' | 'replay' | 'text';
+export type SectionKey = FormSectionKey;
 
 export function useArchiveBaseState(mode: 'create' | 'edit', initialEntry?: ArchiveEntry) {
   const [formData, setFormData] = useState({
@@ -23,7 +27,7 @@ export function useArchiveBaseState(mode: 'create' | 'edit', initialEntry?: Arch
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [replayFile, setReplayFile] = useState<File | null>(null);
   const [currentImages, setCurrentImages] = useState<string[]>([]);
-  const [sectionOrder, setSectionOrder] = useState<SectionKey[]>(['images', 'video', 'twitch', 'replay', 'text']);
+  const [sectionOrder, setSectionOrder] = useState<SectionKey[]>(normalizeSectionOrder());
   const [existingReplayUrl, setExistingReplayUrl] = useState<string>(
     (initialEntry?.replayUrl || (initialEntry?.mediaType === 'replay' ? initialEntry?.mediaUrl : '')) || ''
   );
@@ -47,9 +51,7 @@ export function useArchiveBaseState(mode: 'create' | 'edit', initialEntry?: Arch
         ? initialEntry.images
         : (initialEntry.mediaType === 'image' && initialEntry.mediaUrl ? [initialEntry.mediaUrl] : []);
       setCurrentImages(initialImages);
-      const initialOrder: SectionKey[] = initialEntry.sectionOrder && initialEntry.sectionOrder.length
-        ? (initialEntry.sectionOrder as SectionKey[])
-        : ['images', 'video', 'twitch', 'replay', 'text'];
+      const initialOrder = normalizeSectionOrder(initialEntry.sectionOrder as SectionKey[] | undefined);
       setSectionOrder(initialOrder);
       setExistingReplayUrl(
         (initialEntry.replayUrl || (initialEntry.mediaType === 'replay' ? initialEntry.mediaUrl : '')) || ''

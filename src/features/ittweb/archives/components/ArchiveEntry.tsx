@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { ArchiveEntry } from '@/types/archive';
 import { extractYouTubeId } from '@/features/shared/lib/archiveService';
+import { normalizeSectionOrder } from '@/features/ittweb/archives/utils/archiveFormUtils';
 import YouTubeEmbed from './YouTubeEmbed';
 import TwitchClipEmbed from './TwitchClipEmbed';
 import Image from 'next/image';
@@ -47,8 +48,7 @@ export default function ArchiveEntry({ entry, onEdit, onDelete, canDelete, onIma
     const video: string | undefined = entry.videoUrl || (entry.mediaType === 'video' ? entry.mediaUrl : undefined);
     const replay: string | undefined = entry.replayUrl || (entry.mediaType === 'replay' ? entry.mediaUrl : undefined);
 
-    const defaultOrder: EntrySection[] = ['images', 'video', 'twitch', 'replay', 'text'];
-    const order: EntrySection[] = entry.sectionOrder && entry.sectionOrder.length ? entry.sectionOrder : defaultOrder;
+    const order: EntrySection[] = normalizeSectionOrder(entry.sectionOrder as EntrySection[] | undefined);
 
     return (
       <div className="space-y-4">
