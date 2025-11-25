@@ -33,8 +33,16 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
   const { imagePreviewUrls } = useArchiveMedia(imageFile, imageFiles);
 
   const { 
-    handleInputChange, handleImageUpload, handleReorderImages, handleReorderSections,
-    handleVideoUrlChange, handleReplayUpload, handleMediaFieldChange, handleRemoveExistingImage, handleRemoveReplay
+    handleInputChange,
+    handleImageUpload,
+    handleReorderImages,
+    handleReorderSections,
+    handleVideoUrlChange,
+    handleTwitchUrlChange,
+    handleReplayUpload,
+    handleMediaFieldChange,
+    handleRemoveExistingImage,
+    handleRemoveReplay,
   } = useArchiveHandlers({
     setFormData, imageFile, imageFiles, setImageFile, setImageFiles, setReplayFile, setCurrentImages, setSectionOrder, setError, setExistingReplayUrl,
   });
@@ -82,9 +90,10 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
       // Effective order
       const hasImages = Boolean(images && images.length > 0);
       const hasVideo = Boolean(formData.mediaUrl);
+      const hasTwitch = Boolean(formData.twitchClipUrl);
       const hasReplay = Boolean(replayUrl || existingReplayUrl);
       const hasText = Boolean(formData.content && formData.content.trim().length > 0);
-      const effectiveSectionOrder = computeEffectiveSectionOrder(sectionOrder, { hasImages, hasVideo, hasReplay, hasText });
+      const effectiveSectionOrder = computeEffectiveSectionOrder(sectionOrder, { hasImages, hasVideo, hasTwitch, hasReplay, hasText });
 
       if (mode === 'create') {
         const payload: CreateArchiveEntry = {
@@ -94,7 +103,8 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
           mediaType: hasImages ? 'image' : hasVideo ? 'video' : replayFile ? 'replay' : 'none',
           dateInfo,
           ...(images && images.length > 0 ? { images } : {}),
-          ...(formData.mediaUrl ? { videoUrl: formData.mediaUrl } : {}),
+          ...(formData.mediaUrl ? { videoUrl: formData.mediaUrl.trim() } : {}),
+          ...(formData.twitchClipUrl ? { twitchClipUrl: formData.twitchClipUrl.trim() } : {}),
           ...(replayUrl ? { replayUrl } : {}),
           sectionOrder: effectiveSectionOrder
         };
@@ -111,7 +121,8 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
         mediaType: hasImages ? 'image' : hasVideo ? 'video' : (replayUrl || existingReplayUrl) ? 'replay' : 'none',
         dateInfo,
         ...(images && images.length > 0 ? { images } : {}),
-        ...(formData.mediaUrl ? { videoUrl: formData.mediaUrl } : {}),
+        ...(formData.mediaUrl ? { videoUrl: formData.mediaUrl.trim() } : { videoUrl: '' }),
+        ...(formData.twitchClipUrl ? { twitchClipUrl: formData.twitchClipUrl.trim() } : { twitchClipUrl: '' }),
         ...(replayUrl ? { replayUrl } : {}),
         sectionOrder: effectiveSectionOrder
       };
@@ -175,11 +186,14 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
           {/* Media */}
           <MediaSelector 
             mediaUrl={formData.mediaUrl}
+            twitchUrl={formData.twitchClipUrl}
             onVideoUrlChange={handleVideoUrlChange}
+            onTwitchUrlChange={handleTwitchUrlChange}
             onImageUpload={handleImageUpload}
             onReplayUpload={handleReplayUpload}
             multipleImages
             videoError={error && formData.mediaUrl ? error : ''}
+            twitchError={error && !formData.mediaUrl && formData.twitchClipUrl ? error : ''}
             showHeader={false}
           />
 
@@ -191,6 +205,7 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
             )}
             onReorderImages={handleReorderImages}
             videoUrl={formData.mediaUrl}
+            twitchUrl={formData.twitchClipUrl}
             replayName={replayName}
             textPreview={formData.content}
             sectionOrder={sectionOrder}

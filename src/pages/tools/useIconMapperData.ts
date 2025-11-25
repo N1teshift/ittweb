@@ -65,7 +65,7 @@ export function useIconMapperData() {
   };
 
   const getExistingMapping = (category: ITTIconCategory, filename: string): string | undefined => {
-    const categoryMappings = mappings[category];
+    const categoryMappings = mappings[category] ?? {};
     return Object.keys(categoryMappings).find(key => categoryMappings[key] === filename);
   };
 

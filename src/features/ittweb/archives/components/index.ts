@@ -8,3 +8,5 @@ export { default as ArchivesEmptyState } from './ArchivesEmptyState';
 export { default as ArchivesLoadingState } from './ArchivesLoadingState';
 export { default as ArchivesErrorState } from './ArchivesErrorState';
 export { default as ArchivesPage } from '../archivesPage';
+export { default as ArchiveDeleteDialog } from './ArchiveDeleteDialog';
+export { default as TwitchClipEmbed } from './TwitchClipEmbed';

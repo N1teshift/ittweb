@@ -13,6 +13,19 @@ export default function IconMapperMappingsList({
   mappings, 
   onRemove 
 }: IconMapperMappingsListProps) {
+  if (selectedCategory === 'all') {
+    return (
+      <div className="mt-8">
+        <h2 className="font-medieval-brand text-2xl mb-4">Current Mappings</h2>
+        <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+          <p className="text-gray-400">
+            Select a specific category to review or edit its mappings.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   const currentCategoryMappings = selectedCategory in mappings 
     ? mappings[selectedCategory as ITTIconCategory] 
     : {};

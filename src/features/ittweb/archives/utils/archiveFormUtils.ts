@@ -18,13 +18,14 @@ export function buildDateInfo(params: {
 }
 
 export function computeEffectiveSectionOrder(
-  sectionOrder: Array<'images' | 'video' | 'replay' | 'text'>,
-  flags: { hasImages: boolean; hasVideo: boolean; hasReplay: boolean; hasText: boolean }
-): Array<'images' | 'video' | 'replay' | 'text'> {
-  const { hasImages, hasVideo, hasReplay, hasText } = flags;
+  sectionOrder: Array<'images' | 'video' | 'twitch' | 'replay' | 'text'>,
+  flags: { hasImages: boolean; hasVideo: boolean; hasTwitch: boolean; hasReplay: boolean; hasText: boolean }
+): Array<'images' | 'video' | 'twitch' | 'replay' | 'text'> {
+  const { hasImages, hasVideo, hasTwitch, hasReplay, hasText } = flags;
   return sectionOrder.filter((s) =>
     (s === 'images' && hasImages) ||
     (s === 'video' && hasVideo) ||
+    (s === 'twitch' && hasTwitch) ||
     (s === 'replay' && hasReplay) ||
     (s === 'text' && hasText)
   );

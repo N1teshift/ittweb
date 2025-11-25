@@ -12,10 +12,10 @@ import IconMapperMappingsList from './IconMapperMappingsList';
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
 
-const allCategories = ['abilities', 'items', 'buildings', 'trolls', 'unclassified', 'base'] as const;
+const allCategories = ['all', 'abilities', 'items', 'buildings', 'trolls', 'unclassified', 'base'] as const;
 
 export default function IconMapper() {
-  const [selectedCategory, setSelectedCategory] = useState<string>('items');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showMappedOnly, setShowMappedOnly] = useState(false);
 
@@ -31,7 +31,9 @@ export default function IconMapper() {
 
   // Filter icons by category and search
   const filteredIcons = useMemo(() => {
-    let filtered = icons.filter(icon => icon.category === selectedCategory);
+    let filtered = selectedCategory === 'all'
+      ? icons
+      : icons.filter(icon => icon.category === selectedCategory);
 
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
@@ -56,11 +58,37 @@ export default function IconMapper() {
     alert('Mappings copied to clipboard!');
   };
 
-  const currentCategoryMappings = selectedCategory in mappings 
-    ? mappings[selectedCategory as ITTIconCategory] 
+  const currentCategoryMappings = selectedCategory !== 'all' && selectedCategory in mappings
+    ? mappings[selectedCategory as ITTIconCategory]
     : {};
-  
-  const currentStat = stats.find(s => s.category === selectedCategory);
+
+  const overallStat = useMemo(() => {
+    if (stats.length === 0) return null;
+    const aggregate = stats.reduce(
+      (acc, stat) => {
+        acc.total += stat.total;
+        acc.mapped += stat.mapped;
+        acc.unmapped += stat.unmapped;
+        return acc;
+      },
+      { total: 0, mapped: 0, unmapped: 0 }
+    );
+    return {
+      category: 'all',
+      total: aggregate.total,
+      mapped: aggregate.mapped,
+      unmapped: aggregate.unmapped,
+      percentage: aggregate.total > 0 ? Math.round((aggregate.mapped / aggregate.total) * 100) : 0,
+    };
+  }, [stats]);
+
+  const currentStat = selectedCategory === 'all'
+    ? overallStat
+    : stats.find(s => s.category === selectedCategory);
+
+  const currentMappedCount = selectedCategory === 'all'
+    ? currentStat?.mapped ?? 0
+    : Object.keys(currentCategoryMappings).length;
 
   return (
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-7xl mx-auto">
@@ -73,14 +101,16 @@ export default function IconMapper() {
       <div className="mb-6 space-y-4">
         <div className="flex flex-wrap gap-4 items-center">
           <div>
-            <label className="text-gray-300 mr-2">Category:</label>
+            <label className="text-gray-300 mr-2">Filter by category:</label>
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="px-4 py-2 bg-black/30 border border-amber-500/30 rounded-lg text-white"
             >
               {allCategories.map(cat => (
-                <option key={cat} value={cat}>{cat}</option>
+                <option key={cat} value={cat}>
+                  {cat === 'all' ? 'All categories' : cat}
+                </option>
               ))}
             </select>
           </div>
@@ -126,16 +156,10 @@ export default function IconMapper() {
 
       {/* Current Category Stats */}
       <div className="mb-6 text-sm text-gray-400">
-        Category: <span className="text-amber-400 capitalize">{selectedCategory}</span> | 
-        Mapped: <span className="text-amber-400">
-          {Object.keys(currentCategoryMappings).length}
-        </span> | 
-        Unmapped: <span className="text-red-400">
-          {currentStat?.unmapped || 0}
-        </span> | 
-        Total Icons: <span className="text-gray-300">
-          {filteredIcons.length}
-        </span>
+        Viewing: <span className="text-amber-400 capitalize">{selectedCategory}</span> |{' '}
+        Mapped: <span className="text-amber-400">{currentMappedCount}</span> |{' '}
+        Unmapped: <span className="text-red-400">{currentStat?.unmapped || 0}</span> |{' '}
+        Icons in view: <span className="text-gray-300">{filteredIcons.length}</span>
       </div>
 
       {/* Icon Grid */}

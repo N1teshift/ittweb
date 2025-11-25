@@ -1,4 +1,4 @@
-import { extractYouTubeId } from '@/lib/archiveService';
+import { extractYouTubeId, extractTwitchClipId } from '@/features/shared/lib/archiveService';
 import { SectionKey } from './useArchiveBaseState';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -8,6 +8,7 @@ interface UseArchiveHandlersParams {
     content: string;
     author: string;
     mediaUrl: string;
+    twitchClipUrl: string;
     mediaType: 'image' | 'video' | 'replay' | 'none';
     dateType: 'single' | 'interval' | 'undated';
     singleDate: string;
@@ -100,6 +101,16 @@ export function useArchiveHandlers({
     }
   };
 
+  const handleTwitchUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value;
+    setFormData(prev => ({ ...prev, twitchClipUrl: url }));
+    if (url && !extractTwitchClipId(url)) {
+      setError('Please enter a valid Twitch clip URL');
+    } else {
+      setError('');
+    }
+  };
+
   const handleReplayUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -117,6 +128,10 @@ export function useArchiveHandlers({
   const handleMediaFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.name === 'mediaUrl') {
       handleVideoUrlChange(e);
+      return;
+    }
+    if (e.target.name === 'twitchClipUrl') {
+      handleTwitchUrlChange(e);
       return;
     }
     handleInputChange(e as any);
@@ -146,6 +161,7 @@ export function useArchiveHandlers({
     handleReorderImages,
     handleReorderSections,
     handleVideoUrlChange,
+    handleTwitchUrlChange,
     handleReplayUpload,
     handleMediaFieldChange,
     handleRemoveExistingImage,

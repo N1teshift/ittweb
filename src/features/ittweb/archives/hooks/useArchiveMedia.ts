@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { uploadImage, uploadImages, uploadReplay } from '@/lib/archiveService';
+import { uploadImage, uploadImages, uploadReplay } from '@/features/shared/lib/archiveService';
 
 export function useArchiveMedia(imageFile: File | null, imageFiles: File[]) {
   const imagePreviewUrls = useMemo(() => {

@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useEffect, useMemo, useCallback, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import logger from '@/features/shared/utils/loggerUtils';
+import { Logger } from '@/features/infrastructure/logging';
 import { PageHero } from '@/features/shared/components';
 import { 
   ArchiveEntry, 
@@ -11,13 +11,20 @@ import {
 } from '@/features/ittweb/archives/components';
 import ImageModal from '@/features/ittweb/archives/components/sections/ImageModal';
 import { useArchivesPage, useArchivesActions } from '@/features/ittweb/archives/hooks';
+import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
+import { UserRole } from '@/types/userData';
+import { isAdmin } from '@/features/shared/utils/userRoleUtils';
+import ArchiveDeleteDialog from '@/features/ittweb/archives/components/ArchiveDeleteDialog';
 
 interface ArchivesPageProps {
   pageNamespaces: string[];
 }
 
 const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces }) => {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
+  const [userRole, setUserRole] = useState<UserRole | undefined>();
+  const [entryPendingDelete, setEntryPendingDelete] = useState<ArchiveEntry | null>(null);
+  const [isDeletingEntry, setIsDeletingEntry] = useState(false);
   
   // Use our custom hooks
   const {
@@ -46,6 +53,7 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces }) => {
     handleImageModalClose,
     handleSortOrderChange,
     handleSignIn,
+    handleDelete,
   } = useArchivesActions({
     setEntries,
     setLoading,
@@ -60,23 +68,56 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces }) => {
     sortOrder,
   });
 
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchUserRole = async () => {
+      if (status !== 'authenticated' || !(session as any)?.discordId) {
+        if (isMounted) {
+          setUserRole(undefined);
+        }
+        return;
+      }
+
+      try {
+        const userData = await getUserDataByDiscordId((session as any).discordId);
+        if (isMounted) {
+          setUserRole(userData?.role);
+        }
+      } catch (error) {
+        Logger.warn('Failed to fetch user role for archives page', {
+          error: error instanceof Error ? error.message : String(error),
+        });
+        if (isMounted) {
+          setUserRole(undefined);
+        }
+      }
+    };
+
+    fetchUserRole();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [status, session?.discordId]);
+
   // Load entries on mount (only once)
   useEffect(() => {
     const loadEntriesOnce = async () => {
       try {
-        logger.info('Loading archive entries - initial load');
+        Logger.info('Loading archive entries - initial load');
         setLoading(true);
         setError(null);
         
-        const fetchedEntries = await import('@/lib/archiveService').then(module => module.getArchiveEntries());
+        const fetchedEntries = await import('@/features/shared/lib/archiveService').then(module => module.getArchiveEntries());
         
         setEntries(fetchedEntries);
-        logger.info('Successfully loaded archive entries', { 
+        Logger.info('Successfully loaded archive entries', { 
           count: fetchedEntries.length
         });
       } catch (err) {
         const error = err instanceof Error ? err : new Error('Unknown error loading entries');
-        logger.error('Failed to load archive entries', { error: error.message });
+        Logger.error('Failed to load archive entries', { error: error.message });
         setError('Failed to load archives. Please try again later.');
       } finally {
         setLoading(false);
@@ -90,7 +131,7 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces }) => {
   // Log page visit
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      logger.info('Archives page visited', {
+      Logger.info('Archives page visited', {
         path: window.location.pathname,
         timestamp: new Date().toISOString()
       });
@@ -103,6 +144,26 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces }) => {
   }, [setShowForm]);
 
   const isAuthenticated = useMemo(() => status === 'authenticated', [status]);
+  const currentDiscordId = (session as any)?.discordId as string | undefined;
+  const canManageEntries = useMemo(() => isAdmin(userRole), [userRole]);
+  const handleRequestDelete = useCallback((entry: ArchiveEntry) => {
+    setEntryPendingDelete(entry);
+  }, []);
+
+  const handleDeleteConfirm = useCallback(async () => {
+    if (!entryPendingDelete) return;
+    try {
+      setIsDeletingEntry(true);
+      await handleDelete(entryPendingDelete);
+      setEntryPendingDelete(null);
+    } finally {
+      setIsDeletingEntry(false);
+    }
+  }, [entryPendingDelete, handleDelete]);
+
+  const handleDeleteCancel = useCallback(() => {
+    setEntryPendingDelete(null);
+  }, []);
 
   return (
     <div className="min-h-[calc(100vh-8rem)]">
@@ -127,7 +188,13 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces }) => {
         datedEntries={datedEntries}
         undatedEntries={undatedEntries}
         isAuthenticated={isAuthenticated}
+        canManageEntries={canManageEntries}
+        canDeleteEntry={(entry) =>
+          canManageEntries ||
+          (!!currentDiscordId && entry.createdByDiscordId === currentDiscordId)
+        }
         onEdit={handleEdit}
+        onRequestDelete={handleRequestDelete}
         onImageClick={handleImageClick}
         onAddClick={handleAddClick}
         onSignInClick={handleSignIn}
@@ -149,6 +216,14 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces }) => {
       )}
 
       <ImageModal isOpen={showImageModal} image={modalImage} onClose={handleImageModalClose} />
+
+      <ArchiveDeleteDialog
+        isOpen={!!entryPendingDelete}
+        entryTitle={entryPendingDelete?.title}
+        isLoading={isDeletingEntry}
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+      />
     </div>
   );
 };

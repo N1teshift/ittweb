@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import { ArchiveEntry } from '@/types/archive';
-import { getArchiveEntries, sortArchiveEntries } from '@/lib/archiveService';
-import { createComponentLogger, logError } from '@/features/shared/utils/loggerUtils';
+import { getArchiveEntries, deleteArchiveEntry } from '@/features/shared/lib/archiveService';
+import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 
 interface UseArchivesActionsProps {
   // State setters from useArchivesPage
@@ -42,6 +42,9 @@ interface UseArchivesActionsReturn {
   
   // Authentication actions
   handleSignIn: () => void;
+  
+  // Entry management
+  handleDelete: (entry: ArchiveEntry) => Promise<void>;
 }
 
 export function useArchivesActions({
@@ -159,6 +162,33 @@ export function useArchivesActions({
     // No need to re-sort here - it will be handled by the computed entries in useArchivesPage
   }, [sortOrder, setSortOrder, logger]);
 
+  const handleDelete = useCallback(async (entry: ArchiveEntry) => {
+    if (status !== 'authenticated') {
+      logger.info('User not authenticated, redirecting to sign in');
+      signIn('discord');
+      return;
+    }
+
+    try {
+      logger.info('Deleting archive entry', { entryId: entry.id, title: entry.title });
+      setLoading(true);
+      setError(null);
+      await deleteArchiveEntry(entry.id);
+      await reloadEntries();
+      logger.info('Archive entry deleted successfully', { entryId: entry.id });
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error('Unknown error deleting entry');
+      logError(error, 'Failed to delete archive entry', {
+        component: 'useArchivesActions',
+        operation: 'handleDelete',
+        entryId: entry.id,
+      });
+      setError('Failed to delete archive entry. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  }, [status, reloadEntries, setLoading, setError, logger]);
+
   // Authentication actions
   const handleSignIn = useCallback(() => {
     logger.info('Initiating Discord sign in');
@@ -186,5 +216,8 @@ export function useArchivesActions({
     
     // Authentication actions
     handleSignIn,
+    
+    // Entry management
+    handleDelete,
   };
 }

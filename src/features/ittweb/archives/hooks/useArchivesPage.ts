@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { ArchiveEntry } from '@/types/archive';
-import { createComponentLogger } from '@/features/shared/utils/loggerUtils';
-import { sortArchiveEntries } from '@/lib/archiveService';
+import { createComponentLogger } from '@/features/infrastructure/logging';
+import { sortArchiveEntries } from '@/features/shared/lib/archiveService';
 
 interface ArchivesPageState {
   entries: ArchiveEntry[];

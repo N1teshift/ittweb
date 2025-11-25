@@ -1,5 +1,5 @@
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
-import logger from '@/features/shared/utils/loggerUtils';
+import { Logger } from '@/features/infrastructure/logging';
 import Link from 'next/link';
 import type { GetStaticProps } from 'next';
 
@@ -18,7 +18,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 export default function Guides() {
 
   if (typeof window !== 'undefined') {
-    logger.info('Guides page visited', {
+    Logger.info('Guides page visited', {
       path: window.location.pathname,
       timestamp: new Date().toISOString()
     });

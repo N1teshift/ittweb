@@ -7,10 +7,12 @@ interface TimelineSectionProps {
   entries: ArchiveEntryType[];
   titleClassName?: string;
   onEdit?: (entry: ArchiveEntryType) => void;
+  onDelete?: (entry: ArchiveEntryType) => void;
+  canDeleteEntry?: (entry: ArchiveEntryType) => boolean;
   onImageClick: (url: string, title: string) => void;
 }
 
-export default function TimelineSection({ title, entries, titleClassName, onEdit, onImageClick }: TimelineSectionProps) {
+export default function TimelineSection({ title, entries, titleClassName, onEdit, onDelete, canDeleteEntry, onImageClick }: TimelineSectionProps) {
   if (entries.length === 0) return null;
 
   return (
@@ -24,6 +26,8 @@ export default function TimelineSection({ title, entries, titleClassName, onEdit
             key={entry.id}
             entry={entry}
             onEdit={onEdit}
+            onDelete={canDeleteEntry && canDeleteEntry(entry) ? onDelete : undefined}
+            canDelete={canDeleteEntry ? canDeleteEntry(entry) : false}
             onImageClick={onImageClick}
           />
         ))}

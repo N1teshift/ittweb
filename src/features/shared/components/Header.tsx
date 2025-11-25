@@ -40,13 +40,13 @@ export default function Header() {
                     <div className="flex items-center gap-3">
                         {status === 'authenticated' ? (
                             <>
-                                <div className="hidden md:flex items-center gap-2">
+                                <Link href="/settings" className="hidden md:flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer">
                                     {session?.user?.image && (
                                         // eslint-disable-next-line @next/next/no-img-element
                                         <img src={session.user.image} alt={session.user.name || 'User'} className="w-8 h-8 rounded-full" />
                                     )}
                                     <span className="text-sm text-gray-200 max-w-[12rem] truncate">{session?.user?.name || 'User'}</span>
-                                </div>
+                                </Link>
                                 <button onClick={() => signOut()} className="px-3 py-2 text-sm rounded-md bg-amber-600 hover:bg-amber-500 text-white">
                                     Sign out
                                 </button>
@@ -89,6 +89,15 @@ export default function Header() {
                             <Link href="/download" className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg">
                                 Download
                             </Link>
+                            {status === 'authenticated' && (
+                                <Link href="/settings" className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg flex items-center gap-2">
+                                    {session?.user?.image && (
+                                        // eslint-disable-next-line @next/next/no-img-element
+                                        <img src={session.user.image} alt={session.user.name || 'User'} className="w-6 h-6 rounded-full" />
+                                    )}
+                                    <span>{session?.user?.name || 'User'}</span>
+                                </Link>
+                            )}
                         </div>
                     </div>
         </header>

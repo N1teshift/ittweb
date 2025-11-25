@@ -1,5 +1,5 @@
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
-import logger from '@/features/shared/utils/loggerUtils';
+import { Logger } from '@/features/infrastructure/logging';
 import DiscordButton from '@/features/shared/components/DiscordButton';
 import GitHubButton from '@/features/shared/components/GitHubButton';
 import { useFallbackTranslation } from '@/features/shared/hooks/useFallbackTranslation';
@@ -11,7 +11,7 @@ export default function WebsiteDevelopmentPage() {
   const { t } = useFallbackTranslation(pageNamespaces);
 
   if (typeof window !== 'undefined') {
-    logger.info('Website Development page visited', {
+    Logger.info('Website Development page visited', {
       path: window.location.pathname,
       timestamp: new Date().toISOString()
     });

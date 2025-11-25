@@ -1,6 +1,6 @@
 import React from 'react';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
-import logger from '@/features/shared/utils/loggerUtils';
+import { Logger } from '@/features/infrastructure/logging';
 import { useFallbackTranslation } from '@/features/shared/hooks/useFallbackTranslation';
 import TrollPanel from '@/features/ittweb/tools/components/TrollPanel';
 import ItemsPalette from '@/features/ittweb/tools/components/ItemsPalette';
@@ -21,7 +21,7 @@ export default function DuelSimulator() {
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
-      logger.info('Duel Simulator page visited', {
+      Logger.info('Duel Simulator page visited', {
         path: window.location.pathname,
         timestamp: new Date().toISOString(),
       });

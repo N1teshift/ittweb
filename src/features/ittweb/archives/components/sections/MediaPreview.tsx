@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import YouTubeEmbed from '../YouTubeEmbed';
+import TwitchClipEmbed from '../TwitchClipEmbed';
 
 interface ImageItem { key: string; url: string }
 
-type SectionKey = 'images' | 'video' | 'replay' | 'text';
+type SectionKey = 'images' | 'video' | 'twitch' | 'replay' | 'text';
 
 interface MediaPreviewProps {
   images: ImageItem[];
   onReorderImages: (fromIndex: number, toIndex: number) => void;
   videoUrl?: string;
+  twitchUrl?: string;
   replayName?: string;
   textPreview?: string;
   sectionOrder: SectionKey[];
@@ -18,7 +20,18 @@ interface MediaPreviewProps {
   onRemoveReplay?: () => void;
 }
 
-export default function MediaPreview({ images, onReorderImages, videoUrl, replayName, textPreview, sectionOrder, onReorderSections, onRemoveImage, onRemoveReplay }: MediaPreviewProps) {
+export default function MediaPreview({
+  images,
+  onReorderImages,
+  videoUrl,
+  twitchUrl,
+  replayName,
+  textPreview,
+  sectionOrder,
+  onReorderSections,
+  onRemoveImage,
+  onRemoveReplay,
+}: MediaPreviewProps) {
   const [draggingSectionIdx, setDraggingSectionIdx] = useState<number | null>(null);
   const [dragOverSectionIdx, setDragOverSectionIdx] = useState<number | null>(null);
   const [draggingImageIdx, setDraggingImageIdx] = useState<number | null>(null);
@@ -68,7 +81,7 @@ export default function MediaPreview({ images, onReorderImages, videoUrl, replay
     setDragOverImageIdx(null);
   };
 
-  const hasAnyMedia = images.length > 0 || !!videoUrl || !!replayName || !!textPreview;
+  const hasAnyMedia = images.length > 0 || !!videoUrl || !!twitchUrl || !!replayName || !!textPreview;
   if (!hasAnyMedia) return null;
 
   return (
@@ -80,6 +93,7 @@ export default function MediaPreview({ images, onReorderImages, videoUrl, replay
           const hasContent =
             (section === 'images' && images.length > 0) ||
             (section === 'video' && !!videoUrl) ||
+            (section === 'twitch' && !!twitchUrl) ||
             (section === 'replay' && !!replayName) ||
             (section === 'text' && !!textPreview);
 
@@ -137,6 +151,12 @@ export default function MediaPreview({ images, onReorderImages, videoUrl, replay
               {section === 'video' && videoUrl && (
                 <div className="relative bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-2">
                   <YouTubeEmbed url={videoUrl} title="Preview Video" />
+                </div>
+              )}
+
+              {section === 'twitch' && twitchUrl && (
+                <div className="relative bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-2">
+                  <TwitchClipEmbed url={twitchUrl} title="Preview Twitch Clip" />
                 </div>
               )}
 

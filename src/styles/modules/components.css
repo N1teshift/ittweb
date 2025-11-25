@@ -1,0 +1,153 @@
+/* =========================================
+   COMPONENT STYLES
+   Styles for specific components
+   ========================================= */
+
+/* Wiki page styles */
+.betterdocs-wrapper {
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+.betterdocs-search-form-wrapper {
+  padding: 20px 0;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.betterdocs-searchform-input-wrap {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.betterdocs-search-field {
+  width: 100%;
+  padding: 12px 50px 12px 20px;
+  border: 2px solid #ddd;
+  border-radius: 25px;
+  font-size: 16px;
+  outline: none;
+}
+
+.betterdocs-search-field:focus {
+  border-color: #528ffe;
+}
+
+.docs-search-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  fill: #666;
+}
+
+.betterdocs-content-wrapper {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.betterdocs-category-grid-wrapper {
+  margin-top: 30px;
+}
+
+.betterdocs-single-category-wrapper {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.betterdocs-category-header {
+  background: linear-gradient(135deg, #528ffe 0%, #3f5af0 100%);
+  color: white;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.betterdocs-category-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 10px 0;
+  font-family: 'MedievalSharp', cursive;
+}
+
+.betterdocs-category-items-counts {
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 5px 15px;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.betterdocs-body {
+  padding: 20px;
+}
+
+.betterdocs-articles-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.betterdocs-articles-list li {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s;
+}
+
+.betterdocs-articles-list li:hover {
+  background-color: #f8f9fa;
+}
+
+.betterdocs-articles-list li:last-child {
+  border-bottom: none;
+}
+
+.betterdocs-articles-list svg {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  fill: #528ffe;
+  flex-shrink: 0;
+}
+
+.betterdocs-articles-list a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  flex: 1;
+}
+
+.betterdocs-articles-list a:hover {
+  color: #528ffe;
+}
+
+.betterdocs-footer {
+  padding: 20px;
+  text-align: center;
+  background-color: #f8f9fa;
+}
+
+.docs-cat-link-btn {
+  display: inline-block;
+  background: #528ffe;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.docs-cat-link-btn:hover {
+  background: #3f5af0;
+  color: white;
+}
+

@@ -11,11 +11,11 @@ import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
 import Head from "next/head";
 import Layout from "@/features/shared/components/Layout";
-import logger from "@/features/shared/utils/loggerUtils";
+import { Logger } from "@/features/infrastructure/logging";
 
 // Initialize logging
 if (typeof window !== 'undefined') {
-  logger.info('ITT Web application started', { 
+  Logger.info('ITT Web application started', { 
     userAgent: navigator.userAgent,
     timestamp: new Date().toISOString()
   });

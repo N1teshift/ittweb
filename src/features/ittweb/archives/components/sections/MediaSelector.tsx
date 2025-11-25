@@ -2,15 +2,29 @@ import React from 'react';
 
 interface MediaSelectorProps {
   mediaUrl: string; // YouTube URL
+  twitchUrl: string;
   onVideoUrlChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onTwitchUrlChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void; // supports multiple
   onReplayUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   multipleImages?: boolean;
   videoError?: string;
+  twitchError?: string;
   showHeader?: boolean;
 }
 
-export default function MediaSelector({ mediaUrl, onVideoUrlChange, onImageUpload, onReplayUpload, multipleImages, videoError, showHeader = true }: MediaSelectorProps) {
+export default function MediaSelector({
+  mediaUrl,
+  twitchUrl,
+  onVideoUrlChange,
+  onTwitchUrlChange,
+  onImageUpload,
+  onReplayUpload,
+  multipleImages,
+  videoError,
+  twitchError,
+  showHeader = true,
+}: MediaSelectorProps) {
   return (
     <div>
       {showHeader && (
@@ -42,6 +56,20 @@ export default function MediaSelector({ mediaUrl, onVideoUrlChange, onImageUploa
           placeholder="https://www.youtube.com/watch?v=..."
         />
         {videoError && <p className="text-sm text-red-400 mt-2">{videoError}</p>}
+      </div>
+
+      {/* Twitch Clip */}
+      <div className="mt-6">
+        <label className="block text-amber-500 mb-2">Twitch Clip URL</label>
+        <input
+          type="url"
+          name="twitchClipUrl"
+          value={twitchUrl}
+          onChange={onTwitchUrlChange}
+          className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
+          placeholder="https://clips.twitch.tv/..."
+        />
+        {twitchError && <p className="text-sm text-red-400 mt-2">{twitchError}</p>}
       </div>
 
       {/* Replay */}

@@ -1,0 +1,99 @@
+import { initializeApp, getApps, FirebaseApp } from "firebase/app";
+import { getFirestore, Firestore } from "firebase/firestore";
+import { getStorage, FirebaseStorage } from "firebase/storage";
+import { getAnalytics, isSupported, Analytics } from "firebase/analytics";
+import { getFirebaseClientConfig } from './config';
+
+// Initialize Firebase
+let app: FirebaseApp | null = null;
+let db: Firestore | null = null;
+let storage: FirebaseStorage | null = null;
+let analytics: Analytics | null = null;
+
+/**
+ * Initialize Firebase app (singleton pattern)
+ */
+export function initializeFirebaseApp(): FirebaseApp {
+  if (app) {
+    return app;
+  }
+
+  const config = getFirebaseClientConfig();
+  const errors = config.projectId ? [] : ['Firebase config missing'];
+  
+  if (errors.length > 0) {
+    throw new Error(`Firebase configuration error: ${errors.join(', ')}`);
+  }
+
+  // Check if Firebase is already initialized
+  const existingApps = getApps();
+  if (existingApps.length > 0) {
+    app = existingApps[0];
+  } else {
+    app = initializeApp(config);
+  }
+
+  return app;
+}
+
+/**
+ * Get Firestore instance
+ */
+export function getFirestoreInstance(): Firestore {
+  if (!db) {
+    const firebaseApp = initializeFirebaseApp();
+    db = getFirestore(firebaseApp);
+  }
+  return db;
+}
+
+/**
+ * Get Storage instance
+ */
+export function getStorageInstance(): FirebaseStorage {
+  if (!storage) {
+    const firebaseApp = initializeFirebaseApp();
+    storage = getStorage(firebaseApp);
+  }
+  return storage;
+}
+
+/**
+ * Get Analytics instance (client-side only)
+ */
+export async function getAnalyticsInstance(): Promise<Analytics | null> {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  if (analytics) {
+    return analytics;
+  }
+
+  try {
+    const supported = await isSupported();
+    if (supported) {
+      const firebaseApp = initializeFirebaseApp();
+      analytics = getAnalytics(firebaseApp);
+      return analytics;
+    }
+  } catch (error) {
+    console.warn('Analytics initialization failed:', error);
+  }
+
+  return null;
+}
+
+// Initialize on import (client-side only)
+if (typeof window !== 'undefined') {
+  try {
+    initializeFirebaseApp();
+    getAnalyticsInstance();
+  } catch (error) {
+    console.error('Firebase initialization error:', error);
+  }
+}
+
+// Export instances for backward compatibility
+export { app, db, storage, analytics };
+

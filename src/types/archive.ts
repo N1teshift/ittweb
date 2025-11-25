@@ -3,18 +3,23 @@ export interface ArchiveEntry {
   title: string;
   content: string;
   author: string;
+  createdByDiscordId?: string | null;
+  createdByName?: string;
   // Deprecated single-media fields kept for backward compatibility
   mediaUrl?: string;
   mediaType?: 'image' | 'video' | 'replay' | 'none';
   // New multi-media fields
   images?: string[];
   videoUrl?: string;
+  twitchClipUrl?: string;
   replayUrl?: string;
   // Optional ordered section layout
-  sectionOrder?: Array<'images' | 'video' | 'replay' | 'text'>;
+  sectionOrder?: Array<'images' | 'video' | 'twitch' | 'replay' | 'text'>;
   dateInfo: DateInfo;
   createdAt: string;
   updatedAt: string;
+  isDeleted?: boolean;
+  deletedAt?: string | null;
 }
 
 export interface DateInfo {
@@ -29,16 +34,21 @@ export interface CreateArchiveEntry {
   title: string;
   content: string;
   author: string;
+  createdByDiscordId?: string | null;
+  createdByName?: string;
   // Deprecated single-media fields kept for backward compatibility
   mediaType?: 'image' | 'video' | 'replay' | 'none';
   mediaUrl?: string;
   // New multi-media fields
   images?: string[];
   videoUrl?: string;
+  twitchClipUrl?: string;
   replayUrl?: string;
   // Optional ordered section layout
-  sectionOrder?: Array<'images' | 'video' | 'replay' | 'text'>;
+  sectionOrder?: Array<'images' | 'video' | 'twitch' | 'replay' | 'text'>;
   dateInfo: DateInfo;
+  isDeleted?: boolean;
+  deletedAt?: string | null;
 }
 
 export interface ArchiveFilters {

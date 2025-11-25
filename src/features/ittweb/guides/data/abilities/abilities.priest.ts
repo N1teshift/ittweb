@@ -26,14 +26,14 @@ export const PRIEST_ABILITIES: AbilityData[] = [
       description: 'Ability extracted from game source.',
     },
     {
-      id: 'sage-mix-energy',
+      id: 'sage-mix-heat',
       name: 'Mix ',
       category: 'priest',
       description: 'Mix',
       cooldown: 50.0,
     },
     {
-      id: 'sage-mix-heat',
+      id: 'sage-mix-energy',
       name: 'Mix ',
       category: 'priest',
       description: 'Mix',

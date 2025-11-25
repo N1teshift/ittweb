@@ -1,6 +1,6 @@
 import React from 'react';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
-import logger from '@/features/shared/utils/loggerUtils';
+import { Logger } from '@/features/infrastructure/logging';
 import TerrainVisualizerContainer from '@/features/ittweb/map-analyzer/components/TerrainVisualizerContainer';
 
 const pageNamespaces = ["common"];
@@ -10,7 +10,7 @@ export default function MapAnalyzer() {
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
-      logger.info('Map Analyzer page visited', {
+      Logger.info('Map Analyzer page visited', {
         path: window.location.pathname,
         timestamp: new Date().toISOString(),
       });

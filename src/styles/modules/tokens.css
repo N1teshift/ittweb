@@ -1,0 +1,22 @@
+/* =========================================
+   DESIGN TOKENS
+   CSS Custom Properties for theming
+   ========================================= */
+
+:root {
+  /* Base colors */
+  --background: #ffffff;
+  --foreground: #171717;
+  
+  /* Medieval theme colors */
+  --amber-400: #fbbf24;
+  --amber-300: #fcd34d;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+

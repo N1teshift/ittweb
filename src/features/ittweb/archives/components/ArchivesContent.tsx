@@ -14,7 +14,10 @@ interface ArchivesContentProps {
   datedEntries: ArchiveEntry[];
   undatedEntries: ArchiveEntry[];
   isAuthenticated: boolean;
+  canManageEntries: boolean;
+  canDeleteEntry?: (entry: ArchiveEntry) => boolean;
   onEdit: (entry: ArchiveEntry) => void;
+  onRequestDelete: (entry: ArchiveEntry) => void;
   onImageClick: (url: string, title: string) => void;
   onAddClick: () => void;
   onSignInClick: () => void;
@@ -27,11 +30,24 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
   datedEntries,
   undatedEntries,
   isAuthenticated,
+  canManageEntries,
+  canDeleteEntry,
   onEdit,
+  onRequestDelete,
   onImageClick,
   onAddClick,
   onSignInClick,
 }) => {
+  const resolveCanDelete = (entry: ArchiveEntry) => {
+    if (canManageEntries) {
+      return true;
+    }
+    if (canDeleteEntry) {
+      return canDeleteEntry(entry);
+    }
+    return false;
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-6">
       {/* Error Message */}
@@ -47,6 +63,8 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
             title="Timeline"
             entries={datedEntries}
             onEdit={isAuthenticated ? onEdit : undefined}
+            onDelete={onRequestDelete}
+            canDeleteEntry={resolveCanDelete}
             onImageClick={onImageClick}
           />
 
@@ -55,6 +73,8 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
             titleClassName="text-gray-400"
             entries={undatedEntries}
             onEdit={isAuthenticated ? onEdit : undefined}
+            onDelete={onRequestDelete}
+            canDeleteEntry={resolveCanDelete}
             onImageClick={onImageClick}
           />
 

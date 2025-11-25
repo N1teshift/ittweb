@@ -1,0 +1,10 @@
+/* =========================================
+   BASE STYLES
+   Reset, typography, and base element styles
+   ========================================= */
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+}
+

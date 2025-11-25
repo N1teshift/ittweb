@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ArchiveEntry } from '@/types/archive';
 import { extractFilenameFromUrl } from '../utils/archiveFormUtils';
 
-export type SectionKey = 'images' | 'video' | 'replay' | 'text';
+export type SectionKey = 'images' | 'video' | 'twitch' | 'replay' | 'text';
 
 export function useArchiveBaseState(mode: 'create' | 'edit', initialEntry?: ArchiveEntry) {
   const [formData, setFormData] = useState({
@@ -10,6 +10,7 @@ export function useArchiveBaseState(mode: 'create' | 'edit', initialEntry?: Arch
     content: '',
     author: '',
     mediaUrl: '',
+    twitchClipUrl: '',
     mediaType: 'none' as 'image' | 'video' | 'replay' | 'none',
     dateType: 'single' as 'single' | 'interval' | 'undated',
     singleDate: '',
@@ -22,7 +23,7 @@ export function useArchiveBaseState(mode: 'create' | 'edit', initialEntry?: Arch
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [replayFile, setReplayFile] = useState<File | null>(null);
   const [currentImages, setCurrentImages] = useState<string[]>([]);
-  const [sectionOrder, setSectionOrder] = useState<SectionKey[]>(['images', 'video', 'replay', 'text']);
+  const [sectionOrder, setSectionOrder] = useState<SectionKey[]>(['images', 'video', 'twitch', 'replay', 'text']);
   const [existingReplayUrl, setExistingReplayUrl] = useState<string>(
     (initialEntry?.replayUrl || (initialEntry?.mediaType === 'replay' ? initialEntry?.mediaUrl : '')) || ''
   );
@@ -34,6 +35,7 @@ export function useArchiveBaseState(mode: 'create' | 'edit', initialEntry?: Arch
         content: initialEntry.content,
         author: initialEntry.author,
         mediaUrl: initialEntry.videoUrl || initialEntry.mediaUrl || '',
+        twitchClipUrl: initialEntry.twitchClipUrl || '',
         mediaType: initialEntry.mediaType || (initialEntry.videoUrl ? 'video' : initialEntry.images?.length ? 'image' : initialEntry.replayUrl ? 'replay' : 'none'),
         dateType: initialEntry.dateInfo.type,
         singleDate: initialEntry.dateInfo.singleDate || '',
@@ -47,7 +49,7 @@ export function useArchiveBaseState(mode: 'create' | 'edit', initialEntry?: Arch
       setCurrentImages(initialImages);
       const initialOrder: SectionKey[] = initialEntry.sectionOrder && initialEntry.sectionOrder.length
         ? (initialEntry.sectionOrder as SectionKey[])
-        : ['images', 'video', 'replay', 'text'];
+        : ['images', 'video', 'twitch', 'replay', 'text'];
       setSectionOrder(initialOrder);
       setExistingReplayUrl(
         (initialEntry.replayUrl || (initialEntry.mediaType === 'replay' ? initialEntry.mediaUrl : '')) || ''

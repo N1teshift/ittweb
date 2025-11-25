@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import type { ArchiveEntry } from '@/types/archive';
-import { extractYouTubeId } from '@/lib/archiveService';
+import { extractYouTubeId } from '@/features/shared/lib/archiveService';
 import YouTubeEmbed from './YouTubeEmbed';
+import TwitchClipEmbed from './TwitchClipEmbed';
 import Image from 'next/image';
+
+type EntrySection = 'images' | 'video' | 'twitch' | 'replay' | 'text';
 
 interface ArchiveEntryProps {
   entry: ArchiveEntry;
   onEdit?: (entry: ArchiveEntry) => void;
+  onDelete?: (entry: ArchiveEntry) => void;
+  canDelete?: boolean;
   onImageClick?: (url: string, title: string) => void;
 }
 
-export default function ArchiveEntry({ entry, onEdit, onImageClick }: ArchiveEntryProps) {
+export default function ArchiveEntry({ entry, onEdit, onDelete, canDelete, onImageClick }: ArchiveEntryProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const maxLength = 300; // Characters to show before truncating
   const shouldTruncate = entry.content.length > maxLength;
@@ -32,25 +37,26 @@ export default function ArchiveEntry({ entry, onEdit, onImageClick }: ArchiveEnt
   };
 
   const renderSectionedMediaAndText = () => {
-    const imageUrls = entry.images && entry.images.length > 0
-      ? entry.images
-      : entry.mediaType === 'image' && entry.mediaUrl
-      ? [entry.mediaUrl]
-      : [];
+    const imageUrls: string[] =
+      entry.images && entry.images.length > 0
+        ? entry.images
+        : entry.mediaType === 'image' && entry.mediaUrl
+        ? [entry.mediaUrl]
+        : [];
 
-    const video = entry.videoUrl || (entry.mediaType === 'video' ? entry.mediaUrl : undefined);
-    const replay = entry.replayUrl || (entry.mediaType === 'replay' ? entry.mediaUrl : undefined);
+    const video: string | undefined = entry.videoUrl || (entry.mediaType === 'video' ? entry.mediaUrl : undefined);
+    const replay: string | undefined = entry.replayUrl || (entry.mediaType === 'replay' ? entry.mediaUrl : undefined);
 
-    const defaultOrder: Array<'images' | 'video' | 'replay' | 'text'> = ['images', 'video', 'replay', 'text'];
-    const order = entry.sectionOrder && entry.sectionOrder.length ? entry.sectionOrder : defaultOrder;
+    const defaultOrder: EntrySection[] = ['images', 'video', 'twitch', 'replay', 'text'];
+    const order: EntrySection[] = entry.sectionOrder && entry.sectionOrder.length ? entry.sectionOrder : defaultOrder;
 
     return (
       <div className="space-y-4">
-        {order.map((section, idx) => {
+        {order.map((section: EntrySection, idx: number) => {
           if (section === 'images' && imageUrls.length > 0) {
             return (
               <div key={`section-images-${idx}`} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {imageUrls.map((url, i) => (
+                {imageUrls.map((url: string, i: number) => (
                   <div
                     key={url + i}
                     className="relative w-full rounded-lg border border-amber-500/30 overflow-hidden cursor-pointer hover:border-amber-500/50 transition-colors"
@@ -80,6 +86,14 @@ export default function ArchiveEntry({ entry, onEdit, onImageClick }: ArchiveEnt
             return (
               <div key={`section-video-${idx}`}>
                 <YouTubeEmbed url={video} title={entry.title} />
+              </div>
+            );
+          }
+
+          if (section === 'twitch' && entry.twitchClipUrl) {
+            return (
+              <div key={`section-twitch-${idx}`}>
+                <TwitchClipEmbed url={entry.twitchClipUrl} title={entry.title} />
               </div>
             );
           }
@@ -153,21 +167,30 @@ export default function ArchiveEntry({ entry, onEdit, onImageClick }: ArchiveEnt
 
              {/* Footer */}
        <div className="mt-4 pt-4 border-t border-amber-500/20">
-         <div className="flex items-center justify-between text-sm text-gray-400">
-           <span>
-             Added by {entry.author} on {new Date(entry.createdAt).toLocaleDateString()}
-           </span>
-           {onEdit && (
-             <button
-               onClick={() => onEdit(entry)}
-               className="text-amber-400 hover:text-amber-300 underline font-medium transition-colors"
-             >
-               Edit
-             </button>
-           )}
-         </div>
-       </div>
-
-     </div>
-   );
- }
+        <div className="flex items-center justify-between text-sm text-gray-400">
+          <span>
+            Added by {entry.author} on {new Date(entry.createdAt).toLocaleDateString()}
+          </span>
+          <div className="flex items-center gap-3">
+            {onEdit && (
+              <button
+                onClick={() => onEdit(entry)}
+                className="text-amber-400 hover:text-amber-300 underline font-medium transition-colors"
+              >
+                Edit
+              </button>
+            )}
+            {canDelete && onDelete && (
+              <button
+                onClick={() => onDelete(entry)}
+                className="text-red-400 hover:text-red-300 underline font-medium transition-colors"
+              >
+                Delete
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

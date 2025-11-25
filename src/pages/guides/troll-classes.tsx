@@ -22,17 +22,23 @@ export default function TrollClassesGuide() {
 
       <section className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
         <h2 className="font-medieval-brand text-2xl mb-4">Browse Classes</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {BASE_TROLL_CLASSES.map((c) => (
-            <GuideCard
-              key={c.slug}
-              href={`/guides/classes/${c.slug}`}
-              title={c.name}
-              icon={<ClassIcon slug={c.slug} name={c.name} size={36} />}
-              description={<p className="line-clamp-3">{c.summary}</p>}
-            />
-          ))}
-        </div>
+        {BASE_TROLL_CLASSES.length === 0 ? (
+          <p className="text-sm text-amber-200/80">
+            No class data available yet. Run the extraction pipeline to regenerate `classes.ts`.
+          </p>
+        ) : (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {BASE_TROLL_CLASSES.map((c) => (
+              <GuideCard
+                key={c.slug}
+                href={`/guides/classes/${c.slug}`}
+                title={c.name}
+                icon={<ClassIcon slug={c.slug} name={c.name} size={36} />}
+                description={<p className="line-clamp-3">{c.summary}</p>}
+              />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

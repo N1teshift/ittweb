@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
-import { saveUserData } from "@/lib/userDataService";
+import { saveUserData } from "@/features/shared/lib/userDataService";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -95,9 +95,16 @@ export const authOptions: NextAuthOptions = {
           });
         } catch (error) {
           // Log error but don't fail the auth process
-          if (process.env.NODE_ENV === 'development') {
+          // Always log errors to help with debugging
+          // eslint-disable-next-line no-console
+          console.error('[NextAuth JWT] Failed to update user data:', error);
+          if (error instanceof Error) {
             // eslint-disable-next-line no-console
-            console.error('[NextAuth JWT] Failed to update user data:', error);
+            console.error('[NextAuth JWT] Error details:', {
+              message: error.message,
+              stack: error.stack,
+              discordId: anyProfile.id || account.providerAccountId,
+            });
           }
         }
       }

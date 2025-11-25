@@ -1,7 +1,5 @@
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
-import logger from '@/features/shared/utils/loggerUtils';
-import { useFallbackTranslation } from '@/features/shared/hooks/useFallbackTranslation';
-import { useEffect } from 'react';
+import { Logger } from '@/features/infrastructure/logging';
 import type { GetStaticProps } from 'next';
 
 const pageNamespaces = ["common"];
@@ -17,40 +15,25 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 };
 
 export default function Download() {
-  const { t } = useFallbackTranslation(pageNamespaces);
-
-  // Auto-download when page loads
-  useEffect(() => {
-    const downloadUrl = 'https://github.com/Exactuz/island-troll-tribes/releases/download/v3.27/Island.Troll.Tribes.v3.27.4.w3x';
-    
-    // Create a temporary link element and trigger download
-    const link = document.createElement('a');
-    link.href = downloadUrl;
-    link.download = 'Island.Troll.Tribes.v3.27.4.w3x';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    // Log the download attempt
-    if (typeof window !== 'undefined') {
-      logger.info('Download page visited and download triggered', {
-        path: window.location.pathname,
-        downloadUrl: downloadUrl,
-        timestamp: new Date().toISOString()
-      });
-    }
-  }, []);
 
   if (typeof window !== 'undefined') {
-    logger.info('Download page visited', {
+    Logger.info('Download page visited', {
       path: window.location.pathname,
       timestamp: new Date().toISOString()
     });
   }
 
   const handleManualDownload = () => {
-    const downloadUrl = 'https://github.com/Exactuz/island-troll-tribes/releases/download/v3.27/Island.Troll.Tribes.v3.27.4.w3x';
+    const downloadUrl = 'https://github.com/Exactuz/island-troll-tribes/releases/download/v3.28/Island.Troll.Tribes.v3.28.w3x';
     window.open(downloadUrl, '_blank');
+
+    if (typeof window !== 'undefined') {
+      Logger.info('Manual download triggered', {
+        path: window.location.pathname,
+        downloadUrl: downloadUrl,
+        timestamp: new Date().toISOString()
+      });
+    }
   };
 
   return (
@@ -64,9 +47,8 @@ export default function Download() {
         {/* Content Section */}
         <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-8 mb-8">
           <p className="text-lg md:text-xl text-gray-300 mb-4 leading-relaxed">
-            Welcome to the Island Troll Tribes Download section!
-            <br />
-            Your download should start automatically. If it doesn&apos;t, click the button below.
+            Welcome to the Island Troll Tribes Download section! Click the button
+            below whenever you&apos;re ready to grab the latest map build.
           </p>
           
           {/* Download Information */}
@@ -74,8 +56,8 @@ export default function Download() {
             <div className="text-left">
               <h2 className="font-medieval-brand text-2xl mb-4">Download Information</h2>
               <div className="text-gray-300 space-y-2">
-                <p><strong>File:</strong> Island.Troll.Tribes.v3.27.4.w3x</p>
-                <p><strong>Version:</strong> v3.27.4</p>
+                <p><strong>File:</strong> Island.Troll.Tribes.v3.28.w3x</p>
+                <p><strong>Version:</strong> v3.28</p>
                 <p><strong>Size:</strong> ~14.4 MB</p>
                 <p><strong>Format:</strong> Warcraft III Map File</p>
               </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSession } from 'next-auth/react';
-import { createArchiveEntry } from '@/lib/archiveService';
+import { createArchiveEntry } from '@/features/shared/lib/archiveService';
 import { CreateArchiveEntry } from '@/types/archive';
 import ArchiveFormBase from './ArchiveFormBase';
 
@@ -15,7 +15,12 @@ export default function ArchiveForm({ onSuccess, onCancel }: ArchiveFormProps) {
     || (session?.user?.email ? session.user.email.split('@')[0] : '')
     || 'Discord User');
   const handleSubmit = async (payload: CreateArchiveEntry | Partial<CreateArchiveEntry>) => {
-    await createArchiveEntry(payload as CreateArchiveEntry);
+    const entryPayload: CreateArchiveEntry = {
+      ...(payload as CreateArchiveEntry),
+      createdByDiscordId: (session as any)?.discordId || null,
+      createdByName: session?.user?.name || defaultAuthor,
+    };
+    await createArchiveEntry(entryPayload);
   };
 
   return (
