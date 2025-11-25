@@ -3,6 +3,7 @@ import {
   getDoc,
   setDoc,
   updateDoc,
+  deleteDoc,
   Timestamp,
   serverTimestamp,
 } from 'firebase/firestore';
@@ -158,6 +159,37 @@ export async function getUserDataById(id: string): Promise<UserData | null> {
       component: 'userDataService',
       operation: 'getUserDataById',
       id,
+    });
+    throw err;
+  }
+}
+
+/**
+ * Delete user data by Discord ID
+ * Permanently removes the user's data from Firestore
+ */
+export async function deleteUserData(discordId: string): Promise<void> {
+  try {
+    logger.info('Deleting user data', { discordId });
+
+    const db = getFirestoreInstance();
+    const docRef = doc(db, USER_DATA_COLLECTION, discordId);
+    
+    // Check if document exists
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      logger.info('User data not found for deletion', { discordId });
+      return;
+    }
+
+    await deleteDoc(docRef);
+    logger.info('User data deleted', { discordId });
+  } catch (error) {
+    const err = error as Error;
+    logError(err, 'Failed to delete user data', {
+      component: 'userDataService',
+      operation: 'deleteUserData',
+      discordId,
     });
     throw err;
   }

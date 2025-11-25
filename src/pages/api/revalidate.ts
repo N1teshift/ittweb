@@ -47,6 +47,7 @@ export default async function handler(
     const err = error as Error;
     logError(err, 'Revalidation API request failed', {
       component: 'api/revalidate',
+      operation: 'handleRequest',
       method: req.method,
     });
     return res.status(500).json({ 

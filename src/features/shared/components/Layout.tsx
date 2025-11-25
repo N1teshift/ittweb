@@ -2,6 +2,7 @@
 import { TranslationNamespaceContext } from '../lib/TranslationNamespaceContext';
 import Header from './Header';
 import Footer from './Footer';
+import DataCollectionNotice from './DataCollectionNotice';
 
 interface LayoutProps {
     children?: React.ReactNode;
@@ -39,6 +40,7 @@ export default function Layout({ children, pageTranslationNamespaces = ["common"
                 </main>
 
                 <Footer />
+                <DataCollectionNotice />
             </div>
         </TranslationNamespaceContext.Provider>
     );

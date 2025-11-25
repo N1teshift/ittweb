@@ -7,6 +7,8 @@ import { signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
 import PageHero from '@/features/shared/components/PageHero';
 import { Timestamp } from 'firebase/firestore';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 type SerializedUserData = Record<string, unknown> | null;
 
@@ -16,6 +18,10 @@ interface SettingsPageProps {
 
 export default function SettingsPage({ userData }: SettingsPageProps) {
   const { data: session } = useSession();
+  const router = useRouter();
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const formatDate = (date: Date | Timestamp | string | undefined) => {
     if (!date) return 'N/A';
@@ -39,6 +45,33 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
       });
     } catch {
       return 'N/A';
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    setDeleteError(null);
+
+    try {
+      const response = await fetch('/api/user/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to delete account');
+      }
+
+      // Sign out and redirect to home
+      await signOut({ redirect: false });
+      router.push('/');
+    } catch (error) {
+      const err = error as Error;
+      setDeleteError(err.message || 'An error occurred while deleting your account');
+      setIsDeleting(false);
     }
   };
 
@@ -145,18 +178,74 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
             </div>
 
             {/* Actions */}
-            <div className="pt-6 border-t border-amber-500/20">
-              <button
-                onClick={() => signOut()}
-                className="px-4 py-2 text-sm rounded-md bg-red-600 hover:bg-red-500 text-white transition-colors"
-              >
-                Sign Out
-              </button>
+            <div className="pt-6 border-t border-amber-500/20 space-y-4">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={() => signOut()}
+                  className="px-4 py-2 text-sm rounded-md bg-red-600 hover:bg-red-500 text-white transition-colors"
+                >
+                  Sign Out
+                </button>
+                <button
+                  onClick={() => setShowDeleteDialog(true)}
+                  className="px-4 py-2 text-sm rounded-md bg-red-800 hover:bg-red-700 text-white transition-colors border border-red-600"
+                >
+                  Delete Account
+                </button>
+              </div>
+              <p className="text-xs text-gray-500">
+                Deleting your account will permanently remove all your data from our system. This action cannot be undone.
+              </p>
             </div>
           </div>
         ) : (
           <div className="bg-gray-800/50 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6 text-center">
             <p className="text-gray-400">No user data found. Your account may not be fully set up yet.</p>
+          </div>
+        )}
+
+        {/* Delete Account Dialog */}
+        {showDeleteDialog && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            <div 
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
+              aria-hidden="true"
+              onClick={() => !isDeleting && setShowDeleteDialog(false)}
+            />
+            <div className="relative w-full max-w-md rounded-lg border border-amber-500/40 bg-gray-900/95 backdrop-blur-md p-6 shadow-2xl">
+              <div className="mb-4">
+                <h3 className="text-2xl font-semibold text-white mb-2">Delete Account?</h3>
+                <p className="mt-2 text-sm text-gray-300">
+                  This will permanently delete your account and all associated data. This action cannot be undone.
+                </p>
+                {deleteError && (
+                  <div className="mt-3 rounded-md border border-red-500/40 bg-red-900/20 px-3 py-2 text-sm text-red-200">
+                    {deleteError}
+                  </div>
+                )}
+              </div>
+              <div className="flex justify-end gap-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowDeleteDialog(false);
+                    setDeleteError(null);
+                  }}
+                  disabled={isDeleting}
+                  className="rounded-md border border-gray-600 px-4 py-2 text-sm font-medium text-gray-200 transition-colors hover:bg-gray-700/50 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDeleteAccount}
+                  disabled={isDeleting}
+                  className="rounded-md border border-red-600 bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {isDeleting ? 'Deleting…' : 'Delete Account'}
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>
