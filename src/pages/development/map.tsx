@@ -1,6 +1,5 @@
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import logger from '@/features/shared/utils/loggerUtils';
-import Layout from '@/features/shared/components/Layout';
 import GitHubButton from '@/features/shared/components/GitHubButton';
 import { useFallbackTranslation } from '@/features/shared/hooks/useFallbackTranslation';
 
@@ -18,8 +17,7 @@ export default function MapDevelopmentPage() {
   }
 
   return (
-    <Layout pageTranslationNamespaces={pageNamespaces}>
-      <div className="flex items-center justify-center min-h-[calc(100vh-8rem)]">
+    <div className="flex items-center justify-center min-h-[calc(100vh-8rem)]">
         <div className="max-w-3xl w-full mx-auto px-6 py-12">
           <h1 className="font-medieval-brand text-4xl md:text-5xl mb-6 text-center">Map Development</h1>
 
@@ -44,7 +42,6 @@ export default function MapDevelopmentPage() {
           </div>
         </div>
       </div>
-    </Layout>
   );
 }
 

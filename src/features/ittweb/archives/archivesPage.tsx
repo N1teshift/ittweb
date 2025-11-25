@@ -84,7 +84,8 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces }) => {
     };
     
     loadEntriesOnce();
-  }, [setEntries, setLoading, setError]); // Include required dependencies
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount - setters are stable
 
   // Log page visit
   useEffect(() => {

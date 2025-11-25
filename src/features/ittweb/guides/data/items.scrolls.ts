@@ -1,49 +1,43 @@
+// Auto-generated from external/recipes.json
+// Do not edit by hand. Re-generate via: python external/scripts/generate_base_items_from_recipes.py
+
 import type { ItemData } from '@/types/items';
 
 export const SCROLL_ITEMS: ItemData[] = [
   {
-    id: 'scroll-living-dead',
-    name: 'Scroll of Living Dead',
+    id: 'scroll-cyclone',
+    name: 'Scroll Cyclone',
     category: 'scrolls',
-    description: 'Summons undead minions to fight for you.',
-    stats: { other: ['Summons undead'] },
-  },
-  {
-    id: 'scroll-fireball',
-    name: 'Scroll of Fireball',
-    category: 'scrolls',
-    description: 'Launches a powerful fireball at enemies.',
-    stats: { damage: 100, other: ['Area damage', 'Fire damage'] },
+    description: 'Imported from game data.',
   },
   {
     id: 'scroll-entangling-roots',
-    name: 'Scroll of Entangling Roots',
+    name: 'Scroll Entangling Roots',
     category: 'scrolls',
-    description: 'Roots burst from the ground to trap enemies.',
-    stats: { other: ['Root enemies', 'Area effect'] },
+    description: 'Imported from game data.',
   },
   {
-    id: 'scroll-stone-skin',
-    name: 'Scroll of Stone Skin',
+    id: 'scroll-fireball',
+    name: 'Scroll Fireball',
     category: 'scrolls',
-    description: 'Hardens skin to provide damage reduction.',
-    stats: { armor: 5, other: ['Temporary armor boost'] },
+    description: 'Imported from game data.',
   },
   {
-    id: 'scroll-cyclone',
-    name: 'Scroll of Cyclone',
+    id: 'scroll-haste',
+    name: 'Scroll Haste',
     category: 'scrolls',
-    description: 'Creates a powerful whirlwind that damages enemies.',
-    stats: { damage: 75, other: ['Wind damage', 'Knockback'] },
+    description: 'Imported from game data.',
+  },
+  {
+    id: 'scroll-living-dead',
+    name: 'Scroll Living Dead',
+    category: 'scrolls',
+    description: 'Imported from game data.',
   },
   {
     id: 'scroll-tsunami',
-    name: 'Scroll of Tsunami',
+    name: 'Scroll Tsunami',
     category: 'scrolls',
-    description: 'Summons a massive wave to devastate the battlefield.',
-    stats: { damage: 150, other: ['Water damage', 'Area flood'] },
+    description: 'Imported from game data.',
   },
 ];
-
-
-

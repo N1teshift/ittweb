@@ -55,6 +55,11 @@ export default function Tools() {
                     • Map Analyzer
                   </Link>
                 </li>
+                <li>
+                  <Link href="/tools/icon-mapper" className="text-amber-400 hover:text-amber-300">
+                    • Icon Mapper
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

@@ -1,0 +1,17 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Archives collection - public read/write for now
+    match /archives/{document} {
+      allow read, write: if true;
+    }
+
+    // UserData collection - public read/write for now
+    // Note: You can tighten these rules later to require authentication
+    match /userData/{discordId} {
+      allow read, write: if true;
+    }
+  }
+}
+

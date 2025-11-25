@@ -18,7 +18,11 @@ const BASE_ITEMS: ItemData[] = [
   ...BUILDING_ITEMS,
 ];
 
-export const ITEMS_DATA: ItemData[] = [...BASE_ITEMS, ...EXTERNAL_ITEMS];
+// Filter out duplicates from EXTERNAL_ITEMS that already exist in BASE_ITEMS
+const baseItemIds = new Set(BASE_ITEMS.map(item => item.id));
+const uniqueExternalItems = EXTERNAL_ITEMS.filter(item => !baseItemIds.has(item.id));
+
+export const ITEMS_DATA: ItemData[] = [...BASE_ITEMS, ...uniqueExternalItems];
 
 export const ITEMS_BY_CATEGORY: ItemsByCategory = ITEMS_DATA.reduce((acc, item) => {
   if (!acc[item.category]) {

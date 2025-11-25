@@ -1,6 +1,6 @@
 import { ItemData } from '@/types/items';
 import { resolveExplicitIcon } from '@/features/ittweb/guides/utils/iconMap';
-import { getIconPath, ITTIconCategory } from '@/features/ittweb/guides/utils/iconUtils';
+import { getDefaultIconPath, ITTIconCategory } from '@/features/ittweb/guides/utils/iconUtils';
 
 function toIconCategory(item: ItemData): ITTIconCategory {
   return item.category === 'buildings' ? 'buildings' : 'items';
@@ -11,7 +11,7 @@ export function getItemIconPathFromRecord(item: ItemData): string {
   const category = toIconCategory(item);
   const explicit = resolveExplicitIcon(category, item.name);
   if (explicit) return explicit;
-  return getIconPath({ category, name: item.name });
+  return getDefaultIconPath();
 }
 
 

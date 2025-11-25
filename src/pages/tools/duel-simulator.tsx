@@ -1,7 +1,6 @@
 import React from 'react';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import logger from '@/features/shared/utils/loggerUtils';
-import Layout from '@/features/shared/components/Layout';
 import { useFallbackTranslation } from '@/features/shared/hooks/useFallbackTranslation';
 import TrollPanel from '@/features/ittweb/tools/components/TrollPanel';
 import ItemsPalette from '@/features/ittweb/tools/components/ItemsPalette';
@@ -93,8 +92,7 @@ export default function DuelSimulator() {
   };
 
   return (
-    <Layout pageTranslationNamespaces={pageNamespaces}>
-      <div className="min-h-[calc(100vh-8rem)] px-4 md:px-8 py-8 md:py-10">
+    <div className="min-h-[calc(100vh-8rem)] px-4 md:px-8 py-8 md:py-10">
         <h1 className="font-medieval-brand text-4xl md:text-5xl mb-6 text-center">Duel Simulator</h1>
 
         <div className="grid grid-cols-1 xl:grid-cols-[1fr_minmax(320px,420px)_1fr] gap-6 items-start">
@@ -157,7 +155,6 @@ export default function DuelSimulator() {
           This is the first version of the two-troll setup with WC3-style 8-slot inventories. Damage math to follow.
         </div>
       </div>
-    </Layout>
   );
 }
 

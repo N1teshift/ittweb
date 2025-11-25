@@ -1,7 +1,7 @@
 import { useTranslation } from 'next-i18next';
 import { useTranslationNamespace } from '../lib/TranslationNamespaceContext'; // Adjust path as needed
 import { TFunction, TOptions, i18n as I18nInstanceType } from 'i18next'; // Import TOptions and i18n for type
-import { createComponentLogger } from '@/features/ittweb/shared/utils/loggerUtils';
+import { createComponentLogger } from '@/features/shared/utils/loggerUtils';
 
 interface FallbackTranslationResponse {
   t: TFunction;

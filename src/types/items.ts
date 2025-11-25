@@ -27,12 +27,16 @@ export type ItemData = {
   description: string;
   recipe?: string[];
   craftedAt?: string;
+  mixingPotManaRequirement?: number;
   iconPath?: string;
   stats?: {
     damage?: number;
     armor?: number;
     health?: number;
     mana?: number;
+    strength?: number;
+    agility?: number;
+    intelligence?: number;
     other?: string[];
   };
 };

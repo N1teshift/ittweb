@@ -9,6 +9,7 @@ import type { AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
 import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
+import Head from "next/head";
 import Layout from "@/features/shared/components/Layout";
 import logger from "@/features/shared/utils/loggerUtils";
 
@@ -44,11 +45,16 @@ function App({ Component, pageProps }: AppProps) {
     const translationNamespaces = extendedProps?.translationNamespaces || ["common"];
     
     return (
-        <SessionProvider session={extendedProps?.session}>
-            <Layout pageTranslationNamespaces={translationNamespaces}>
-                <Component {...pageProps} />
-            </Layout>
-        </SessionProvider>
+        <>
+            <Head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+            </Head>
+            <SessionProvider session={extendedProps?.session}>
+                <Layout pageTranslationNamespaces={translationNamespaces}>
+                    <Component {...pageProps} />
+                </Layout>
+            </SessionProvider>
+        </>
     );
 }
 

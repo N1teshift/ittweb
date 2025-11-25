@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
+import { saveUserData } from "@/lib/userDataService";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -25,6 +26,8 @@ export const authOptions: NextAuthOptions = {
         // eslint-disable-next-line no-console
         console.log('[NextAuth signIn]', message);
       }
+      // User data is saved in the JWT callback to ensure we have complete information
+      // including the preferred name from guild nickname if available
     },
   },
   logger: {
@@ -70,11 +73,32 @@ export const authOptions: NextAuthOptions = {
         // Try to ensure we have a usable avatar URL
         const existingPicture = (token as any).picture as string | undefined;
         const candidatePicture = anyProfile.image_url || anyProfile.avatar_url || existingPicture;
-        if (candidatePicture) {
-          (token as any).picture = candidatePicture;
-        } else if (anyProfile.id && anyProfile.avatar) {
-          // Construct from CDN if raw fields are present
-          (token as any).picture = `https://cdn.discordapp.com/avatars/${anyProfile.id}/${anyProfile.avatar}.png`;
+        const finalAvatarUrl = candidatePicture || 
+          (anyProfile.id && anyProfile.avatar 
+            ? `https://cdn.discordapp.com/avatars/${anyProfile.id}/${anyProfile.avatar}.png`
+            : undefined);
+        if (finalAvatarUrl) {
+          (token as any).picture = finalAvatarUrl;
+        }
+
+        // Update user data in Firestore with complete information including preferred name
+        try {
+          await saveUserData({
+            discordId: anyProfile.id || account.providerAccountId,
+            email: anyProfile.email || profile.email,
+            name: profile.name,
+            preferredName: preferredName,
+            avatarUrl: finalAvatarUrl,
+            username: anyProfile.username,
+            globalName: anyProfile.global_name,
+            displayName: anyProfile.display_name,
+          });
+        } catch (error) {
+          // Log error but don't fail the auth process
+          if (process.env.NODE_ENV === 'development') {
+            // eslint-disable-next-line no-console
+            console.error('[NextAuth JWT] Failed to update user data:', error);
+          }
         }
       }
       return token;

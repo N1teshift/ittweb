@@ -1,6 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
-import Layout from '@/features/shared/components/Layout';
 import Link from 'next/link';
 import { AbilityData } from '@/features/ittweb/guides/data/abilities';
 import { ABILITIES, ABILITY_CATEGORIES, getAbilityById } from '@/features/ittweb/guides/data/abilities';
@@ -26,8 +25,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export default function AbilityDetail({ ability }: Props) {
   return (
-    <Layout pageTranslationNamespaces={pageNamespaces}>
-      <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
+    <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6 space-x-4">
           <Link href="/guides/abilities" className="text-amber-400 hover:text-amber-300">← Abilities</Link>
           <Link href="/guides" className="text-amber-400 hover:text-amber-300">Guides</Link>
@@ -79,6 +77,5 @@ export default function AbilityDetail({ ability }: Props) {
           )}
         </div>
       </div>
-    </Layout>
   );
 }

@@ -1,6 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
-import Layout from '@/features/shared/components/Layout';
 import Link from 'next/link';
 import { ITEMS_DATA, getItemById } from '@/features/ittweb/guides/data/items';
 import { ItemData } from '@/types/items';
@@ -39,8 +38,7 @@ function StatBadge({ label, value, colorClass }: { label: string; value: string 
 
 export default function ItemDetailPage({ item }: Props) {
   return (
-    <Layout pageTranslationNamespaces={pageNamespaces}>
-      <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
+    <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6">
           <Link href="/guides/items" className="text-amber-400 hover:text-amber-300">← Items Overview</Link>
         </div>
@@ -68,6 +66,12 @@ export default function ItemDetailPage({ item }: Props) {
                 <div>
                   <span className="text-gray-400">Crafted at:</span>{' '}
                   <span className="text-blue-300">{item.craftedAt}</span>
+                </div>
+              )}
+              {item.mixingPotManaRequirement && (
+                <div>
+                  <span className="text-gray-400">Mana cost:</span>{' '}
+                  <span className="text-purple-300">{item.mixingPotManaRequirement} mana</span>
                 </div>
               )}
             </div>
@@ -101,12 +105,19 @@ export default function ItemDetailPage({ item }: Props) {
           <section className="md:col-span-2 bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
             <h2 className="font-medieval-brand text-2xl mb-3">Recipe</h2>
             {item.recipe && item.recipe.length > 0 ? (
-              <div className="flex flex-wrap gap-2">
-                {item.recipe.map((ing, i) => (
-                  <span key={i} className="text-sm bg-amber-500/20 text-amber-200 px-2 py-1 rounded">
-                    {ing.replace('-', ' ')}
-                  </span>
-                ))}
+              <div>
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {item.recipe.map((ing, i) => (
+                    <span key={i} className="text-sm bg-amber-500/20 text-amber-200 px-2 py-1 rounded">
+                      {ing.replace(/-/g, ' ')}
+                    </span>
+                  ))}
+                </div>
+                {item.mixingPotManaRequirement && (
+                  <div className="mt-2 text-sm text-purple-300">
+                    Requires {item.mixingPotManaRequirement} mana to craft
+                  </div>
+                )}
               </div>
             ) : (
               <p className="text-gray-400">No recipe required.</p>
@@ -114,6 +125,5 @@ export default function ItemDetailPage({ item }: Props) {
           </section>
         </div>
       </div>
-    </Layout>
   );
 }

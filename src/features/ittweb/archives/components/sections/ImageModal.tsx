@@ -36,6 +36,7 @@ export default function ImageModal({ isOpen, image, onClose }: ImageModalProps) 
             className="max-w-full max-h-full object-contain"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
             onClick={(e) => e.stopPropagation()}
+            unoptimized={image.url.includes('firebasestorage.googleapis.com')}
           />
         </div>
       </div>

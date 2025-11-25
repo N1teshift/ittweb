@@ -1,5 +1,4 @@
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
-import Layout from '@/features/shared/components/Layout';
 import Link from 'next/link';
 import { useState, useMemo } from 'react';
 import { ITEMS_DATA, ITEMS_BY_CATEGORY, searchItems } from '@/features/ittweb/guides/data/items';
@@ -142,8 +141,7 @@ export default function ItemsPage() {
   }, [filteredItems]);
 
   return (
-    <Layout pageTranslationNamespaces={pageNamespaces}>
-      <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-7xl mx-auto">
+    <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-7xl mx-auto">
         <div className="mb-6">
           <Link href="/guides" className="text-amber-400 hover:text-amber-300">← Back to Guides</Link>
         </div>
@@ -254,6 +252,5 @@ export default function ItemsPage() {
           </div>
         )}
       </div>
-    </Layout>
   );
 }

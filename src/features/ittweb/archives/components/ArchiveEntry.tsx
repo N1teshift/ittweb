@@ -63,6 +63,7 @@ export default function ArchiveEntry({ entry, onEdit, onImageClick }: ArchiveEnt
                       height={600}
                       className="w-full h-auto max-h-96 object-contain"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      unoptimized={url.includes('firebasestorage.googleapis.com')}
                     />
                     <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors flex items-center justify-center">
                       <div className="bg-black/50 text-white px-3 py-1 rounded-full text-sm opacity-0 hover:opacity-100 transition-opacity">

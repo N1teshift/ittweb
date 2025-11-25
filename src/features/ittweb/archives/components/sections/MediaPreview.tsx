@@ -109,7 +109,14 @@ export default function MediaPreview({ images, onReorderImages, videoUrl, replay
                         onDrop={(e) => handleImageDrop(i, e)}
                         onDragEnd={handleImageDragEnd}
                       />
-                      <Image src={img.url} alt={`preview-${i}`} width={800} height={600} className={`w-full h-auto max-h-96 object-contain ${dragOverImageIdx === i ? 'ring-2 ring-indigo-400' : ''}`} />
+                      <Image 
+                        src={img.url} 
+                        alt={`preview-${i}`} 
+                        width={800} 
+                        height={600} 
+                        className={`w-full h-auto max-h-96 object-contain ${dragOverImageIdx === i ? 'ring-2 ring-indigo-400' : ''}`}
+                        unoptimized={img.url.includes('firebasestorage.googleapis.com')}
+                      />
                       <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         {onRemoveImage && (
                           <button
