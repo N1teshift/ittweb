@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
+import { ColoredText } from './ColoredText';
 
 type TagVariant = 'amber' | 'blue' | 'green' | 'purple' | 'red' | 'gray';
 
@@ -72,7 +73,13 @@ export default function GuideCard(props: GuideCardProps) {
         </div>
 
         {description ? (
-          <div className="text-gray-300 text-sm mb-3 leading-relaxed">{description}</div>
+          <div className="text-gray-300 text-sm mb-3 leading-relaxed">
+            {typeof description === 'string' ? (
+              <ColoredText text={description} />
+            ) : (
+              description
+            )}
+          </div>
         ) : null}
 
         {primaryTagGroup && primaryTagGroup.badges?.length > 0 && (

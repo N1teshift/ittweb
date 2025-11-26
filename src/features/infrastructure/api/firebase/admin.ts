@@ -1,8 +1,11 @@
 import { initializeApp, getApps, cert, App } from 'firebase-admin/app';
 import { getFirestore, Firestore, Timestamp as AdminTimestamp } from 'firebase-admin/firestore';
+import { getStorage, Storage } from 'firebase-admin/storage';
 
 let adminApp: App | null = null;
 let adminDb: Firestore | null = null;
+let adminStorage: Storage | null = null;
+let storageBucketName: string | undefined;
 
 /**
  * Initialize Firebase Admin SDK (server-side only)
@@ -23,6 +26,12 @@ export function initializeFirebaseAdmin(): App {
   // Try to initialize with service account credentials from environment
   const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
   const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID;
+  if (!storageBucketName) {
+    storageBucketName =
+      process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ||
+      process.env.FIREBASE_STORAGE_BUCKET ||
+      (projectId ? `${projectId}.appspot.com` : undefined);
+  }
 
   if (serviceAccountKey && projectId) {
     try {
@@ -33,6 +42,7 @@ export function initializeFirebaseAdmin(): App {
       adminApp = initializeApp({
         credential: cert(credentials),
         projectId,
+        storageBucket: storageBucketName,
       });
       return adminApp;
     } catch (error) {
@@ -45,6 +55,7 @@ export function initializeFirebaseAdmin(): App {
   try {
     adminApp = initializeApp({
       projectId,
+      storageBucket: storageBucketName,
     });
     return adminApp;
   } catch (error) {
@@ -65,6 +76,31 @@ export function getFirestoreAdmin(): Firestore {
     adminDb = getFirestore(app);
   }
   return adminDb;
+}
+
+/**
+ * Get Firebase Storage Admin instance (server-side only)
+ */
+export function getStorageAdmin(): Storage {
+  if (!adminStorage) {
+    const app = initializeFirebaseAdmin();
+    adminStorage = getStorage(app);
+  }
+  return adminStorage;
+}
+
+/**
+ * Get the configured default storage bucket name
+ */
+export function getStorageBucketName(): string | undefined {
+  if (!storageBucketName) {
+    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID;
+    storageBucketName =
+      process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ||
+      process.env.FIREBASE_STORAGE_BUCKET ||
+      (projectId ? `${projectId}.appspot.com` : undefined);
+  }
+  return storageBucketName;
 }
 
 /**

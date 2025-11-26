@@ -59,3 +59,4 @@ export function WinRateChart({ data, title = 'Win Rate' }: WinRateChartProps) {
   );
 }
 
+

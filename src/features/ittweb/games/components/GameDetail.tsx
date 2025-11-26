@@ -110,3 +110,4 @@ export function GameDetail({ game }: GameDetailProps) {
   );
 }
 
+

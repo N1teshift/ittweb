@@ -47,11 +47,95 @@ function timestampToIso(timestamp: Timestamp | TimestampLike | string | Date | u
 }
 
 /**
+ * Get the next available scheduled game ID
+ * Queries all scheduled games and finds the highest ID, then increments by 1
+ */
+async function getNextScheduledGameId(): Promise<number> {
+  try {
+    if (isServerSide()) {
+      const adminDb = getFirestoreAdmin();
+      const querySnapshot = await adminDb.collection(SCHEDULED_GAMES_COLLECTION)
+        .orderBy('scheduledGameId', 'desc')
+        .limit(1)
+        .get();
+
+      if (querySnapshot.empty) {
+        // No games exist, start at 1
+        return 1;
+      }
+
+      const lastGame = querySnapshot.docs[0].data();
+      const lastId = lastGame.scheduledGameId || 0;
+      return lastId + 1;
+    } else {
+      const db = getFirestoreInstance();
+      const q = query(
+        collection(db, SCHEDULED_GAMES_COLLECTION),
+        orderBy('scheduledGameId', 'desc')
+      );
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        // No games exist, start at 1
+        return 1;
+      }
+
+      const lastGame = querySnapshot.docs[0].data();
+      const lastId = lastGame.scheduledGameId || 0;
+      return lastId + 1;
+    }
+  } catch (error) {
+    // If there's an error (e.g., index not built), try fetching all and finding max
+    logger.warn('Error getting next scheduled game ID, falling back to full query', { error });
+    
+    try {
+      if (isServerSide()) {
+        const adminDb = getFirestoreAdmin();
+        const querySnapshot = await adminDb.collection(SCHEDULED_GAMES_COLLECTION).get();
+        
+        let maxId = 0;
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const id = data.scheduledGameId || 0;
+          if (id > maxId) {
+            maxId = id;
+          }
+        });
+        
+        return maxId + 1;
+      } else {
+        const db = getFirestoreInstance();
+        const querySnapshot = await getDocs(collection(db, SCHEDULED_GAMES_COLLECTION));
+        
+        let maxId = 0;
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const id = data.scheduledGameId || 0;
+          if (id > maxId) {
+            maxId = id;
+          }
+        });
+        
+        return maxId + 1;
+      }
+    } catch (fallbackError) {
+      // If even fallback fails, start at 1
+      logger.error(fallbackError instanceof Error ? fallbackError : new Error(String(fallbackError)), 'Failed to get next scheduled game ID, defaulting to 1');
+      return 1;
+    }
+  }
+}
+
+/**
  * Create a new scheduled game
  */
 export async function createScheduledGame(gameData: CreateScheduledGame): Promise<string> {
   try {
+    // Get the next available scheduled game ID
+    const scheduledGameId = await getNextScheduledGameId();
+    
     logger.info('Creating scheduled game', { 
+      scheduledGameId,
       scheduledDateTime: gameData.scheduledDateTime,
       teamSize: gameData.teamSize 
     });
@@ -68,6 +152,7 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
       
       const docRef = await adminDb.collection(SCHEDULED_GAMES_COLLECTION).add({
         ...cleanedData,
+        scheduledGameId,
         scheduledDateTime,
         scheduledDateTimeString: cleanedData.scheduledDateTime,
         status: 'scheduled',
@@ -75,7 +160,7 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
         createdAt: adminTimestamp.now(),
         updatedAt: adminTimestamp.now(),
       });
-      logger.info('Scheduled game created', { id: docRef.id });
+      logger.info('Scheduled game created', { id: docRef.id, scheduledGameId });
       return docRef.id;
     } else {
       const db = getFirestoreInstance();
@@ -86,6 +171,7 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
       
       const docRef = await addDoc(collection(db, SCHEDULED_GAMES_COLLECTION), {
         ...cleanedData,
+        scheduledGameId,
         scheduledDateTime,
         scheduledDateTimeString: cleanedData.scheduledDateTime,
         status: 'scheduled',
@@ -93,7 +179,7 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
       });
-      logger.info('Scheduled game created', { id: docRef.id });
+      logger.info('Scheduled game created', { id: docRef.id, scheduledGameId });
       return docRef.id;
     }
   } catch (error) {
@@ -108,10 +194,11 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
 
 /**
  * Get all scheduled games, sorted by scheduled date (upcoming first)
+ * Excludes archived games by default
  */
-export async function getAllScheduledGames(includePast: boolean = false): Promise<ScheduledGame[]> {
+export async function getAllScheduledGames(includePast: boolean = false, includeArchived: boolean = false): Promise<ScheduledGame[]> {
   try {
-    logger.info('Fetching scheduled games', { includePast });
+    logger.info('Fetching scheduled games', { includePast, includeArchived });
 
     const games: ScheduledGame[] = [];
 
@@ -131,8 +218,9 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
       // Try to use the optimized query first, but fall back to in-memory filtering
       // if the index is still building or doesn't exist
       try {
+        // Query for scheduled and awaiting_replay games (exclude archived unless requested)
         let adminQuery = adminDb.collection(SCHEDULED_GAMES_COLLECTION)
-          .where('status', '==', 'scheduled')
+          .where('status', 'in', includeArchived ? ['scheduled', 'awaiting_replay', 'archived'] : ['scheduled', 'awaiting_replay'])
           .orderBy('scheduledDateTime', 'asc');
 
         const querySnapshot = await adminQuery.get();
@@ -151,6 +239,7 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
           
           games.push({
           id: docSnap.id,
+          scheduledGameId: data.scheduledGameId || 0,
           scheduledByDiscordId: data.scheduledByDiscordId,
           scheduledByName: data.scheduledByName || 'Unknown',
           scheduledDateTime,
@@ -158,6 +247,8 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
           teamSize: data.teamSize,
           customTeamSize: data.customTeamSize,
           gameType: data.gameType,
+          gameVersion: data.gameVersion,
+          gameLength: data.gameLength,
           modes: data.modes || [],
           participants: (data.participants || []).map((p: any) => ({
             discordId: p.discordId,
@@ -167,6 +258,8 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
           createdAt: timestampToIso(data.createdAt),
           updatedAt: timestampToIso(data.updatedAt),
           status: data.status || 'scheduled',
+          gameId: data.gameId,
+          archiveId: data.archiveId,
         });
         });
       } catch (error: unknown) {
@@ -180,8 +273,11 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
           querySnapshot.forEach((docSnap) => {
             const data = docSnap.data();
             
-            // Filter by status
-            if (data.status !== 'scheduled') {
+            // Filter by status (exclude archived unless requested)
+            if (!includeArchived && data.status === 'archived') {
+              return;
+            }
+            if (data.status !== 'scheduled' && data.status !== 'awaiting_replay' && data.status !== 'archived') {
               return;
             }
             
@@ -197,6 +293,7 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
             
           games.push({
           id: docSnap.id,
+          scheduledGameId: data.scheduledGameId || 0,
           scheduledByDiscordId: data.scheduledByDiscordId,
           scheduledByName: data.scheduledByName || 'Unknown',
           scheduledDateTime,
@@ -204,6 +301,8 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
           teamSize: data.teamSize,
           customTeamSize: data.customTeamSize,
           gameType: data.gameType,
+          gameVersion: data.gameVersion,
+          gameLength: data.gameLength,
           modes: data.modes || [],
           participants: (data.participants || []).map((p: any) => ({
             discordId: p.discordId,
@@ -213,6 +312,8 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
           createdAt: timestampToIso(data.createdAt),
           updatedAt: timestampToIso(data.updatedAt),
           status: data.status || 'scheduled',
+          gameId: data.gameId,
+          archiveId: data.archiveId,
         });
           });
           
@@ -234,7 +335,7 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
       try {
         let q = query(
           collection(db, SCHEDULED_GAMES_COLLECTION),
-          where('status', '==', 'scheduled'),
+          where('status', 'in', includeArchived ? ['scheduled', 'awaiting_replay', 'archived'] : ['scheduled', 'awaiting_replay']),
           orderBy('scheduledDateTime', 'asc')
         );
 
@@ -254,6 +355,7 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
           
           games.push({
           id: docSnap.id,
+          scheduledGameId: data.scheduledGameId || 0,
           scheduledByDiscordId: data.scheduledByDiscordId,
           scheduledByName: data.scheduledByName || 'Unknown',
           scheduledDateTime,
@@ -261,6 +363,8 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
           teamSize: data.teamSize,
           customTeamSize: data.customTeamSize,
           gameType: data.gameType,
+          gameVersion: data.gameVersion,
+          gameLength: data.gameLength,
           modes: data.modes || [],
           participants: (data.participants || []).map((p: any) => ({
             discordId: p.discordId,
@@ -270,6 +374,8 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
           createdAt: timestampToIso(data.createdAt),
           updatedAt: timestampToIso(data.updatedAt),
           status: data.status || 'scheduled',
+          gameId: data.gameId,
+          archiveId: data.archiveId,
         });
         });
       } catch (error: unknown) {
@@ -283,8 +389,11 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
           querySnapshot.forEach((docSnap) => {
             const data = docSnap.data();
             
-            // Filter by status
-            if (data.status !== 'scheduled') {
+            // Filter by status (exclude archived unless requested)
+            if (!includeArchived && data.status === 'archived') {
+              return;
+            }
+            if (data.status !== 'scheduled' && data.status !== 'awaiting_replay' && data.status !== 'archived') {
               return;
             }
             
@@ -300,6 +409,7 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
             
           games.push({
           id: docSnap.id,
+          scheduledGameId: data.scheduledGameId || 0,
           scheduledByDiscordId: data.scheduledByDiscordId,
           scheduledByName: data.scheduledByName || 'Unknown',
           scheduledDateTime,
@@ -307,6 +417,8 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
           teamSize: data.teamSize,
           customTeamSize: data.customTeamSize,
           gameType: data.gameType,
+          gameVersion: data.gameVersion,
+          gameLength: data.gameLength,
           modes: data.modes || [],
           participants: (data.participants || []).map((p: any) => ({
             discordId: p.discordId,
@@ -316,6 +428,8 @@ export async function getAllScheduledGames(includePast: boolean = false): Promis
           createdAt: timestampToIso(data.createdAt),
           updatedAt: timestampToIso(data.updatedAt),
           status: data.status || 'scheduled',
+          gameId: data.gameId,
+          archiveId: data.archiveId,
         });
           });
           
@@ -389,6 +503,7 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
       
       return {
         id: docSnap.id,
+        scheduledGameId: data.scheduledGameId || 0,
         scheduledByDiscordId: data.scheduledByDiscordId,
         scheduledByName: data.scheduledByName || 'Unknown',
         scheduledDateTime,
@@ -396,6 +511,8 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
         teamSize: data.teamSize,
         customTeamSize: data.customTeamSize,
         gameType: data.gameType,
+        gameVersion: data.gameVersion,
+        gameLength: data.gameLength,
         modes: data.modes || [],
         participants: (data.participants || []).map((p: any) => ({
           discordId: p.discordId,
@@ -405,6 +522,8 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
         createdAt: timestampToIso(data.createdAt),
         updatedAt: timestampToIso(data.updatedAt),
         status: data.status || 'scheduled',
+        gameId: data.gameId,
+        archiveId: data.archiveId,
       };
     } else {
       const db = getFirestoreInstance();
@@ -421,6 +540,7 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
       
       return {
         id: docSnap.id,
+        scheduledGameId: data.scheduledGameId || 0,
         scheduledByDiscordId: data.scheduledByDiscordId,
         scheduledByName: data.scheduledByName || 'Unknown',
         scheduledDateTime,
@@ -428,6 +548,8 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
         teamSize: data.teamSize,
         customTeamSize: data.customTeamSize,
         gameType: data.gameType,
+        gameVersion: data.gameVersion,
+        gameLength: data.gameLength,
         modes: data.modes || [],
         participants: (data.participants || []).map((p: any) => ({
           discordId: p.discordId,
@@ -437,6 +559,8 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
         createdAt: timestampToIso(data.createdAt),
         updatedAt: timestampToIso(data.updatedAt),
         status: data.status || 'scheduled',
+        gameId: data.gameId,
+        archiveId: data.archiveId,
       };
     }
   } catch (error) {
@@ -453,7 +577,14 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
 /**
  * Update a scheduled game
  */
-export async function updateScheduledGame(id: string, updates: Partial<CreateScheduledGame>): Promise<void> {
+export async function updateScheduledGame(
+  id: string, 
+  updates: Partial<CreateScheduledGame> & { 
+    status?: 'scheduled' | 'awaiting_replay' | 'archived' | 'cancelled';
+    gameId?: string;
+    archiveId?: string;
+  }
+): Promise<void> {
   try {
     logger.info('Updating scheduled game', { id });
 

@@ -3,6 +3,7 @@ import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticP
 import Link from 'next/link';
 import { AbilityData } from '@/features/ittweb/guides/data/abilities';
 import { ABILITIES, ABILITY_CATEGORIES, getAbilityById } from '@/features/ittweb/guides/data/abilities';
+import { ColoredText } from '@/features/ittweb/guides/components/ColoredText';
 
 type Props = { ability: AbilityData };
 
@@ -44,7 +45,15 @@ export default function AbilityDetail({ ability }: Props) {
             </div>
           </div>
 
-          <p className="text-gray-300 mb-4">{ability.description}</p>
+          {ability.tooltip ? (
+            <div className="text-gray-300 mb-4">
+              <ColoredText text={ability.tooltip} />
+            </div>
+          ) : (
+            <p className="text-gray-300 mb-4">
+              <ColoredText text={ability.description} />
+            </p>
+          )}
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4 text-sm">
             {ability.manaCost !== undefined && (

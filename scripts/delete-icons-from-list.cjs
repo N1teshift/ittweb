@@ -129,3 +129,4 @@ if (!textFile) {
 
 deleteIconsFromList(textFile, category, !execute);
 
+

@@ -51,6 +51,7 @@ export interface Game {
   replayFileName?: string;
   submittedBy?: string;
   submittedAt?: Timestamp | string;
+  scheduledGameId?: number; // Link to ScheduledGame if created from scheduled game
   verified: boolean;
   createdAt: Timestamp | string;
   updatedAt: Timestamp | string;
@@ -75,6 +76,7 @@ export interface CreateGame {
   creatorname: string;
   ownername: string;
   category?: GameCategory;
+  scheduledGameId?: number; // Link to ScheduledGame if created from scheduled game
   players: Array<{
     name: string;
     pid: number;

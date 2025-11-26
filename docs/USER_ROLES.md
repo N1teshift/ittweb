@@ -164,3 +164,4 @@ But `false` for:
 - When checking roles, `undefined` is treated as `'user'` (the default role)
 
 
+

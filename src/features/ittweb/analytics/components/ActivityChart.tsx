@@ -63,3 +63,4 @@ export function ActivityChart({ data, title = 'Activity' }: ActivityChartProps) 
   );
 }
 
+

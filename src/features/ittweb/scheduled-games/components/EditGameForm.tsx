@@ -9,6 +9,8 @@ interface EditGameFormProps {
     teamSize: TeamSize;
     customTeamSize?: string;
     gameType: GameType;
+    gameVersion?: string;
+    gameLength?: number;
     modes: string[];
   }) => Promise<void>;
   onCancel: () => void;
@@ -27,6 +29,8 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
   const [teamSize, setTeamSize] = useState<TeamSize>(game.teamSize);
   const [customTeamSize, setCustomTeamSize] = useState(game.customTeamSize || '');
   const [gameType, setGameType] = useState<GameType>(game.gameType);
+  const [gameVersion, setGameVersion] = useState<string>(game.gameVersion || 'v3.28');
+  const [gameLength, setGameLength] = useState<number>(game.gameLength || 1800);
   const [selectedModes, setSelectedModes] = useState<string[]>(game.modes || []);
   const [error, setError] = useState('');
 
@@ -34,6 +38,8 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
     setTeamSize(game.teamSize);
     setCustomTeamSize(game.customTeamSize || '');
     setGameType(game.gameType);
+    setGameVersion(game.gameVersion || 'v3.28');
+    setGameLength(game.gameLength || 1800);
     setSelectedModes(game.modes || []);
   }, [game]);
 
@@ -51,6 +57,8 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
       teamSize,
       customTeamSize: teamSize === 'custom' ? customTeamSize : undefined,
       gameType,
+      gameVersion,
+      gameLength,
       modes: selectedModes,
     };
 
@@ -151,6 +159,49 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
                 <span className="text-white">ELO</span>
               </label>
             </div>
+          </div>
+
+          {/* Game Version */}
+          <div>
+            <label className="block text-amber-500 mb-2">Game Version *</label>
+            <select
+              value={gameVersion}
+              onChange={(e) => setGameVersion(e.target.value)}
+              required
+              className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
+            >
+              <option value="v3.28">v3.28</option>
+            </select>
+          </div>
+
+          {/* Game Length */}
+          <div>
+            <label className="block text-amber-500 mb-2">Game Length *</label>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <input
+                  type="number"
+                  value={gameLength}
+                  onChange={(e) => setGameLength(parseInt(e.target.value, 10) || 0)}
+                  min="60"
+                  step="60"
+                  required
+                  className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
+                  placeholder="Duration in seconds"
+                />
+              </div>
+              <div className="flex items-center text-gray-300 text-sm">
+                <span>
+                  {gameLength >= 60 
+                    ? `${Math.floor(gameLength / 60)} minute${Math.floor(gameLength / 60) !== 1 ? 's' : ''}`
+                    : `${gameLength} second${gameLength !== 1 ? 's' : ''}`
+                  }
+                </span>
+              </div>
+            </div>
+            <p className="text-sm text-gray-400 mt-1">
+              Common lengths: 15 min (900s), 30 min (1800s), 45 min (2700s), 60 min (3600s)
+            </p>
           </div>
 
           {/* Game Modes */}

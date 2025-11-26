@@ -3,6 +3,7 @@ import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticP
 import Link from 'next/link';
 import { ITEMS_DATA, getItemById } from '@/features/ittweb/guides/data/items';
 import { ItemData } from '@/types/items';
+import { ColoredText } from '@/features/ittweb/guides/components/ColoredText';
 
 type Props = { item: ItemData };
 
@@ -45,7 +46,15 @@ export default function ItemDetailPage({ item }: Props) {
 
         <header className="mb-6">
           <h1 className="font-medieval-brand text-4xl md:text-5xl mb-2 text-amber-400">{item.name}</h1>
-          <p className="text-gray-300 text-lg leading-relaxed max-w-3xl">{item.description}</p>
+          {item.tooltip ? (
+            <div className="text-gray-300 text-lg leading-relaxed max-w-3xl">
+              <ColoredText text={item.tooltip} />
+            </div>
+          ) : (
+            <p className="text-gray-300 text-lg leading-relaxed max-w-3xl">
+              <ColoredText text={item.description} />
+            </p>
+          )}
         </header>
 
         <div className="grid md:grid-cols-2 gap-6">

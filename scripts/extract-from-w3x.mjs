@@ -169,15 +169,25 @@ function extractAbilities() {
         // Abilities are stored as arrays of modifications
         const modifications = Array.isArray(ability) ? ability : [];
         
-        // Helper to find field value
-        const getField = (fieldId) => {
-          const field = modifications.find(m => m.id === fieldId && m.level === 0);
+        // Helper to find field value (checks level 0 first, then other levels)
+        const getField = (fieldId, preferLevel = 0) => {
+          // Try preferred level first
+          let field = modifications.find(m => m.id === fieldId && m.level === preferLevel);
+          // If not found, try level 0
+          if (!field) {
+            field = modifications.find(m => m.id === fieldId && m.level === 0);
+          }
+          // If still not found, try any level
+          if (!field) {
+            field = modifications.find(m => m.id === fieldId);
+          }
           return field ? field.value : '';
         };
         
         // Extract common fields
+        // For tooltips, prefer level 1 (aub1 level 1 often has more detailed tooltips)
         const name = getField('anam') || getField('unam') || '';
-        const tooltip = getField('aub1') || getField('aub2') || getField('utub') || '';
+        const tooltip = getField('aub1', 1) || getField('aub1') || getField('aub2', 1) || getField('aub2') || getField('utub') || '';
         const icon = getField('aart') || getField('uico') || '';
         const description = getField('ades') || '';
         

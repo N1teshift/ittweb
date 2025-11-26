@@ -11,6 +11,19 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
+    const gameId = req.query.id as string;
+    if (!gameId) {
+      return res.status(400).json({ error: 'Game ID is required' });
+    }
+
+    if (req.method === 'GET') {
+      const game = await getScheduledGameById(gameId);
+      if (!game) {
+        return res.status(404).json({ error: 'Game not found' });
+      }
+      return res.status(200).json(game);
+    }
+
     if (req.method !== 'PUT' && req.method !== 'PATCH') {
       return res.status(405).json({ error: 'Method not allowed' });
     }
@@ -19,11 +32,6 @@ export default async function handler(
     const session = await getServerSession(req, res, authOptions);
     if (!session || !session.discordId) {
       return res.status(401).json({ error: 'Authentication required' });
-    }
-
-    const gameId = req.query.id as string;
-    if (!gameId) {
-      return res.status(400).json({ error: 'Game ID is required' });
     }
 
     // Get the game to check ownership
@@ -50,6 +58,8 @@ export default async function handler(
       teamSize: string;
       customTeamSize?: string;
       gameType: string;
+      gameVersion?: string;
+      gameLength?: number;
       modes: string[];
     } = {
       teamSize: updates.teamSize,
@@ -59,6 +69,14 @@ export default async function handler(
 
     if (updates.teamSize === 'custom' && updates.customTeamSize) {
       updateData.customTeamSize = updates.customTeamSize;
+    }
+
+    if (updates.gameVersion) {
+      updateData.gameVersion = updates.gameVersion;
+    }
+
+    if (updates.gameLength !== undefined) {
+      updateData.gameLength = updates.gameLength;
     }
 
     await updateScheduledGame(gameId, updateData);

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Layout from '@/features/shared/components/Layout';
 import { Card } from '@/features/infrastructure/shared/components/ui/Card';
 import { Button } from '@/features/infrastructure/shared/components/ui/Button';
 import { Input } from '@/features/infrastructure/shared/components/ui/Input';
@@ -88,9 +87,8 @@ export default function CreateGameTestPage() {
   };
 
   return (
-    <Layout>
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <h1 className="text-4xl font-bold text-amber-400 mb-8">Create Test Game</h1>
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <h1 className="text-4xl font-bold text-amber-400 mb-8">Create Test Game</h1>
 
         <Card variant="medieval" className="p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -226,8 +224,7 @@ export default function CreateGameTestPage() {
             )}
           </div>
         </Card>
-      </div>
-    </Layout>
+    </div>
   );
 }
 

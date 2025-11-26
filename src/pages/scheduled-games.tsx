@@ -2,6 +2,7 @@ import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticP
 import { Logger } from '@/features/infrastructure/logging';
 import { useSession, signIn } from 'next-auth/react';
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/router';
 import type { GetStaticProps } from 'next';
 import ScheduledGamesList from '@/features/ittweb/scheduled-games/components/ScheduledGamesList';
 import ScheduleGameForm from '@/features/ittweb/scheduled-games/components/ScheduleGameForm';
@@ -25,6 +26,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 };
 
 export default function ScheduledGames() {
+  const router = useRouter();
   const { data: session, status } = useSession();
   const [games, setGames] = useState<ScheduledGame[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,6 +37,7 @@ export default function ScheduledGames() {
   const [isJoining, setIsJoining] = useState<string | null>(null);
   const [isLeaving, setIsLeaving] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [isUploadingReplay, setIsUploadingReplay] = useState<string | null>(null);
   const [pendingDeleteGame, setPendingDeleteGame] = useState<ScheduledGame | null>(null);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
 
@@ -42,7 +45,8 @@ export default function ScheduledGames() {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch('/api/scheduled-games?includePast=false');
+      // Include past games to show awaiting_replay games
+      const response = await fetch('/api/scheduled-games?includePast=true');
       if (!response.ok) {
         throw new Error('Failed to load scheduled games');
       }
@@ -51,8 +55,9 @@ export default function ScheduledGames() {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to load games';
       setError(errorMessage);
-      Logger.error(new Error(errorMessage), 'Failed to load scheduled games', {
+      Logger.error('Failed to load scheduled games', {
         component: 'scheduled-games',
+        error: errorMessage,
       });
     } finally {
       setLoading(false);
@@ -166,9 +171,10 @@ export default function ScheduledGames() {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to join game';
       setError(errorMessage);
-      Logger.error(new Error(errorMessage), 'Failed to join game', {
+      Logger.error('Failed to join game', {
         component: 'scheduled-games',
         gameId,
+        error: errorMessage,
       });
     } finally {
       setIsJoining(null);
@@ -199,9 +205,10 @@ export default function ScheduledGames() {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to leave game';
       setError(errorMessage);
-      Logger.error(new Error(errorMessage), 'Failed to leave game', {
+      Logger.error('Failed to leave game', {
         component: 'scheduled-games',
         gameId,
+        error: errorMessage,
       });
     } finally {
       setIsLeaving(null);
@@ -220,6 +227,8 @@ export default function ScheduledGames() {
     teamSize: string;
     customTeamSize?: string;
     gameType: string;
+    gameVersion?: string;
+    gameLength?: number;
     modes: string[];
   }) => {
     if (!editingGame) return;
@@ -287,9 +296,10 @@ export default function ScheduledGames() {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to delete game';
       setError(errorMessage);
-      Logger.error(new Error(errorMessage), 'Failed to delete game', {
+      Logger.error('Failed to delete game', {
         component: 'scheduled-games',
         gameId: pendingDeleteGame.id,
+        error: errorMessage,
       });
     } finally {
       setIsDeleting(null);
@@ -298,6 +308,15 @@ export default function ScheduledGames() {
 
   const handleDeleteCancel = () => {
     setPendingDeleteGame(null);
+  };
+
+  const handleUploadReplay = (game: ScheduledGame) => {
+    if (status !== 'authenticated') {
+      signIn('discord');
+      return;
+    }
+    setIsUploadingReplay(game.id);
+    router.push(`/scheduled-games/${game.id}/upload-replay`);
   };
 
   if (typeof window !== 'undefined') {
@@ -343,9 +362,11 @@ export default function ScheduledGames() {
               onLeave={handleLeave}
               onEdit={handleEdit}
               onRequestDelete={handleRequestDelete}
+              onUploadReplay={handleUploadReplay}
               isJoining={isJoining}
               isLeaving={isLeaving}
               isDeleting={isDeleting}
+              isUploadingReplay={isUploadingReplay}
               userIsAdmin={userIsAdmin}
             />
           )}

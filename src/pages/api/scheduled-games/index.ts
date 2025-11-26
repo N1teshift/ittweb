@@ -15,7 +15,8 @@ export default async function handler(
     if (req.method === 'GET') {
       // Get all scheduled games (public, but can filter past games)
       const includePast = req.query.includePast === 'true';
-      const games = await getAllScheduledGames(includePast);
+      const includeArchived = req.query.includeArchived === 'true';
+      const games = await getAllScheduledGames(includePast, includeArchived);
       return res.status(200).json(games);
     }
 

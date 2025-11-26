@@ -28,3 +28,4 @@ export function formatEloChange(change: number): string {
   return `${sign}${change.toFixed(2)}`;
 }
 
+

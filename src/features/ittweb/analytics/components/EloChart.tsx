@@ -66,3 +66,4 @@ export function EloChart({ data, title = 'ELO History' }: EloChartProps) {
   );
 }
 
+

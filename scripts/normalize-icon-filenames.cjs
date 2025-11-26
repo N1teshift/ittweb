@@ -139,3 +139,4 @@ if (dryRun && totalRenamed > 0) {
   console.log(`   node scripts/normalize-icon-filenames.cjs --execute`);
 }
 
+

@@ -24,6 +24,8 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
   const [teamSize, setTeamSize] = useState<TeamSize>('1v1');
   const [customTeamSize, setCustomTeamSize] = useState('');
   const [gameType, setGameType] = useState<GameType>('normal');
+  const [gameVersion, setGameVersion] = useState<string>('v3.28');
+  const [gameLength, setGameLength] = useState<number>(1800); // Default 30 minutes (1800 seconds)
   const [selectedModes, setSelectedModes] = useState<string[]>([]);
   const [addCreatorToParticipants, setAddCreatorToParticipants] = useState(true); // Default checked
   const [error, setError] = useState('');
@@ -55,6 +57,8 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
       teamSize,
       customTeamSize: teamSize === 'custom' ? customTeamSize : undefined,
       gameType,
+      gameVersion,
+      gameLength,
       modes: selectedModes,
     };
 
@@ -185,6 +189,49 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
                 <span className="text-white">ELO</span>
               </label>
             </div>
+          </div>
+
+          {/* Game Version */}
+          <div>
+            <label className="block text-amber-500 mb-2">Game Version *</label>
+            <select
+              value={gameVersion}
+              onChange={(e) => setGameVersion(e.target.value)}
+              required
+              className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
+            >
+              <option value="v3.28">v3.28</option>
+            </select>
+          </div>
+
+          {/* Game Length */}
+          <div>
+            <label className="block text-amber-500 mb-2">Game Length *</label>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <input
+                  type="number"
+                  value={gameLength}
+                  onChange={(e) => setGameLength(parseInt(e.target.value, 10) || 0)}
+                  min="60"
+                  step="60"
+                  required
+                  className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
+                  placeholder="Duration in seconds"
+                />
+              </div>
+              <div className="flex items-center text-gray-300 text-sm">
+                <span>
+                  {gameLength >= 60 
+                    ? `${Math.floor(gameLength / 60)} minute${Math.floor(gameLength / 60) !== 1 ? 's' : ''}`
+                    : `${gameLength} second${gameLength !== 1 ? 's' : ''}`
+                  }
+                </span>
+              </div>
+            </div>
+            <p className="text-sm text-gray-400 mt-1">
+              Common lengths: 15 min (900s), 30 min (1800s), 45 min (2700s), 60 min (3600s)
+            </p>
           </div>
 
           {/* Game Modes */}
