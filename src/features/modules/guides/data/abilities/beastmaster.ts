@@ -7,7 +7,7 @@ export const BEASTMASTER_ABILITIES: AbilityData[] = [
     category: 'beastmaster',
     description: '',
     tooltip: 'Dire Bear visits bee hives so often, he is considered part of the hive.\nGain a permanent bee protecting you per unique hidden stash scavenged.\nBees inflict |cffFF02021|r magic damage per second.|cFFFFCC00\n\nLevel 1: |rMaximum bees: |cFFFFCC003|r|cFFFFCC00\nLevel 4: |rMaximum bees: |cFFFFCC005|r',
-    iconPath: 'bTNFriendOfTheHive.png',
+    iconPath: 'BTNFriendOfTheHive.png',
   },
   {
     id: 'scavenged-mushroom',

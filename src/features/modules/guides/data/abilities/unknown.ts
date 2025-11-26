@@ -27,21 +27,21 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Causes brambles to surface from underground in a straight line, and units who stand in the brambles receive |cffFF02028|r damage per second and have their movement speed slowed by |cffFE890D75%|r, attack speed slowed by |cffFE890D25%|r. The brambles last |cff7DBEF16|r seconds. Has |cff7DBEF140|r seconds cooldown.',
-    iconPath: 'BTNEntanglingRoots.png',
+    iconPath: 'btnentanglingroots.png',
   },
   {
     id: 'aura-dummy-damage-reduction',
     name: 'Aura Dummy: Damage Reduction',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNHardenedSkin.png',
+    iconPath: 'btnhardenedskin.png',
   },
   {
     id: 'aura-dummy-spell-damage-reduction',
     name: 'Aura Dummy: Spell Damage Reduction',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNThickFur.png',
+    iconPath: 'btnthickfur.png',
   },
   {
     id: 'canniablize-dummy',
@@ -55,7 +55,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Fill up the hatcherie\'s slots with 5 objects marked with "Hatchery Transmutable" plus an egg to try and hatch the egg. The Hawk you get and it\'s stats depend on what items you hatch the egg with.',
-    iconPath: 'BTNPhoenixEgg.png',
+    iconPath: 'btnphoenixegg.png',
   },
   {
     id: 'owl-speed',
@@ -63,7 +63,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Owl Speed',
-    iconPath: 'BTNSnowOwl.png',
+    iconPath: 'btnsnowowl.png',
   },
   {
     id: 'owl-gathering-radius',
@@ -71,7 +71,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Move along, sir. Nothing to see here',
-    iconPath: 'BTNSnowOwl.png',
+    iconPath: 'btnsnowowl.png',
   },
   {
     id: 'owl-movement-radius',
@@ -79,7 +79,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Owl Movement',
-    iconPath: 'BTNSnowOwl.png',
+    iconPath: 'btnsnowowl.png',
   },
   {
     id: 'owl-health',
@@ -87,7 +87,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Owl Health',
-    iconPath: 'BTNSnowOwl.png',
+    iconPath: 'btnsnowowl.png',
   },
   {
     id: 'owl-inventory',
@@ -101,7 +101,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Puts an enemy into a dream-like state. Beware: Restores enemy energy by 75. Deals 20 damage.',
-    iconPath: 'ReplaceableTextures/PassiveButtons/PASBTNElunesBlessing.png',
+    iconPath: 'ReplaceableTextures/PassiveButtons/pasbtnelunesblessing.png',
   },
   {
     id: 'armor-boost',
@@ -114,7 +114,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Poison',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNSlow.png',
+    iconPath: 'btnslow.png',
   },
   {
     id: 'temp-speed-bonus',
@@ -142,7 +142,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Gives <A0EK,DataA1,.> additional armor to nearby friendly units.',
-    iconPath: 'ReplaceableTextures/PassiveButtons/PASBTNDrunkenDodge.png',
+    iconPath: 'ReplaceableTextures/PassiveButtons/pasbtndrunkendodge.png',
   },
   {
     id: 'cat-s-grace',
@@ -150,7 +150,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Increases nearby friendly units\' movement speed by <A0EL,DataA1,%>% and attack rate by <A0EL,DataB1,%>%.',
-    iconPath: 'ReplaceableTextures/PassiveButtons/PASBTNEvasion.png',
+    iconPath: 'ReplaceableTextures/PassiveButtons/pasbtnevasion.png',
   },
   {
     id: 'gatherer-salves',
@@ -158,7 +158,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Gatherer can create consumable items not available to other classes. Click here to see the recipes.',
-    iconPath: 'BTNBarrel.png',
+    iconPath: 'btnbarrel.png',
   },
   {
     id: 'recipe-armor-salve',
@@ -174,7 +174,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Slot 1: Mushroom |nSlot 2: Tinder |nSlot 3: River Root |nCreates a salve with 2 uses that heals for <A0EG,DataA1> over <A0EG,HeroDur1> seconds.',
-    iconPath: 'BTNHealingSalve.png',
+    iconPath: 'btnhealingsalve.png',
   },
   {
     id: 'recipe-hypnosis-salve',
@@ -182,7 +182,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Slot 1: Mushroom |nSlot 2: Athelas Seed |nSlot 3: Athelas Seed |nCreates a salve that sleeps target enemy troll for <A0DH,HeroDur1> seconds.',
-    iconPath: 'ReplaceableTextures/PassiveButtons/PASBTNElunesBlessing.png',
+    iconPath: 'ReplaceableTextures/PassiveButtons/pasbtnelunesblessing.png',
   },
   {
     id: 'recipe-poison-salve',
@@ -190,7 +190,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Slot 1: Mushroom |nSlot 2: Thistles |nCreates a salve that slows target enemy non-troll\'s movement speed by <A0EE,DataA1,%>% and attack speed by <A0EE,DataB1,%>% for <A0EE,Dur1> seconds.',
-    iconPath: 'BTNVialEmpty.png',
+    iconPath: 'btnvialempty.png',
   },
   {
     id: 'recipe-speed-salve',
@@ -198,7 +198,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Slot 1: Mushroom |nSlot 2: Tinder |nSlot 3: River Stem |nCreates a salve with 2 uses that buffs the user\'s movement speed by <A0EF,DataA1,%>% for <A0EF,Dur1> seconds.',
-    iconPath: 'BTNPotionRed.png',
+    iconPath: 'btnpotionred.png',
   },
   {
     id: '100-gold',
@@ -234,7 +234,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Food dietary bonus.',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNMonsterLure.png',
+    iconPath: 'btnmonsterlure.png',
   },
   {
     id: 'strenght-2',
@@ -456,7 +456,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Bone Tistle',
-    iconPath: 'BTNThoriumRanged.png',
+    iconPath: 'btnthoriumranged.png',
   },
   {
     id: 'loaded-hero-thistles',
@@ -545,7 +545,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Ping |cff1FBF00Elk|r|cffC2E8EB and |cffFF0202Hostile Units|r surrounding your position. Has |cff7DBEF130|r seconds cooldown.',
-    iconPath: 'BTNSpy.png',
+    iconPath: 'btnspy.png',
   },
   {
     id: 'a-locate-elk-and-hostile-units',
@@ -553,7 +553,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Ping |cff1FBF00Elk|r|cffC2E8EB and |cffFF0202Hostile Units|r surrounding your position. Has |cff7DBEF130|r seconds cooldown.',
-    iconPath: 'BTNSpy.png',
+    iconPath: 'btnspy.png',
   },
   {
     id: 'q-locate-elk',
@@ -561,7 +561,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Ping |cff1FBF00Elk|r surrounding your position. Has |cff7DBEF130|r seconds cooldown.',
-    iconPath: 'BTNSpy.png',
+    iconPath: 'btnspy.png',
   },
   {
     id: 'w-locate-hawk',
@@ -569,7 +569,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Ping |cff1BE5B8Hawk|r surrounding your position. Has |cff7DBEF130|r seconds cooldown.',
-    iconPath: 'BTNSpy.png',
+    iconPath: 'btnspy.png',
   },
   {
     id: 'e-locate-hostile-animals',
@@ -577,7 +577,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Ping |cffFF0202Hostile Animals|r surrounding your position. Has |cff7DBEF130|r seconds cooldown.',
-    iconPath: 'BTNSpy.png',
+    iconPath: 'btnspy.png',
   },
   {
     id: 'r-locate-hostile-building',
@@ -585,7 +585,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Ping |cffFE890DHostile Building|r surrounding your position. Has |cff7DBEF130|r seconds cooldown.',
-    iconPath: 'BTNSpy.png',
+    iconPath: 'btnspy.png',
   },
   {
     id: 'a-locate-trolls',
@@ -593,7 +593,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Ping |cffFF0202Trolls|r surrounding your position. Has |cff7DBEF130|r seconds cooldown.',
-    iconPath: 'BTNSpy.png',
+    iconPath: 'btnspy.png',
   },
   {
     id: 's-locate-living-clay',
@@ -601,7 +601,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Ping |cffE45AAFLiving Clay|r surrounding your position. Has |cff7DBEF130|r seconds cooldown.',
-    iconPath: 'BTNSpy.png',
+    iconPath: 'btnspy.png',
   },
   {
     id: 'way-of-the-tracker',
@@ -609,7 +609,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Tracker Knowledge, contains various spells to track a target.',
-    iconPath: 'BTNNecromancerAdept.png',
+    iconPath: 'btnnecromanceradept.png',
   },
   {
     id: 'way-of-the-hawk',
@@ -617,7 +617,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Tracker Knowledge, contains various spells to track a target.',
-    iconPath: 'BTNNecromancerAdept.png',
+    iconPath: 'btnnecromanceradept.png',
   },
   {
     id: 'warrior-skills',
@@ -633,7 +633,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Mage Spells, contains various offensive spells.',
-    iconPath: 'BTNNecromancerAdept.png',
+    iconPath: 'btnnecromanceradept.png',
   },
   {
     id: 'elementalist-spells',
@@ -641,7 +641,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Elementalist Masteries, contains various damage dealing spells.',
-    iconPath: 'BTNManual.png',
+    iconPath: 'btnmanual.png',
   },
   {
     id: 'hypnotist-spells',
@@ -649,7 +649,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Hypnotist Voodoo magic, contains various crowd control and energy zapping spells.',
-    iconPath: 'BTNBookOfTheDead.png',
+    iconPath: 'btnbookofthedead.png',
   },
   {
     id: 'dreamwalker-abilities',
@@ -657,7 +657,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Dreamwalker Abilities.',
-    iconPath: 'BTNBookOfTheDead.png',
+    iconPath: 'btnbookofthedead.png',
   },
   {
     id: 'dementia-spells',
@@ -665,7 +665,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Dementia Master Black Magic, contains odd damage dealing spells.',
-    iconPath: 'BTNNecromancerMaster.png',
+    iconPath: 'btnnecromancermaster.png',
   },
   {
     id: 'defensive-spells',
@@ -673,7 +673,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Priest Spells, contains various defensive spells.',
-    iconPath: 'BTNManual.png',
+    iconPath: 'btnmanual.png',
   },
   {
     id: 'booster-spells',
@@ -681,7 +681,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Booster Spells, contains various buffing spells.',
-    iconPath: 'BTNSorceressMaster.png',
+    iconPath: 'btnsorceressmaster.png',
   },
   {
     id: 'master-healer-spells',
@@ -689,7 +689,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Master Healer Healing Prowess, contains various healing spells.',
-    iconPath: 'BTNSorceressMaster.png',
+    iconPath: 'btnsorceressmaster.png',
   },
   {
     id: 'sage-spells',
@@ -697,7 +697,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Sage Shamanic Art, contains the most powerfull buff a troll can cast .',
-    iconPath: 'BTNSorceressMaster.png',
+    iconPath: 'btnsorceressmaster.png',
   },
   {
     id: 'shapeshifter-forms',
@@ -705,7 +705,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Shapeshift into an animal form. Unlock following transformation :\n|cffFFD700Level 1 - Wolf\nLevel 2 - Bear\nLevel 3 - Panther\nLevel 4 - Tiger|r',
-    iconPath: 'BTNBearForm.png',
+    iconPath: 'btnbearform.png',
   },
   {
     id: 'direwolf-abilities',
@@ -713,7 +713,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Dire Wolf Abilities.',
-    iconPath: 'BTNDireWolf.png',
+    iconPath: 'btndirewolf.png',
   },
   {
     id: 'dire-bear-abilities',
@@ -721,7 +721,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Dire Bear Abilities.',
-    iconPath: 'BTNBearForm.png',
+    iconPath: 'btnbearform.png',
   },
   {
     id: 'rendo-s-evolution',
@@ -737,7 +737,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Thief\'s skills',
-    iconPath: 'BTNSpellBookBLS.png',
+    iconPath: 'btnspellbookbls.png',
   },
   {
     id: 'rogue-abilities',
@@ -745,7 +745,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Rogue Abilities, contains Thief and Rogue combat abilities',
-    iconPath: 'BTNSpellBookBLS.png',
+    iconPath: 'btnspellbookbls.png',
   },
   {
     id: 'telethief-abilities',
@@ -753,7 +753,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Contains dimentional magic of Telethief',
-    iconPath: 'BTNSpellBookBLS.png',
+    iconPath: 'btnspellbookbls.png',
   },
   {
     id: 'physical-evasion-spells',
@@ -761,7 +761,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Escape Artist Physical Abilities, contains another set of evasion spells.',
-    iconPath: 'BTNSpellBookBLS.png',
+    iconPath: 'btnspellbookbls.png',
   },
   {
     id: 'magical-evasion-spells',
@@ -769,7 +769,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Contortionist Magical Abilities, contais another set of evasion spells.',
-    iconPath: 'BTNSpellBookBLS.png',
+    iconPath: 'btnspellbookbls.png',
   },
   {
     id: 'assassin-spells',
@@ -777,7 +777,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'All the evasion skills you\'ll ever need.',
-    iconPath: 'BTNTome.png',
+    iconPath: 'btntome.png',
   },
   {
     id: 'trap-toolkit',
@@ -785,7 +785,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Trapper Toolkit, contains a few trap spell.',
-    iconPath: 'BTNPackBeast.png',
+    iconPath: 'btnpackbeast.png',
   },
   {
     id: 'oberserver-spells',
@@ -793,7 +793,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Observer spells, contains various spells to observe those around him.',
-    iconPath: 'BTNTome.png',
+    iconPath: 'btntome.png',
   },
   {
     id: 'greater-hawk-abilities',
@@ -801,7 +801,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Scout Falconry knowledge.',
-    iconPath: 'BTNTome.png',
+    iconPath: 'btntome.png',
   },
   {
     id: 'item-radar',
@@ -809,7 +809,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Contains spells allowing the gatherer to locate the items nearby using minimap ping.',
-    iconPath: 'BTNSpy.png',
+    iconPath: 'btnspy.png',
   },
   {
     id: 'druidic-spells',
@@ -841,7 +841,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Inherited Spells from the Mage.',
-    iconPath: 'BTNNecromancerAdept.png',
+    iconPath: 'btnnecromanceradept.png',
   },
   {
     id: 'dementia-inherited-spells',
@@ -849,7 +849,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'A bunch of assorted mage spells.',
-    iconPath: 'BTNNecromancerAdept.png',
+    iconPath: 'btnnecromanceradept.png',
   },
   {
     id: 'priest-inherited-spells',
@@ -857,7 +857,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Inherited Spells from the Priest.',
-    iconPath: 'BTNManual.png',
+    iconPath: 'btnmanual.png',
   },
   {
     id: 'sage-inherited-spells',
@@ -865,7 +865,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'A bunch of assorted booster & master healer spells.',
-    iconPath: 'BTNManual.png',
+    iconPath: 'btnmanual.png',
   },
   {
     id: 'pet-spells',
@@ -881,7 +881,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'An improved better radar to locate unit around him with high precision.',
-    iconPath: 'BTNSpy.png',
+    iconPath: 'btnspy.png',
   },
   {
     id: 'spy-inherited-spells',
@@ -889,7 +889,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'All the scouting skills you\'ll ever need.',
-    iconPath: 'BTNTome.png',
+    iconPath: 'btntome.png',
   },
   {
     id: 'hawk-inherited-spells',
@@ -897,7 +897,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Scout Falconry knowledge.',
-    iconPath: 'BTNTome.png',
+    iconPath: 'btntome.png',
   },
   {
     id: 'advanced-item-radar',
@@ -905,7 +905,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'An improved item radar, can cast multiple spell at same time.',
-    iconPath: 'BTNSpy.png',
+    iconPath: 'btnspy.png',
   },
   {
     id: 'omnigatherer-inherited-spells',
@@ -913,7 +913,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Contains all spells from the gatherer class.',
-    iconPath: 'BTNTome.png',
+    iconPath: 'btntome.png',
   },
   {
     id: 'sniff',
@@ -928,7 +928,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Snake Reflexes',
     category: 'unknown',
     description: '',
-    iconPath: 'bTNWindSerpentPassive.png',
+    iconPath: 'BTNWindSerpentPassive.png',
   },
   {
     id: 'aura-dummy-wolf-voracity',
@@ -971,7 +971,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Gives a |cff7DBEF110%|r chance to avoind an attack.',
-    iconPath: 'bTNWindSerpentPassive.png',
+    iconPath: 'BTNWindSerpentPassive.png',
   },
   {
     id: 'wolf-voracity',
@@ -986,7 +986,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Makrura Cuirass',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNNagaArmorUp3.png',
+    iconPath: 'btnnagaarmorup3.png',
   },
   {
     id: 'armor-bonus-2',
@@ -1058,7 +1058,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Dire Wolf hungers for the blood of others.\nYou gain a charge of Voracity every |cff6495ED10.0|r seconds, up to a maximum of |cFFFFCC005|r.\nYou can spend a charge of Voracity to consume raw meat, recovering |cff1FBF0050.0|r health.',
-    iconPath: 'BTNCannibalize.png',
+    iconPath: 'btncannibalize.png',
   },
   {
     id: 'stash-meat',
@@ -1089,7 +1089,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Your next attack will tear out a chunk of flesh from your target, recovering 1 raw meat and applying a bleed effect which does |cffFF020230.0|r damage and slows target briefly.\nYour auto attacks lower the cooldown by |cff7DBEF10.5|r seconds.\nHas |cff7DBEF112.0|r seconds cooldown.',
-    iconPath: 'ReplaceableTextures/PassiveButtons/PASBTNGhoulFrenzy.png',
+    iconPath: 'ReplaceableTextures/PassiveButtons/pasbtnghoulfrenzy.png',
   },
   {
     id: 'bark-skin',
@@ -1097,7 +1097,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Imbue your target with the strength of nature, making its skin tough as bark, gives |cff1FBF004|r armor and reflect |cffFF020230%|r flat damage upon melee attack to its attacker. Lasts |cff7DBEF110|r seconds, has |cff7DBEF145|r seconds cooldown.',
-    iconPath: 'BTNThornShield.png',
+    iconPath: 'btnthornshield.png',
   },
   {
     id: 'nature-s-bond',
@@ -1119,7 +1119,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Send out a Sentinel Owl to watch from a nearby tree for |cff7DBEF1300|rseconds. The Owl will disappear if the tree is attacked. Has |cff7DBEF160|r seconds cooldown.',
-    iconPath: 'BTNSentinel.png',
+    iconPath: 'btnsentinel.png',
     manaCost: 15,
   },
   {
@@ -1127,77 +1127,77 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: 0 Magic Resist',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNResistMagic.png',
+    iconPath: 'btnresistmagic.png',
   },
   {
     id: 'aura-dummy-1-magic-resist',
     name: 'Aura Dummy: 1 Magic Resist',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNResistMagic.png',
+    iconPath: 'btnresistmagic.png',
   },
   {
     id: 'aura-dummy-2-magic-resist',
     name: 'Aura Dummy: 2 Magic Resist',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNResistMagic.png',
+    iconPath: 'btnresistmagic.png',
   },
   {
     id: 'aura-dummy-3-magic-resist',
     name: 'Aura Dummy: 3 Magic Resist',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNResistMagic.png',
+    iconPath: 'btnresistmagic.png',
   },
   {
     id: 'aura-dummy-4-magic-resist',
     name: 'Aura Dummy: 4 Magic Resist',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNResistMagic.png',
+    iconPath: 'btnresistmagic.png',
   },
   {
     id: 'aura-dummy-5-magic-resist',
     name: 'Aura Dummy: 5 Magic Resist',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNResistMagic.png',
+    iconPath: 'btnresistmagic.png',
   },
   {
     id: 'aura-dummy-6-magic-resist',
     name: 'Aura Dummy: 6 Magic Resist',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNResistMagic.png',
+    iconPath: 'btnresistmagic.png',
   },
   {
     id: 'aura-dummy-7-magic-resist',
     name: 'Aura Dummy: 7 Magic Resist',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNResistMagic.png',
+    iconPath: 'btnresistmagic.png',
   },
   {
     id: 'aura-dummy-8-magic-resist',
     name: 'Aura Dummy: 8 Magic Resist',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNResistMagic.png',
+    iconPath: 'btnresistmagic.png',
   },
   {
     id: 'aura-dummy-9-magic-resist',
     name: 'Aura Dummy: 9 Magic Resist',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNResistMagic.png',
+    iconPath: 'btnresistmagic.png',
   },
   {
     id: 'aura-dummy-10-magic-resist',
     name: 'Aura Dummy: 10 Magic Resist',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNResistMagic.png',
+    iconPath: 'btnresistmagic.png',
   },
   {
     id: 'spiritual-guidance',
@@ -1213,7 +1213,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Druid and his pet unleash a mighty roar, inspiring allies and striking fear into the hearts of enemies. Has |cff7DBEF145|r seconds cooldown.|cffFF6347\n\nDruid\n|rIncreases nearby allies\' damage by |cffFF020230%|r.|cffFF6347\n\nElk\n|rIncreases nearby allies movement speed by |cffFE890D50|r.|cffFF6347\n\nWolf\n|rDecreases nearby enemies\' movement speed by |cffFE890D10%|r and attack speed by |cffFFFC0020%|r.|cffFF6347\n\nBear\n|rDecreases nearby enemies\' damage by |cffFF020230%|r.',
-    iconPath: 'bTNVerdantSong.png',
+    iconPath: 'BTNVerdantSong.png',
   },
   {
     id: 'animal-training',
@@ -1253,7 +1253,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Increase your pet\'s magical resistance by |cff00EAFF10%|r.',
-    iconPath: 'BTNThickFur.png',
+    iconPath: 'btnthickfur.png',
   },
   {
     id: 'grow-pet',
@@ -1269,7 +1269,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Toggle between |cffFFFC00Manual|r and |cffFE890DAutomatic|r pet controls.\n\n|cffFFFC00Manual|r : Manual mode uses regular unit controls.\n\n|cffFE890DAutomatic|r : In automatic mode the pet will copy actions taken by the owner.',
-    iconPath: 'BTNSelectUnit.png',
+    iconPath: 'btnselectunit.png',
   },
   {
     id: 'enduring-spirit',
@@ -1277,7 +1277,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The pet will revive next to its master |cffFFD70090|r seconds after it dies.',
-    iconPath: 'ReplaceableTextures/PassiveButtons/PASBTNReincarnation.png',
+    iconPath: 'ReplaceableTextures/PassiveButtons/pasbtnreincarnation.png',
   },
   {
     id: 'pet-sleep',
@@ -1285,7 +1285,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Your pet goes to sleep, recovering |cff1FBF0060|r health point. Lasts |cff7DBEF110|r seconds, has |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'BTNElunesBlessing.png',
+    iconPath: 'btnelunesblessing.png',
   },
   {
     id: 'tame-pet',
@@ -1301,7 +1301,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Transform into a wolf, gaining the |cffffcc00Wolf\'s Hunger|r ability for stealing life from your opponents.',
-    iconPath: 'BTNDireWolf.png',
+    iconPath: 'btndirewolf.png',
   },
   {
     id: 'transform-bear',
@@ -1309,7 +1309,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Transform into a bear, gaining the |cffffcc00Bear\'s Bulwark|r ability for increasing the durability of your team.',
-    iconPath: 'BTNGrizzlyBear.png',
+    iconPath: 'btngrizzlybear.png',
   },
   {
     id: 'transform-panther',
@@ -1363,7 +1363,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Wolf\'s hunger allows him to lifesteal for |cffFF020275%|r of his damage dealt for |cff7DBEF15|r seconds. Has |cff7DBEF130|r seconds cooldown.',
-    iconPath: 'BTNVampiricAura.png',
+    iconPath: 'btnvampiricaura.png',
   },
   {
     id: 'spirit-of-the-beast',
@@ -1407,7 +1407,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Rendo uses the Hawk piercing eye to spot invisible unit around him. Lasts |cff7DBEF125|r seconds, has |cff7DBEF160|r seconds cooldown.',
-    iconPath: 'BTNScout.png',
+    iconPath: 'btnscout.png',
   },
   {
     id: 'panther-instinct-dummy-cast',
@@ -1429,7 +1429,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Snake Toxin',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNSlowPoison.png',
+    iconPath: 'btnslowpoison.png',
   },
   {
     id: 'snake-toxin-true-cast',
@@ -1443,7 +1443,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Rendo uses the Snake poisonous glands to soak his claws with poison toxin. Target affected by the poison got their attack speed reduced by |cffFE890D30%|r and movement speed reduced by |cffFE890D20%|r, the poison last |cff7DBEF15|r seconds. Lasts |cff7DBEF115|r seconds, has |cff7DBEF160|r seconds cooldown.',
-    iconPath: 'BTNSlowPoison.png',
+    iconPath: 'btnslowpoison.png',
   },
   {
     id: 'wolf-bite',
@@ -1472,7 +1472,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Binds an enemy target for 2.50/8 seconds on heroes/normal units.',
-    iconPath: 'BTNEnsnare.png',
+    iconPath: 'btnensnare.png',
   },
   {
     id: 'boss-spell-resistance',
@@ -1486,7 +1486,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Collects cooked meat within |cff7DBEF1800|r range and stores it in the building\'s inventory.|cFFFFCC00\nCannot be used if there is an enemy in range.|r',
-    iconPath: 'BTNMonsterLure.png',
+    iconPath: 'btnmonsterlure.png',
   },
   {
     id: 'quick-drop-items',
@@ -1514,7 +1514,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'A bomb with nasty liquid from an unknown origin. Throw at a target to reduce their amor by |cffFF02028|r, has a small radius effect. Lasts |cff7DBEF150|r seconds, has |cff7DBEF110|r seconds cooldown.',
-    iconPath: 'BTNAcidBomb.png',
+    iconPath: 'btnacidbomb.png',
   },
   {
     id: 'create-philosophers-s-stone',
@@ -1522,7 +1522,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Create Philosophers stone\n\nPhilosopher\'s stone converts Alchemist\'s mana into energy over time. It can be used to conjure Potion effects|cff7DBEF1\nCosts 2 mana per 1 energy|r\nMaximum energy = |cff7DBEF110|r +|cff00EAFF0.8|r|cff00EAFFIntelligence|r\nConverts |cff7DBEF10.2|r  + |cff7DBEF10.2|r per |cff00EAFF20 Intelligence |renergy per second.',
-    iconPath: 'BTNHeartOfSearinox.png',
+    iconPath: 'btnheartofsearinox.png',
   },
   {
     id: 'max-speed',
@@ -1536,7 +1536,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Boost the consumer movement speed to the max. Lasts |cff7DBEF110|r seconds, has |cff7DBEF135|r seconds cooldown.\nCosts |cFFFFCC0012|r energy.',
-    iconPath: 'BTNPotionRed.png',
+    iconPath: 'btnpotionred.png',
   },
   {
     id: 'anti-magic-potion-cast',
@@ -1550,7 +1550,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Cast an Anti-Magic shield on target, blocking |cff1FBF00200|r magic damage. Lasts |cff7DBEF125|r seconds, has |cff7DBEF11|r seconds cooldown.\nCosts |cFFFFCC0010|r energy.',
-    iconPath: 'BTNPotionOfClarity.png',
+    iconPath: 'btnpotionofclarity.png',
   },
   {
     id: 'cure-potion',
@@ -1570,7 +1570,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Biological warfare! Throw at an enemy to give him  a disease. Dealing |cffFF02025|r damage per second. Last |cff7DBEF125|r seconds.\nCosts |cFFFFCC0012|r energy.',
-    iconPath: 'BTNPotionGreen.png',
+    iconPath: 'btnpotiongreen.png',
   },
   {
     id: 'drunk-potion-cast',
@@ -1584,7 +1584,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Throw this at an enemy to get them drunk, target is silenced, movement speed slowed by |cffFE890D25%|r, attack speed by |cffFE890D10%|r and has |cffFE890D50%|r chance to miss. Lasts |cff7DBEF18|r (|cff7DBEF113|r) seconds, has |cff7DBEF120|r seconds cooldown.\nCosts |cFFFFCC0018|r energy.',
-    iconPath: 'BTNLesserInvulneralbility.png',
+    iconPath: 'btnlesserinvulneralbility.png',
   },
   {
     id: 'fervor-potion',
@@ -1592,7 +1592,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Drink this potion when you want to kill lots of stuff. It increases your attack and movement speed as well as hurts enemies around you.|n|c00ff0000Stimulant|r\nCosts |cFFFFCC0030|r energy.',
-    iconPath: 'BTNGreaterInvulneralbility.png',
+    iconPath: 'btngreaterinvulneralbility.png',
   },
   {
     id: 'mana-potion',
@@ -1612,7 +1612,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'An upgrade of Cure All that affects all allies as well as the caster. Can cure jealousy, track, disease, snake poison, and many others. Can not be used on enemies. Has |cff7DBEF150|r seconds cooldown.',
-    iconPath: 'BTNBigBadVoodooSpell.png',
+    iconPath: 'btnbigbadvoodoospell.png',
   },
   {
     id: 'omnicure-potion',
@@ -1620,7 +1620,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'An upgrade of Cure All that affects all allies as well as the caster. Can cure jealousy, track, disease, snake poison, and many others. Can not be used on enemies. Has |cff7DBEF150|r seconds cooldown.\nCosts |cFFFFCC0020|r energy.',
-    iconPath: 'BTNMinorRejuvPotion.png',
+    iconPath: 'btnminorrejuvpotion.png',
   },
   {
     id: 'radar-spells',
@@ -1628,7 +1628,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Contains various item radar abilities for more efficient gathering.',
-    iconPath: 'BTNSpy.png',
+    iconPath: 'btnspy.png',
   },
   {
     id: 'find-tinders',
@@ -1636,7 +1636,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Pings all nearby tinder in the minimap and reveals them for a short duration. Ignores items near enemies.',
-    iconPath: 'BTNShimmerWeed.png',
+    iconPath: 'btnshimmerweed.png',
   },
   {
     id: 'find-sticks',
@@ -1644,7 +1644,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Pings all nearby sticks in the minimap and reveals them for a short duration. Ignores items near enemies.',
-    iconPath: 'BTNNatureTouchGrow.png',
+    iconPath: 'btnnaturetouchgrow.png',
   },
   {
     id: 'find-mushrooms',
@@ -1660,7 +1660,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Pings all nearby clay balls in the minimap and reveals them for a short duration. Ignores items near enemies.',
-    iconPath: 'BTNThunderLizardEgg.png',
+    iconPath: 'btnthunderlizardegg.png',
   },
   {
     id: 'find-flints',
@@ -1668,7 +1668,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Pings all nearby flints in the minimap and reveals them for a short duration. Ignores items near enemies.',
-    iconPath: 'BTNStaffOfSanctuary.png',
+    iconPath: 'btnstaffofsanctuary.png',
   },
   {
     id: 'find-stones',
@@ -1676,7 +1676,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Pings all nearby stones in the minimap and reveals them for a short duration. Ignores items near enemies.',
-    iconPath: 'BTNGolemStormBolt.png',
+    iconPath: 'btngolemstormbolt.png',
   },
   {
     id: 'find-mana-crystals',
@@ -1684,7 +1684,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Pings all nearby mana crystals in the minimap and reveals them for a short duration. Ignores items near enemies.',
-    iconPath: 'BTNManaStone.png',
+    iconPath: 'btnmanastone.png',
   },
   {
     id: 'tele-gather-person-buff',
@@ -1773,7 +1773,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Wolf Life Steal',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNDireWolf.png',
+    iconPath: 'btndirewolf.png',
   },
   {
     id: 'axe-throw',
@@ -1805,7 +1805,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Warrior throws two axes that spiral around him, dealing |cffFF02020.2|rx attack damage on impact.\nRemoves immobilizing effects on use.\nHas |cff7DBEF125|r seconds cooldown.',
-    iconPath: 'bTNWhirlingAxes.png',
+    iconPath: 'BTNWhirlingAxes.png',
   },
   {
     id: 'titan-s-grip',
@@ -1826,7 +1826,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Gurubashi Warrior gains different abilitites depending on weapons he has equipped:\n\n|cFFFFCC00One-handed weapon|r - Axe Throw\n|cFFFFCC00Two-handed weapon|r - Whirlwind\n|cFFFFCC00Shield|r - Shield Charge, replaces Spiked Net\n|cFFFFCC00Two weapons|r - Whirling Axes; replaces Spiked Net',
-    iconPath: 'pASBTNWeaponsOfChoice.png',
+    iconPath: 'PASBTNWeaponsOfChoice.png',
   },
   {
     id: 'whirlwind',
@@ -1841,7 +1841,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Permanently increase attack speed by |cffFF020210%|r.',
-    iconPath: 'BTNHeadHunterBerserker.png',
+    iconPath: 'btnheadhunterberserker.png',
   },
   {
     id: 'hide-tracking-beacon',
@@ -1849,7 +1849,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Allows the tracker to put a tracking beacon on a unit. Tracking beacons remain inplace for |cff7DBEF1300|r seconds or until you place another one. Once placed, the location of the unit can be found with the Query Tracking Beacon skill. Has |cff7DBEF140|r seconds cooldown.',
-    iconPath: 'BTNSpy.png',
+    iconPath: 'btnspy.png',
   },
   {
     id: 'query-tracking-beacon',
@@ -1857,7 +1857,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Pings the location of the tracking beacon. Has |cff7DBEF140|r seconds cooldown.',
-    iconPath: 'BTNSpy.png',
+    iconPath: 'btnspy.png',
   },
   {
     id: 'dysentery-track-aka-charlie-brown',
@@ -1873,7 +1873,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Increases the warriors health efficiency by reducing damage. He has |cffFE890D35%|r chance to reduce incoming damage. Damage is reduced by |cffFF020210|r but cannot go below |cffFF02023|r',
-    iconPath: 'BTNHeadHunterBerserker.png',
+    iconPath: 'btnheadhunterberserker.png',
   },
   {
     id: 'giant-swing',
@@ -1905,7 +1905,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Warrior thrives in combat and is always looking for |nhis next opponent. He moves |cffFE890D30%|r faster and attacks |cffFE890D20%|r faster.|n',
-    iconPath: 'BTNTHrillOfBattle.png',
+    iconPath: 'BTNThrillOfBattle.png',
   },
   {
     id: 'undying',
@@ -2033,7 +2033,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Passively gives the Dementia Master the ability to summon a monster from dementia space using Dementia Runes. Summoning must be performed close to the center of an open dark gate and you must have a correct rune order. The Dementia Master managed to decipher the following rune order from the ancient dark book.\n|cffFF0202Ka|r |cff7DBEF1Lez|r |cffFF0202Ka|r |cff1FBF00Nel|r |cffFF0202Ka|r\n|cff1FBF00Nel|r |cff1FBF00Nel|r |cffFF0202Ka|r |cff1FBF00Nel|r |cff7DBEF1Lez|r\n|cff7DBEF1Lez|r |cff1FBF00Nel|r |cff7DBEF1Lez|r |cff7DBEF1Lez|r |cffFF0202Ka|r\n|cffFF0202Warning! Dementia Summonings can be unpredictable and dangerous. No creature wants to be summoned for no reason!|r|r',
-    iconPath: 'ReplaceableTextures/PassiveButtons/PASBTNGenericSpellImmunity.png',
+    iconPath: 'ReplaceableTextures/PassiveButtons/pasbtngenericspellimmunity.png',
   },
   {
     id: 'dream-eater',
@@ -2071,7 +2071,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Dreamwalker will steal dreams of any enemies in 1300 range.\nDreams last for |cff7DBEF110.0|r seconds, after which they are automatically consumed.',
-    iconPath: 'bTNPASDoom.png',
+    iconPath: 'BTNPASDoom.png',
   },
   {
     id: 'replenish-health',
@@ -2079,7 +2079,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: '|cffFFD700Sustained manacost:|r |cff7DBEF110|r per second |n|nReplenishes health to the Master Healer and nearby allies, healing |cff1FBF001|r + |cff1FBF008%|rx|cff00EAFFIntelligence|r health per second. |nDrains mana until deactivated.',
-    iconPath: 'BTNHolyBolt.png',
+    iconPath: 'btnholybolt.png',
   },
   {
     id: 'd-activate-replenish-health',
@@ -2087,7 +2087,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: '|cffFFD700Sustained manacost:|r |cff7DBEF110|r per second |n|nReplenishes health to the Master Healer and nearby allies, healing |cff1FBF001|r + |cff1FBF008%|rx|cff00EAFFIntelligence|r health per second. |nDrains mana until deactivated.',
-    iconPath: 'BTNHolyBolt.png',
+    iconPath: 'btnholybolt.png',
   },
   {
     id: 'd-activate-soul-rend',
@@ -2095,7 +2095,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'While in Dream World, Dreamwalker deals additional magic damage to enemies equal to |cffFF02020.1|rx|cff00EAFFIntelligence|r with every attack.\nDamage and manacost is doubled at lvl |cFFFFCC004|r\nCosts |cff7DBEF10.1|rx|cff00EAFFIntelligence|r mana.',
-    iconPath: 'BTNShamanAdept.png',
+    iconPath: 'btnshamanadept.png',
   },
   {
     id: 'arcane-interference',
@@ -2103,7 +2103,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The more powerful the spell, the harder it is to control mana, increasing mana cost of \nyour Elementalist spells by |cffFF02022.5|r% per |cff00EAFF1 Intelligence|r beyond 40.',
-    iconPath: 'bTNArcaneInterference.png',
+    iconPath: 'BTNArcaneInterference.png',
   },
   {
     id: 'orb-daze-dummy-spell',
@@ -2123,7 +2123,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Channels to conjure 7 earth orbs that circle around you, dealing damage to enemies that come close equal to |cffFF020210.0|r+|cffFF02020.8|rx|cff00EAFFIntelligence|r  and slow their attack speed by |cffFE890D80%|r. Subsequent impacts on the same target deal |cffFF020225%|r damage. Has |cff7DBEF135|r seconds cooldown.',
-    iconPath: 'BTNGolemStormBolt.png',
+    iconPath: 'btngolemstormbolt.png',
   },
   {
     id: 'frost-blast',
@@ -2160,14 +2160,14 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Zap 1',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNStasisTrap.png',
+    iconPath: 'btnstasistrap.png',
   },
   {
     id: 'aura-dummy-zap-2',
     name: 'Aura Dummy: Zap 2',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNStasisTrap.png',
+    iconPath: 'btnstasistrap.png',
   },
   {
     id: 'zap',
@@ -2194,7 +2194,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Causes a target to become angery, increasing its attack speed by |cffFE890D75%|r while doing |cffFF020210|r damage per second to it. Anger last |cffFE890D10|r seconds, target become |cffFF6347Exhausted|r afterward. Has |cff7DBEF112|r seconds cooldown.|cffFF6347\n\nExhausted\n|rTarget attack speed is reduced by |cffFE890D50%|r, movement speed by |cffFE890D25%|r for |cff7DBEF14|r seconds.',
-    iconPath: 'BTNUnholyFrenzy.png',
+    iconPath: 'btnunholyfrenzy.png',
   },
   {
     id: 'depression-aura',
@@ -2218,7 +2218,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Hypnotist curses an enemy causing nearby allies to attack it. Jealousy has a melee casting range and no casting animation to make it hard to notice. A jealousied troll will be attacked by his allied towers as well. Lasts |cffFE890D7|r seconds. Has |cff7DBEF175|r seconds cooldown.',
-    iconPath: 'BTNSacrifice.png',
+    iconPath: 'btnsacrifice.png',
   },
   {
     id: 'seizures',
@@ -2240,7 +2240,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The mage casts a spell causing a chemical inbalance in the target\'s head. The target becomes severly depressed causing their attack speed to be reduced by |cffFE890D10%|r and movement speed by |cffFE890D20%|r while loosing |cff1BE5B830|r mana over |cffFE890D10|r seconds. Has |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'BTNShadowPact.png',
+    iconPath: 'btnshadowpact.png',
   },
   {
     id: 'flame-spray',
@@ -2248,7 +2248,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Shoots fire bolt at nearby enemies dealing |cffFF020220|r damages. Has |cff7DBEF130|r seconds cooldown.',
-    iconPath: 'BTNFireBolt.png',
+    iconPath: 'btnfirebolt.png',
   },
   {
     id: 'entangling-root-troll',
@@ -2279,7 +2279,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Scroll of Living Dead',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNSkeletonWarrior.png',
+    iconPath: 'btnskeletonwarrior.png',
   },
   {
     id: 'scroll-of-stone-armor',
@@ -2311,7 +2311,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Grants the unit the ability to cast Entangling Roots, locking the enemy in place for |cffFE890D2|r/|cffFE890D8|r seconds and dealing |cffFF02025|r damage per second. Has |cff7DBEF120|r seconds cooldown.|cffFFD700|nNote: Troll do not take damage and can still attack when affected by this spell.|r',
-    iconPath: 'BTNScrollOfRegenerationGreen.png',
+    iconPath: 'btnscrollofregenerationgreen.png',
   },
   {
     id: 'acquired-knowlede',
@@ -2319,7 +2319,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Mage can add a scroll to its Grimoire permanently gaining it\'s powers. \n\nMage gains |cff1FBF002|r |cff00EAFFIntelligence|r per page added to the Grimoire.',
-    iconPath: 'BTNNecromancerMaster.png',
+    iconPath: 'btnnecromancermaster.png',
   },
   {
     id: 'mage-s-grimoire',
@@ -2341,7 +2341,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The mage conjures a powerful fire on his energy alone. The is placed where he is and lasts for |cffFE890D30|r seconds. Has |cff7DBEF1150|r seconds cooldown.',
-    iconPath: 'BTNFire.png',
+    iconPath: 'btnfire.png',
   },
   {
     id: 'metronome-nova',
@@ -2367,7 +2367,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Barrages enemies with random, chaining effects. Has |cff7DBEF145|r seconds cooldown.',
-    iconPath: 'BTNWandOfManaSteal.png',
+    iconPath: 'btnwandofmanasteal.png',
   },
   {
     id: 'reduce-food',
@@ -2375,7 +2375,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The mage conjures a hungry spirit which is thrown at a target. The spirit devours 0 to 1 Cooked meats in the targest inventory, but can not reduce the food count below 1. Has |cff7DBEF115|r seconds cooldown.',
-    iconPath: 'BTNMonsterLure.png',
+    iconPath: 'btnmonsterlure.png',
   },
   {
     id: 'spirit-prison-cage-dummy',
@@ -2389,7 +2389,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Unleash a tormented spirit in a straight line, caging and revealing the first enemy hit. Lasts |cff7DBEF11.75|r (|cff7DBEF15|r) seconds, has |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'BTNWitchDoctorMaster.png',
+    iconPath: 'btnwitchdoctormaster.png',
   },
   {
     id: 'doomsday',
@@ -2403,7 +2403,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Takes all the herbs in the pot and mixes them into a potion if a potion can be made. All items in the pot are used except for non-herbs. If you add to many herbs of one type, you lose the extra. Many powerful items can be made here so experiment and have fun.|nItems with the |c00408000Herb|r tag are considered herbs.',
-    iconPath: 'BTNUnstableConcoction.png',
+    iconPath: 'btnunstableconcoction.png',
   },
   {
     id: 'movement-speed-bonus-per-lvl',
@@ -2417,7 +2417,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Packs the building back into a kit.',
-    iconPath: 'BTNPackBeast.png',
+    iconPath: 'btnpackbeast.png',
   },
   {
     id: 'a-thief-s-pocket',
@@ -2433,7 +2433,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Summons an angelic elemental and projects it forward. Any friendly unit that comes in contact with the elemental gets blessed, increasing their attack damage by |cffFF020225%|r and armor by |cff1FBF003|r for |cff7DBEF120|r seconds. Has |cff7DBEF160|r seconds cooldown.',
-    iconPath: 'BTNDivineIntervention.png',
+    iconPath: 'btndivineintervention.png',
   },
   {
     id: 'fortitude',
@@ -2441,7 +2441,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Gives |cff1FBF003|r bonus armor to allied trolls around you.',
-    iconPath: 'ReplaceableTextures/PassiveButtons/PASBTNDevotion.png',
+    iconPath: 'ReplaceableTextures/PassiveButtons/pasbtndevotion.png',
   },
   {
     id: 'increase-metabolism',
@@ -2457,7 +2457,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Cast Lightning Shield on target unit, deals \n|cffFF02023|r + |cffFF02020.1|rx|cff00EAFFIntelligence|r damage per second.\nLast |cff7DBEF120|r seconds, has |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'BTNLightningShield.png',
+    iconPath: 'btnlightningshield.png',
   },
   {
     id: 'spirit-link',
@@ -2465,7 +2465,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Links spirits of |cffFE890D2|r units, splitting any damage taken between them.\nLasts |cff7DBEF120|r seconds, Has |cff7DBEF140|r seconds cooldown.',
-    iconPath: 'BTNSpiritLink.png',
+    iconPath: 'btnspiritlink.png',
   },
   {
     id: 'troll-battle-call',
@@ -2481,7 +2481,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Anchors the soul of the target to reality, preventing the unit from dying momentarily. While in effect, the target cannot be reduced to zero health, energy, or heat.|n Lasts |cff7DBEF13|r seconds, has |cff7DBEF160|r seconds cooldown.',
-    iconPath: 'BTNResurrection.png',
+    iconPath: 'btnresurrection.png',
   },
   {
     id: 'reincarnation',
@@ -2496,7 +2496,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Master Healer emanates a refreshing aura to himself and his allies, granting |cff7DBEF10.33|r energy regeneration per seconds.',
-    iconPath: 'ReplaceableTextures/PassiveButtons/PASBTNRegenerate.png',
+    iconPath: 'ReplaceableTextures/PassiveButtons/pasbtnregenerate.png',
   },
   {
     id: 'self-preservation',
@@ -2504,7 +2504,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Raises all stats (Health Point, Energy, Heat) of your troll by |cff1FBF0010|r+|cff1FBF00100|r% of your |cff00EAFFIntelligence|r. Has |cff7DBEF160|r seconds cooldown.',
-    iconPath: 'BTNRegenerate.png',
+    iconPath: 'btnregenerate.png',
   },
   {
     id: 'open-light-gate',
@@ -2512,7 +2512,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Sage summons an extraordinary amount of white magic forming it into balls of energy. The energy balls form a ring and slowly dissipate, casting boosting spells on all allies within as they do. The longer this spell is channeled, the longer the gate remains open and the more spells the energy balls cast.',
-    iconPath: 'BTNSell.png',
+    iconPath: 'btnsell.png',
   },
   {
     id: 'maximum-fervor',
@@ -2520,7 +2520,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'This spell has a similar effect of a fervor potion and increase armor by |cff1FBF0010|r, damage by |cffFF020250%|r for |cff7DBEF110|r seconds. Has |cff7DBEF160|r seconds cooldown.',
-    iconPath: 'BTNBerserk.png',
+    iconPath: 'btnberserk.png',
   },
   {
     id: 'anti-magic-shell',
@@ -2548,7 +2548,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Calls forth a wave of healing energy that bounces up to |cffFE890D3|r times, restoring health equal to |cff1FBF0015|r + |cff1FBF0080|r% of your |cff00EAFFIntelligence|r to the primary target. Each jump heals |cffFE890D20%|r less. Bounces on an extremely large range. \nHas |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'BTNHealingWave.png',
+    iconPath: 'btnhealingwave.png',
   },
   {
     id: 'aura-dummy-lesser-restoration',
@@ -2571,7 +2571,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Priest creates an artificial fog preventing all combat within it. Lasts |cff7DBEF15|r seconds, has |cff7DBEF135|r seconds cooldown.',
-    iconPath: 'BTNCloudOfFog.png',
+    iconPath: 'btncloudoffog.png',
   },
   {
     id: 'mix-energy',
@@ -2579,7 +2579,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Priest psychically links up with a target. Both unit\'s energies are drained, pooled, and redistributed equally between the 2 units. Has |cff7DBEF150|r seconds cooldown.',
-    iconPath: 'BTNManaDrain.png',
+    iconPath: 'btnmanadrain.png',
   },
   {
     id: 'mix-heat',
@@ -2595,7 +2595,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Priest psychically links up with a target. Both unit\'s health is drained, pooled, and redistributed equally between the 2 units. Has |cff7DBEF150|r seconds cooldown.',
-    iconPath: 'BTNLifeDrain.png',
+    iconPath: 'btnlifedrain.png',
   },
   {
     id: 'ranged-heal',
@@ -2603,7 +2603,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Heals a friendly unit for |cff1FBF0015|r+|cff1FBF0080|r% of your |cff00EAFFIntelligence|r. Can be casted from very far away. \nHas |cff7DBEF110|r seconds cooldown.',
-    iconPath: 'BTNHeal.png',
+    iconPath: 'btnheal.png',
   },
   {
     id: 'the-glow',
@@ -2618,7 +2618,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Increase a friendly unit attack speed by |cffFE890D20%|r and movement speed by |cffFE890D10%|r for |cff7DBEF120|r seconds. Has |cff7DBEF130|r seconds cooldown.',
-    iconPath: 'BTNBloodLust.png',
+    iconPath: 'btnbloodlust.png',
   },
   {
     id: 'reveal',
@@ -2626,7 +2626,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Reveals an area around you, detects invisible units. Lasts |cff7DBEF18|r seconds, has |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'BTNReveal.png',
+    iconPath: 'btnreveal.png',
   },
   {
     id: 'greater-reveal',
@@ -2634,7 +2634,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Reveals an large area around you, detects invisible units. Lasts |cff7DBEF110|r seconds, has |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'BTNReveal.png',
+    iconPath: 'btnreveal.png',
   },
   {
     id: 'am4-acen',
@@ -2648,7 +2648,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Hawk swoops down onto a target, attempting to claw their eyes out, blinding them.\nDeals |cffFF020210|r damage per second.\nLasts for |cff7DBEF14|r(|cff7DBEF12|r) seconds.\nHas |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'PASBTNSwoopEnemy.png',
+    iconPath: 'PASBTNSWoopEnemy.png',
   },
   {
     id: 'fetch',
@@ -2718,7 +2718,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Troll walking through this trap will get tracked, having their position revealed and armor reduced by |cffFF02024|r for |cff7DBEF130|r seconds. Track Trap last |cff7DBEF1240|r seconds, has |cff7DBEF160|r seconds cooldown.',
-    iconPath: 'BTNStasisTrap.png',
+    iconPath: 'btnstasistrap.png',
   },
   {
     id: 'spiked-trap',
@@ -2788,7 +2788,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Thief fades into the astral plane for several seconds. While there, he cannot be attacked but takes increased spell damage. Lasts |cff7DBEF115|r seconds, has |cff7DBEF150|r seconds cooldown.',
-    iconPath: 'BTNBanish.png',
+    iconPath: 'btnbanish.png',
   },
   {
     id: 'windless',
@@ -2802,7 +2802,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Magic Thief releases a stream of smoke bocking all combat and spells. Smoke is only released while you are moving. Lasts |cff7DBEF19|r seconds, has |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'BTNCloudOfFog.png',
+    iconPath: 'btncloudoffog.png',
   },
   {
     id: 'camouflage',
@@ -2810,7 +2810,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Stand Next to a tree and cast to turn invisible. You can not move or cast spells or it breaks the invisibility. While invisible, you lose 3x as many stats as normal. Has |cff7DBEF130|r seconds cooldown.',
-    iconPath: 'BTNAmbush.png',
+    iconPath: 'btnambush.png',
   },
   {
     id: 'jump',
@@ -2846,7 +2846,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Attempt a close range combat maneuver, swapping places with an ally.|cff6495ED\n30 |rsconds cooldown',
-    iconPath: 'BTNDispelMagic.png',
+    iconPath: 'btndispelmagic.png',
   },
   {
     id: 'steal-food',
@@ -2870,7 +2870,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Steal an item from a target. Different targets are allowed depending on the lvl of the Rogue:|cFFFFCC00\n\nLvl 2|r - Can be used on thief\'s bush to find a hidden item.|cFFFFCC00\n\nLvl 3|r - Can be used on enemy trolls to steal a stone/hide/mana crystal/flint.|cFFFFCC00\n\nLvl 4|r - Can be used on a trading ship to steal a random item. You can only steal a single item from a ship.\n|cff6495ED60 |rseconds cooldown',
-    iconPath: 'BTNPickUpItem.png',
+    iconPath: 'btnpickupitem.png',
   },
   {
     id: 'dimentional-pocket',
@@ -2938,7 +2938,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Tracker is adept at chasing and tracking enemies. He got a nice spell kit allowing him to track down enemy troll. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'BTNIceTroll.png',
+    iconPath: 'btnicetroll.png',
   },
   {
     id: 'upgrade-into-juggernaut',
@@ -2954,7 +2954,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Elementalist is adept at controlling the elements,allowing him to cast powerful damage dealing spells. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'BTNIceTrollShaman.png',
+    iconPath: 'btnicetrollshaman.png',
   },
   {
     id: 'upgrade-into-hypnotist',
@@ -2978,7 +2978,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Dementia Master spent too much time studying dark magic and trying to talk with being from another world, he got alot of damage dealing spells.|cff7DBEF1\n\nDifficulty: |r|cffFF0202Hard|r',
-    iconPath: 'BTNDarkTrollShadowPriest.png',
+    iconPath: 'btndarktrollshadowpriest.png',
   },
   {
     id: 'upgrade-into-booster',
@@ -2986,7 +2986,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Booster is adept at buffing up allies with magic spells. He doesn\'t have any healing spells,but he gets more offensive buffs. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'BTNForestTrollShadowPriest.png',
+    iconPath: 'btnforesttrollshadowpriest.png',
   },
   {
     id: 'upgrade-into-master-healer',
@@ -3002,7 +3002,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Sage has reached the pinnacle of the Troll Shamanic Art, he can use ALOT of different buffs and healing spells.|cff7DBEF1\n\nDifficulty: |r|cffFF0202Hard|r',
-    iconPath: 'BTNForestTrollShadowPriest.png',
+    iconPath: 'btnforesttrollshadowpriest.png',
   },
   {
     id: 'upgrade-into-shapeshifter',
@@ -3010,7 +3010,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Shapeshifter is strong in battle and versatile, he can transform himself into a wolf,a bear,a panther or a tiger. Each form got a unique ability allowing the shapeshifter to either,get lifesteal,buff his allies armor and health regeneration,escape or cripple the enemy. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'BTNBearForm.png',
+    iconPath: 'btnbearform.png',
   },
   {
     id: 'upgrade-into-dire-wolf',
@@ -3018,7 +3018,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Permanently transform into a Dire Wolf.\nDire Wolf can only consume raw meat and has various abilities related to generating and consuming raw meat.|cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'BTNDireWolf.png',
+    iconPath: 'btndirewolf.png',
   },
   {
     id: 'upgrade-into-druid',
@@ -3034,7 +3034,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Permanently transform into a Dire Bear.\nDire Bear is strong and durable fighter.|cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'BTNGrizzlyBear.png',
+    iconPath: 'btngrizzlybear.png',
   },
   {
     id: 'upgrade-into-rogue',
@@ -3042,7 +3042,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Rogue has developed formidable combat skills as well as adapted his thief\'s skills to help him in combat. Rogue is adept at physical combat and maneuvering.|cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cff1FBF00Easy|r',
-    iconPath: 'BTNDarkTroll.png',
+    iconPath: 'btndarktroll.png',
   },
   {
     id: 'upgrade-into-escape-artist',
@@ -3050,7 +3050,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'When a thief decides that physical strength and speed are the key to thievery, he become an Escape Artist. The Escape Artist is adept at using pure physical power to escape from enemies. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cff1FBF00Easy|r',
-    iconPath: 'BTNDarkTroll.png',
+    iconPath: 'btndarktroll.png',
   },
   {
     id: 'upgrade-into-contortionist',
@@ -3074,7 +3074,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Assassin has combined the physical strength with the evasion magic, he has alot of escaping spells,but also the ability to backstab enemy for a big burst of damage.|cff7DBEF1\n\nDifficulty: |r|cffFF0202Hard|r',
-    iconPath: 'BTNDarkTrollTrapper.png',
+    iconPath: 'btndarktrolltrapper.png',
   },
   {
     id: 'upgrade-into-observer',
@@ -3098,7 +3098,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Spy got the best radar and reveal possible,it\'s nearly impossible to hide from him|cff7DBEF1\n\nDifficulty: |r|cff1FBF00Easy|r',
-    iconPath: 'BTNForestTrollTrapper.png',
+    iconPath: 'btnforesttrolltrapper.png',
   },
   {
     id: 'upgrade-into-herb-master-gatherer',
@@ -3106,7 +3106,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'The Herb Master Tele-Gatherers can mix herbs wherever they go. He can learn Tele-Gathering,a spell allowing him to teleport items picked up to a fire. Can tele-gather herbs. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'BTNIceTrollShadowPriest.png',
+    iconPath: 'btnicetrollshadowpriest.png',
   },
   {
     id: 'upgrade-into-radar-gatherer',
@@ -3349,14 +3349,14 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Health Rejuv',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNReplenishHealth.png',
+    iconPath: 'btnreplenishhealth.png',
   },
   {
     id: 'mana-rejuv',
     name: 'Mana Rejuv',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNReplenishMana.png',
+    iconPath: 'btnreplenishmana.png',
   },
   {
     id: 'ice-veil',
@@ -3411,7 +3411,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Hydra Claw Poison',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNImprovedStrengthOfTheWild.png',
+    iconPath: 'btnimprovedstrengthofthewild.png',
   },
   {
     id: 'horn-of-mammoth-spellbook',
@@ -3425,7 +3425,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Fully restore the user Health and slows nearby enemies movement speed by |cffFE890D50%|r and attack speed by |cffFE890D50%|r for |cff7DBEF12|r/|cff7DBEF16|r seconds, additionally deals |cffFF020210|r damage. Has |cff7DBEF180|r seconds cooldown.',
-    iconPath: 'BTNMarkOfFire.png',
+    iconPath: 'btnmarkoffire.png',
   },
   {
     id: 'restore-mana',
@@ -3433,7 +3433,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Fully restore the user Mana and stun nearby enemies for |cff7DBEF11|r/|cff7DBEF14|r seconds,  additionally deals |cffFF020210|r damage. Has |cff7DBEF180|r seconds cooldown.',
-    iconPath: 'BTNNeutralManaShield.png',
+    iconPath: 'btnneutralmanashield.png',
   },
   {
     id: 'restore-heat',
@@ -3441,7 +3441,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Fully restore the user Heat and decrease nearby enemies armor by |cffFF020210|r  and damage by |cffFF0202100%|r for |cff7DBEF15|r/|cff7DBEF15|r seconds. Has |cff7DBEF180|r seconds cooldown.',
-    iconPath: 'BTNWallOfFire.png',
+    iconPath: 'btnwalloffire.png',
   },
   {
     id: 'troll-protector-aura',
@@ -3449,7 +3449,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Provides |cff1FBF002.5|r bonus armor and |cff1FBF0015%|r magic resistance to allied trolls around you.',
-    iconPath: 'ReplaceableTextures/PassiveButtons/PASBTNDevotion.png',
+    iconPath: 'ReplaceableTextures/PassiveButtons/pasbtndevotion.png',
   },
   {
     id: 'basic-shield-block',
@@ -3559,21 +3559,21 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Build Ensnare Trap',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNCOP.png',
+    iconPath: 'btncop.png',
   },
   {
     id: 'build-camp-fire',
     name: 'Build Camp Fire',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNFire.png',
+    iconPath: 'btnfire.png',
   },
   {
     id: 'build-mage-fire',
     name: 'Build Mage Fire',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNFire.png',
+    iconPath: 'btnfire.png',
   },
   {
     id: 'build-tent',
@@ -3587,7 +3587,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Build Troll Hut',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNSpiritLodge.png',
+    iconPath: 'btnspiritlodge.png',
   },
   {
     id: 'build-smoke-house',
@@ -3608,7 +3608,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Build Spirit Ward',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNAbsorbMagic.png',
+    iconPath: 'btnabsorbmagic.png',
   },
   {
     id: 'build-mud-hut',
@@ -3622,7 +3622,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Build Omnidefender',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNOrcTower.png',
+    iconPath: 'btnorctower.png',
   },
   {
     id: 'build-mixing-pot',
@@ -3636,7 +3636,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Build Tannery',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNPigFarm.png',
+    iconPath: 'btnpigfarm.png',
   },
   {
     id: 'build-workshop',
@@ -3650,21 +3650,21 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Build Teleport Beacon',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNEnergyTower.png',
+    iconPath: 'btnenergytower.png',
   },
   {
     id: 'build-witch-doctor-s-hut',
     name: 'Build Witch Doctor\'s Hut',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNVoodooLounge.png',
+    iconPath: 'btnvoodoolounge.png',
   },
   {
     id: 'build-hatchery',
     name: 'Build Hatchery',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNSnowOwl.png',
+    iconPath: 'btnsnowowl.png',
   },
   {
     id: 'build-magic-seed',
@@ -3678,14 +3678,14 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Build Magic palm Tree',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNTemp.png',
+    iconPath: 'BTNtemp.png',
   },
   {
     id: 'build-forge',
     name: 'Build Forge',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNForge.png',
+    iconPath: 'btnforge.png',
   },
   {
     id: 'pin',
@@ -3698,7 +3698,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Makrura Carapace',
     category: 'unknown',
     description: '',
-    iconPath: 'bTNMakruraCarapace.png',
+    iconPath: 'BTNMakruraCarapace.png',
   },
   {
     id: 'attack-speed-increase-100',
@@ -3711,7 +3711,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Spear Cast (Stone)',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNThoriumRanged.png',
+    iconPath: 'btnthoriumranged.png',
   },
   {
     id: 'magic-cast',
@@ -3745,7 +3745,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Necromancer\'s Cloak',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNSkeletonWarrior.png',
+    iconPath: 'btnskeletonwarrior.png',
   },
   {
     id: 'hunting-net-ensnare',
@@ -3809,7 +3809,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Increase a friendly unit attack speed by |cffFE890D20%|r and movement speed by |cffFE890D10%|r for {2} seconds. Has {3} seconds cooldown.',
-    iconPath: 'BTNBloodLust.png',
+    iconPath: 'btnbloodlust.png',
   },
   {
     id: 'murloc-poison',
@@ -3823,7 +3823,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'You can purchase items for merchant\'s |cff7DBEF1Favour|r. |cff7DBEF1Favour|r is displayed as merchant\'s mana.\nItem |cff7DBEF1Favour|r cost is equivalent to |cFFFFCC00gold|r cost.',
-    iconPath: 'BTNMedalionOfCourage.png',
+    iconPath: 'btnmedalionofcourage.png',
   },
   {
     id: 'envenomed-harpoon',
@@ -3853,7 +3853,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Mud Hut Resilience',
     category: 'unknown',
     description: '',
-    iconPath: 'ReplaceableTextures/PassiveButtons/PASBTNDevotion.png',
+    iconPath: 'ReplaceableTextures/PassiveButtons/pasbtndevotion.png',
   },
   {
     id: 'tower-item-dummy-cast-enemy',
@@ -3861,7 +3861,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Causes the Omnitower to use the item in slot 1 on any enemy non troll unit within 575 range.\n|cffFFD700Can cast any charged items which can target units and following scrolls :\nScroll Of Fire Ball, Entangling Root, Stone Armor, Tsunami|r',
-    iconPath: 'BTNStag.png',
+    iconPath: 'btnstag.png',
   },
   {
     id: 'troll-targeting',
@@ -3877,7 +3877,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Spend mana to craft |cff1FBF00a Healing Potion.|rA dilute potion made from Athelas Seed. Instantly restores |cff1FBF00100|r Health point to a target ally.\n\n|cff7DBEF14|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'BTNLesserRejuvPotion.png',
+    iconPath: 'btnlesserrejuvpotion.png',
   },
   {
     id: 'quick-make-mana-potion',
@@ -3885,7 +3885,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Spend mana to craft a Mana Potion, restore 80 mana to the consumer :\n\n|cff7DBEF13|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'BTNPotionBlueSmall.png',
+    iconPath: 'btnpotionbluesmall.png',
   },
   {
     id: 'quick-make-disease-potion',
@@ -3893,7 +3893,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Spend mana to craft a Disease Potion. Biological warfare! Throw at an enemy to give him  a disease. Dealing |cffFF02025|r damage per second. Last |cff7DBEF125|r seconds.\n\n|cff7DBEF15|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'BTNPotionGreen.png',
+    iconPath: 'btnpotiongreen.png',
   },
   {
     id: 'quick-make-drunks-potion',
@@ -3901,7 +3901,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Spend mana to craft a |cffFE890DDrunk Potion. |rThrow this at an enemy to get them drunk, target is silenced, movement speed slowed by |cffFE890D25%|r, attack speed by |cffFE890D10%|r and has |cffFE890D50%|r chance to miss. Lasts |cff7DBEF18|r (|cff7DBEF113|r) seconds, has |cff7DBEF120|r seconds cooldown.\n\n|cff7DBEF110|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'BTNLesserInvulneralbility.png',
+    iconPath: 'btnlesserinvulneralbility.png',
   },
   {
     id: 'quick-make-spirit-of-wind',
@@ -3909,7 +3909,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Represents the pure essence of wind. Used in crafting certain stuff. :\n\n2x |cff949596River Stem|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNOrbOfLightning.png',
+    iconPath: 'btnorboflightning.png',
   },
   {
     id: 'quick-make-spirit-of-water',
@@ -3917,7 +3917,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Represents the pure essence of water. Used in crafting certain stuff. :\n\n2x |cff1BE5B8River Root|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNOrbOfFrost.png',
+    iconPath: 'btnorboffrost.png',
   },
   {
     id: 'quick-make-spirit-of-darkness',
@@ -3925,7 +3925,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Spirit Of Darkness, dark essence used to create ominous artefact :\n\n1x |cff1BE5B8River Root|r + 1x |cff949596River Stem|r + 2x |cff1FBF00Athelas Seed|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNOrbOfDarkness.png',
+    iconPath: 'btnorbofdarkness.png',
   },
   {
     id: 'quick-make-lesser-essence',
@@ -3949,7 +3949,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Spend mana to craft an |cffBE00FEAcid Bomb. |rA bomb with nasty liquid from an unknown origin. Throw at a target to reduce their amor by |cffFF02028|r, has a small radius effect. Lasts |cff7DBEF150|r seconds, has |cff7DBEF110|r seconds cooldown.\n\n|cff7DBEF125|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'BTNAcidBomb.png',
+    iconPath: 'btnacidbomb.png',
   },
   {
     id: 'quick-make-bee-hive',
@@ -3965,7 +3965,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Spend mana to craft an |cffFE890DAnabolic Potion. |rBoost the consumer movement speed to the max. Lasts |cff7DBEF110|r seconds, has |cff7DBEF135|r seconds cooldown.\n\n|cff7DBEF16|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'BTNPotionRed.png',
+    iconPath: 'btnpotionred.png',
   },
   {
     id: 'quick-make-fervor-potion',
@@ -3973,7 +3973,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Spend mana to craft Increase the consumer attack speed by |cffFE890D20%|r and armor by |cff1FBF005|r. This potion put alot of stress on the consumer body. Lasts |cff7DBEF120|r seconds, has |cff7DBEF15|r seconds cooldown.\n\n|cff7DBEF110|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'BTNGreaterInvulneralbility.png',
+    iconPath: 'btngreaterinvulneralbility.png',
   },
   {
     id: 'quick-make-nether-potion',
@@ -3981,7 +3981,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Spend mana to craft a |cffBE00FENether Potion. |rBanish a target into the ethereal realm, target takes increased magical damage, cannot attack but can cast spells and use items. Lasts |cff7DBEF115|r (|cff7DBEF140|r) seconds, has |cff7DBEF120|r seconds cooldown.\n\n|cff7DBEF115|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'BTNPotionOfOmniscience.png',
+    iconPath: 'btnpotionofomniscience.png',
   },
   {
     id: 'quick-make-cure-all',
@@ -3989,7 +3989,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Spend mana to craft a Cure All, remove positive/negative buff & effect on the target ally\n\n|cff7DBEF13|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'BTNLesserClarityPotion.png',
+    iconPath: 'btnlesserclaritypotion.png',
   },
   {
     id: 'quick-make-anti-magic-potion',
@@ -3997,7 +3997,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Spend mana to craft an |cff1FBF00Anti-Magic Potion. |rCast an Anti-Magic shield on target, blocking |cff1FBF00200|r magic damage. Lasts |cff7DBEF125|r seconds, has |cff7DBEF11|r seconds cooldown.\n\n|cff7DBEF13|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'BTNPotionOfClarity.png',
+    iconPath: 'btnpotionofclarity.png',
   },
   {
     id: 'quick-make-battle-gloves',
@@ -4005,7 +4005,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a pair of |cffBE00FEBattle Gloves. |rIncreases wearer\'s attack speed by |cffFE890D<AM3b,DataA1,%>%|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second.\n\n1x |cffFF0202Steel Gloves|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNImprovedUnholyStrength.png',
+    iconPath: 'btnimprovedunholystrength.png',
   },
   {
     id: 'quick-make-robe-of-the-magi',
@@ -4013,7 +4013,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get |cffBE00FERobe of the Magi. \n|rA robe belonging to a great magi of old\n\nIntelligence +|cff1FBF0010|r\nArmor +|cff1FBF003|r\n\n1x |cffFE890DBone Coat|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNRobeOfTheMagi.png',
+    iconPath: 'btnrobeofthemagi.png',
   },
   {
     id: 'quick-make-battle-axe',
@@ -4021,7 +4021,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Battle Axe. A two handed axe, increase damage by 14, attack speed by|cff6495ED 20%|r\n\n1x |cffBE00FEGreater essence|r + 1x  |cffFF0202Steel Axe|r 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNOrcMeleeUpThree.png',
+    iconPath: 'btnorcmeleeupthree.png',
   },
   {
     id: 'quick-make-battle-shield',
@@ -4029,7 +4029,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get A Battle Shield, reduce damage taken by |cffFE890D10|r, gives |cff1FBF007|r armor. Has a bash ability, silences and disarms the target. Lasts |cff7DBEF12|r seconds, has |cff7DBEF115|r seconds cooldown.\n\n1x |cffFE890DBone Shield|r + 1x |cffFE890DElk Hide|r + 1x |cffFF0202Steel Ingot|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNArcaniteArmor.png',
+    iconPath: 'btnarcanitearmor.png',
   },
   {
     id: 'quick-make-boots-of-wolf-s-stamina',
@@ -4093,7 +4093,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a pair of |cffBE00FEAnabolic Boots. |rIncreases wearer\'s movement speed by |cffFE890D<AMdw,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack.\n\n1x |cffFE890DBone Boots|r + 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNWirtsOtherLeg.png',
+    iconPath: 'btnwirtsotherleg.png',
   },
   {
     id: 'quick-make-conducting-rod',
@@ -4109,7 +4109,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get A coat embedded with a protective mana layer. Increase all stats by |cff1FBF004|r, Armor by |cff1FBF00<AM2{,DataA1>|r and provides |cff00EAFF30%|r magic resistance. Can cast Anti-Magic on nearby allied heroes. Has |cff7DBEF175|r seconds cooldown.\n\n1x |cffFE890DBone Coat|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNNagaArmorUp2.png',
+    iconPath: 'btnnagaarmorup2.png',
   },
   {
     id: 'quick-make-magefist',
@@ -4133,7 +4133,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cff1FBF00Scroll of Entangling Root|r. Grants the unit the ability to cast Entangling Roots, locking the enemy in place for |cffFE890D2|r/|cffFE890D8|r seconds and dealing |cffFF02025|r damage per second. Has |cff7DBEF120|r seconds cooldown.|cffFFD700|nNote: Troll do not take damage and can still attack when affected by this spell.|r :\n\n1x |cff1FBF00Tinder|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNScrollOfRegenerationGreen.png',
+    iconPath: 'btnscrollofregenerationgreen.png',
   },
   {
     id: 'quick-make-scroll-of-stone-armor',
@@ -4141,7 +4141,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cffFE890DScroll of Stone Armor|r. Grants the unit the ability to Cast Stone armor which increases the target ally armor by |cff1FBF005|r and slows the attack speed of melee attackers by |cffFE890D15%|r for |cffFE890D2|r seconds. Lasts |cff7DBEF115|r seconds, has |cff7DBEF140|r seconds cooldown. :\n\n1x |cff949596Stone|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNScrollUber.png',
+    iconPath: 'btnscrolluber.png',
   },
   {
     id: 'quick-make-scroll-of-tsunami',
@@ -4149,7 +4149,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cffBE00FEScroll of Tsunami|r. Grants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown. :\n\n1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNSnazzyScrollPurple.png',
+    iconPath: 'btnsnazzyscrollpurple.png',
   },
   {
     id: 'quick-make-scroll-of-living-dead',
@@ -4157,7 +4157,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cffFFFC00Scroll of Living Dead|r. Grants the unit the ability to cast Living Dead which summons two skeletal bodyguard, each sketelon deal |cffFF02027|r magic damage per hit. Lasts |cff7DBEF115|r seconds, has |cff7DBEF135|r seconds cooldown. :\n\n1x |cffFFD700Bone|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNSnazzyScroll.png',
+    iconPath: 'btnsnazzyscroll.png',
   },
   {
     id: 'quick-make-scroll-of-fireball',
@@ -4165,7 +4165,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cffFF0202Scroll of Fire Ball|r. Grants the unit the ability to cast Fire Ball dealing |cffFF020260|r damage and stunning the target for |cffFE890D0.1|r/|cffFE890D1|r seconds. Has |cff7DBEF122|r seconds cooldown. :\n\n1x |cffFF0202Flint|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNScrollOfHealing.png',
+    iconPath: 'btnscrollofhealing.png',
   },
   {
     id: 'quick-make-scroll-of-cyclone',
@@ -4173,7 +4173,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cff00EAFFScroll of Cyclone|r. Grants the unit the ability to cast Cyclone which tosses an enemy unit in the air for |cffFE890D5|r/|cffFE890D10|r seconds. Has |cff7DBEF135|r seconds cooldown. :\n\n1x |cffDCB9EBSpirit of Wind|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNBansheeMaster.png',
+    iconPath: 'btnbansheemaster.png',
   },
   {
     id: 'quick-make-scroll-of-swiftness',
@@ -4181,7 +4181,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cffFE890DScroll of Haste|r. Grant the unit the ability to boost its allies movement speed to the maximum. Lasts |cff7DBEF17|r seconds, has |cff7DBEF135|r seconds cooldown. :\n\n1x |cffA46F33Elk Hide Boots|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNScrollOfHaste.png',
+    iconPath: 'btnscrollofhaste.png',
   },
   {
     id: 'quick-make-cloak-of-flames',
@@ -4237,7 +4237,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Spirit Ward. Can be used to revive 1 allied troll :\n\n3x |cff7DBEF1Mana Crystal|r + 1x |cff1FBF00Stick|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNAbsorbMagic.png',
+    iconPath: 'btnabsorbmagic.png',
   },
   {
     id: 'quick-make-poison',
@@ -4245,7 +4245,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Poison salve. Can be used to craft poison spear :\n\n3x |cff1FBF00Mushroom|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNHealingSalve.png',
+    iconPath: 'btnhealingsalve.png',
   },
   {
     id: 'quick-make-venom-fang',
@@ -4269,7 +4269,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get an Ensnare Trap. Deals few ranged damage, can net trolls & animals, good for killing hawk :\n\n1x |cff1FBF00Tinder|r + 1x |cffFFD700Bone|r + 1x |cff1FBF00Stick|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNCOP.png',
+    iconPath: 'btncop.png',
   },
   {
     id: 'quick-make-blow-gun',
@@ -4277,7 +4277,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a BlowGun. Used for shooting small things. Can be loaded with thistles or bones. Drag and drops items on the blowgun to load, click and use on your own troll to unload : \n\n1x |cff1FBF00Stick|r + 1x |cffFE890DClay Ball|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNAlleriaFlute.png',
+    iconPath: 'btnalleriaflute.png',
   },
   {
     id: 'quick-make-poison-thistles',
@@ -4293,7 +4293,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get This seed will grow a Magic Palm Tree, which produces a coconut every minute: \n\n 1x |cff00EAFFMagic|r 1x |cffFFFC00Coconut|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNAcorn.png',
+    iconPath: 'btnacorn.png',
   },
   {
     id: 'quick-make-mana-crystal',
@@ -4309,7 +4309,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get an essence of Magic :\n\n2x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNMoonStone.png',
+    iconPath: 'btnmoonstone.png',
   },
   {
     id: 'quick-make-poison-spear',
@@ -4317,7 +4317,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Poison Spear. Hurls a poisoned spear at a targeted enemy unit, dealing 15 initial damage and 15 damage every 3 seconds.Reduce attack speed by 30% and movement speed by 30%. Lasts |cff7DBEF130|r (|cff7DBEF140|r) seconds, has |cff7DBEF12|r seconds cooldown.\n\n1x |cff1FBF00Poison|r + 1x |cffFFD700Bone|r + 1x |cff949596Stone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNEnvenomedSpear.png',
+    iconPath: 'btnenvenomedspear.png',
   },
   {
     id: 'quick-make-nets',
@@ -4325,7 +4325,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Nets. Can cast net on targeted enemy, locking them down, good for hunting animals and catch enemy troll. Has 3 charges. Last 2.5(10) seconds, has 15 seconds cooldown :\n\n2x |cff1FBF00Tinder|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNEnsnare.png',
+    iconPath: 'btnensnare.png',
   },
   {
     id: 'quick-make-hunting-net',
@@ -4349,7 +4349,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Smoke Bomb. The skin of a banana containing the spirit of wind. When activated, the banana releases the wind and creates a smokescreen. Has 3 charges :\n\n1x |cffFFD700Banana|r 1x |cffDCB9EBSpirit of Wind|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNSmokePot.png',
+    iconPath: 'BTNSmokepot.png',
   },
   {
     id: 'quick-make-fire-bomb',
@@ -4357,7 +4357,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Fire Bomb. A shell of destructible material that is highly flammable when thrown, deals 67 damage. Only damage ally/enemy buildings and trees, has 2 charges :\n\n1x |cff530080Smoke Bomb|r 1x |cffFF0202Flint|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNLiquidFire.png',
+    iconPath: 'btnliquidfire.png',
   },
   {
     id: 'quick-make-emp',
@@ -4365,7 +4365,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get an EMP. When activated, disables all towers and enemy buildings around the user for 45 seconds :\n\n2x |cff7DBEF1Mana Crystal|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNWispSplode.png',
+    iconPath: 'btnwispsplode.png',
   },
   {
     id: 'quick-make-transport-ship',
@@ -4373,7 +4373,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Transport Ship Kit. Build a ship which allows you to travel on water :\n\n2x |cff1FBF00Stick|r + 2x |cffFE890DClay Ball|r + 2x |cffFE890DElk Hide|r|cffFF0202\n\nWarning: Transport Ship mode must be enabled to create ship|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNNightElfTransport.png',
+    iconPath: 'btnnightelftransport.png',
   },
   {
     id: 'quick-make-dark-thistles',
@@ -4381,7 +4381,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Dark thistles. Creates a special type of blowgun ammo. Instead of poisoning, dark thistles depress enemies and zap mana from them over time :\n\n1x |cff1FBF00Thistles|r 1x |cffBE00FESpirit of Darkness|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNQuillSpray.png',
+    iconPath: 'btnquillspray.png',
   },
   {
     id: 'quick-make-elk-skin-boots',
@@ -4469,7 +4469,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a pair of |cff82FF20Hydra Scale Gloves. |rIncreases wearer\'s attack speed by |cffFE890D<AM3c,DataA1,%>%|r, all stats by |cff1FBF005|r and has a poisonous attack effect that lowers attack speed by |cffFFFC00<AM63,DataB1,%>%|r and movement speed by |cffFFFC00<AM63,DataC1,%>%|r and deals |cffFF0202<AM63,DataA1>|r damage per second for |cff7DBEF1<AM63,HeroDur1>|r seconds on trolls and |cff7DBEF1<AM63,Dur1>|r seconds on units. Can cast |cffFF6347Tsunami|r.|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown.\n\n2x |cff82FF20Hydra Scale|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNImprovedStrengthOfTheWild.png',
+    iconPath: 'btnimprovedstrengthofthewild.png',
   },
   {
     id: 'quick-make-hydra-scale-coat',
@@ -4477,7 +4477,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cff82FF20Hydra Scale Coat. |rA coat embedded with the scale of the Great Hydra. Increase all stats by |cff1FBF002|r, Armor by |cff1FBF00<AM2|,DataA1>|r and returns |cffBE00FE35%|r melee damage received.\n\n3x |cff82FF20Hydra Scale|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNNagaArmorUp3.png',
+    iconPath: 'btnnagaarmorup3.png',
   },
   {
     id: 'quick-make-iron-staff',
@@ -4485,7 +4485,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get A magic staff reinforced with iron.\n+|cff1FBF008|r Attack damage\n+|cff1FBF002|r Armor\n+|cff1FBF008|r Intelligence\n\n1x |cff1FBF00Stick|r1x 2x |cffFF0202Iron Ingot|r1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNWand.png',
+    iconPath: 'btnwand.png',
   },
   {
     id: 'quick-make-iron-spear',
@@ -4493,7 +4493,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Iron Spear. Deals 70 damage on target, has 60% chance of being recoverable :\n\n1x |cff1FBF00Stick|r/|cffFFD700Bone|r + 1x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNStrengthOfTheMoon.png',
+    iconPath: 'btnstrengthofthemoon.png',
   },
   {
     id: 'quick-make-steel-spear',
@@ -4501,7 +4501,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Steel Spear. Deals 100 damage on target, has 60% chance of being recoverable :\n\n1x |cff1FBF00Stick|r/|cffFFD700Bone|r + 1x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNThoriumRanged.png',
+    iconPath: 'btnthoriumranged.png',
   },
   {
     id: 'quick-make-dark-spear',
@@ -4509,7 +4509,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Dark Spear. Deals 40 damage and will zap 10 plus 40% of the target\'s current energy :\n\n1x |cffBE00FESpirit of Darkness|r1x |cff1FBF00Stick|r/|cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNArcaniteRanged.png',
+    iconPath: 'btnarcaniteranged.png',
   },
   {
     id: 'quick-make-iron-axe',
@@ -4517,7 +4517,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get an Iron Axe. Increase damage by 9, allows tree to be cut :\n\n1x |cff1FBF00Stick|r/|cffFFD700Bone|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNOrcMeleeUpTwo.png',
+    iconPath: 'btnorcmeleeuptwo.png',
   },
   {
     id: 'quick-make-steel-axe',
@@ -4525,7 +4525,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Steel Axe. Increase damage by 12, allows tree to be cut :\n\n1x |cff1FBF00Stick|r/|cffFFD700Bone|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNSpiritWalkerAdeptTraining.png',
+    iconPath: 'btnspiritwalkeradepttraining.png',
   },
   {
     id: 'quick-make-chameleon-hatchet',
@@ -4557,7 +4557,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get A Basic Shield, reduce damage taken by |cffFE890D3|r, gives |cff7DBEF110%|r magic resistance.\n\n1x |cffFE890DElk Hide|r + 2x |cff1FBF00Stick|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNSteelArmor.png',
+    iconPath: 'btnsteelarmor.png',
   },
   {
     id: 'quick-make-bone-shield',
@@ -4565,7 +4565,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get A Bone Shield, reduce damage taken by |cffFE890D5|r, gives |cff1FBF001|r armor and |cff7DBEF110%|r magic resistance.\n\n1x |cffA46F33Shield|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNImprovedUnholyArmor.png',
+    iconPath: 'btnimprovedunholyarmor.png',
   },
   {
     id: 'quick-make-iron-shield',
@@ -4573,7 +4573,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get An Iron Shield, reduce damage taken by |cffFE890D7|r, gives |cff1FBF002|r armor and |cff7DBEF110%|r magic resistance.\n\n1x |cffA46F33Shield|r+ 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNHumanArmorUpOne.png',
+    iconPath: 'btnhumanarmorupone.png',
   },
   {
     id: 'quick-make-steel-shield',
@@ -4581,7 +4581,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get A Steel Shield, reduce damage taken by |cffFE890D10|r, gives |cff1FBF004|r armor and |cff7DBEF110%|r magic resistance. Has a bash ability, silences and disarms the target. Lasts |cff7DBEF12|r seconds, has |cff7DBEF115|r seconds cooldown.\n\n1x |cffA46F33Shield|r+ 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNThoriumArmor.png',
+    iconPath: 'btnthoriumarmor.png',
   },
   {
     id: 'quick-make-bone-boots',
@@ -4597,7 +4597,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a pair of |cff949596Iron Boots. |rIncreases wearer\'s movement speed by |cffFE890D<AMdu,DataA1>|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNBoots.png',
+    iconPath: 'btnboots.png',
   },
   {
     id: 'quick-make-steel-boots',
@@ -4613,7 +4613,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cffFE890DBone Gloves. |rIncreases wearer\'s attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AItg,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNGauntletsOfOgrePower.png',
+    iconPath: 'btngauntletsofogrepower.png',
   },
   {
     id: 'quick-make-iron-gloves',
@@ -4629,7 +4629,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cff00EAFFSteel Gloves. |rIncreases wearer\'s attack speed by |cffFE890D<AM3c,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNAdvancedUnholyStrength.png',
+    iconPath: 'btnadvancedunholystrength.png',
   },
   {
     id: 'quick-make-bone-coat',
@@ -4645,7 +4645,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get an |cff949596Iron Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AIs4,DataC1>|r, Intelligence by |cff1FBF00<AIi6,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.\n\n1x |cffA46F33Elk Hide Coat|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNImprovedMoonArmor.png',
+    iconPath: 'btnimprovedmoonarmor.png',
   },
   {
     id: 'quick-make-steel-coat',
@@ -4653,7 +4653,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cff00EAFFSteel Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AMep,DataC1>|r, Intelligence by |cff1FBF00<AM6o,DataB1>|r, Armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown.\n\n1x |cffA46F33Elk Hide Coat|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNAdvancedMoonArmor.png',
+    iconPath: 'btnadvancedmoonarmor.png',
   },
   {
     id: 'quick-make-camp-fire-kit',
@@ -4661,7 +4661,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Pick up the following materials in the correct order or click on this once they\'re in your inventory to get a Camp Fire Kit. A handy dandy kit for starting a fire, can be used to cook meat, heat yourself up or burn buildings, might burn your own buildings too :\n\n1x |cff1FBF00Tinder|r + 1x |cffFF0202Flint|r + 1x |cff1FBF00Stick|r\n\nIf you do not have enough inventory to craft to pick all items, you can use the craft master 5000 at the center of the map. This Quick Make ability will find the nearest material and craft the said building, material have to be either on the ground just next to the unit or inside its inventory. For more information abouts item, type |cffFFD700-recipes|r, all the items are listed there.',
-    iconPath: 'BTNFire.png',
+    iconPath: 'btnfire.png',
   },
   {
     id: 'quick-make-tent-kit',
@@ -4677,7 +4677,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Pick up the following materials in the correct order or click on this once they\'re in your inventory to get a Mud Hut Kit. A kit used to build a Mud Hut, a very good place to sleep, also has an armor aura :\n\n4x |cffFE890DClay Ball|r\n\nIf you do not have enough inventory to craft to pick all items, you can use the craft master 5000 at the center of the map. This Quick Make ability will find the nearest material and craft the said building, material have to be either on the ground just next to the unit or inside its inventory. For more information abouts item, type |cffFFD700-recipes|r, all the items are listed there.',
-    iconPath: 'BTNGoldMine.png',
+    iconPath: 'BTNGoldmine.png',
   },
   {
     id: 'quick-make-forge-kit',
@@ -4685,7 +4685,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Pick up the following materials in the correct order or click on this once they\'re in your inventory to get A Forge Kit. A kit used to build a Forge, a place to craft ingots and basic weapons :\n\n1x |cffFF0202Flint|r 3x |cff949596Stone|r\n\nIf you do not have enough inventory to craft to pick all items, you can use the craft master 5000 at the center of the map. This Quick Make ability will find the nearest material and craft the said building, material have to be either on the ground just next to the unit or inside its inventory. For more information abouts item, type |cffFFD700-recipes|r, all the items are listed there.',
-    iconPath: 'BTNForge.png',
+    iconPath: 'btnforge.png',
   },
   {
     id: 'quick-make-workshop-kit',
@@ -4709,7 +4709,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Pick up the following materials in the correct order or click on this once they\'re in your inventory to get a Witch Doctors Hut Kit. A kit used to build a Witch Doctors Hut, a place where you can craft magical items :\n\n1x |cff1FBF00Stick|r + 1x |cff7DBEF1Mana Crystal|r + 1x |cff1FBF00Stick|r + 1x |cff7DBEF1Mana Crystal|r + 1x |cff1FBF00Stick|r\n\nIf you do not have enough inventory to craft to pick all items, you can use the craft master 5000 at the center of the map. This Quick Make ability will find the nearest material and craft the said building, material have to be either on the ground just next to the unit or inside its inventory. For more information abouts item, type |cffFFD700-recipes|r, all the items are listed there.',
-    iconPath: 'BTNVoodooLounge.png',
+    iconPath: 'btnvoodoolounge.png',
   },
   {
     id: 'quick-make-tannery-kit',
@@ -4717,7 +4717,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Pick up the following materials in the correct order or click on this once they\'re in your inventory to get a Tannery Kit. A kit used to build a Tannery, a place where you can craft armor and cloth from hides :\n\n2x |cff1FBF00Stick|r + 2x |cff949596Stone|r + 1x |cffFE890DClay Ball|r\n\nIf you do not have enough inventory to craft to pick all items, you can use the craft master 5000 at the center of the map. This Quick Make ability will find the nearest material and craft the said building, material have to be either on the ground just next to the unit or inside its inventory. For more information abouts item, type |cffFFD700-recipes|r, all the items are listed there.',
-    iconPath: 'BTNPigFarm.png',
+    iconPath: 'btnpigfarm.png',
   },
   {
     id: 'quick-make-omnitower-kit',
@@ -4725,7 +4725,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Pick up the following materials in the correct order or click on this once they\'re in your inventory to get a Omnitower Kit. A kit used to build an Omnitower, a tower dealing small amount of damage, can use activable items like spear, scroll or blowgun :\n\n1x |cff949596Stone|r + 3x |cff1FBF00Stick|r\n\nIf you do not have enough inventory to craft to pick all items, you can use the craft master 5000 at the center of the map. This Quick Make ability will find the nearest material and craft the said building, material have to be either on the ground just next to the unit or inside its inventory. For more information abouts item, type |cffFFD700-recipes|r, all the items are listed there.',
-    iconPath: 'BTNOrcTower.png',
+    iconPath: 'btnorctower.png',
   },
   {
     id: 'quick-make-armory-kit',
@@ -4741,7 +4741,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Pick up the following materials in the correct order or click on this once they\'re in your inventory to get a Teleport Beacon Kit. A kit used to build a Teleport Beacon, can be used to blink yourself on the other side of the beacon :\n\n2x |cff949596Stone|r + 1x |cff7DBEF1Mana Crystal|r + 1x |cff1FBF00Stick|r\n\nIf you do not have enough inventory to craft to pick all items, you can use the craft master 5000 at the center of the map. This Quick Make ability will find the nearest material and craft the said building, material have to be either on the ground just next to the unit or inside its inventory. For more information abouts item, type |cffFFD700-recipes|r, all the items are listed there.',
-    iconPath: 'BTNEnergyTower.png',
+    iconPath: 'btnenergytower.png',
   },
   {
     id: 'f-special-herb-quick-make-page',
@@ -4757,7 +4757,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Melt down herbs to gain mana: \nAthelas: |cff7DBEF11|r mana.\nRiver Root/Stem: |cff7DBEF13|r mana.\nNative Herb: |cff7DBEF15|r mana.\nExotic Herb: |cff7DBEF17.5|r mana.\nSpirit of Wind/Water/Darknes: |cff7DBEF16|r mana.\nLesser Essence: |cff7DBEF110|r mana.\nGreater Essence: |cff7DBEF115|r mana.',
-    iconPath: 'BTNUnstableConcoction.png',
+    iconPath: 'btnunstableconcoction.png',
   },
   {
     id: 'f-armor-quick-make-page',
@@ -4805,7 +4805,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Look here to construct buildings, this page contains all buildings recipes, type -crafting for explanation about crafting.',
-    iconPath: 'BTNBasicStruct.png',
+    iconPath: 'btnbasicstruct.png',
   },
   {
     id: 'x07i-aall',
@@ -4819,14 +4819,14 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Choose a subclass.',
-    iconPath: 'BTNStatUp.png',
+    iconPath: 'btnstatup.png',
   },
   {
     id: 'aura-dummy-random-hat',
     name: 'Aura Dummy: Random Hat',
     category: 'unknown',
     description: '',
-    iconPath: 'BTNSelectHeroOn.png',
+    iconPath: 'btnselectheroon.png',
   },
   {
     id: 'aura-dummy-tournament-winner-2020',
@@ -4841,7 +4841,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Find and melt a River Stem in |cff7DBEF1900|r radius, granting |cff7DBEF13|r mana to Mixing Pot.',
-    iconPath: 'BTNDOTAdeptTraining.png',
+    iconPath: 'btndotadepttraining.png',
   },
   {
     id: 'melt-a-river-root',
@@ -4849,7 +4849,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Find and melt a River Root in |cff7DBEF1900|r radius, granting |cff7DBEF13|r mana to Mixing Pot.',
-    iconPath: 'BTNWandOfNeutralization.png',
+    iconPath: 'btnwandofneutralization.png',
   },
   {
     id: 'melt-a-native-herb',
@@ -4873,7 +4873,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Find and melt every herb in |cff7DBEF1900|r radius, including athelas, spirits and essences.',
-    iconPath: 'BTNDizzy.png',
+    iconPath: 'btndizzy.png',
   },
   {
     id: 'teleport-mirror',
@@ -4881,6 +4881,6 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Teleports a friendly unit around the Teleportation Beacon 180Â°. Can be upgraded by putting a Magic into the teleport beacon.',
-    iconPath: 'BTNWispSplode.png',
+    iconPath: 'btnwispsplode.png',
   }
 ];

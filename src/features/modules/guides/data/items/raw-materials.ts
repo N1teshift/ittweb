@@ -31,7 +31,7 @@ export const RAW_MATERIALS_ITEMS: ItemData[] = [
     category: 'raw-materials',
     description: 'Increases experience gained.',
     tooltip: 'Increases experience gain of the bearer by |cffFE890D50%|r.\n|cffFF0202Note: Does not work for Beastmaster or Hunter.|r',
-    iconPath: 'BTNEnchantedGemstone.png',
+    iconPath: 'btnenchantedgemstone.png',
   },
   {
     id: 'magic-seed',
@@ -47,7 +47,7 @@ export const RAW_MATERIALS_ITEMS: ItemData[] = [
     category: 'raw-materials',
     description: 'This seed will grow a Magic Palm Tree, which produces a coconut every minute',
     tooltip: 'This seed will grow a Magic Palm Tree, which produces a coconut every minute',
-    iconPath: 'UI/Cursor/BTNAcorn.png',
+    iconPath: 'UI/Cursor/btnacorn.png',
   },
   {
     id: 'stick',
@@ -55,7 +55,7 @@ export const RAW_MATERIALS_ITEMS: ItemData[] = [
     category: 'raw-materials',
     description: 'Increases the damage of the troll by 1 when carried. Used in Troll hut, Storage hut, Witch Doctors hut, camp fire, tent, and tannery. Can make various items in the armory too.',
     tooltip: 'Increases the damage of the troll by 1 when carried. Used in Troll hut, Storage hut, Witch Doctors hut, camp fire, tent, and tannery. Can make various items in the armory too.',
-    iconPath: 'BTNNatureTouchGrow.png',
+    iconPath: 'btnnaturetouchgrow.png',
   },
   {
     id: 'flint',
@@ -63,7 +63,7 @@ export const RAW_MATERIALS_ITEMS: ItemData[] = [
     category: 'raw-materials',
     description: 'Used for starting fires or making iron and steel in the armory.',
     tooltip: 'Used for starting fires or making iron and steel in the armory.',
-    iconPath: 'BTNStaffOfSanctuary.png',
+    iconPath: 'btnstaffofsanctuary.png',
   },
   {
     id: 'tinder',
@@ -71,7 +71,7 @@ export const RAW_MATERIALS_ITEMS: ItemData[] = [
     category: 'raw-materials',
     description: 'Some small leaves and twigs. Used in camp fire (Tinder Flint Stick), or for making ensnare traps and nets.',
     tooltip: 'Some small leaves and twigs. Used in camp fire (Tinder Flint Stick), or for making ensnare traps and nets.',
-    iconPath: 'BTNShimmerWeed.png',
+    iconPath: 'btnshimmerweed.png',
   },
   {
     id: 'mushroom',
@@ -87,7 +87,7 @@ export const RAW_MATERIALS_ITEMS: ItemData[] = [
     category: 'raw-materials',
     description: 'A ball of clay that can be used for building',
     tooltip: 'A ball of clay that can be used for building.',
-    iconPath: 'BTNThunderLizardEgg.png',
+    iconPath: 'btnthunderlizardegg.png',
   },
   {
     id: 'elk-hide',
@@ -127,7 +127,7 @@ export const RAW_MATERIALS_ITEMS: ItemData[] = [
     category: 'raw-materials',
     description: 'A glowing crystal of mana. Used to craft magic gear.',
     tooltip: 'A glowing crystal of mana. Used to craft magic gear.',
-    iconPath: 'BTNManaStone.png',
+    iconPath: 'btnmanastone.png',
   },
   {
     id: 'magic',
@@ -135,7 +135,7 @@ export const RAW_MATERIALS_ITEMS: ItemData[] = [
     category: 'raw-materials',
     description: 'A very rare and unpredictable activated Mana Complex. Use with extreme caution. Who knows what it will do.',
     tooltip: 'A very rare and unpredictable activated Mana Complex. Use with extreme caution. Who knows what it will do.',
-    iconPath: 'BTNMoonStone.png',
+    iconPath: 'btnmoonstone.png',
   },
   {
     id: 'hawk-egg',
@@ -143,7 +143,7 @@ export const RAW_MATERIALS_ITEMS: ItemData[] = [
     category: 'raw-materials',
     description: 'The egg of a hawk. Valuable for trading.',
     tooltip: 'The egg of a hawk. Valuable for trading.',
-    iconPath: 'BTNPhoenixEgg.png',
+    iconPath: 'btnphoenixegg.png',
   },
   {
     id: 'scale',
@@ -151,7 +151,7 @@ export const RAW_MATERIALS_ITEMS: ItemData[] = [
     category: 'raw-materials',
     description: 'A rare scale.',
     tooltip: 'A rare scale.',
-    iconPath: 'BTNNagaArmorUp1.png',
+    iconPath: 'btnnagaarmorup1.png',
   },
   {
     id: 'iron-ingot',

@@ -55,7 +55,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs4,DataC1>|r, Intelligence by |cff1FBF00<AIi6,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.',
     tooltip: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs4,DataC1>|r, Intelligence by |cff1FBF00<AIi6,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.',
-    iconPath: 'BTNImprovedMoonArmor.png',
+    iconPath: 'btnimprovedmoonarmor.png',
   },
   {
     id: 'steel-coat',
@@ -63,7 +63,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AMep,DataC1>|r, Intelligence by |cff1FBF00<AM6o,DataB1>|r, Armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown.',
     tooltip: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AMep,DataC1>|r, Intelligence by |cff1FBF00<AM6o,DataB1>|r, Armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown.',
-    iconPath: 'BTNAdvancedMoonArmor.png',
+    iconPath: 'btnadvancedmoonarmor.png',
   },
   {
     id: 'makruru-cuirass',
@@ -71,7 +71,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: 'A large Makruru carapace, which can be used as a cuirass. \n+|cff1FBF00<AM2v,DataA1>|r Armor \n+|cff1FBF00<AMep,DataC1>|r Strength \nThis unit gains |cff1FBF002|r armor and |cff1FBF003|r health regeneration while in water. \nCan be activated to apply effects outside of water, tripling their strength. \nLasts |cff6495ED10.0|r seconds. |cff6495ED35.0|r seconds cooldown.',
     tooltip: 'A large Makruru carapace, which can be used as a cuirass. \n+|cff1FBF00<AM2v,DataA1>|r Armor \n+|cff1FBF00<AMep,DataC1>|r Strength \nThis unit gains |cff1FBF002|r armor and |cff1FBF003|r health regeneration while in water. \nCan be activated to apply effects outside of water, tripling their strength. \nLasts |cff6495ED10.0|r seconds. |cff6495ED35.0|r seconds cooldown.',
-    iconPath: 'BTNNagaArmorUp3.png',
+    iconPath: 'btnnagaarmorup3.png',
   },
   {
     id: 'battle-armor',
@@ -79,7 +79,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: 'A coat embedded with a protective mana layer. Increase all stats by |cff1FBF004|r, Armor by |cff1FBF00<AM2{,DataA1>|r and provides |cff00EAFF30%|r magic resistance. Can cast Anti-Magic on nearby allied heroes. Has |cff7DBEF175|r seconds cooldown.',
     tooltip: 'A coat embedded with a protective mana layer. Increase all stats by |cff1FBF004|r, Armor by |cff1FBF00<AM2{,DataA1>|r and provides |cff00EAFF30%|r magic resistance. Can cast Anti-Magic on nearby allied heroes. Has |cff7DBEF175|r seconds cooldown.',
-    iconPath: 'BTNNagaArmorUp2.png',
+    iconPath: 'btnnagaarmorup2.png',
   },
   {
     id: 'robe-of-the-magi',
@@ -87,7 +87,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: 'A robe belonging to a great magi of old\n\nIntelligence +|cff1FBF0010|r\nArmor +|cff1FBF003|r',
     tooltip: 'A robe belonging to a great magi of old\n\nIntelligence +|cff1FBF0010|r\nArmor +|cff1FBF003|r',
-    iconPath: 'BTNRobeOfTheMagi.png',
+    iconPath: 'btnrobeofthemagi.png',
   },
   {
     id: 'hydra-scale-coat',
@@ -95,7 +95,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: '|cff82FF20Artifact\n|rA coat embedded with the scale of the Great Hydra. Increase all stats by |cff1FBF002|r, Armor by |cff1FBF00<AM2|,DataA1>|r and returns |cffBE00FE35%|r melee damage received.',
     tooltip: '|cff82FF20Artifact\n|rA coat embedded with the scale of the Great Hydra. Increase all stats by |cff1FBF002|r, Armor by |cff1FBF00<AM2|,DataA1>|r and returns |cffBE00FE35%|r melee damage received.',
-    iconPath: 'BTNNagaArmorUp3.png',
+    iconPath: 'btnnagaarmorup3.png',
   },
   {
     id: 'elk-skin-boots',
@@ -151,7 +151,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: 'Increases wearer\'s movement speed by |cffFE890D<AMdu,DataA1>|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r',
     tooltip: 'Increases wearer\'s movement speed by |cffFE890D<AMdu,DataA1>|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r',
-    iconPath: 'BTNBoots.png',
+    iconPath: 'btnboots.png',
   },
   {
     id: 'steel-boots',
@@ -167,7 +167,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: 'Increases wearer\'s movement speed by |cffFE890D<AMdw,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack.',
     tooltip: 'Increases wearer\'s movement speed by |cffFE890D<AMdw,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack.',
-    iconPath: 'BTNWirtsOtherLeg.png',
+    iconPath: 'btnwirtsotherleg.png',
   },
   {
     id: 'cloak-of-flames',
@@ -247,7 +247,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: 'Increases wearer\'s attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AItg,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
     tooltip: 'Increases wearer\'s attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AItg,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
-    iconPath: 'BTNGauntletsOfOgrePower.png',
+    iconPath: 'btngauntletsofogrepower.png',
   },
   {
     id: 'iron-gloves',
@@ -263,7 +263,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: 'Increases wearer\'s attack speed by |cffFE890D<AM3c,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
     tooltip: 'Increases wearer\'s attack speed by |cffFE890D<AM3c,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
-    iconPath: 'BTNAdvancedUnholyStrength.png',
+    iconPath: 'btnadvancedunholystrength.png',
   },
   {
     id: 'battle-gloves',
@@ -271,7 +271,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: 'Increases wearer\'s attack speed by |cffFE890D<AM3b,DataA1,%>%|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second.',
     tooltip: 'Increases wearer\'s attack speed by |cffFE890D<AM3b,DataA1,%>%|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second.',
-    iconPath: 'BTNImprovedUnholyStrength.png',
+    iconPath: 'btnimprovedunholystrength.png',
   },
   {
     id: 'basic-shield',
@@ -279,7 +279,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: 'A Basic Shield, reduce damage taken by |cffFE890D3|r, gives |cff7DBEF110%|r magic resistance.',
     tooltip: 'A Basic Shield, reduce damage taken by |cffFE890D3|r, gives |cff7DBEF110%|r magic resistance.',
-    iconPath: 'BTNSteelArmor.png',
+    iconPath: 'btnsteelarmor.png',
   },
   {
     id: 'bone-shield',
@@ -287,7 +287,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: 'A Bone Shield, reduce damage taken by |cffFE890D5|r, gives |cff1FBF001|r armor and |cff7DBEF110%|r magic resistance.',
     tooltip: 'A Bone Shield, reduce damage taken by |cffFE890D5|r, gives |cff1FBF001|r armor and |cff7DBEF110%|r magic resistance.',
-    iconPath: 'BTNImprovedUnholyArmor.png',
+    iconPath: 'btnimprovedunholyarmor.png',
   },
   {
     id: 'iron-shield',
@@ -295,7 +295,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: 'An Iron Shield, reduce damage taken by |cffFE890D7|r, gives |cff1FBF002|r armor and |cff7DBEF110%|r magic resistance.',
     tooltip: 'An Iron Shield, reduce damage taken by |cffFE890D7|r, gives |cff1FBF002|r armor and |cff7DBEF110%|r magic resistance.',
-    iconPath: 'BTNHumanArmorUpOne.png',
+    iconPath: 'btnhumanarmorupone.png',
   },
   {
     id: 'steel-shield',
@@ -303,7 +303,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: 'A Steel Shield, reduce damage taken by |cffFE890D10|r, gives |cff1FBF004|r armor and |cff7DBEF110%|r magic resistance. Has a bash ability, silences and disarms the target. Lasts |cff7DBEF12|r seconds, has |cff7DBEF115|r seconds cooldown.',
     tooltip: 'A Steel Shield, reduce damage taken by |cffFE890D10|r, gives |cff1FBF004|r armor and |cff7DBEF110%|r magic resistance. Has a bash ability, silences and disarms the target. Lasts |cff7DBEF12|r seconds, has |cff7DBEF115|r seconds cooldown.',
-    iconPath: 'BTNThoriumArmor.png',
+    iconPath: 'btnthoriumarmor.png',
   },
   {
     id: 'battle-shield',
@@ -311,7 +311,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     category: 'armor',
     description: 'A Battle Shield, reduce damage taken by |cffFE890D10|r, gives |cff1FBF007|r armor. Has a bash ability, silences and disarms the target. Lasts |cff7DBEF12|r seconds, has |cff7DBEF115|r seconds cooldown.',
     tooltip: 'A Battle Shield, reduce damage taken by |cffFE890D10|r, gives |cff1FBF007|r armor. Has a bash ability, silences and disarms the target. Lasts |cff7DBEF12|r seconds, has |cff7DBEF115|r seconds cooldown.',
-    iconPath: 'BTNArcaniteArmor.png',
+    iconPath: 'btnarcanitearmor.png',
   },
   {
     id: 'armory-kit',

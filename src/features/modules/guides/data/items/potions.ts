@@ -7,7 +7,7 @@ export const POTIONS_ITEMS: ItemData[] = [
     category: 'potions',
     description: 'A dilute potion made from Athelas Seed. Instantly restores |cff1FBF00100|r Health point to a target ally.',
     tooltip: 'A dilute potion made from Athelas Seed. Instantly restores |cff1FBF00100|r Health point to a target ally.',
-    iconPath: 'BTNLesserRejuvPotion.png',
+    iconPath: 'btnlesserrejuvpotion.png',
   },
   {
     id: 'oracle-potion',
@@ -23,7 +23,7 @@ export const POTIONS_ITEMS: ItemData[] = [
     category: 'potions',
     description: 'Boost the consumer movement speed to the max. Lasts |cff7DBEF110|r seconds, has |cff7DBEF135|r seconds cooldown.',
     tooltip: 'Boost the consumer movement speed to the max. Lasts |cff7DBEF110|r seconds, has |cff7DBEF135|r seconds cooldown.',
-    iconPath: 'BTNPotionRed.png',
+    iconPath: 'btnpotionred.png',
   },
   {
     id: 'anti-magic-potion',
@@ -31,7 +31,7 @@ export const POTIONS_ITEMS: ItemData[] = [
     category: 'potions',
     description: 'Cast an Anti-Magic shield on target, blocking |cff1FBF00200|r magic damage. Lasts |cff7DBEF125|r seconds, has |cff7DBEF11|r seconds cooldown.',
     tooltip: 'Cast an Anti-Magic shield on target, blocking |cff1FBF00200|r magic damage. Lasts |cff7DBEF125|r seconds, has |cff7DBEF11|r seconds cooldown.',
-    iconPath: 'BTNPotionOfClarity.png',
+    iconPath: 'btnpotionofclarity.png',
   },
   {
     id: 'cure-potion',
@@ -39,7 +39,7 @@ export const POTIONS_ITEMS: ItemData[] = [
     category: 'potions',
     description: 'This potion is said to be able to cure anything.',
     tooltip: 'This potion is said to be able to cure anything.',
-    iconPath: 'BTNLesserClarityPotion.png',
+    iconPath: 'btnlesserclaritypotion.png',
   },
   {
     id: 'disease-potion',
@@ -47,7 +47,7 @@ export const POTIONS_ITEMS: ItemData[] = [
     category: 'potions',
     description: 'Biological warfare! Throw at an enemy to give him  a disease. Dealing |cffFF02025|r damage per second. Last |cff7DBEF125|r seconds.',
     tooltip: 'Biological warfare! Throw at an enemy to give him  a disease. Dealing |cffFF02025|r damage per second. Last |cff7DBEF125|r seconds.',
-    iconPath: 'BTNPotionGreen.png',
+    iconPath: 'btnpotiongreen.png',
   },
   {
     id: 'drunk-s-potion',
@@ -55,7 +55,7 @@ export const POTIONS_ITEMS: ItemData[] = [
     category: 'potions',
     description: 'Throw this at an enemy to get them drunk, target is silenced, movement speed slowed by |cffFE890D25%|r, attack speed by |cffFE890D10%|r and has |cffFE890D50%|r chance to miss. Lasts |cff7DBEF18|r (|cff7DBEF113|r) seconds, has |cff7DBEF120|r seconds cooldown.',
     tooltip: 'Throw this at an enemy to get them drunk, target is silenced, movement speed slowed by |cffFE890D25%|r, attack speed by |cffFE890D10%|r and has |cffFE890D50%|r chance to miss. Lasts |cff7DBEF18|r (|cff7DBEF113|r) seconds, has |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'BTNLesserInvulneralbility.png',
+    iconPath: 'btnlesserinvulneralbility.png',
   },
   {
     id: 'mana-potion',
@@ -63,7 +63,7 @@ export const POTIONS_ITEMS: ItemData[] = [
     category: 'potions',
     description: 'A dilute potion made from Athelas Seed. Instantly restores |cff7DBEF180|r Mana point to a target ally.',
     tooltip: 'A dilute potion made from Athelas Seed. Instantly restores |cff7DBEF180|r Mana point to a target ally.',
-    iconPath: 'BTNPotionBlueSmall.png',
+    iconPath: 'btnpotionbluesmall.png',
   },
   {
     id: 'nether-potion',
@@ -71,7 +71,7 @@ export const POTIONS_ITEMS: ItemData[] = [
     category: 'potions',
     description: 'Banish a target into the ethereal realm, target takes increased magical damage, cannot attack but can cast spells and use items. Lasts |cff7DBEF115|r (|cff7DBEF140|r) seconds, has |cff7DBEF120|r seconds cooldown.',
     tooltip: 'Banish a target into the ethereal realm, target takes increased magical damage, cannot attack but can cast spells and use items. Lasts |cff7DBEF115|r (|cff7DBEF140|r) seconds, has |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'BTNPotionOfOmniscience.png',
+    iconPath: 'btnpotionofomniscience.png',
   },
   {
     id: 'essence-of-bees',
@@ -79,7 +79,7 @@ export const POTIONS_ITEMS: ItemData[] = [
     category: 'potions',
     description: 'Create a primary hive releasing bees, if it is not killed, it spawns lesser hives around it, up to 3 hives over |cff7DBEF120|r seconds. Each hive behave like a normal bee hive.',
     tooltip: 'Create a primary hive releasing bees, if it is not killed, it spawns lesser hives around it, up to 3 hives over |cff7DBEF120|r seconds. Each hive behave like a normal bee hive.',
-    iconPath: 'BTNBeeHive.png',
+    iconPath: 'BTNBeehive.png',
   },
   {
     id: 'lesser-essence',
@@ -103,7 +103,7 @@ export const POTIONS_ITEMS: ItemData[] = [
     category: 'potions',
     description: 'Made from very special ingredients',
     tooltip: 'Drink this potion when you want to kill lots of stuff. It increases your attack and movement speed as well as hurts enemies around you.|n|c00ff0000Stimulant|r',
-    iconPath: 'BTNGreaterInvulneralbility.png',
+    iconPath: 'btngreaterinvulneralbility.png',
   },
   {
     id: 'healing-salve',
@@ -119,7 +119,7 @@ export const POTIONS_ITEMS: ItemData[] = [
     category: 'potions',
     description: 'This potion is said to be able to cure all allies.',
     tooltip: 'This potion is said to be able to cure all allies.',
-    iconPath: 'BTNMinorRejuvPotion.png',
+    iconPath: 'btnminorrejuvpotion.png',
   },
   {
     id: 'twin-island-potion',
@@ -127,7 +127,7 @@ export const POTIONS_ITEMS: ItemData[] = [
     category: 'potions',
     description: 'Reveal enemy trolls upon use. Last |cff7DBEF130|r seconds.',
     tooltip: 'Reveal enemy trolls upon use. Last |cff7DBEF130|r seconds.',
-    iconPath: 'BTNPotionGreenSmall.png',
+    iconPath: 'btnpotiongreensmall.png',
   },
   {
     id: 'armor-salve',
@@ -143,7 +143,7 @@ export const POTIONS_ITEMS: ItemData[] = [
     category: 'potions',
     description: 'Puts an enemy Troll to sleep for 3 Seconds.',
     tooltip: 'Puts an enemy Troll to sleep for 3 Seconds.',
-    iconPath: 'ReplaceableTextures/PassiveButtons/PASBTNElunesBlessing.png',
+    iconPath: 'ReplaceableTextures/PassiveButtons/pasbtnelunesblessing.png',
   },
   {
     id: 'poison-salve',
