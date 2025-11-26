@@ -26,7 +26,7 @@ export default function InventoryGrid({
           <button
             key={idx}
             type="button"
-            className={`relative aspect-square rounded-md border ${
+            className={`group relative aspect-square rounded-md border ${
               isSelected ? 'border-amber-400 ring-2 ring-amber-400/40' : 'border-amber-500/30'
             } bg-black/40 flex items-center justify-center text-center text-sm text-gray-200 hover:border-amber-400 transition`}
             onClick={() => onSelectSlot(idx)}
@@ -81,11 +81,11 @@ export default function InventoryGrid({
                     }}
                   />
                 </div>
-                <span className="absolute -top-2 -right-2 z-10">
+                <span className="absolute -top-2 -right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   <button
                     type="button"
                     aria-label="Clear slot"
-                    className="h-5 w-5 rounded-full bg-red-600 text-white text-[10px] font-bold border border-red-300 hover:bg-red-500"
+                    className="h-6 w-6 rounded-full bg-black/80 backdrop-blur-sm text-red-400 text-xs font-semibold border border-red-500/50 hover:bg-red-500/20 hover:border-red-400 hover:text-red-300 shadow-lg transition-all duration-200 flex items-center justify-center"
                     onClick={(e) => {
                       e.stopPropagation();
                       onClearSlot(idx);

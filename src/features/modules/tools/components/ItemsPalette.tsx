@@ -31,7 +31,7 @@ export default function ItemsPalette() {
   }, [query, category]);
 
   return (
-    <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-4 md:p-6 w-full">
+    <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-3 md:p-4 w-full">
       <div className="flex items-center justify-between gap-4 mb-3">
         <h3 className="font-medieval-brand text-xl">Items</h3>
         <div className="flex items-center gap-3">
@@ -74,11 +74,11 @@ export default function ItemsPalette() {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-[380px] overflow-y-auto pr-1">
+          <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 gap-0.5 max-h-[500px] overflow-y-auto pr-1">
             {filtered.map((it) => (
               <div
                 key={it.id}
-                className="cursor-move text-left bg-black/40 border border-amber-500/30 hover:border-amber-400 rounded p-3 text-gray-200"
+                className="cursor-move text-center border border-transparent hover:border-amber-400/50 rounded p-0.5 text-gray-200 inline-flex flex-col items-center transition-colors"
                 draggable
                 onDragStart={(e) => {
                   e.dataTransfer.effectAllowed = 'copyMove';
@@ -87,17 +87,16 @@ export default function ItemsPalette() {
                     JSON.stringify({ kind: 'paletteItem', itemId: it.id })
                   );
                 }}
+                title={it.name}
               >
-                <div className="flex items-center gap-2">
-                  <GuideIcon category={it.category === 'buildings' ? 'buildings' : 'items'} name={it.name} size={24} src={getItemIconPathFromRecord(it)} />
-                  <div className="text-sm font-semibold text-amber-200 truncate">{it.name}</div>
-                </div>
-                <div className="text-[10px] uppercase tracking-wide text-gray-400">{it.category}</div>
-                {it.stats?.damage && (
-                  <div className="text-xs mt-1 text-amber-300">+{it.stats.damage} damage</div>
-                )}
-                {it.stats?.armor && (
-                  <div className="text-xs text-amber-300">+{it.stats.armor} armor</div>
+                <GuideIcon category={it.category === 'buildings' ? 'buildings' : 'items'} name={it.name} size={64} src={getItemIconPathFromRecord(it)} />
+                <div className="text-xs font-semibold text-amber-200 break-words text-center mt-0.5 leading-tight">{it.name}</div>
+                {(it.stats?.damage || it.stats?.armor) && (
+                  <div className="text-[8px] text-amber-300/80 leading-tight">
+                    {it.stats?.damage && <span>+{it.stats.damage}</span>}
+                    {it.stats?.damage && it.stats?.armor && <span> </span>}
+                    {it.stats?.armor && <span>+{it.stats.armor}</span>}
+                  </div>
                 )}
               </div>
             ))}
