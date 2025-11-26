@@ -1,0 +1,29 @@
+import React, { useState } from 'react';
+import { Layout } from '@/features/shared/components';
+import { Leaderboard } from '@/features/ittweb/standings/components/Leaderboard';
+import { CategorySelector } from '@/features/ittweb/standings/components/CategorySelector';
+import type { StandingsFilters } from '@/features/ittweb/standings/types';
+
+export default function StandingsPage() {
+  const [category, setCategory] = useState<string | undefined>();
+
+  const filters: StandingsFilters = {
+    category,
+    limit: 50,
+  };
+
+  return (
+    <Layout>
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-4xl font-bold text-amber-400 mb-6">Leaderboard</h1>
+        
+        <div className="mb-6">
+          <CategorySelector value={category} onChange={setCategory} />
+        </div>
+
+        <Leaderboard filters={filters} />
+      </div>
+    </Layout>
+  );
+}
+

@@ -99,4 +99,28 @@ export function exportMappingsAsCode(mappings: IconMapping): string {
 };`;
 }
 
+/**
+ * Export marked for deletion icons as JSON
+ */
+export function exportMarkedForDeletion(markedForDeletion: Set<string>): string {
+  const paths = Array.from(markedForDeletion).sort();
+  return JSON.stringify(paths, null, 2);
+}
+
+/**
+ * Export both mappings and marked for deletion as a combined JSON
+ */
+export function exportMappingsAndDeletions(mappings: IconMapping, markedForDeletion: Set<string>): string {
+  const paths = Array.from(markedForDeletion).sort();
+  return JSON.stringify({
+    mappings: {
+      abilities: mappings.abilities,
+      items: mappings.items,
+      buildings: mappings.buildings,
+      trolls: mappings.trolls,
+    },
+    markedForDeletion: paths,
+  }, null, 2);
+}
+
 

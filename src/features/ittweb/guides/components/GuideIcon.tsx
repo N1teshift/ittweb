@@ -29,6 +29,7 @@ export default function GuideIcon({ category, name, size = 48, state, className,
       alt={alt}
       width={size}
       height={size}
+      unoptimized={true}
       className={className}
     />
   );

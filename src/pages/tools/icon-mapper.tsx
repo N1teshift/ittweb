@@ -4,15 +4,15 @@ import { useState, useMemo } from 'react';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import { ITTIconCategory } from '@/features/ittweb/guides/utils/iconUtils';
 import { useIconMapperData } from '@/features/ittweb/tools/useIconMapperData';
-import { exportMappingsAsCode } from '@/features/ittweb/tools/icon-mapper.utils';
+import { exportMappingsAsCode, exportMappingsAndDeletions } from '@/features/ittweb/tools/icon-mapper.utils';
 import IconItem from '@/features/ittweb/tools/components/IconItem';
-import IconMapperStats from '@/features/ittweb/tools/components/IconMapperStats';
+import EntityProgressStats from '@/features/ittweb/tools/components/EntityProgressStats';
 import IconMapperMappingsList from '@/features/ittweb/tools/components/IconMapperMappingsList';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
 
-const allCategories = ['all', 'abilities', 'items', 'buildings', 'trolls', 'unclassified', 'base'] as const;
+const allCategories = ['all', 'abilities', 'items', 'buildings', 'trolls', 'unclassified', 'base', 'wowpedia'] as const;
 
 export default function IconMapper() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -23,10 +23,14 @@ export default function IconMapper() {
     mappings,
     icons,
     isLoading,
-    stats,
+    entityStats,
+    markedForDeletion,
     updateMapping,
     removeMapping,
     getExistingMapping,
+    getAllMappingsForIcon,
+    toggleMarkForDeletion,
+    isMarkedForDeletion,
   } = useIconMapperData();
 
   // Filter icons by category and search
@@ -37,58 +41,43 @@ export default function IconMapper() {
 
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(icon => 
-        icon.filename.toLowerCase().includes(query) ||
-        icon.subdirectory?.toLowerCase().includes(query) ||
-        getExistingMapping(icon.category as ITTIconCategory, icon.filename)?.toLowerCase().includes(query)
-      );
+      filtered = filtered.filter(icon => {
+        const filenameMatch = icon.filename.toLowerCase().includes(query);
+        const subdirMatch = icon.subdirectory?.toLowerCase().includes(query);
+        const mappingsMatch = getAllMappingsForIcon(icon.filename).some(
+          m => m.gameName.toLowerCase().includes(query) || m.category.toLowerCase().includes(query)
+        );
+        return filenameMatch || subdirMatch || mappingsMatch;
+      });
     }
 
     if (showMappedOnly) {
       filtered = filtered.filter(icon => 
-        getExistingMapping(icon.category as ITTIconCategory, icon.filename) !== undefined
+        getAllMappingsForIcon(icon.filename).length > 0
       );
     }
 
     return filtered;
-  }, [icons, selectedCategory, searchQuery, showMappedOnly, getExistingMapping]);
+  }, [icons, selectedCategory, searchQuery, showMappedOnly, getAllMappingsForIcon]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(exportMappingsAsCode(mappings));
     alert('Mappings copied to clipboard!');
   };
 
+  const copyMappingsAndDeletions = () => {
+    const exportData = exportMappingsAndDeletions(mappings, markedForDeletion);
+    navigator.clipboard.writeText(exportData);
+    alert(`Mappings and deletion list copied to clipboard!\n\nMarked for deletion: ${markedForDeletion.size} icons`);
+  };
+
   const currentCategoryMappings = selectedCategory !== 'all' && selectedCategory in mappings
     ? mappings[selectedCategory as ITTIconCategory]
     : {};
 
-  const overallStat = useMemo(() => {
-    if (stats.length === 0) return null;
-    const aggregate = stats.reduce(
-      (acc, stat) => {
-        acc.total += stat.total;
-        acc.mapped += stat.mapped;
-        acc.unmapped += stat.unmapped;
-        return acc;
-      },
-      { total: 0, mapped: 0, unmapped: 0 }
-    );
-    return {
-      category: 'all',
-      total: aggregate.total,
-      mapped: aggregate.mapped,
-      unmapped: aggregate.unmapped,
-      percentage: aggregate.total > 0 ? Math.round((aggregate.mapped / aggregate.total) * 100) : 0,
-    };
-  }, [stats]);
-
-  const currentStat = selectedCategory === 'all'
-    ? overallStat
-    : stats.find(s => s.category === selectedCategory);
-
-  const currentMappedCount = selectedCategory === 'all'
-    ? currentStat?.mapped ?? 0
-    : Object.keys(currentCategoryMappings).length;
+  const currentMappedCount = selectedCategory !== 'all' && selectedCategory in mappings
+    ? Object.keys(currentCategoryMappings).length
+    : 0;
 
   return (
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-7xl mx-auto">
@@ -148,17 +137,32 @@ export default function IconMapper() {
           >
             Export Mappings to Clipboard
           </button>
+          <button
+            onClick={copyMappingsAndDeletions}
+            className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+              markedForDeletion.size > 0
+                ? 'bg-red-600 hover:bg-red-500 text-white'
+                : 'bg-gray-600 hover:bg-gray-500 text-white opacity-50 cursor-not-allowed'
+            }`}
+            disabled={markedForDeletion.size === 0}
+            title={markedForDeletion.size > 0 ? `Export mappings and ${markedForDeletion.size} marked icons for deletion` : 'No icons marked for deletion'}
+          >
+            Export Mappings + Deletions ({markedForDeletion.size})
+          </button>
         </div>
       </div>
 
-      {/* Stats Overview */}
-      <IconMapperStats stats={stats} selectedCategory={selectedCategory} />
+      {/* Entity Mapping Progress */}
+      <EntityProgressStats stats={entityStats} />
 
       {/* Current Category Stats */}
       <div className="mb-6 text-sm text-gray-400">
         Viewing: <span className="text-amber-400 capitalize">{selectedCategory}</span> |{' '}
-        Mapped: <span className="text-amber-400">{currentMappedCount}</span> |{' '}
-        Unmapped: <span className="text-red-400">{currentStat?.unmapped || 0}</span> |{' '}
+        {selectedCategory !== 'all' && selectedCategory in mappings && (
+          <>
+            Mapped: <span className="text-amber-400">{currentMappedCount}</span> |{' '}
+          </>
+        )}
         Icons in view: <span className="text-gray-300">{filteredIcons.length}</span>
       </div>
 
@@ -172,22 +176,22 @@ export default function IconMapper() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {filteredIcons.map((icon) => {
               const existingMapping = getExistingMapping(icon.category as ITTIconCategory, icon.filename);
+              const allMappingsForIcon = getAllMappingsForIcon(icon.filename);
               return (
                 <IconItem
                   key={icon.path}
                   icon={icon}
                   existingMapping={existingMapping}
-                  onUpdate={(filename, gameName) => {
-                    if (icon.category in mappings) {
-                      updateMapping(icon.category as ITTIconCategory, filename, gameName);
-                    }
+                  allMappingsForIcon={allMappingsForIcon}
+                  onUpdate={(category, filename, gameName) => {
+                    updateMapping(category, filename, gameName);
                   }}
-                  onRemove={(gameName) => {
-                    if (icon.category in mappings) {
-                      removeMapping(icon.category as ITTIconCategory, gameName);
-                    }
+                  onRemove={(category, gameName) => {
+                    removeMapping(category, gameName);
                   }}
                   allMappings={mappings}
+                  isMarkedForDeletion={isMarkedForDeletion(icon.path)}
+                  onToggleMarkForDeletion={toggleMarkForDeletion}
                 />
               );
             })}
@@ -211,6 +215,27 @@ export default function IconMapper() {
           </pre>
         </div>
       </div>
+
+      {/* Marked for Deletion Summary */}
+      {markedForDeletion.size > 0 && (
+        <div className="mt-8">
+          <h2 className="font-medieval-brand text-2xl mb-4">
+            Icons Marked for Deletion ({markedForDeletion.size})
+          </h2>
+          <div className="bg-black/30 backdrop-blur-sm border border-red-500/30 rounded-lg p-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+              {Array.from(markedForDeletion).sort().map((path) => {
+                const icon = icons.find(i => i.path === path);
+                return (
+                  <div key={path} className="text-xs text-gray-400 truncate" title={path}>
+                    {icon ? `${icon.category}/${icon.filename}` : path}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

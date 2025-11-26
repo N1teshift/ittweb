@@ -1,12 +1,13 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
-import Layout from '@/features/shared/components/Layout';
 import Link from 'next/link';
 import { BASE_TROLL_CLASS_SLUGS, getClassBySlug, TrollClassData } from '@/features/ittweb/guides/data/units';
 import { getSubclassesByParentSlug, getSupersByParentSlug } from '@/features/ittweb/guides/data/units';
-import ClassModel from '@/features/ittweb/guides/components/ClassModel';
+import { getAbilitiesByClass, ABILITY_CATEGORIES, AbilityData } from '@/features/ittweb/guides/data/abilities';
 import ClassHeader from '@/features/ittweb/guides/components/ClassHeader';
 import StatsCard from '@/features/ittweb/guides/components/StatsCard';
+import GuideCard from '@/features/ittweb/guides/components/GuideCard';
+import GuideIcon from '@/features/ittweb/guides/components/GuideIcon';
 import { MOVESPEED_PER_LEVEL, getMoveSpeedOffset, ATTR_START_MULTIPLIER } from '@/features/ittweb/guides/config/balance';
 
 type Props = { cls: TrollClassData };
@@ -34,13 +35,66 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
+function AbilityCard({ ability }: { ability: AbilityData }) {
+  const primaryBadges = [
+    ability.manaCost !== undefined
+      ? { label: `Mana: ${ability.manaCost}`, variant: 'blue' as const }
+      : null,
+    ability.cooldown !== undefined
+      ? { label: `Cooldown: ${ability.cooldown}s`, variant: 'purple' as const }
+      : null,
+    ability.range !== undefined
+      ? { label: `Range: ${ability.range}`, variant: 'green' as const }
+      : null,
+    ability.duration !== undefined
+      ? { label: `Duration: ${ability.duration}s`, variant: 'amber' as const }
+      : null,
+    ability.damage
+      ? { label: `Damage: ${ability.damage}`, variant: 'red' as const }
+      : null,
+  ].filter(Boolean) as { label: string; variant: 'blue' | 'purple' | 'green' | 'amber' | 'red' }[];
+
+  const secondaryBadges = [
+    ability.category
+      ? { label: ABILITY_CATEGORIES[ability.category] || ability.category, variant: 'gray' as const }
+      : null,
+  ].filter(Boolean) as { label: string; variant: 'gray' }[];
+
+  const footer = ability.effects && ability.effects.length > 0 && (
+    <div className="text-xs">
+      <span className="text-gray-400">Effects:</span>
+      <ul className="list-disc list-inside text-gray-300 mt-1">
+        {ability.effects.map((effect, index) => (
+          <li key={index}>{effect}</li>
+        ))}
+      </ul>
+    </div>
+  );
+
+  const icon = (
+    <GuideIcon category="abilities" name={ability.name} size={48} />
+  );
+
+  return (
+    <GuideCard
+      href={`/guides/abilities/${ability.id}`}
+      title={ability.name}
+      icon={icon}
+      description={ability.description}
+      primaryTagGroup={primaryBadges.length ? { badges: primaryBadges } : undefined}
+      secondaryTagGroup={secondaryBadges.length ? { badges: secondaryBadges } : undefined}
+      footer={footer || undefined}
+    />
+  );
+}
+
 export default function TrollClassDetail({ cls }: Props) {
   const subs = getSubclassesByParentSlug(cls.slug);
   const supers = getSupersByParentSlug(cls.slug);
+  const abilities = getAbilitiesByClass(cls.slug);
   const msOffset = getMoveSpeedOffset('base');
   return (
-    <Layout pageTranslationNamespaces={pageNamespaces}>
-      <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
+    <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6">
           <Link href="/guides/troll-classes" className="text-amber-400 hover:text-amber-300">← Troll Classes Overview</Link>
         </div>
@@ -99,9 +153,17 @@ export default function TrollClassDetail({ cls }: Props) {
           </section>
         </div>
 
-        <ClassModel slug={cls.slug} name={cls.name} className="mt-8" />
-      </div>
-    </Layout>
+        {abilities.length > 0 && (
+          <section className="mt-8 bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+            <h2 className="font-medieval-brand text-2xl mb-4">Abilities</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {abilities.map((ability) => (
+                <AbilityCard key={ability.id} ability={ability} />
+              ))}
+            </div>
+          </section>
+        )}
+    </div>
   );
 }
 

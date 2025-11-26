@@ -70,7 +70,7 @@ export default async function handler(
 
   try {
     const iconsDir = join(process.cwd(), 'public', 'icons', 'itt');
-    const categories = ['abilities', 'items', 'buildings', 'trolls', 'unclassified', 'base'];
+    const categories = ['abilities', 'items', 'buildings', 'trolls', 'unclassified', 'base', 'wowpedia'];
     const allIcons: IconFile[] = [];
 
     for (const category of categories) {

@@ -25,6 +25,9 @@ export default function Header() {
                         <Link href="/archives" className="font-medieval-brand-hover px-3 py-2 rounded-md text-lg">
                             Archives
                         </Link>
+                        <Link href="/scheduled-games" className="font-medieval-brand-hover px-3 py-2 rounded-md text-lg">
+                            Scheduled Games
+                        </Link>
                         <Link href="/development" className="font-medieval-brand-hover px-3 py-2 rounded-md text-lg">
                             Development
                         </Link>
@@ -79,6 +82,9 @@ export default function Header() {
                             </Link>
                             <Link href="/archives" className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg">
                                 Archives
+                            </Link>
+                            <Link href="/scheduled-games" className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg">
+                                Scheduled Games
                             </Link>
                             <Link href="/development" className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg">
                                 Development

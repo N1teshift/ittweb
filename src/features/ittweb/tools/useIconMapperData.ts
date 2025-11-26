@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import { ICON_MAP } from '@/features/ittweb/guides/utils/iconMap';
 import { ITTIconCategory } from '@/features/ittweb/guides/utils/iconUtils';
-import type { IconFile, IconMapping, CategoryStat } from './icon-mapper.types';
-import { getTotalCountForCategory } from './icon-mapper.utils';
-
-const allCategories = ['abilities', 'items', 'buildings', 'trolls', 'unclassified', 'base'] as const;
+import type { IconFile, IconMapping, EntityStat, IconMappingEntry, MarkedForDeletion } from './icon-mapper.types';
+import { ABILITIES } from '@/features/ittweb/guides/data/abilities';
+import { ITEMS_DATA } from '@/features/ittweb/guides/data/items';
+import { BUILDINGS } from '@/features/ittweb/guides/data/buildings';
+import { BASE_TROLL_CLASSES, DERIVED_CLASSES } from '@/features/ittweb/guides/data/units';
 
 export function useIconMapperData() {
   const [mappings, setMappings] = useState<IconMapping>({
@@ -15,6 +16,7 @@ export function useIconMapperData() {
   });
   const [icons, setIcons] = useState<IconFile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [markedForDeletion, setMarkedForDeletion] = useState<MarkedForDeletion>(new Set());
 
   // Initialize with existing mappings
   useEffect(() => {
@@ -69,31 +71,101 @@ export function useIconMapperData() {
     return Object.keys(categoryMappings).find(key => categoryMappings[key] === filename);
   };
 
-  const stats: CategoryStat[] = useMemo(() => {
-    return allCategories.map(category => {
-      const total = getTotalCountForCategory(category, icons);
-      const mapped = category in mappings ? Object.keys(mappings[category as ITTIconCategory]).length : 0;
-      const unmapped = total - mapped;
-      const percentage = total > 0 ? Math.round((mapped / total) * 100) : 0;
+  const getAllMappingsForIcon = (filename: string): IconMappingEntry[] => {
+    const allMappings: IconMappingEntry[] = [];
+    const categories: ITTIconCategory[] = ['abilities', 'items', 'buildings', 'trolls'];
+    
+    for (const category of categories) {
+      const categoryMappings = mappings[category] ?? {};
+      for (const [gameName, mappedFilename] of Object.entries(categoryMappings)) {
+        if (mappedFilename === filename) {
+          allMappings.push({ category, gameName, filename });
+        }
+      }
+    }
+    
+    return allMappings;
+  };
 
-      return {
-        category,
-        total,
-        mapped,
-        unmapped,
-        percentage,
-      };
+  const toggleMarkForDeletion = (iconPath: string) => {
+    setMarkedForDeletion(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(iconPath)) {
+        newSet.delete(iconPath);
+      } else {
+        newSet.add(iconPath);
+      }
+      return newSet;
     });
-  }, [mappings, icons]);
+  };
+
+  const isMarkedForDeletion = (iconPath: string): boolean => {
+    return markedForDeletion.has(iconPath);
+  };
+
+  // Calculate entity-based stats (abilities, units, items, buildings)
+  const entityStats: EntityStat[] = useMemo(() => {
+    const stats: EntityStat[] = [];
+
+    // Abilities
+    const abilitiesTotal = ABILITIES.length;
+    const abilitiesMapped = Object.keys(mappings.abilities).length;
+    stats.push({
+      category: 'abilities',
+      total: abilitiesTotal,
+      mapped: abilitiesMapped,
+      unmapped: abilitiesTotal - abilitiesMapped,
+      percentage: abilitiesTotal > 0 ? Math.round((abilitiesMapped / abilitiesTotal) * 100) : 0,
+    });
+
+    // Units (base classes + derived classes)
+    const unitsTotal = BASE_TROLL_CLASSES.length + DERIVED_CLASSES.length;
+    const unitsMapped = Object.keys(mappings.trolls).length;
+    stats.push({
+      category: 'units',
+      total: unitsTotal,
+      mapped: unitsMapped,
+      unmapped: unitsTotal - unitsMapped,
+      percentage: unitsTotal > 0 ? Math.round((unitsMapped / unitsTotal) * 100) : 0,
+    });
+
+    // Items
+    const itemsTotal = ITEMS_DATA.length;
+    const itemsMapped = Object.keys(mappings.items).length;
+    stats.push({
+      category: 'items',
+      total: itemsTotal,
+      mapped: itemsMapped,
+      unmapped: itemsTotal - itemsMapped,
+      percentage: itemsTotal > 0 ? Math.round((itemsMapped / itemsTotal) * 100) : 0,
+    });
+
+    // Buildings
+    const buildingsTotal = BUILDINGS.length;
+    const buildingsMapped = Object.keys(mappings.buildings).length;
+    stats.push({
+      category: 'buildings',
+      total: buildingsTotal,
+      mapped: buildingsMapped,
+      unmapped: buildingsTotal - buildingsMapped,
+      percentage: buildingsTotal > 0 ? Math.round((buildingsMapped / buildingsTotal) * 100) : 0,
+    });
+
+    return stats;
+  }, [mappings]);
 
   return {
     mappings,
     icons,
     isLoading,
-    stats,
+    entityStats,
+    markedForDeletion,
     updateMapping,
     removeMapping,
     getExistingMapping,
+    getAllMappingsForIcon,
+    toggleMarkForDeletion,
+    isMarkedForDeletion,
   };
 }
 

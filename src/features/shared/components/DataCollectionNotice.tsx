@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
+const SESSION_DISMISS_KEY = 'dataCollectionNoticeDismissed';
+
 /**
  * Data collection notice component that displays a non-intrusive banner
  * informing users about data collection when they log in.
@@ -15,7 +17,6 @@ export default function DataCollectionNotice() {
   const [isVisible, setIsVisible] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -25,6 +26,15 @@ export default function DataCollectionNotice() {
       const checkUserData = async () => {
         try {
           setIsLoading(true);
+          
+          // First check if dismissed in this session
+          const sessionDismissed = sessionStorage.getItem(SESSION_DISMISS_KEY);
+          if (sessionDismissed === 'true') {
+            setIsLoading(false);
+            return;
+          }
+
+          // Then check if user has permanently accepted
           const response = await fetch('/api/user/data-notice-status');
           
           if (response.ok) {
@@ -78,13 +88,13 @@ export default function DataCollectionNotice() {
   };
 
   const handleDismiss = () => {
-    // Just hide it temporarily for this session, don't save to user data
-    setIsDismissed(true);
+    // Save dismissal to sessionStorage for this session only
+    sessionStorage.setItem(SESSION_DISMISS_KEY, 'true');
     setIsVisible(false);
   };
 
   // Don't render until mounted, loaded, or if not visible
-  if (!isMounted || isLoading || isDismissed || !isVisible || status !== 'authenticated') {
+  if (!isMounted || isLoading || !isVisible || status !== 'authenticated') {
     return null;
   }
 

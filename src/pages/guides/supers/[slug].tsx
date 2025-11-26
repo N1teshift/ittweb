@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { DERIVED_CLASSES, getDerivedBySlug, SUPERCLASS_SLUGS, DerivedClassData } from '@/features/ittweb/guides/data/units/derivedClasses';
 import { getClassBySlug } from '@/features/ittweb/guides/data/units/classes';
 import ClassHeader from '@/features/ittweb/guides/components/ClassHeader';
-import ClassModel from '@/features/ittweb/guides/components/ClassModel';
 import StatsCard from '@/features/ittweb/guides/components/StatsCard';
 import { MOVESPEED_PER_LEVEL, getMoveSpeedOffset, ATTR_START_MULTIPLIER } from '@/features/ittweb/guides/config/balance';
 
@@ -53,10 +52,6 @@ export default function SuperclassDetail({ cls }: Props) {
           msOffset={msOffset}
           perLevelMsBonus={MOVESPEED_PER_LEVEL}
         />
-
-        <ClassModel slug={cls.slug} name={cls.name} className="mt-8" />
-
-        
       </div>
   );
 }

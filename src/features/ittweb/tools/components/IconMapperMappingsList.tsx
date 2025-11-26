@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import Image from 'next/image';
 import { ITTIconCategory } from '@/features/ittweb/guides/utils/iconUtils';
 import type { IconMapping } from '@/features/ittweb/tools/icon-mapper.types';
@@ -13,6 +14,11 @@ export default function IconMapperMappingsList({
   mappings, 
   onRemove 
 }: IconMapperMappingsListProps) {
+  const imageErrorHandledRefs = useRef<Map<string, boolean>>(new Map());
+  
+  // Check if filename has special characters that cause issues with Next.js Image
+  const hasSpecialChars = (filename: string) => /[%&!()]/.test(filename);
+
   if (selectedCategory === 'all') {
     return (
       <div className="mt-8">
@@ -38,18 +44,45 @@ export default function IconMapperMappingsList({
           <p className="text-gray-400">No mappings yet for this category.</p>
         ) : (
           <div className="space-y-2">
-            {Object.entries(currentCategoryMappings).map(([gameName, filename]) => (
-              <div key={gameName} className="flex items-center gap-4 p-2 hover:bg-black/20 rounded">
-                <Image
-                  src={`/icons/itt/${selectedCategory}/${filename}`}
-                  alt={gameName}
-                  width={32}
-                  height={32}
-                  className="border border-amber-500/30 rounded"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/icons/itt/items/enabled/BTNYellowHerb.png';
-                  }}
-                />
+            {Object.entries(currentCategoryMappings).map(([gameName, filename]) => {
+              const imageKey = `${selectedCategory}-${filename}`;
+              const hasSpecial = hasSpecialChars(filename);
+              return (
+                <div key={gameName} className="flex items-center gap-4 p-2 hover:bg-black/20 rounded">
+                  {hasSpecial ? (
+                    <img
+                      src={`/icons/itt/${selectedCategory}/${filename}`}
+                      alt={gameName}
+                      width={32}
+                      height={32}
+                      className="border border-amber-500/30 rounded"
+                      onError={(e) => {
+                        const img = e.target as HTMLImageElement;
+                        // Prevent infinite loop: only set fallback once per image
+                        if (!imageErrorHandledRefs.current.get(imageKey) && !img.src.includes('BTNYellowHerb.png')) {
+                          imageErrorHandledRefs.current.set(imageKey, true);
+                          img.src = '/icons/itt/items/BTNYellowHerb.png';
+                        }
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      src={`/icons/itt/${selectedCategory}/${filename}`}
+                      alt={gameName}
+                      width={32}
+                      height={32}
+                      unoptimized={true}
+                      className="border border-amber-500/30 rounded"
+                      onError={(e) => {
+                        const img = e.target as HTMLImageElement;
+                        // Prevent infinite loop: only set fallback once per image
+                        if (!imageErrorHandledRefs.current.get(imageKey) && !img.src.includes('BTNYellowHerb.png')) {
+                          imageErrorHandledRefs.current.set(imageKey, true);
+                          img.src = '/icons/itt/items/BTNYellowHerb.png';
+                        }
+                      }}
+                    />
+                  )}
                 <span className="text-amber-400 font-medium">{gameName}</span>
                 <span className="text-gray-400 text-sm">→</span>
                 <span className="text-gray-300 text-sm">{filename}</span>
@@ -60,7 +93,8 @@ export default function IconMapperMappingsList({
                   Remove
                 </button>
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
