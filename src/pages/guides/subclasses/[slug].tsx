@@ -1,7 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Link from 'next/link';
-import { DERIVED_CLASSES, getDerivedBySlug, SUBCLASS_SLUGS, DerivedClassData } from '@/features/modules/guides/data/units/derivedClasses';
+import { getDerivedClassBySlug, SUBCLASS_SLUGS, DerivedClassData } from '@/features/modules/guides/data/units/derivedClasses';
 import { getClassBySlug } from '@/features/modules/guides/data/units/classes';
 import ClassHeader from '@/features/modules/guides/components/ClassHeader';
 import StatsCard from '@/features/modules/guides/components/StatsCard';
@@ -12,7 +12,7 @@ type Props = { cls: DerivedClassData };
 const pageNamespaces = ["common"];
 export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) => {
   const slug = String(params?.slug || '');
-  const cls = getDerivedBySlug(slug);
+  const cls = getDerivedClassBySlug(slug);
   if (!cls || cls.type !== 'sub') {
     return { notFound: true };
   }
@@ -21,7 +21,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) 
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  return { paths: SUBCLASS_SLUGS.map(slug => ({ params: { slug } })), fallback: false };
+  return { paths: SUBCLASS_SLUGS.map((slug: string) => ({ params: { slug } })), fallback: false };
 };
 
 export default function SubclassDetail({ cls }: Props) {

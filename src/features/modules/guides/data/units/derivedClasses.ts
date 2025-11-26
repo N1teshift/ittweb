@@ -312,3 +312,11 @@ export function getSupersByParentSlug(parentSlug: string): DerivedClassData[] {
   
   return byParentSlug;
 }
+
+export const SUBCLASS_SLUGS: string[] = DERIVED_CLASSES
+  .filter(c => c.type === 'sub')
+  .map(c => c.slug);
+
+export const SUPERCLASS_SLUGS: string[] = DERIVED_CLASSES
+  .filter(c => c.type === 'super')
+  .map(c => c.slug);
