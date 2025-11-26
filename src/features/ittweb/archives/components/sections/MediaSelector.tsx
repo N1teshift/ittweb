@@ -1,28 +1,18 @@
 import React from 'react';
 
 interface MediaSelectorProps {
-  mediaUrl: string; // YouTube URL
-  twitchUrl: string;
+  videoUrl: string; // YouTube or Twitch URL
   onVideoUrlChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onTwitchUrlChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void; // supports multiple
-  onReplayUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  multipleImages?: boolean;
+  onFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => void; // Combined handler for images and replays
   videoError?: string;
-  twitchError?: string;
   showHeader?: boolean;
 }
 
 export default function MediaSelector({
-  mediaUrl,
-  twitchUrl,
+  videoUrl,
   onVideoUrlChange,
-  onTwitchUrlChange,
-  onImageUpload,
-  onReplayUpload,
-  multipleImages,
+  onFileUpload,
   videoError,
-  twitchError,
   showHeader = true,
 }: MediaSelectorProps) {
   return (
@@ -31,57 +21,33 @@ export default function MediaSelector({
         <label className="block text-amber-500 mb-2">Media (Optional)</label>
       )}
 
-      {/* Images */}
+      {/* Combined File Upload (Images and Replays) */}
       <div className="mt-3">
-        <label className="block text-amber-500 mb-2">Upload Image(s)</label>
+        <label className="block text-amber-500 mb-2">Upload Images or Replay</label>
         <input
           type="file"
-          accept="image/*"
-          onChange={onImageUpload}
-          multiple={multipleImages}
+          accept="image/*,.w3g"
+          onChange={onFileUpload}
+          multiple
           className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
         />
-        <p className="text-sm text-gray-400 mt-1">Max size per image: 5MB. Images over 2MB will be compressed.</p>
+        <p className="text-sm text-gray-400 mt-1">
+          Images: Max 5MB each (over 2MB will be compressed). Replays: .w3g files, max 50MB.
+        </p>
       </div>
 
-      {/* YouTube */}
+      {/* Video URL (YouTube or Twitch) */}
       <div className="mt-6">
-        <label className="block text-amber-500 mb-2">YouTube URL</label>
+        <label className="block text-amber-500 mb-2">Video URL (YouTube or Twitch)</label>
         <input
           type="url"
-          name="mediaUrl"
-          value={mediaUrl}
+          name="videoUrl"
+          value={videoUrl}
           onChange={onVideoUrlChange}
           className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
-          placeholder="https://www.youtube.com/watch?v=..."
+          placeholder="https://www.youtube.com/watch?v=... or https://clips.twitch.tv/..."
         />
         {videoError && <p className="text-sm text-red-400 mt-2">{videoError}</p>}
-      </div>
-
-      {/* Twitch Clip */}
-      <div className="mt-6">
-        <label className="block text-amber-500 mb-2">Twitch Clip URL</label>
-        <input
-          type="url"
-          name="twitchClipUrl"
-          value={twitchUrl}
-          onChange={onTwitchUrlChange}
-          className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
-          placeholder="https://clips.twitch.tv/..."
-        />
-        {twitchError && <p className="text-sm text-red-400 mt-2">{twitchError}</p>}
-      </div>
-
-      {/* Replay */}
-      <div className="mt-6">
-        <label className="block text-amber-500 mb-2">Upload Replay (.w3g)</label>
-        <input
-          type="file"
-          accept=".w3g"
-          onChange={onReplayUpload}
-          className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
-        />
-        <p className="text-sm text-gray-400 mt-1">Max size: 50MB.</p>
       </div>
     </div>
   );

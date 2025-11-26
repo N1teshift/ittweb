@@ -67,7 +67,7 @@ export default function GuideCard(props: GuideCardProps) {
       >
         <div className="flex items-start justify-between mb-2">
           <h3 className="font-medieval-brand text-lg text-amber-400 group-hover:text-amber-300">
-            {title}
+            <ColoredText text={title} />
           </h3>
           {icon ? <div className="flex-shrink-0 ml-3">{icon}</div> : null}
         </div>

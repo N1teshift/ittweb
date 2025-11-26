@@ -12,7 +12,7 @@ export default function BlogPost({ title, date, author, children, footer }: Blog
   return (
     <article className="max-w-4xl w-full mx-auto">
       {/* Header Section */}
-      <header className="mb-10 space-y-4">
+      <header className="mb-6 space-y-4">
         <div className="space-y-3">
           <h1 className="text-5xl md:text-6xl font-bold text-amber-400 font-medieval leading-tight tracking-tight">
             {title}
@@ -51,8 +51,8 @@ export default function BlogPost({ title, date, author, children, footer }: Blog
         {/* Subtle gradient background */}
         <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 via-transparent to-amber-500/5 rounded-xl -z-10"></div>
         
-        {/* Main content box */}
-        <div className="bg-black/40 backdrop-blur-md border border-amber-500/20 rounded-xl p-8 md:p-10 shadow-xl shadow-black/20 hover:border-amber-500/30 transition-all duration-300">
+        {/* Main content box - removed border, using subtle top border only */}
+        <div className="bg-black/40 backdrop-blur-md border-t border-amber-500/30 rounded-xl p-8 md:p-10 shadow-xl shadow-black/20 pt-8 transition-all duration-300">
           <div className="prose prose-invert prose-lg max-w-none 
             prose-headings:text-amber-300 prose-headings:font-bold
             prose-p:text-gray-200 prose-p:leading-relaxed

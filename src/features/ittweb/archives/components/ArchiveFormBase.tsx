@@ -40,12 +40,16 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
     handleVideoUrlChange,
     handleTwitchUrlChange,
     handleReplayUpload,
+    handleCombinedFileUpload,
     handleMediaFieldChange,
     handleRemoveExistingImage,
     handleRemoveReplay,
   } = useArchiveHandlers({
     setFormData, imageFile, imageFiles, setImageFile, setImageFiles, setReplayFile, setCurrentImages, setSectionOrder, setError, setExistingReplayUrl,
   });
+  
+  // Combine video URLs for the new MediaSelector (only one should be set at a time)
+  const combinedVideoUrl = formData.mediaUrl || formData.twitchClipUrl;
 
   // Submit
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,8 +64,6 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
         author: mode === 'create' ? (defaultAuthor || '') : formData.author,
         dateType: formData.dateType,
         singleDate: formData.singleDate,
-        startDate: formData.startDate,
-        endDate: formData.endDate,
         approximateText: formData.approximateText,
       });
       if (validationError) {
@@ -69,21 +71,21 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
         return;
       }
 
-      // Uploads
+      // Uploads - use entryId for edit mode to store files in archives/{entryId}/ structure
+      const entryId = mode === 'edit' ? initialEntry?.id : undefined;
       const { images, replayUrl } = await uploadSelectedMedia(
         imageFile,
         imageFiles,
         currentImages,
         mode,
         replayFile,
+        entryId,
       );
 
       // DateInfo
       const dateInfo = buildDateInfo({
         dateType: formData.dateType,
         singleDate: formData.singleDate,
-        startDate: formData.startDate,
-        endDate: formData.endDate,
         approximateText: formData.approximateText
       });
 
@@ -161,23 +163,20 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
           <DateSelector
             dateType={formData.dateType}
             singleDate={formData.singleDate}
-            startDate={formData.startDate}
-            endDate={formData.endDate}
             approximateText={formData.approximateText}
             onFieldChange={handleInputChange}
           />
 
           {/* Content */}
           <div>
-            <label className="block text-amber-500 mb-2">Story/Memory *</label>
+            <label className="block text-amber-500 mb-2">Story/Memory</label>
             <textarea
               name="content"
               value={formData.content}
               onChange={handleInputChange}
-              required
               rows={4}
               className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
-              placeholder="Share your memory, experience, or story..."
+              placeholder="Share your memory, experience, or story... (optional)"
             />
           </div>
 
@@ -185,15 +184,10 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
 
           {/* Media */}
           <MediaSelector 
-            mediaUrl={formData.mediaUrl}
-            twitchUrl={formData.twitchClipUrl}
+            videoUrl={combinedVideoUrl}
             onVideoUrlChange={handleVideoUrlChange}
-            onTwitchUrlChange={handleTwitchUrlChange}
-            onImageUpload={handleImageUpload}
-            onReplayUpload={handleReplayUpload}
-            multipleImages
-            videoError={error && formData.mediaUrl ? error : ''}
-            twitchError={error && !formData.mediaUrl && formData.twitchClipUrl ? error : ''}
+            onFileUpload={handleCombinedFileUpload}
+            videoError={error && combinedVideoUrl ? error : ''}
             showHeader={false}
           />
 

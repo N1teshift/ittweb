@@ -126,9 +126,9 @@ function readItemsFromTS() {
     'weapons.ts',
     'potions.ts',
     'raw-materials.ts',
-    'tools.ts',
     'scrolls.ts',
-    'buildings.ts'
+    'buildings.ts',
+    'unknown.ts'
   ];
   
   for (const file of itemFiles) {
@@ -180,8 +180,6 @@ function readAbilitiesFromTS() {
     'thief.ts',
     'item.ts',
     'building.ts',
-    'subclass.ts',
-    'superclass.ts',
     'unknown.ts'
   ];
   

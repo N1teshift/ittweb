@@ -34,7 +34,9 @@ export default function AbilityDetail({ ability }: Props) {
 
         <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
           <div className="flex items-start justify-between mb-2">
-            <h1 className="font-medieval-brand text-3xl md:text-4xl text-amber-400">{ability.name}</h1>
+            <h1 className="font-medieval-brand text-3xl md:text-4xl text-amber-400">
+              <ColoredText text={ability.name} />
+            </h1>
             <div className="flex gap-2">
               <span className="text-xs bg-amber-500/20 text-amber-200 px-2 py-1 rounded">
                 {ABILITY_CATEGORIES[ability.category] || ability.category}

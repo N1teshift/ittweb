@@ -18,9 +18,10 @@ const CATEGORY_FILES = {
   'scrolls': 'scrolls.ts',
   'weapons': 'weapons.ts',
   'armor': 'armor.ts',
-  'tools': 'tools.ts',
   'potions': 'potions.ts',
   'raw-materials': 'raw-materials.ts',
+  'buildings': 'buildings.ts',
+  'unknown': 'unknown.ts',
 };
 
 function readText(filePath) {

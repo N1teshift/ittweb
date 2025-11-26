@@ -2,14 +2,6 @@ import type { ItemData } from '@/types/items';
 
 export const BUILDINGS_ITEMS: ItemData[] = [
   {
-    id: 'fire-bomb',
-    name: 'Fire Bomb',
-    category: 'buildings',
-    description: 'A shell of destructible material that is highly flammable when thrown. Dealing approximatively |cffFF020280|r damage over |cff7DBEF15.5|r seconds. Good against buildings. Has |cff7DBEF115|r seconds cooldown.',
-    tooltip: 'A shell of destructible material that is highly flammable when thrown. Dealing approximatively |cffFF020280|r damage over |cff7DBEF15.5|r seconds. Good against buildings. Has |cff7DBEF115|r seconds cooldown.',
-    iconPath: 'BTNLiquidFire.png',
-  },
-  {
     id: 'ensnare-trap-kit',
     name: 'Ensnare Trap Kit',
     category: 'buildings',

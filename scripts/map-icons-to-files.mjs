@@ -82,9 +82,9 @@ function readItemsFromTS() {
     'weapons.ts',
     'potions.ts',
     'raw-materials.ts',
-    'tools.ts',
     'scrolls.ts',
-    'buildings.ts'
+    'buildings.ts',
+    'unknown.ts'
   ];
   
   for (const file of itemFiles) {

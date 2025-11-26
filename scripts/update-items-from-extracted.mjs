@@ -24,9 +24,10 @@ const CATEGORY_FILES = {
   'scrolls': 'scrolls.ts',
   'weapons': 'weapons.ts',
   'armor': 'armor.ts',
-  'tools': 'tools.ts',
   'potions': 'potions.ts',
   'raw-materials': 'raw-materials.ts',
+  'buildings': 'buildings.ts',
+  'unknown': 'unknown.ts',
 };
 
 function readText(filePath) {
@@ -270,9 +271,6 @@ function main() {
                name.includes('armor') || name.includes('shield') || name.includes('cloak');
       } else if (category === 'potions') {
         return name.includes('potion') || name.includes('essence') || name.includes('salve');
-      } else if (category === 'tools') {
-        return name.includes('net') || name.includes('trap') || name.includes('kit') ||
-               name.includes('rod') || name.includes('wand');
       } else if (category === 'raw-materials') {
         return name.includes('hide') || name.includes('bone') || name.includes('herb') ||
                name.includes('seed') || name.includes('flint') || name.includes('stick') ||

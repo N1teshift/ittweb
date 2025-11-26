@@ -13,20 +13,20 @@ const categoryDisplayNames: Record<ItemCategory, string> = {
   'raw-materials': 'Raw Materials',
   'weapons': 'Weapons',
   'armor': 'Armor',
-  'tools': 'Tools',
   'potions': 'Potions',
   'scrolls': 'Scrolls',
   'buildings': 'Buildings',
+  'unknown': 'Unknown',
 };
 
 const categoryEmojis: Record<ItemCategory, string> = {
   'raw-materials': '🌿',
   'weapons': '⚔️',
   'armor': '🛡️',
-  'tools': '🔧',
   'potions': '🧪',
   'scrolls': '📜',
   'buildings': '🏠',
+  'unknown': '❓',
 };
 
 function ItemCard({ item }: { item: ItemData }) {
@@ -128,10 +128,10 @@ export default function ItemsPage() {
       'raw-materials': [],
       'weapons': [],
       'armor': [],
-      'tools': [],
       'potions': [],
       'scrolls': [],
       'buildings': [],
+      'unknown': [],
     };
 
     filteredItems.forEach(item => {

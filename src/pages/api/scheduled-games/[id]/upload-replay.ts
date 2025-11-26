@@ -79,10 +79,38 @@ export default async function handler(
     const originalName = replayFile.originalFilename || 'replay.w3g';
 
     // Upload replay to Firebase Storage via Admin SDK
+    // First, create archive entry to get the archiveId, then store replay in archives/{archiveId}/
+    const adminDb = getFirestoreAdmin();
+    const adminTimestamp = getAdminTimestamp();
+    
+    // Create archive entry first to get the ID
+    const archiveEntryData = {
+      title: `Game #${scheduledGame.scheduledGameId} - ${scheduledGame.teamSize === 'custom' ? scheduledGame.customTeamSize : scheduledGame.teamSize}`,
+      content: `Scheduled game completed. ${scheduledGame.gameType === 'elo' ? 'ELO' : 'Normal'} game.`,
+      author: scheduledGame.scheduledByName,
+      createdByDiscordId: scheduledGame.scheduledByDiscordId,
+      createdByName: scheduledGame.scheduledByName,
+      replayUrl: '', // Will be updated after upload
+      mediaType: 'replay',
+      sectionOrder: ['replay', 'text'],
+      dateInfo: {
+        type: 'single',
+        singleDate: scheduledGame.scheduledDateTime,
+      },
+      isDeleted: false,
+      deletedAt: null,
+      createdAt: adminTimestamp.now(),
+      updatedAt: adminTimestamp.now(),
+    };
+
+    const archiveDocRef = await adminDb.collection('archives').add(archiveEntryData);
+    const archiveId = archiveDocRef.id;
+
+    // Now upload replay to the archive location: archives/{archiveId}/replay.w3g
     const storage = getStorageAdmin();
     const bucketName = getStorageBucketName();
     const bucket = bucketName ? storage.bucket(bucketName) : storage.bucket();
-    const filePath = `replays/${scheduledGame.scheduledGameId || 'scheduled'}/${Date.now()}_${originalName}`;
+    const filePath = `archives/${archiveId}/replay.w3g`;
     const token = randomUUID();
 
     await bucket.file(filePath).save(fileBuffer, {
@@ -98,6 +126,12 @@ export default async function handler(
     await fs.unlink(replayFile.filepath).catch(() => {});
 
     const replayUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(filePath)}?alt=media&token=${token}`;
+
+    // Update archive entry with the replay URL
+    await archiveDocRef.update({
+      replayUrl,
+      updatedAt: adminTimestamp.now(),
+    });
 
     // TODO: Parse replay file to extract game data
     // For now, we'll require manual game data or use scheduled game data as fallback
@@ -142,9 +176,6 @@ export default async function handler(
     }
 
     // Add scheduled game link
-    gameData.scheduledGameId = scheduledGame.scheduledGameId;
-
-    // Create game record
     let gameId: string | undefined;
     if (gameData) {
       // Create game record only when we have data
@@ -152,35 +183,9 @@ export default async function handler(
       gameId = await createGame(gameData);
     }
 
-    // Create archive entry from scheduled game using admin SDK
-    const adminDb = getFirestoreAdmin();
-    const adminTimestamp = getAdminTimestamp();
-    
-    const archiveEntryData = {
-      title: `Game #${scheduledGame.scheduledGameId} - ${scheduledGame.teamSize === 'custom' ? scheduledGame.customTeamSize : scheduledGame.teamSize}`,
-      content: `Scheduled game completed. ${scheduledGame.gameType === 'elo' ? 'ELO' : 'Normal'} game.`,
-      author: scheduledGame.scheduledByName,
-      createdByDiscordId: scheduledGame.scheduledByDiscordId,
-      createdByName: scheduledGame.scheduledByName,
-      replayUrl,
-      mediaType: 'replay',
-      sectionOrder: ['replay', 'text'],
-      dateInfo: {
-        type: 'single',
-        singleDate: scheduledGame.scheduledDateTime,
-      },
-      isDeleted: false,
-      deletedAt: null,
-      createdAt: adminTimestamp.now(),
-      updatedAt: adminTimestamp.now(),
-    };
-
-    const archiveDocRef = await adminDb.collection('archives').add(archiveEntryData);
-    const archiveId = archiveDocRef.id;
-
     // Update scheduled game status to archived and link game/archive
     await updateScheduledGame(scheduledGameId, {
-      status: gameData ? 'archived' : 'awaiting_replay',
+      status: 'archived',
       ...(gameId ? { gameId } : {}),
       archiveId,
     });

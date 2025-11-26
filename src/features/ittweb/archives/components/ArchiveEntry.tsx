@@ -25,8 +25,28 @@ export default function ArchiveEntry({ entry, onEdit, onDelete, canDelete, onIma
   const formatDate = (dateInfo: ArchiveEntry['dateInfo']) => {
     switch (dateInfo.type) {
       case 'single':
-        return dateInfo.singleDate ? new Date(dateInfo.singleDate).toLocaleDateString() : 'Unknown';
+        if (!dateInfo.singleDate) return 'Unknown';
+        // Handle partial dates: YYYY, YYYY-MM, or YYYY-MM-DD
+        const dateStr = dateInfo.singleDate.trim();
+        if (/^\d{4}$/.test(dateStr)) {
+          // Year only
+          return dateStr;
+        } else if (/^\d{4}-\d{2}$/.test(dateStr)) {
+          // Year-Month: format as "March 2025"
+          const [year, month] = dateStr.split('-');
+          const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+          const monthName = monthNames[parseInt(month) - 1] || month;
+          return `${monthName} ${year}`;
+        } else {
+          // Full date: YYYY-MM-DD
+          try {
+            return new Date(dateStr).toLocaleDateString();
+          } catch {
+            return dateStr;
+          }
+        }
       case 'interval':
+        // Backward compatibility: handle existing interval dates
         const start = dateInfo.startDate ? new Date(dateInfo.startDate).toLocaleDateString() : 'Unknown';
         const end = dateInfo.endDate ? new Date(dateInfo.endDate).toLocaleDateString() : 'Unknown';
         return `${start} - ${end}`;

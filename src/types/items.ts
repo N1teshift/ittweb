@@ -2,10 +2,10 @@ export type ItemCategory =
   | 'raw-materials'
   | 'weapons'
   | 'armor'
-  | 'tools'
   | 'potions'
   | 'scrolls'
-  | 'buildings';
+  | 'buildings'
+  | 'unknown';
 
 export type ItemSubcategory =
   | 'herbs'

@@ -10,8 +10,6 @@ import { ITEM_ABILITIES } from './item';
 import { MAGE_ABILITIES } from './mage';
 import { PRIEST_ABILITIES } from './priest';
 import { SCOUT_ABILITIES } from './scout';
-import { SUBCLASS_ABILITIES } from './subclass';
-import { SUPERCLASS_ABILITIES } from './superclass';
 import { THIEF_ABILITIES } from './thief';
 import { UNKNOWN_ABILITIES } from './unknown';
 
@@ -25,8 +23,6 @@ export const ABILITIES: AbilityData[] = [
   ...MAGE_ABILITIES,
   ...PRIEST_ABILITIES,
   ...SCOUT_ABILITIES,
-  ...SUBCLASS_ABILITIES,
-  ...SUPERCLASS_ABILITIES,
   ...THIEF_ABILITIES,
   ...UNKNOWN_ABILITIES,
 ];
@@ -40,8 +36,6 @@ export const ABILITY_CATEGORIES: Record<AbilityCategory, string> = {
   thief: 'Thief Abilities',
   scout: 'Scout Abilities',
   gatherer: 'Gatherer Abilities',
-  subclass: 'Subclass Abilities',
-  superclass: 'Superclass Abilities',
   item: 'Item Abilities',
   building: 'Building Abilities',
   unknown: 'Unknown Abilities'

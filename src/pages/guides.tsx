@@ -25,7 +25,7 @@ export default function Guides() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-8rem)]">
+    <div className="min-h-[calc(100vh-8rem)]">
       <div className="text-center max-w-2xl mx-auto px-6 py-12">
         {/* Main Heading */}
         <h1 className="font-medieval-brand text-5xl md:text-6xl mb-8">
@@ -55,7 +55,7 @@ export default function Guides() {
                   • <Link href="/guides/items" className="text-amber-400 hover:text-amber-300">Items</Link>
                 </li>
                 <li>
-                  • <Link href="/guides/buildings" className="text-amber-400 hover:text-amber-300">Buildings</Link>
+                  • <Link href="/guides/units" className="text-amber-400 hover:text-amber-300">Units</Link>
                 </li>
               </ul>
             </div>

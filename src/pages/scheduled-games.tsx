@@ -8,6 +8,7 @@ import ScheduledGamesList from '@/features/ittweb/scheduled-games/components/Sch
 import ScheduleGameForm from '@/features/ittweb/scheduled-games/components/ScheduleGameForm';
 import EditGameForm from '@/features/ittweb/scheduled-games/components/EditGameForm';
 import GameDeleteDialog from '@/features/ittweb/scheduled-games/components/GameDeleteDialog';
+import CreateGameInlineForm from '@/features/ittweb/scheduled-games/components/CreateGameInlineForm';
 import { ScheduledGame, CreateScheduledGame } from '@/types/scheduledGame';
 import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
 import { isAdmin } from '@/features/shared/utils/userRoleUtils';
@@ -32,6 +33,7 @@ export default function ScheduledGames() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [showCreateGameForm, setShowCreateGameForm] = useState(false);
   const [editingGame, setEditingGame] = useState<ScheduledGame | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isJoining, setIsJoining] = useState<string | null>(null);
@@ -108,6 +110,14 @@ export default function ScheduledGames() {
       return;
     }
     setShowForm(true);
+  };
+
+  const handleCreateGameClick = () => {
+    if (status !== 'authenticated') {
+      signIn('discord');
+      return;
+    }
+    setShowCreateGameForm(true);
   };
 
   const handleFormSubmit = async (gameData: CreateScheduledGame, addCreatorToParticipants: boolean) => {
@@ -327,19 +337,30 @@ export default function ScheduledGames() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-8rem)]">
+    <div className="min-h-[calc(100vh-8rem)]">
       <div className="max-w-4xl w-full mx-auto px-6 py-12">
         {/* Main Heading */}
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="font-medieval-brand text-5xl md:text-6xl">
-            Scheduled Games
-          </h1>
-          <button
-            onClick={handleScheduleClick}
-            className="px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-lg font-medium transition-colors"
-          >
-            Schedule Game
-          </button>
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
+          <div>
+            <h1 className="font-medieval-brand text-5xl md:text-6xl">
+              Scheduled Games
+            </h1>
+            <p className="text-gray-400 mt-2">Organize games and record results.</p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={handleScheduleClick}
+              className="px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-lg font-medium transition-colors"
+            >
+              Schedule Game
+            </button>
+            <button
+              onClick={handleCreateGameClick}
+              className="px-6 py-3 bg-black/40 border border-amber-500/40 hover:bg-black/60 text-amber-300 rounded-lg font-medium flex items-center gap-2 transition-colors"
+            >
+              <span>Create Game</span>
+            </button>
+          </div>
         </div>
 
         {/* Error Message */}
@@ -388,6 +409,13 @@ export default function ScheduledGames() {
             onSubmit={handleEditSubmit}
             onCancel={handleEditCancel}
             isSubmitting={isSubmitting}
+          />
+        )}
+
+        {/* Create Game Form Modal */}
+        {showCreateGameForm && (
+          <CreateGameInlineForm
+            onClose={() => setShowCreateGameForm(false)}
           />
         )}
 

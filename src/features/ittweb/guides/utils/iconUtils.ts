@@ -1,4 +1,4 @@
-export type ITTIconCategory = 'abilities' | 'items' | 'buildings' | 'trolls';
+export type ITTIconCategory = 'abilities' | 'items' | 'buildings' | 'trolls' | 'units';
 
 export type ITTIconState = 'enabled' | 'disabled';
 

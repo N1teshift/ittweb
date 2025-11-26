@@ -75,7 +75,9 @@ const compressImage = async (file: File): Promise<File> => {
 };
 
 // Upload image to Firebase Storage
-export const uploadImage = async (file: File): Promise<string> => {
+// If entryId is provided, uses archives/{entryId}/images/{filename} structure
+// Otherwise uses legacy archives/{timestamp}_{filename} structure
+export const uploadImage = async (file: File, entryId?: string): Promise<string> => {
   if (!isClient) {
     throw new Error('Upload is only available on the client side');
   }
@@ -86,7 +88,9 @@ export const uploadImage = async (file: File): Promise<string> => {
 
   const compressedFile = await compressImage(file);
   const timestamp = Date.now();
-  const fileName = `archives/${timestamp}_${file.name}`;
+  const fileName = entryId 
+    ? `archives/${entryId}/images/${timestamp}_${file.name}`
+    : `archives/${timestamp}_${file.name}`;
   const storageRef = ref(storage, fileName);
   
   await uploadBytes(storageRef, compressedFile);
@@ -96,13 +100,16 @@ export const uploadImage = async (file: File): Promise<string> => {
 };
 
 // Upload multiple images
-export const uploadImages = async (files: File[]): Promise<string[]> => {
-  const uploads = files.map((f) => uploadImage(f));
+// If entryId is provided, uses archives/{entryId}/images/ structure
+export const uploadImages = async (files: Array<{ file: File; entryId?: string }>): Promise<string[]> => {
+  const uploads = files.map(({ file, entryId }) => uploadImage(file, entryId));
   return Promise.all(uploads);
 };
 
 // Upload replay to Firebase Storage
-export const uploadReplay = async (file: File): Promise<string> => {
+// If entryId is provided, uses archives/{entryId}/replay.w3g structure
+// Otherwise uses legacy archives/replays/{timestamp}_{filename} structure
+export const uploadReplay = async (file: File, entryId?: string): Promise<string> => {
   if (!isClient) {
     throw new Error('Upload is only available on the client side');
   }
@@ -118,7 +125,9 @@ export const uploadReplay = async (file: File): Promise<string> => {
   }
 
   const timestamp = Date.now();
-  const fileName = `archives/replays/${timestamp}_${file.name}`;
+  const fileName = entryId
+    ? `archives/${entryId}/replay.w3g`
+    : `archives/replays/${timestamp}_${file.name}`;
   const storageRef = ref(storage, fileName);
 
   await uploadBytes(storageRef, file);

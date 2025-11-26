@@ -1,6 +1,7 @@
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import { Logger } from '@/features/infrastructure/logging';
-import Link from 'next/link';
+import DiscordButton from '@/features/shared/components/DiscordButton';
+import GitHubButton from '@/features/shared/components/GitHubButton';
 import type { GetStaticProps } from 'next';
 
 const pageNamespaces = ["common"];
@@ -16,7 +17,6 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 };
 
 export default function Development() {
-
   if (typeof window !== 'undefined') {
     Logger.info('Development page visited', {
       path: window.location.pathname,
@@ -24,42 +24,69 @@ export default function Development() {
     });
   }
 
-      return (
-      <div className="flex items-center justify-center min-h-[calc(100vh-8rem)]">
-        <div className="text-center max-w-2xl mx-auto px-6 py-12">
-          {/* Main Heading */}
-          <h1 className="font-medieval-brand text-5xl md:text-6xl mb-8">
-            Development
-          </h1>
-          
-          {/* Content Section */}
-          <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-8 mb-8">
-            <p className="text-lg md:text-xl text-gray-300 mb-4 leading-relaxed">
-              Welcome to the Island Troll Tribes Development section!
-              <br />
-              Stay updated with the latest development progress.
-            </p>
-            
-            {/* Placeholder Content */}
-            <div className="mt-6 space-y-4">
-              <div className="text-left">
-                <h2 className="font-medieval-brand text-2xl mb-4">Development Updates</h2>
-                <ul className="text-gray-300 space-y-2">
-                  <li>
-                    <Link href="/development/map" className="text-amber-400 hover:text-amber-300">
-                      • Map Development
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/development/website" className="text-amber-400 hover:text-amber-300">
-                      • Website Development
-                    </Link>
-                  </li>
+  return (
+    <div className="min-h-[calc(100vh-8rem)]">
+      <div className="max-w-3xl w-full mx-auto px-6 py-12">
+        <h1 className="font-medieval-brand text-4xl md:text-5xl mb-6 text-center">Development</h1>
+
+        <div className="space-y-6">
+          {/* Map Development Section */}
+          <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6 md:p-8">
+            <h2 className="font-medieval-brand text-2xl mb-4">Map Development</h2>
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-medieval-brand text-xl mb-2">Current Maintainer</h3>
+                <p className="text-gray-300 leading-relaxed">
+                  The Island Troll Tribes map development is currently maintained by <span className="text-amber-400">bamnupko</span>.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-medieval-brand text-xl mb-2">Contribute to the Map</h3>
+                <p className="text-gray-300 leading-relaxed">
+                  Contributions are welcome. You can participate by opening pull requests, reporting issues, or discussing changes
+                  in the community. The map source and contribution workflow are available on GitHub.
+                </p>
+                <div className="mt-4">
+                  <GitHubButton href="https://github.com/Exactuz/island-troll-tribes">View Map Repository</GitHubButton>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Website Development Section */}
+          <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6 md:p-8">
+            <h2 className="font-medieval-brand text-2xl mb-4">Website Development</h2>
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-medieval-brand text-xl mb-2">Contribute to this Website</h3>
+                <p className="text-gray-300 leading-relaxed">
+                  This website is open for community contributions. It is hosted on Vercel and connected to our domain
+                  <span className="text-amber-400"> www.islandtrolltribes.com</span>, with the source managed on GitHub.
+                  If you want to help with web features, content, or fixes, you're welcome!
+                </p>
+                <ul className="list-disc list-inside mt-3 text-gray-300 space-y-1">
+                  <li>Hosted on Vercel (GitHub integration for automatic deploys)</li>
+                  <li>Pull Requests welcome from the community</li>
+                  <li>Tech stack: Next.js, TypeScript, Tailwind CSS, Firebase</li>
                 </ul>
+                <div className="mt-4">
+                  <GitHubButton href="https://github.com/N1teshift/ittweb">View Website Repository</GitHubButton>
+                </div>
+              </div>
+              <div>
+                <h3 className="font-medieval-brand text-xl mb-2">Contact</h3>
+                <p className="text-gray-300 leading-relaxed">
+                  If you want to reach me about website development, contact me on Discord.
+                  I'm in the Island Troll Tribes community under the name <span className="text-amber-400">Scatman33</span>.
+                </p>
+                <div className="mt-4">
+                  <DiscordButton>Join the Discord</DiscordButton>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    );
+    </div>
+  );
 }

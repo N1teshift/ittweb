@@ -2,23 +2,22 @@ export interface ArchiveFormFieldsState {
   title: string;
   content: string;
   author: string;
-  dateType: 'single' | 'interval' | 'undated';
+  dateType: 'single' | 'undated';
   singleDate: string;
-  startDate: string;
-  endDate: string;
   approximateText: string;
 }
 
 export function validateArchiveForm(fields: ArchiveFormFieldsState): string | null {
   if (!fields.title.trim()) return 'Title is required';
-  if (!fields.content.trim()) return 'Story/Memory is required';
+  // Content (Story/Memory) is now optional
   if (!fields.author.trim()) return 'Author name is required';
 
-  if (fields.dateType === 'single' && !fields.singleDate) {
-    return 'Date is required for single date entries';
-  }
-  if (fields.dateType === 'interval' && (!fields.startDate || !fields.endDate)) {
-    return 'Both start and end dates are required for date ranges';
+  if (fields.dateType === 'single' && fields.singleDate) {
+    // Validate date format: YYYY, YYYY-MM, or YYYY-MM-DD
+    const datePattern = /^\d{4}(-\d{2}(-\d{2})?)?$/;
+    if (!datePattern.test(fields.singleDate.trim())) {
+      return 'Date must be in format YYYY, YYYY-MM, or YYYY-MM-DD';
+    }
   }
   return null;
 }

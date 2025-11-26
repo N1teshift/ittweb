@@ -34,6 +34,28 @@ export default function ScheduledGamesList({
 }: ScheduledGamesListProps) {
   const { data: session } = useSession();
   const userTimezone = getUserTimezone();
+  const statusConfig: Record<ScheduledGame['status'], { label: string; className: string }> = {
+    scheduled: {
+      label: 'Scheduled',
+      className: 'bg-green-900/50 text-green-300',
+    },
+    ongoing: {
+      label: 'On Going',
+      className: 'bg-blue-900/50 text-blue-300',
+    },
+    awaiting_replay: {
+      label: 'Waiting for Evidence',
+      className: 'bg-yellow-900/50 text-yellow-300',
+    },
+    archived: {
+      label: 'Archived',
+      className: 'bg-gray-800/70 text-gray-300',
+    },
+    cancelled: {
+      label: 'Cancelled',
+      className: 'bg-red-900/50 text-red-300',
+    },
+  };
   
   const handleJoinClick = async (e: React.MouseEvent, gameId: string) => {
     e.stopPropagation();
@@ -118,7 +140,7 @@ export default function ScheduledGamesList({
         const userIsCreator = isUserCreator(game);
         const canDelete = canDeleteGame(game);
         const isProcessing = isJoining === game.id || isLeaving === game.id || isDeleting === game.id || isUploadingReplay === game.id;
-        const canUploadReplay = game.status === 'awaiting_replay' || (game.status === 'scheduled' && new Date(game.scheduledDateTime) < new Date());
+        const statusMeta = statusConfig[game.status] ?? { label: game.status, className: 'bg-gray-700 text-gray-200' };
         
         return (
           <div
@@ -141,17 +163,12 @@ export default function ScheduledGamesList({
                 </p>
               </div>
               <div className="flex flex-col items-end gap-2">
-                <span className={`px-3 py-1 rounded text-sm ${
-                  game.status === 'scheduled' ? 'bg-green-900/50 text-green-300' :
-                  game.status === 'awaiting_replay' ? 'bg-yellow-900/50 text-yellow-300' :
-                  game.status === 'archived' ? 'bg-blue-900/50 text-blue-300' :
-                  'bg-red-900/50 text-red-300'
-                }`}>
-                  {game.status === 'awaiting_replay' ? 'Awaiting Replay' : game.status}
+                <span className={`px-3 py-1 rounded text-sm ${statusMeta.className}`}>
+                  {statusMeta.label}
                 </span>
-                {session && (game.status === 'scheduled' || game.status === 'awaiting_replay') && (
+                {session && (
                   <div className="flex gap-2">
-                    {canUploadReplay && (
+                    {game.status === 'awaiting_replay' && (
                       <button
                         onClick={(e) => handleUploadReplayClick(e, game)}
                         disabled={isProcessing}

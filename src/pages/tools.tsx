@@ -25,7 +25,7 @@ export default function Tools() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-8rem)]">
+    <div className="min-h-[calc(100vh-8rem)]">
       <div className="text-center max-w-2xl mx-auto px-6 py-12">
         {/* Main Heading */}
         <h1 className="font-medieval-brand text-5xl md:text-6xl mb-8">

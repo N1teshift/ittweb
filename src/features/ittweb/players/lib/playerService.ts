@@ -327,6 +327,72 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
 }
 
 /**
+ * Get all players with basic stats
+ */
+export async function getAllPlayers(limit: number = 100): Promise<PlayerStats[]> {
+  try {
+    logger.info('Fetching all players', { limit });
+
+    if (isServerSide()) {
+      const adminDb = getFirestoreAdmin();
+      const snapshot = await adminDb.collection(PLAYER_STATS_COLLECTION)
+        .orderBy('name')
+        .limit(limit)
+        .get();
+
+      const players: PlayerStats[] = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        players.push({
+          id: doc.id,
+          name: data.name || doc.id,
+          categories: data.categories || {},
+          totalGames: data.totalGames || 0,
+          lastPlayed: timestampToIso(data.lastPlayed),
+          firstPlayed: timestampToIso(data.firstPlayed),
+          createdAt: timestampToIso(data.createdAt),
+          updatedAt: timestampToIso(data.updatedAt),
+        });
+      });
+
+      return players;
+    } else {
+      const db = getFirestoreInstance();
+      const playersQuery = query(
+        collection(db, PLAYER_STATS_COLLECTION),
+        orderBy('name'),
+        // limit(limit) // Firestore requires orderBy before limit
+      );
+
+      const snapshot = await getDocs(playersQuery);
+      const players: PlayerStats[] = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        players.push({
+          id: doc.id,
+          name: data.name || doc.id,
+          categories: data.categories || {},
+          totalGames: data.totalGames || 0,
+          lastPlayed: timestampToIso(data.lastPlayed),
+          firstPlayed: timestampToIso(data.firstPlayed),
+          createdAt: timestampToIso(data.createdAt),
+          updatedAt: timestampToIso(data.updatedAt),
+        });
+      });
+
+      return players.slice(0, limit);
+    }
+  } catch (error) {
+    const err = error as Error;
+    logError(err, 'Failed to get all players', {
+      component: 'playerService',
+      operation: 'getAllPlayers',
+    });
+    throw err;
+  }
+}
+
+/**
  * Search players by name
  */
 export async function searchPlayers(query: string): Promise<string[]> {

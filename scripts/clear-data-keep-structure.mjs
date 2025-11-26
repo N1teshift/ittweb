@@ -35,9 +35,10 @@ function clearItemsData() {
     { file: 'scrolls.ts', constName: 'SCROLL_ITEMS' },
     { file: 'weapons.ts', constName: 'WEAPON_ITEMS' },
     { file: 'armor.ts', constName: 'ARMOR_ITEMS' },
-    { file: 'tools.ts', constName: 'TOOL_ITEMS' },
     { file: 'potions.ts', constName: 'POTION_ITEMS' },
     { file: 'raw-materials.ts', constName: 'RAW_MATERIAL_ITEMS' },
+    { file: 'buildings.ts', constName: 'BUILDINGS_ITEMS' },
+    { file: 'unknown.ts', constName: 'UNKNOWN_ITEMS' },
   ];
   
   for (const { file: filename, constName: defaultConstName } of itemFiles) {
@@ -73,8 +74,6 @@ function clearAbilitiesData() {
     'mage.ts',
     'priest.ts',
     'scout.ts',
-    'subclass.ts',
-    'superclass.ts',
     'thief.ts',
     'unknown.ts',
   ];

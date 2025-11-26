@@ -22,19 +22,20 @@ export async function uploadSelectedMedia(
   currentImages: string[],
   mode: 'create' | 'edit',
   replayFile: File | null,
+  entryId?: string,
 ) {
   let images: string[] | undefined;
   if (imageFiles.length > 0) {
-    images = await uploadImages(imageFiles);
+    images = await uploadImages(imageFiles.map(f => ({ file: f, entryId })));
   } else if (imageFile) {
-    images = [await uploadImage(imageFile)];
+    images = [await uploadImage(imageFile, entryId)];
   } else if (mode === 'edit' && currentImages.length > 0) {
     images = currentImages;
   }
 
   let replayUrl: string | undefined;
   if (replayFile) {
-    replayUrl = await uploadReplay(replayFile);
+    replayUrl = await uploadReplay(replayFile, entryId);
   }
 
   return { images, replayUrl };

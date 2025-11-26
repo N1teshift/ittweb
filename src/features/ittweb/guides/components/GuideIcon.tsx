@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { getDefaultIconPath, ITTIconCategory, ITTIconState } from '@/features/ittweb/guides/utils/iconUtils';
 import { resolveExplicitIcon } from '@/features/ittweb/guides/utils/iconMap';
 
@@ -15,11 +15,23 @@ type GuideIconProps = {
 export default function GuideIcon({ category, name, size = 48, state, className, src: srcOverride }: GuideIconProps) {
   // Priority: 1. srcOverride, 2. explicit mapping, 3. default fallback
   const explicit = useMemo(() => resolveExplicitIcon(category, name), [category, name]);
-  const iconSrc = useMemo(() => {
+  const initialIconSrc = useMemo(() => {
     if (srcOverride) return srcOverride;
     if (explicit) return explicit;
     return getDefaultIconPath();
   }, [srcOverride, explicit]);
+
+  // Track if image failed to load, fallback to default icon
+  const [iconSrc, setIconSrc] = useState(initialIconSrc);
+  const [hasErrored, setHasErrored] = useState(false);
+
+  const handleError = () => {
+    // Only fallback once to prevent infinite loops
+    if (!hasErrored && iconSrc !== getDefaultIconPath()) {
+      setHasErrored(true);
+      setIconSrc(getDefaultIconPath());
+    }
+  };
 
   const alt = `${name} icon`;
 
@@ -31,6 +43,7 @@ export default function GuideIcon({ category, name, size = 48, state, className,
       height={size}
       unoptimized={true}
       className={className}
+      onError={handleError}
     />
   );
 }

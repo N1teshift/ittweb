@@ -7,8 +7,6 @@ export type AbilityCategory =
   | 'thief' 
   | 'scout' 
   | 'gatherer' 
-  | 'subclass' 
-  | 'superclass' 
   | 'item'
   | 'building'
   | 'unknown';

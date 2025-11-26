@@ -5,18 +5,14 @@ export type SectionKey = 'images' | 'video' | 'twitch' | 'replay' | 'text';
 const CANONICAL_SECTION_ORDER: SectionKey[] = ['images', 'video', 'twitch', 'replay', 'text'];
 
 export function buildDateInfo(params: {
-  dateType: 'single' | 'interval' | 'undated';
+  dateType: 'single' | 'undated';
   singleDate: string;
-  startDate: string;
-  endDate: string;
   approximateText: string;
 }): DateInfo {
-  const { dateType, singleDate, startDate, endDate, approximateText } = params;
+  const { dateType, singleDate, approximateText } = params;
   return {
-    type: dateType,
-    ...(dateType === 'single' && singleDate && { singleDate }),
-    ...(dateType === 'interval' && startDate && { startDate }),
-    ...(dateType === 'interval' && endDate && { endDate }),
+    type: dateType === 'single' ? 'single' : 'undated',
+    ...(dateType === 'single' && singleDate && { singleDate: singleDate.trim() }),
     ...(dateType === 'undated' && approximateText && { approximateText })
   };
 }

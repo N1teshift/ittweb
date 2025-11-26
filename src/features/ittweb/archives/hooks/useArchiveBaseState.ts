@@ -16,10 +16,8 @@ export function useArchiveBaseState(mode: 'create' | 'edit', initialEntry?: Arch
     mediaUrl: '',
     twitchClipUrl: '',
     mediaType: 'none' as 'image' | 'video' | 'replay' | 'none',
-    dateType: 'single' as 'single' | 'interval' | 'undated',
+    dateType: 'single' as 'single' | 'undated',
     singleDate: '',
-    startDate: '',
-    endDate: '',
     approximateText: ''
   });
 
@@ -34,6 +32,15 @@ export function useArchiveBaseState(mode: 'create' | 'edit', initialEntry?: Arch
 
   useEffect(() => {
     if (mode === 'edit' && initialEntry) {
+      // Convert interval dates to single if needed (for backward compatibility)
+      let dateType: 'single' | 'undated' = initialEntry.dateInfo.type === 'undated' ? 'undated' : 'single';
+      let singleDate = initialEntry.dateInfo.singleDate || '';
+      
+      // If it's an interval type, use startDate as singleDate (for backward compatibility)
+      if (initialEntry.dateInfo.type === 'interval' && initialEntry.dateInfo.startDate) {
+        singleDate = initialEntry.dateInfo.startDate;
+      }
+      
       setFormData({
         title: initialEntry.title,
         content: initialEntry.content,
@@ -41,10 +48,8 @@ export function useArchiveBaseState(mode: 'create' | 'edit', initialEntry?: Arch
         mediaUrl: initialEntry.videoUrl || initialEntry.mediaUrl || '',
         twitchClipUrl: initialEntry.twitchClipUrl || '',
         mediaType: initialEntry.mediaType || (initialEntry.videoUrl ? 'video' : initialEntry.images?.length ? 'image' : initialEntry.replayUrl ? 'replay' : 'none'),
-        dateType: initialEntry.dateInfo.type,
-        singleDate: initialEntry.dateInfo.singleDate || '',
-        startDate: initialEntry.dateInfo.startDate || '',
-        endDate: initialEntry.dateInfo.endDate || '',
+        dateType,
+        singleDate,
         approximateText: initialEntry.dateInfo.approximateText || ''
       });
       const initialImages = initialEntry.images && initialEntry.images.length > 0

@@ -10,7 +10,7 @@ interface UseArchiveHandlersParams {
     mediaUrl: string;
     twitchClipUrl: string;
     mediaType: 'image' | 'video' | 'replay' | 'none';
-    dateType: 'single' | 'interval' | 'undated';
+    dateType: 'single' | 'undated';
     singleDate: string;
     startDate: string;
     endDate: string;
@@ -93,25 +93,88 @@ export function useArchiveHandlers({
 
   const handleVideoUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const url = e.target.value;
-    setFormData(prev => ({ ...prev, mediaUrl: url }));
-    if (url && !extractYouTubeId(url)) {
-      setError('Please enter a valid YouTube URL');
+    const youtubeId = extractYouTubeId(url);
+    const twitchId = extractTwitchClipId(url);
+    
+    if (url && !youtubeId && !twitchId) {
+      setError('Please enter a valid YouTube or Twitch clip URL');
+      setFormData(prev => ({ ...prev, mediaUrl: '', twitchClipUrl: '' }));
+      return;
+    }
+    
+    setError('');
+    // Set the appropriate URL and clear the other one
+    if (youtubeId) {
+      setFormData(prev => ({ ...prev, mediaUrl: url, twitchClipUrl: '' }));
+    } else if (twitchId) {
+      setFormData(prev => ({ ...prev, twitchClipUrl: url, mediaUrl: '' }));
     } else {
-      setError('');
+      // Empty URL - clear both
+      setFormData(prev => ({ ...prev, mediaUrl: '', twitchClipUrl: '' }));
     }
   };
 
   const handleTwitchUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const url = e.target.value;
-    setFormData(prev => ({ ...prev, twitchClipUrl: url }));
-    if (url && !extractTwitchClipId(url)) {
-      setError('Please enter a valid Twitch clip URL');
-    } else {
-      setError('');
+    // This is kept for backward compatibility but should not be used with new MediaSelector
+    handleVideoUrlChange(e);
+  };
+
+  const handleCombinedFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    
+    const imageFiles: File[] = [];
+    const replayFiles: File[] = [];
+    
+    files.forEach(file => {
+      const nameLower = file.name.toLowerCase();
+      if (nameLower.endsWith('.w3g')) {
+        replayFiles.push(file);
+      } else if (file.type.startsWith('image/')) {
+        imageFiles.push(file);
+      } else {
+        setError(`Unsupported file type: ${file.name}. Please upload images or .w3g replay files.`);
+        return;
+      }
+    });
+    
+    if (replayFiles.length > 1) {
+      setError('Please upload only one replay file at a time');
+      return;
+    }
+    
+    if (replayFiles.length > 0 && imageFiles.length > 0) {
+      setError('Please upload either images or a replay file, not both');
+      return;
+    }
+    
+    setError('');
+    
+    // Handle replays
+    if (replayFiles.length > 0) {
+      setReplayFile(replayFiles[0]);
+      setImageFile(null);
+      setImageFiles([]);
+      setFormData(prev => ({ ...prev, mediaType: 'replay' }));
+      return;
+    }
+    
+    // Handle images
+    if (imageFiles.length > 0) {
+      if (imageFiles.length === 1) {
+        setImageFile(imageFiles[0]);
+        setImageFiles([]);
+      } else {
+        setImageFiles(imageFiles);
+        setImageFile(null);
+      }
+      setReplayFile(null);
+      setFormData(prev => ({ ...prev, mediaType: 'image' }));
     }
   };
 
   const handleReplayUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Legacy handler - kept for backward compatibility
     const file = e.target.files?.[0];
     if (file) {
       const nameLower = file.name.toLowerCase();
@@ -163,6 +226,7 @@ export function useArchiveHandlers({
     handleVideoUrlChange,
     handleTwitchUrlChange,
     handleReplayUpload,
+    handleCombinedFileUpload,
     handleMediaFieldChange,
     handleRemoveExistingImage,
     handleRemoveReplay,

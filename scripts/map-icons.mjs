@@ -95,10 +95,10 @@ function loadItems() {
     'raw-materials.ts',
     'weapons.ts',
     'armor.ts',
-    'tools.ts',
     'potions.ts',
     'scrolls.ts',
-    'buildings.ts'
+    'buildings.ts',
+    'unknown.ts'
   ];
   
   const allItems = [];
@@ -153,8 +153,6 @@ function loadAbilities() {
     'gatherer.ts',
     'item.ts',
     'building.ts',
-    'subclass.ts',
-    'superclass.ts',
     'unknown.ts'
   ];
   
