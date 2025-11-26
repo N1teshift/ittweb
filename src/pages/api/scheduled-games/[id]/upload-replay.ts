@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../auth/[...nextauth]';
-import { getScheduledGameById, updateScheduledGame } from '@/features/ittweb/scheduled-games/lib/scheduledGameService';
-import { createGame } from '@/features/ittweb/games/lib/gameService';
+import { getScheduledGameById, updateScheduledGame } from '@/features/modules/scheduled-games/lib/scheduledGameService';
+import { createGame } from '@/features/modules/games/lib/gameService';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { getFirestoreAdmin, getAdminTimestamp, getStorageAdmin, getStorageBucketName } from '@/features/infrastructure/api/firebase/admin';
-import type { CreateGame } from '@/features/ittweb/games/types';
+import type { CreateGame } from '@/features/modules/games/types';
 import { IncomingForm, Fields, Files, File as FormidableFile } from 'formidable';
 import { promises as fs } from 'fs';
 import os from 'os';
@@ -207,6 +207,7 @@ export default async function handler(
     const err = error as Error;
     logError(err, 'API request failed', {
       component: 'api/scheduled-games/[id]/upload-replay',
+      operation: 'upload-replay',
       method: req.method,
       scheduledGameId: req.query.id,
     });

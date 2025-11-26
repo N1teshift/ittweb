@@ -1,0 +1,272 @@
+{
+  "mix-herbs": {
+    "id": "mix-herbs",
+    "description": "Takes all the herbs in the pot and mixes them into a potion if a potion can be made",
+    "file": "external\\wurst\\objects\\abilities\\MixHerb.wurst"
+  },
+  "pump-up": {
+    "id": "pump-up",
+    "description": "Increase a friendly unit attack speed by {0} and movement speed by {1} for {2} seconds. Has {3} seconds cooldown",
+    "file": "external\\wurst\\objects\\abilities\\PumpUp.wurst"
+  },
+  "item-warp": {
+    "id": "item-warp",
+    "description": "Teleports items in the area around the gatherer right to him",
+    "file": "external\\wurst\\objects\\abilities\\gatherer\\ItemWarp.wurst"
+  },
+  "tele-radar-gather": {
+    "id": "tele-radar-gather",
+    "description": "Tele-Gathering",
+    "file": "external\\wurst\\objects\\abilities\\gatherer\\TeleGatherAbilityDefinition.wurst"
+  },
+  "hunter-web": {
+    "id": "hunter-web",
+    "description": "Binds an enemy target for {0}/{1} seconds on heroes/normal units. Air units and fish will be moved next to the caster",
+    "file": "external\\wurst\\objects\\abilities\\hunter\\HunterEnsnare.wurst"
+  },
+  "track": {
+    "id": "track",
+    "description": "Gives vision of the tracked unit and reduces armor by",
+    "file": "external\\wurst\\objects\\abilities\\hunter\\Track.wurst"
+  },
+  "id-reveal-dummy": {
+    "id": "id-reveal-dummy",
+    "description": "Reveals an area around you, detects invisible units",
+    "file": "external\\wurst\\objects\\abilities\\scout\\Reveal.wurst"
+  },
+  "icon": {
+    "id": "icon",
+    "description": "Overcharge",
+    "file": "external\\wurst\\objects\\abilities\\mage\\elementalist\\OverCharge.wurst"
+  },
+  "cloak": {
+    "id": "cloak",
+    "description": "The thief goes invisible and move {0} faster. Cloak can be used to reveal cliff",
+    "file": "external\\wurst\\objects\\abilities\\thief\\Cloak.wurst"
+  },
+  "blink": {
+    "id": "blink",
+    "description": "The thief teleports a short distance. Has {0} seconds cooldown",
+    "file": "external\\wurst\\objects\\abilities\\thief\\Teleport.wurst"
+  },
+  "rendo-elk-jump": {
+    "id": "rendo-elk-jump",
+    "description": "Elk Jump",
+    "file": "external\\wurst\\objects\\abilities\\beastmaster\\UltimateForm\\ElkJump.wurst"
+  },
+  "rendo-hawk-eye": {
+    "id": "rendo-hawk-eye",
+    "description": "Hawk Eye",
+    "file": "external\\wurst\\objects\\abilities\\beastmaster\\UltimateForm\\HawkEye.wurst"
+  },
+  "rendo-panther-instinct": {
+    "id": "rendo-panther-instinct",
+    "description": "Panther Instinct",
+    "file": "external\\wurst\\objects\\abilities\\beastmaster\\UltimateForm\\PantherInstinct.wurst"
+  },
+  "rendo-snake-toxin": {
+    "id": "rendo-snake-toxin",
+    "description": "Snake Toxin",
+    "file": "external\\wurst\\objects\\abilities\\beastmaster\\UltimateForm\\SnakeToxin.wurst"
+  },
+  "rendo-wolf-bite": {
+    "id": "rendo-wolf-bite",
+    "description": "Wolf Bite",
+    "file": "external\\wurst\\objects\\abilities\\beastmaster\\UltimateForm\\WolfBite.wurst"
+  },
+  "rage": {
+    "id": "rage",
+    "description": "Permanently increase attack speed by {0}",
+    "file": "external\\wurst\\objects\\abilities\\hunter\\juggernaut\\Rage.wurst"
+  },
+  "hide-beacon": {
+    "id": "hide-beacon",
+    "description": "Tracking Beacon",
+    "file": "external\\wurst\\objects\\abilities\\hunter\\tracker\\Beacon.wurst"
+  },
+  "dysentery": {
+    "id": "dysentery",
+    "description": "Throws a bottle filled with dirty stuff, causing the target to get dysentery-like symptoms and poop hot, steaming diarrhea uncontrollably",
+    "file": "external\\wurst\\objects\\abilities\\hunter\\tracker\\Dysentery.wurst"
+  },
+  "sniff": {
+    "id": "sniff",
+    "description": "Sniff",
+    "file": "external\\wurst\\objects\\abilities\\hunter\\tracker\\Sniff.wurst"
+  },
+  "dark-gate": {
+    "id": "dark-gate",
+    "description": "The Dementia Summoner channels pure balls or dark energy which he uses to construct a gate",
+    "file": "external\\wurst\\objects\\abilities\\mage\\dementia\\DarkGate.wurst"
+  },
+  "dreamwalker-dream-eater": {
+    "id": "dreamwalker-dream-eater",
+    "description": "Consume all the dreams you hold as well as dreams of all enemies within {0} radius that are currently sleeping",
+    "file": "external\\wurst\\objects\\abilities\\mage\\DreamWalker\\DreamEater2.wurst"
+  },
+  "soulrend": {
+    "id": "soulrend",
+    "description": "While in Dream World, Dreamwalker deals additional magic damage to enemies equal to {0}x{1} with every attack",
+    "file": "external\\wurst\\objects\\abilities\\mage\\DreamWalker\\SoulRend.wurst"
+  },
+  "id": {
+    "id": "id",
+    "description": "Makes the Rogue move as fast as he can, leaving blurs.\\nIf an enemy comes in contact",
+    "file": "external\\wurst\\objects\\abilities\\thief\\Rogue\\Blur.wurst"
+  },
+  "exhaust": {
+    "id": "exhaust",
+    "description": "Causes a target to become angery, increasing its attack speed by {0} while doing {1} damage per second to it. Anger last {2} seconds,",
+    "file": "external\\wurst\\objects\\abilities\\mage\\hypnotist\\Anger.wurst"
+  },
+  "depression-aura": {
+    "id": "depression-aura",
+    "description": "The Hypnotist spend many time studying dark magic, he can passively generate a field of depression around him. Units that enter",
+    "file": "external\\wurst\\objects\\abilities\\mage\\hypnotist\\DepressionAura.wurst"
+  },
+  "depression-orb": {
+    "id": "depression-orb",
+    "description": "The Hypnotist uses powerful magic to create an wisp of pure hatred and depression. The wisp is projected at opponents",
+    "file": "external\\wurst\\objects\\abilities\\mage\\hypnotist\\DepressionOrb.wurst"
+  },
+  "dream-eater": {
+    "id": "dream-eater",
+    "description": "Steals an enemy dream restoring {0} Health Point and {1} Mana. Also reduces enemy",
+    "file": "external\\wurst\\objects\\abilities\\mage\\hypnotist\\DreamEater.wurst"
+  },
+  "jealousy": {
+    "id": "jealousy",
+    "description": "The Hypnotist curses an enemy causing nearby allies to attack it. Jealousy has a melee casting range and no",
+    "file": "external\\wurst\\objects\\abilities\\mage\\hypnotist\\Jealousy.wurst"
+  },
+  "seizures": {
+    "id": "seizures",
+    "description": "Manipulates the targets brain sending small electric pulses through his nerves causing him seizures. The seizures do {0}",
+    "file": "external\\wurst\\objects\\abilities\\mage\\hypnotist\\Seizures.wurst"
+  },
+  "stupefy": {
+    "id": "stupefy",
+    "description": "The Hypnotist generates a magic field. Anyone, including allies and the hypnotist, that enters this field becomes temporarily stupefied",
+    "file": "external\\wurst\\objects\\abilities\\mage\\hypnotist\\StupefyField.wurst"
+  },
+  "flame-spray": {
+    "id": "flame-spray",
+    "description": "Shoots fire bolt at nearby enemies dealing {0} damages. Has {1} seconds cooldown",
+    "file": "external\\wurst\\objects\\abilities\\mage\\unsub\\FlameSpray.wurst"
+  },
+  "mage-fire": {
+    "id": "mage-fire",
+    "description": "The mage conjures a powerful fire on his energy alone. The is placed where he is and lasts for {0} seconds. Has {1} seconds cooldown",
+    "file": "external\\wurst\\objects\\abilities\\mage\\unsub\\MakeMageFire.wurst"
+  },
+  "metronome-impale": {
+    "id": "metronome-impale",
+    "description": "Barrages enemies with random, chaining effects. Has {0} seconds cooldown",
+    "file": "external\\wurst\\objects\\abilities\\mage\\unsub\\Metronome.wurst"
+  },
+  "negative-blast": {
+    "id": "negative-blast",
+    "description": "Blasts a target with negative energy dealing {0} damage and slowing for a short duration. Has {1} seconds cooldown",
+    "file": "external\\wurst\\objects\\abilities\\mage\\unsub\\NegativeBlast.wurst"
+  },
+  "null-damage": {
+    "id": "null-damage",
+    "description": "Reduce target damage by {0}, attack speed by {1} and movement speed by {2} for {3}/{4} seconds. Has {5} seconds cooldown",
+    "file": "external\\wurst\\objects\\abilities\\mage\\unsub\\NullDamage.wurst"
+  },
+  "fortitude": {
+    "id": "fortitude",
+    "description": "Gives {0} bonus armor to allied trolls around you",
+    "file": "external\\wurst\\objects\\abilities\\priest\\booster\\Fortitude.wurst"
+  },
+  "increase-metabolism": {
+    "id": "increase-metabolism",
+    "description": "Increases the health recovered by food and potions by {0} and boosts movement speed by {1}",
+    "file": "external\\wurst\\objects\\abilities\\priest\\booster\\IncreaseMetabolism.wurst"
+  },
+  "lightning-shield-dummy": {
+    "id": "lightning-shield-dummy",
+    "description": "Cast Lightning Shield on target unit, deals \\n{0} + {1}x{2} damage per second",
+    "file": "external\\wurst\\objects\\abilities\\priest\\booster\\LightningShield.wurst"
+  },
+  "spirit-link": {
+    "id": "spirit-link",
+    "description": "Spirit Link",
+    "file": "external\\wurst\\objects\\abilities\\priest\\booster\\SpiritLink.wurst"
+  },
+  "troll-battle-call": {
+    "id": "troll-battle-call",
+    "description": "Increase damage by {0} and defense by {1} of you and allied trolls around for {2} seconds. Medium range",
+    "file": "external\\wurst\\objects\\abilities\\priest\\booster\\TrollBattleCall.wurst"
+  },
+  "anchor-soul": {
+    "id": "anchor-soul",
+    "description": "Anchor Soul",
+    "file": "external\\wurst\\objects\\abilities\\priest\\masterhealer\\AnchorSoul.wurst"
+  },
+  "reincarnation": {
+    "id": "reincarnation",
+    "description": "When killed, the Master Healer will come back to life. Has {0} seconds cooldown.{1}Warning :|r You need to have {2}",
+    "file": "external\\wurst\\objects\\abilities\\priest\\masterhealer\\Reincarnation.wurst"
+  },
+  "replenish-energy": {
+    "id": "replenish-energy",
+    "description": "The Master Healer emanates a refreshing aura to himself and his allies,",
+    "file": "external\\wurst\\objects\\abilities\\priest\\masterhealer\\ReplenishEnergy.wurst"
+  },
+  "replenish-health-effect": {
+    "id": "replenish-health-effect",
+    "description": "Replenish Health",
+    "file": "external\\wurst\\objects\\abilities\\priest\\masterhealer\\ReplenishHealth.wurst"
+  },
+  "self-preservation": {
+    "id": "self-preservation",
+    "description": "Raises all stats (Health Point, Energy, Heat) of your troll by {0}+{1}% of your {2}. Has {3} seconds cooldown",
+    "file": "external\\wurst\\objects\\abilities\\priest\\masterhealer\\SelfPreservation.wurst"
+  },
+  "inner-fire": {
+    "id": "inner-fire",
+    "description": "The Sage summons an extraordinary amount of white magic forming it into balls of energy",
+    "file": "external\\wurst\\objects\\abilities\\priest\\sage\\LightGate.wurst"
+  },
+  "hidden-potential-id": {
+    "id": "hidden-potential-id",
+    "description": "This spell has a similar effect of a fervor potion and increase armor by {0}, damage by {1} for {2} seconds. Has {3} seconds cooldown",
+    "file": "external\\wurst\\objects\\abilities\\priest\\sage\\MaximumFervor.wurst"
+  },
+  "anti-magic": {
+    "id": "anti-magic",
+    "description": "Anti-Magic Shell",
+    "file": "external\\wurst\\objects\\abilities\\priest\\unsub\\AntiMagic.wurst"
+  },
+  "cure-all": {
+    "id": "cure-all",
+    "description": "Dispels buffs and effects from friendly units. Can be used to cure snake poison, disease or even jealousy among other things",
+    "file": "external\\wurst\\objects\\abilities\\priest\\unsub\\CureAll.wurst"
+  },
+  "mix-energy": {
+    "id": "mix-energy",
+    "description": "Mix",
+    "file": "external\\wurst\\objects\\abilities\\priest\\unsub\\MixSpells.wurst"
+  },
+  "smoke-stream": {
+    "id": "smoke-stream",
+    "description": "The Magic Thief releases a stream of smoke bocking all combat and spells",
+    "file": "external\\wurst\\objects\\abilities\\thief\\contortionist\\SmokeStream.wurst"
+  },
+  "tele-thief": {
+    "id": "tele-thief",
+    "description": "The thief uses a powerful magic designating the targeted fire as its tele-thiefing outlet",
+    "file": "external\\wurst\\objects\\abilities\\thief\\contortionist\\TeleThief.wurst"
+  },
+  "camoflage": {
+    "id": "camoflage",
+    "description": "Stand Next to a tree and cast to turn invisible. You can not move or cast spells or it",
+    "file": "external\\wurst\\objects\\abilities\\thief\\escapeArtist\\Camoflage.wurst"
+  },
+  "jump": {
+    "id": "jump",
+    "description": "Allows the thief to jump a short distance. Has {0} seconds cooldown",
+    "file": "external\\wurst\\objects\\abilities\\thief\\escapeArtist\\Jump.wurst"
+  }
+}

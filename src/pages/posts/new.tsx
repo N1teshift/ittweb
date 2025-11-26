@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
 import Head from 'next/head';
 import PageHero from '@/features/shared/components/PageHero';
-import NewPostForm from '@/features/ittweb/blog/components/NewPostForm';
+import NewPostForm from '@/features/modules/blog/components/NewPostForm';
 
 type NewPostPageProps = {
   isAuthenticated: boolean;

@@ -1,0 +1,271 @@
+{
+  "item-battle-axe": {
+    "damage": 14
+  },
+  "item-anabolic-boots": {
+    "strength": 4,
+    "agility": 4,
+    "intelligence": 4,
+    "armor": 5
+  },
+  "item-bears-tenacity-boots": {
+    "strength": 8,
+    "intelligence": 6,
+    "armor": 5
+  },
+  "item-bears-greed-paws": {
+    "strength": 8,
+    "armor": 5,
+    "damage": 2
+  },
+  "item-bears-greed-paws-empty": {
+    "strength": 8,
+    "armor": 5,
+    "damage": 2
+  },
+  "item-magefist": {
+    "intelligence": 10,
+    "armor": 4
+  },
+  "item-wolfs-bloodlust-claws": {
+    "agility": 4,
+    "armor": 4,
+    "damage": 4
+  },
+  "item-wolfs-stamina-boots": {
+    "agility": 6,
+    "intelligence": 10,
+    "armor": 3
+  },
+  "item-battle-staff": {
+    "intelligence": 12,
+    "armor": 4,
+    "damage": 14
+  },
+  "item-battle-shield": {
+    "armor": 7
+  },
+  "item-battle-gloves": {
+    "strength": 4,
+    "agility": 4,
+    "intelligence": 4,
+    "armor": 5
+  },
+  "item-bear-presence-coat": {
+    "strength": 12,
+    "armor": 6
+  },
+  "item-battle-armor": {
+    "strength": 4,
+    "agility": 4,
+    "intelligence": 4,
+    "armor": 7
+  },
+  "item-wolf-voracity-coat": {
+    "strength": 6,
+    "agility": 6,
+    "armor": 4
+  },
+  "item-robe-of-the-magi": {
+    "intelligence": 10,
+    "armor": 3
+  },
+  "item-bone-gloves": {
+    "armor": 2,
+    "damage": 1
+  },
+  "item-bone-boots": {
+    "intelligence": 3,
+    "armor": 3
+  },
+  "item-bone-coat": {
+    "strength": 3,
+    "intelligence": 4,
+    "armor": 2
+  },
+  "item-iron-boots": {
+    "intelligence": 6,
+    "armor": 3
+  },
+  "item-mage-masher": {
+    "strength": 4,
+    "intelligence": 6,
+    "armor": 3,
+    "damage": 7
+  },
+  "item-iron-coat": {
+    "strength": 4,
+    "intelligence": 6,
+    "armor": 3
+  },
+  "item-iron-gloves": {
+    "armor": 3,
+    "damage": 2
+  },
+  "item-steel-gloves": {
+    "armor": 5,
+    "damage": 4
+  },
+  "item-steel-boots": {
+    "intelligence": 10,
+    "armor": 5
+  },
+  "item-steel-coat": {
+    "strength": 8,
+    "intelligence": 8,
+    "armor": 5
+  },
+  "item-steel-axe": {
+    "intelligence": 8,
+    "armor": 2,
+    "damage": 12
+  },
+  "item-iron-axe": {
+    "intelligence": 8,
+    "armor": 2,
+    "damage": 8
+  },
+  "item-iron-staff": {
+    "intelligence": 8,
+    "armor": 2,
+    "damage": 8
+  },
+  "item-shield": {
+    "armor": 1
+  },
+  "item-steel-shield": {
+    "armor": 4
+  },
+  "item-iron-shield": {
+    "armor": 2
+  },
+  "item-chameleon-hatchet-str": {
+    "damage": 8
+  },
+  "item-chameleon-hatchet-agi": {
+    "damage": 8
+  },
+  "item-chameleon-hatchet-int": {
+    "damage": 8
+  },
+  "item-hydra-fins": {
+    "strength": 5,
+    "agility": 5,
+    "intelligence": 5,
+    "armor": 5
+  },
+  "item-hydra-claws": {
+    "strength": 5,
+    "agility": 5,
+    "intelligence": 5
+  },
+  "item-hydra-scale": {
+    "strength": 2,
+    "agility": 2,
+    "intelligence": 2,
+    "armor": 10
+  },
+  "item-makrura-cuirass": {
+    "strength": 8,
+    "armor": 3
+  },
+  "item-panther-fang": {
+    "damage": 4
+  },
+  "item-makrura-claws": {
+    "armor": 2,
+    "damage": 8
+  },
+  "item-makrura-carapace": {
+    "armor": 3
+  },
+  "item-tidebringer": {
+    "strength": 8,
+    "intelligence": 8,
+    "damage": 10
+  },
+  "item-right-mammoth-horn": {
+    "strength": 12,
+    "damage": 12
+  },
+  "item-mammoth-boots": {
+    "strength": 8,
+    "intelligence": 8,
+    "damage": 10
+  },
+  "item-elk-skin-boots": {
+    "intelligence": 2
+  },
+  "item-elk-skin-coat": {
+    "strength": 2,
+    "intelligence": 2,
+    "armor": 1
+  },
+  "item-wolf-skin-boots": {
+    "agility": 4,
+    "intelligence": 4,
+    "armor": 2
+  },
+  "item-wolf-skin-gloves": {
+    "armor": 2,
+    "damage": 2
+  },
+  "item-wolf-skin-coat": {
+    "strength": 3,
+    "intelligence": 2,
+    "armor": 2
+  },
+  "item-bear-skin-coat": {
+    "strength": 6,
+    "intelligence": 4,
+    "armor": 3
+  },
+  "item-bear-skin-boots": {
+    "strength": 6,
+    "intelligence": 5,
+    "armor": 3
+  },
+  "item-bear-skin-gloves": {
+    "armor": 3,
+    "damage": 3
+  },
+  "item-cloak-of-flames": {
+    "strength": 3,
+    "agility": 3,
+    "intelligence": 3,
+    "armor": 3
+  },
+  "item-cloak-of-mana": {
+    "strength": 3,
+    "agility": 3,
+    "intelligence": 3,
+    "armor": 3
+  },
+  "item-cloak-of-frost": {
+    "strength": 3,
+    "agility": 3,
+    "intelligence": 3,
+    "armor": 3
+  },
+  "item-cloak-of-healing": {
+    "strength": 3,
+    "agility": 3,
+    "intelligence": 3,
+    "armor": 3
+  },
+  "item-necromancers-cloak": {
+    "strength": 3,
+    "agility": 3,
+    "intelligence": 3,
+    "armor": 3
+  },
+  "item-empowered-necromancers-cloak": {
+    "strength": 3,
+    "agility": 3,
+    "intelligence": 3,
+    "armor": 5
+  },
+  "item-venom-fang": {
+    "damage": 4
+  }
+}

@@ -3,11 +3,11 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../api/auth/[...nextauth]';
 import Head from 'next/head';
 import PageHero from '@/features/shared/components/PageHero';
-import { getPostById } from '@/features/ittweb/blog/lib/postService';
+import { getPostById } from '@/features/modules/blog/lib/postService';
 import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
 import { isAdmin } from '@/features/shared/utils/userRoleUtils';
-import EditPostForm from '@/features/ittweb/blog/components/EditPostForm';
-import type { PostFormState } from '@/features/ittweb/blog/hooks/useNewPostForm';
+import EditPostForm from '@/features/modules/blog/components/EditPostForm';
+import type { PostFormState } from '@/features/modules/blog/hooks/useNewPostForm';
 
 type EditPostPageProps = {
   postId: string;

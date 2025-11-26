@@ -1,5 +1,5 @@
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
-import { ArchivesPage } from '@/features/ittweb/archives/components';
+import { ArchivesPage } from '@/features/modules/archives/components';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);

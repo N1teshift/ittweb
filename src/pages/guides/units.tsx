@@ -1,9 +1,9 @@
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Link from 'next/link';
 import { useState, useMemo } from 'react';
-import { ALL_UNITS, getUnitsByType, searchUnits, UnitType, UnitData } from '@/features/ittweb/guides/data/units/allUnits';
-import GuideCard from '@/features/ittweb/guides/components/GuideCard';
-import GuideIcon from '@/features/ittweb/guides/components/GuideIcon';
+import { ALL_UNITS, getUnitsByType, searchUnits, UnitType, UnitData } from '@/features/modules/guides/data/units/allUnits';
+import GuideCard from '@/features/modules/guides/components/GuideCard';
+import GuideIcon from '@/features/modules/guides/components/GuideIcon';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);

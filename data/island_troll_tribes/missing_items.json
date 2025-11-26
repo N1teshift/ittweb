@@ -1,0 +1,14 @@
+{
+  "raw-materials": [
+    {
+      "id": "blow-gun",
+      "name": "ITEM_BLOW_GUN",
+      "recipe": [
+        "ITEM_STICK",
+        "ITEM_CLAY_BALL"
+      ],
+      "craftedAt": "workshop",
+      "mixingPotManaRequirement": null
+    }
+  ]
+}

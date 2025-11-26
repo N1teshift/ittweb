@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../auth/[...nextauth]';
-import { deleteScheduledGame, getScheduledGameById } from '@/features/ittweb/scheduled-games/lib/scheduledGameService';
+import { deleteScheduledGame, getScheduledGameById } from '@/features/modules/scheduled-games/lib/scheduledGameService';
 import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
 import { isAdmin } from '@/features/shared/utils/userRoleUtils';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
@@ -43,7 +43,8 @@ export default async function handler(
       const userData = await getUserDataByDiscordId(session.discordId);
       userIsAdmin = isAdmin(userData?.role);
     } catch (error) {
-      logger.error(error instanceof Error ? error : new Error(String(error)), 'Failed to check user role', {
+      const err = error instanceof Error ? error : new Error(String(error));
+      logger.error('Failed to check user role', err, {
         discordId: session.discordId,
       });
       // Continue with permission check - if role check fails, only allow creator
@@ -65,6 +66,7 @@ export default async function handler(
     const err = error as Error;
     logError(err, 'API request failed', {
       component: 'api/scheduled-games/delete',
+      operation: 'delete',
       method: req.method,
       gameId: req.query.id,
     });

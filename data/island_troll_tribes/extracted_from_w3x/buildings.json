@@ -1,0 +1,1100 @@
+{
+  "buildings": [
+    {
+      "id": "B000:ZTtw",
+      "name": "High Grass",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "High Grass"
+        },
+        {
+          "id": "bptx",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": ""
+        },
+        {
+          "id": "bfil",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "Models\\HighGrass.mdl"
+        },
+        {
+          "id": "btxf",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": ""
+        },
+        {
+          "id": "btxi",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 0
+        },
+        {
+          "id": "bvar",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "bmas",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 2
+        },
+        {
+          "id": "bmis",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "bvcb",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 0
+        },
+        {
+          "id": "bvcg",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 180
+        },
+        {
+          "id": "bvcr",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 120
+        },
+        {
+          "id": "bshd",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "ShadowHouse"
+        },
+        {
+          "id": "buch",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "blit",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "B002:ZTtw",
+      "name": "Canopy Tree",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bhps",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 120
+        },
+        {
+          "id": "bflh",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 256
+        },
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "Canopy Tree"
+        },
+        {
+          "id": "bmas",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 0.8
+        },
+        {
+          "id": "bmis",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 0.7
+        },
+        {
+          "id": "bptx",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "PathTextures\\2x2Default.tga"
+        }
+      ]
+    },
+    {
+      "id": "B006:ZTtw",
+      "name": "Normal Tree",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bhps",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 120
+        },
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "Normal Tree"
+        }
+      ]
+    },
+    {
+      "id": "B003:ZTtw",
+      "name": "Rotten Tree",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bhps",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "btar",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "debris"
+        },
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "Rotten Tree"
+        },
+        {
+          "id": "btxf",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "ReplaceableTextures\\RuinsTree\\RuinsTreeBlight"
+        }
+      ]
+    },
+    {
+      "id": "B001:ZTtw",
+      "name": "Magic Tree",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bhps",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 120
+        },
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "Magic Tree"
+        },
+        {
+          "id": "bfil",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\gatez.mdl"
+        },
+        {
+          "id": "btxf",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": ""
+        },
+        {
+          "id": "btxi",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 0
+        },
+        {
+          "id": "bvar",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "bmas",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 1.5
+        },
+        {
+          "id": "bmis",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "bshd",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "ShadowHouse"
+        },
+        {
+          "id": "buch",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "blit",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "B005:YT42",
+      "name": "hanging bridge",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "hanging bridge"
+        },
+        {
+          "id": "bfil",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\maybe.mdl"
+        },
+        {
+          "id": "btxf",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "ReplaceableTextures\\Cliff\\Cliff1.blp"
+        },
+        {
+          "id": "bptx",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\CitybridgeLarge0.tga"
+        },
+        {
+          "id": "bshd",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "ShadowStoneWall1"
+        },
+        {
+          "id": "bfxr",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 90
+        }
+      ]
+    },
+    {
+      "id": "B007:ZTtw",
+      "name": "entrance_left",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bwal",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "bclh",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "entrance_left"
+        },
+        {
+          "id": "bfil",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\entrance_left.mdl"
+        },
+        {
+          "id": "btxf",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": ""
+        },
+        {
+          "id": "btxi",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 0
+        },
+        {
+          "id": "bshd",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": ""
+        },
+        {
+          "id": "bvar",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "buch",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "bmas",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 1.1
+        },
+        {
+          "id": "bmis",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 1.1
+        },
+        {
+          "id": "bptx",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": ""
+        },
+        {
+          "id": "blit",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 0
+        },
+        {
+          "id": "bcpr",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 0
+        },
+        {
+          "id": "bfxr",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": -1
+        }
+      ]
+    },
+    {
+      "id": "B008:DTrf",
+      "name": "new bridge",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "new bridge"
+        },
+        {
+          "id": "bfil",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\maybe.mdl"
+        },
+        {
+          "id": "bfxr",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 130
+        },
+        {
+          "id": "bptx",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\CitybridgeLarge135.tga"
+        }
+      ]
+    },
+    {
+      "id": "B00C:ZTtw",
+      "name": "entrance_right",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bwal",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "bclh",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "entrance_right"
+        },
+        {
+          "id": "bfil",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\entrance_right.mdl"
+        },
+        {
+          "id": "btxf",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": ""
+        },
+        {
+          "id": "btxi",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 0
+        },
+        {
+          "id": "bshd",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": ""
+        },
+        {
+          "id": "bvar",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "buch",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "bmas",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 1.1
+        },
+        {
+          "id": "bmis",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 1.1
+        },
+        {
+          "id": "bptx",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": ""
+        },
+        {
+          "id": "blit",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 0
+        },
+        {
+          "id": "bfxr",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": -1
+        }
+      ]
+    },
+    {
+      "id": "B009:ZTtw",
+      "name": "Normal Tree(walkable)",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bhps",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 120
+        },
+        {
+          "id": "bonc",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "Normal Tree(walkable)"
+        },
+        {
+          "id": "bptx",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "B00B:ZTtw",
+      "name": "durotarpalm",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bhps",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 120
+        },
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "durotarpalm"
+        },
+        {
+          "id": "bfil",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\durotarpalm.mdl"
+        },
+        {
+          "id": "blit",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "B00A:ZTtw",
+      "name": "Canopy durotarpalm",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bhps",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 120
+        },
+        {
+          "id": "bflh",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 256
+        },
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "Canopy durotarpalm"
+        },
+        {
+          "id": "bptx",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "PathTextures\\2x2Default.tga"
+        },
+        {
+          "id": "bfil",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\durotarpalm.mdl"
+        }
+      ]
+    },
+    {
+      "id": "B00D:ZTtw",
+      "name": "waterpalm",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bhps",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 120
+        },
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "waterpalm"
+        },
+        {
+          "id": "bfil",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\waterpalm.mdl"
+        },
+        {
+          "id": "blit",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "B00E:ZTtw",
+      "name": "durotartiltedpalm",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bhps",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 120
+        },
+        {
+          "id": "bonc",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "durotartiltedpalm"
+        },
+        {
+          "id": "bfil",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\durotartiltedpalm.mdl"
+        },
+        {
+          "id": "blit",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 0
+        },
+        {
+          "id": "bptx",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": ""
+        },
+        {
+          "id": "bvar",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 8
+        },
+        {
+          "id": "bmas",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 0.8
+        },
+        {
+          "id": "bfxr",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": -1
+        },
+        {
+          "id": "bmis",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "id": "B00F:ZTtw",
+      "name": "durotarpalm(walkable)",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bhps",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 120
+        },
+        {
+          "id": "bonc",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "durotarpalm(walkable)"
+        },
+        {
+          "id": "bfil",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\durotarpalm.mdl"
+        },
+        {
+          "id": "blit",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 0
+        },
+        {
+          "id": "bptx",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": ""
+        },
+        {
+          "id": "bfxr",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": -1
+        }
+      ]
+    },
+    {
+      "id": "B004:ZTw3",
+      "name": "arena_gates1",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "arena_gates1"
+        },
+        {
+          "id": "bfil",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\gatez.mdl"
+        },
+        {
+          "id": "bvar",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "bptx",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\arena_gates_pathing_texture.tga"
+        },
+        {
+          "id": "bfxr",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 77
+        },
+        {
+          "id": "bmas",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 1.1
+        },
+        {
+          "id": "bmis",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 1.1
+        },
+        {
+          "id": "bsuf",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "B00G:ZTw3",
+      "name": "arena_gates2",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "arena_gates2"
+        },
+        {
+          "id": "bfil",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\gatez.mdl"
+        },
+        {
+          "id": "bvar",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 1
+        },
+        {
+          "id": "bptx",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "war3mapImported\\arena_gates_pathing_texture2.tga"
+        },
+        {
+          "id": "bfxr",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 255
+        },
+        {
+          "id": "bmas",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 1.1
+        },
+        {
+          "id": "bmis",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 1.1
+        },
+        {
+          "id": "bsuf",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "DM02:ATtr",
+      "name": "Magic Tree",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "wurs",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 42
+        },
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "Magic Tree"
+        },
+        {
+          "id": "bfil",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "Models\\PalmTree.mdl"
+        }
+      ]
+    },
+    {
+      "id": "DM01:ZTtw",
+      "name": "Normal Tree",
+      "description": "",
+      "tooltip": "",
+      "icon": "",
+      "raw": [
+        {
+          "id": "wurs",
+          "type": "int",
+          "level": 0,
+          "column": 0,
+          "value": 42
+        },
+        {
+          "id": "bhps",
+          "type": "unreal",
+          "level": 0,
+          "column": 0,
+          "value": 120
+        },
+        {
+          "id": "bnam",
+          "type": "string",
+          "level": 0,
+          "column": 0,
+          "value": "Normal Tree"
+        }
+      ]
+    }
+  ],
+  "generatedAt": "2025-11-26T01:25:34.069Z"
+}

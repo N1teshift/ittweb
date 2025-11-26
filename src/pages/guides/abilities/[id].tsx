@@ -1,9 +1,9 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Link from 'next/link';
-import { AbilityData } from '@/features/ittweb/guides/data/abilities';
-import { ABILITIES, ABILITY_CATEGORIES, getAbilityById } from '@/features/ittweb/guides/data/abilities';
-import { ColoredText } from '@/features/ittweb/guides/components/ColoredText';
+import { AbilityData } from '@/features/modules/guides/data/abilities';
+import { ABILITIES, ABILITY_CATEGORIES, getAbilityById } from '@/features/modules/guides/data/abilities';
+import { ColoredText } from '@/features/modules/guides/components/ColoredText';
 
 type Props = { ability: AbilityData };
 

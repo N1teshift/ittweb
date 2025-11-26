@@ -1,10 +1,10 @@
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Link from 'next/link';
 import { useState, useMemo } from 'react';
-import { ITEMS_DATA, ITEMS_BY_CATEGORY, searchItems } from '@/features/ittweb/guides/data/items';
+import { ITEMS_DATA, ITEMS_BY_CATEGORY, searchItems } from '@/features/modules/guides/data/items';
 import { ItemCategory, ItemData } from '@/types/items';
-import GuideCard from '@/features/ittweb/guides/components/GuideCard';
-import GuideIcon from '@/features/ittweb/guides/components/GuideIcon';
+import GuideCard from '@/features/modules/guides/components/GuideCard';
+import GuideIcon from '@/features/modules/guides/components/GuideIcon';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);

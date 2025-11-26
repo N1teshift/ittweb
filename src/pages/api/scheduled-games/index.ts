@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
-import { getAllScheduledGames, createScheduledGame, getScheduledGameById, updateScheduledGame } from '@/features/ittweb/scheduled-games/lib/scheduledGameService';
+import { getAllScheduledGames, createScheduledGame, getScheduledGameById, updateScheduledGame } from '@/features/modules/scheduled-games/lib/scheduledGameService';
 import { CreateScheduledGame } from '@/types/scheduledGame';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { getFirestoreAdmin, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
-import { createGame } from '@/features/ittweb/games/lib/gameService';
-import type { CreateGame } from '@/features/ittweb/games/types';
+import { createGame } from '@/features/modules/games/lib/gameService';
+import type { CreateGame } from '@/features/modules/games/types';
 
 const logger = createComponentLogger('api/scheduled-games');
 
@@ -60,7 +60,7 @@ export default async function handler(
 
       // Add creator as participant if requested (only if no participants provided)
       // For Create Game form, participants are already provided, so don't overwrite them
-      const addCreatorToParticipants = (req.body as any).addCreatorToParticipants !== false; // Default true
+      const addCreatorToParticipants = (req.body as { addCreatorToParticipants?: boolean }).addCreatorToParticipants !== false; // Default true
       if (addCreatorToParticipants && session.discordId && session.user?.name) {
         // Only add creator if no participants are provided
         if (!gameWithUser.participants || gameWithUser.participants.length === 0) {
@@ -103,7 +103,7 @@ export default async function handler(
               players: createdGame.participants.map((participant, index) => ({
                 name: participant.name,
                 pid: index,
-                flag: participant.result || 'drawer', // winner, loser, or drawer
+                flag: (participant.result === 'draw' ? 'drawer' : (participant.result || 'drawer')) as 'winner' | 'loser' | 'drawer', // winner, loser, or drawer
               })),
             };
 
@@ -160,6 +160,7 @@ export default async function handler(
           // Log error but don't fail the request - scheduled game was created successfully
           logError(archiveError instanceof Error ? archiveError : new Error(String(archiveError)), 'Failed to create game/archive entry for archived scheduled game', {
             component: 'api/scheduled-games',
+            operation: 'create',
             gameId,
           });
         }
@@ -173,6 +174,7 @@ export default async function handler(
     const err = error as Error;
     logError(err, 'API request failed', {
       component: 'api/scheduled-games',
+      operation: 'create',
       method: req.method,
       url: req.url,
     });
@@ -184,7 +186,7 @@ export default async function handler(
     
     // Also log stack trace in development
     if (process.env.NODE_ENV !== 'production') {
-      logger.error('Error stack:', err.stack);
+      logger.error('Error stack', err, { stack: err.stack });
     }
     
     return res.status(500).json({ 

@@ -62,7 +62,7 @@ export default function Development() {
                 <p className="text-gray-300 leading-relaxed">
                   This website is open for community contributions. It is hosted on Vercel and connected to our domain
                   <span className="text-amber-400"> www.islandtrolltribes.com</span>, with the source managed on GitHub.
-                  If you want to help with web features, content, or fixes, you're welcome!
+                  If you want to help with web features, content, or fixes, you&apos;re welcome!
                 </p>
                 <ul className="list-disc list-inside mt-3 text-gray-300 space-y-1">
                   <li>Hosted on Vercel (GitHub integration for automatic deploys)</li>
@@ -77,7 +77,7 @@ export default function Development() {
                 <h3 className="font-medieval-brand text-xl mb-2">Contact</h3>
                 <p className="text-gray-300 leading-relaxed">
                   If you want to reach me about website development, contact me on Discord.
-                  I'm in the Island Troll Tribes community under the name <span className="text-amber-400">Scatman33</span>.
+                  I&apos;m in the Island Troll Tribes community under the name <span className="text-amber-400">Scatman33</span>.
                 </p>
                 <div className="mt-4">
                   <DiscordButton>Join the Discord</DiscordButton>

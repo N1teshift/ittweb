@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { PlayerProfile } from '@/features/ittweb/players/components/PlayerProfile';
+import { PlayerProfile } from '@/features/modules/players/components/PlayerProfile';
 
 export default function PlayerPage() {
   const router = useRouter();

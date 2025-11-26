@@ -2,12 +2,12 @@ import React from 'react';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import { Logger } from '@/features/infrastructure/logging';
 import { useFallbackTranslation } from '@/features/shared/hooks/useFallbackTranslation';
-import TrollPanel from '@/features/ittweb/tools/components/TrollPanel';
-import ItemsPalette from '@/features/ittweb/tools/components/ItemsPalette';
-import SimulationPanel from '@/features/ittweb/tools/components/SimulationPanel';
-import type { TrollLoadout, TrollSide, DragPayload } from '@/features/ittweb/tools/types';
-import { BASE_TROLL_CLASS_SLUGS } from '@/features/ittweb/guides/data/units/classes';
-import { ITEMS_DATA } from '@/features/ittweb/guides/data/items';
+import TrollPanel from '@/features/modules/tools/components/TrollPanel';
+import ItemsPalette from '@/features/modules/tools/components/ItemsPalette';
+import SimulationPanel from '@/features/modules/tools/components/SimulationPanel';
+import type { TrollLoadout, TrollSide, DragPayload } from '@/features/modules/tools/types';
+import { BASE_TROLL_CLASS_SLUGS } from '@/features/modules/guides/data/units/classes';
+import { ITEMS_DATA } from '@/features/modules/guides/data/items';
 import type { ItemData } from '@/types/items';
 
 const pageNamespaces = ["common"];

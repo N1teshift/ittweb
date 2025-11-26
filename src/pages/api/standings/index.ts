@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-import { getStandings } from '@/features/ittweb/standings/lib/standingsService';
-import type { StandingsFilters } from '@/features/ittweb/standings/types';
+import { getStandings } from '@/features/modules/standings/lib/standingsService';
+import type { StandingsFilters } from '@/features/modules/standings/types';
 
 /**
  * GET /api/standings - Get leaderboard

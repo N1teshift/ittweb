@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout } from '@/features/shared/components';
-import { GameList } from '@/features/ittweb/games/components/GameList';
+import { GameList } from '@/features/modules/games/components/GameList';
 
 export default function GamesPage() {
   return (

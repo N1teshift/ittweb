@@ -1,8 +1,8 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Layout } from '@/features/shared/components';
-import { useGame } from '@/features/ittweb/games/hooks/useGame';
-import { GameDetail } from '@/features/ittweb/games/components/GameDetail';
+import { useGame } from '@/features/modules/games/hooks/useGame';
+import { GameDetail } from '@/features/modules/games/components/GameDetail';
 import { Card } from '@/features/infrastructure/shared/components/ui/Card';
 
 export default function GameDetailPage() {

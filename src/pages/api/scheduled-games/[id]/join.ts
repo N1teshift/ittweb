@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../auth/[...nextauth]';
-import { joinScheduledGame } from '@/features/ittweb/scheduled-games/lib/scheduledGameService';
+import { joinScheduledGame } from '@/features/modules/scheduled-games/lib/scheduledGameService';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('api/scheduled-games/join');
@@ -36,6 +36,7 @@ export default async function handler(
     const err = error as Error;
     logError(err, 'API request failed', {
       component: 'api/scheduled-games/join',
+      operation: 'join',
       method: req.method,
       gameId: req.query.id,
     });

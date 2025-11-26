@@ -21,7 +21,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/shared/*": ["src/features/ittweb/shared/*"],
+      "@/shared/*": ["src/features/modules/shared/*"],
       "@/features/*": ["./src/features/*"],
       "@/types/*": ["./src/types/*"],
       "@/utils/*": ["./src/utils/*"],

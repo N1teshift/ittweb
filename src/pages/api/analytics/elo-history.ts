@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-import { getEloHistory } from '@/features/ittweb/analytics/lib/analyticsService';
+import { getEloHistory } from '@/features/modules/analytics/lib/analyticsService';
 
 /**
  * GET /api/analytics/elo-history - Get ELO history

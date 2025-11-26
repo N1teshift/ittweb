@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-import { getWinRateData } from '@/features/ittweb/analytics/lib/analyticsService';
+import { getWinRateData } from '@/features/modules/analytics/lib/analyticsService';
 
 /**
  * GET /api/analytics/win-rate - Get win rate data

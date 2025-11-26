@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-import { createGame, getGames } from '@/features/ittweb/games/lib/gameService';
-import type { CreateGame, GameFilters } from '@/features/ittweb/games/types';
+import { createGame, getGames } from '@/features/modules/games/lib/gameService';
+import type { CreateGame, GameFilters } from '@/features/modules/games/types';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('api/games');

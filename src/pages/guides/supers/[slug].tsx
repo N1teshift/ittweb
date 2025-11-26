@@ -1,11 +1,11 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Link from 'next/link';
-import { DERIVED_CLASSES, getDerivedBySlug, SUPERCLASS_SLUGS, DerivedClassData } from '@/features/ittweb/guides/data/units/derivedClasses';
-import { getClassBySlug } from '@/features/ittweb/guides/data/units/classes';
-import ClassHeader from '@/features/ittweb/guides/components/ClassHeader';
-import StatsCard from '@/features/ittweb/guides/components/StatsCard';
-import { MOVESPEED_PER_LEVEL, getMoveSpeedOffset, ATTR_START_MULTIPLIER } from '@/features/ittweb/guides/config/balance';
+import { DERIVED_CLASSES, getDerivedBySlug, SUPERCLASS_SLUGS, DerivedClassData } from '@/features/modules/guides/data/units/derivedClasses';
+import { getClassBySlug } from '@/features/modules/guides/data/units/classes';
+import ClassHeader from '@/features/modules/guides/components/ClassHeader';
+import StatsCard from '@/features/modules/guides/components/StatsCard';
+import { MOVESPEED_PER_LEVEL, getMoveSpeedOffset, ATTR_START_MULTIPLIER } from '@/features/modules/guides/config/balance';
 
 type Props = { cls: DerivedClassData };
 

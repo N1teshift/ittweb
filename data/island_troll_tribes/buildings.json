@@ -1,0 +1,178 @@
+{
+  "buildings": [
+    {
+      "id": "tannery",
+      "unitId": "UNIT_TANNERY",
+      "name": "Tannery",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst",
+      "craftableItems": [
+        "ITEM_ELK_HIDE",
+        "ITEM_ELK_HIDE",
+        "ITEM_ELK_HIDE",
+        "ITEM_JUNGLE_WOLF_HIDE",
+        "ITEM_JUNGLE_WOLF_HIDE",
+        "ITEM_JUNGLE_WOLF_HIDE",
+        "ITEM_JUNGLE_BEAR_HIDE",
+        "ITEM_JUNGLE_BEAR_HIDE",
+        "ITEM_JUNGLE_BEAR_HIDE"
+      ]
+    },
+    {
+      "id": "smoke-house",
+      "unitId": "UNIT_SMOKE_HOUSE",
+      "name": "Smoke House",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst"
+    },
+    {
+      "id": "workshop",
+      "unitId": "UNIT_WORKSHOP",
+      "name": "Workshop",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst",
+      "craftableItems": [
+        "ITEM_TINDER",
+        "ITEM_STICK",
+        "ITEM_THISTLES",
+        "ITEM_SPIRIT_WIND",
+        "ITEM_MANA_CRYSTAL",
+        "ITEM_POISON",
+        "ITEM_TINDER",
+        "ITEM_NETS",
+        "ITEM_ATHELAS_SEED",
+        "ITEM_BANANA",
+        "ITEM_SMOKE_BOMB",
+        "ITEM_THISTLES",
+        "ITEM_MANA_CRYSTAL",
+        "ITEM_STICK"
+      ]
+    },
+    {
+      "id": "storage-hut",
+      "unitId": "UNIT_STORAGE_HUT",
+      "name": "Storage Hut",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst"
+    },
+    {
+      "id": "hatchery",
+      "unitId": "UNIT_HATCHERY",
+      "name": "Hatchery",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst"
+    },
+    {
+      "id": "witch-doctors-hut",
+      "unitId": "UNIT_WITCH_DOCTORS_HUT",
+      "name": "Witch Doctors Hut",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst",
+      "craftableItems": [
+        "ITEM_MAGIC",
+        "ITEM_MAGIC",
+        "ITEM_MAGIC",
+        "ITEM_MAGIC",
+        "ITEM_MAGIC",
+        "ITEM_PANTHER_FANG",
+        "ITEM_TINDER",
+        "ITEM_STONE",
+        "ITEM_SPIRIT_WATER",
+        "ITEM_BONE",
+        "ITEM_MUSHROOM",
+        "ITEM_FLINT",
+        "ITEM_SPIRIT_WIND",
+        "ITEM_ELK_SKIN_BOOTS",
+        "ITEM_STICK",
+        "ITEM_MANA_CRYSTAL"
+      ]
+    },
+    {
+      "id": "mixing-pot",
+      "unitId": "UNIT_MIXING_POT",
+      "name": "Mixing Pot",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst"
+    },
+    {
+      "id": "armory",
+      "unitId": "UNIT_ARMORY",
+      "name": "Armory",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst",
+      "craftableItems": [
+        "ITEM_GREATER_ESSENCE",
+        "ITEM_BONE_BOOTS",
+        "ITEM_BEAR_SKIN_BOOTS",
+        "ITEM_BEAR_SKIN_GLOVES",
+        "ITEM_BEAR_SKIN_GLOVES",
+        "ITEM_BONE_GLOVES",
+        "ITEM_WOLF_SKIN_GLOVES",
+        "ITEM_WOLF_SKIN_BOOTS",
+        "ITEM_IRON_STAFF",
+        "ITEM_IRON_SHIELD",
+        "ITEM_BONE_SHIELD",
+        "ITEM_STEEL_GLOVES",
+        "ITEM_BEAR_SKIN_COAT",
+        "ITEM_BONE_COAT",
+        "ITEM_WOLF_SKIN_COAT",
+        "ITEM_BONE_COAT"
+      ]
+    },
+    {
+      "id": "forge",
+      "unitId": "UNIT_FORGE",
+      "name": "Forge",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst",
+      "craftableItems": [
+        "ITEM_ELK_SKIN_GLOVES",
+        "ITEM_ELK_SKIN_BOOTS",
+        "ITEM_ELK_SKIN_COAT",
+        "ITEM_ELK_SKIN_BOOTS",
+        "ITEM_STICK",
+        "ITEM_ELK_SKIN_COAT",
+        "ITEM_ELK_SKIN_GLOVES",
+        "ITEM_ELK_SKIN_GLOVES",
+        "ITEM_ELK_SKIN_BOOTS",
+        "ITEM_ELK_SKIN_COAT",
+        "ITEM_STICK",
+        "ITEM_STICK",
+        "ITEM_STICK",
+        "ITEM_SHIELD",
+        "ITEM_ELK_HIDE",
+        "ITEM_SHIELD",
+        "ITEM_SHIELD",
+        "ITEM_IRON_INGOT",
+        "ITEM_STONE",
+        "ITEM_STICK",
+        "ITEM_STICK",
+        "ITEM_STICK",
+        "ITEM_STICK",
+        "ITEM_IRON_AXE"
+      ]
+    }
+  ],
+  "metadata": {
+    "totalBuildings": 9,
+    "extractedAt": 1764029545.3146183
+  }
+}

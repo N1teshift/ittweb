@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../auth/[...nextauth]';
-import { updateScheduledGame, getScheduledGameById } from '@/features/ittweb/scheduled-games/lib/scheduledGameService';
+import { updateScheduledGame, getScheduledGameById } from '@/features/modules/scheduled-games/lib/scheduledGameService';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import type { TeamSize, GameType } from '@/types/scheduledGame';
 
 const logger = createComponentLogger('api/scheduled-games/[id]');
 
@@ -55,15 +56,15 @@ export default async function handler(
 
     // Prepare update data
     const updateData: {
-      teamSize: string;
+      teamSize: TeamSize;
       customTeamSize?: string;
-      gameType: string;
+      gameType: GameType;
       gameVersion?: string;
       gameLength?: number;
       modes: string[];
     } = {
-      teamSize: updates.teamSize,
-      gameType: updates.gameType,
+      teamSize: updates.teamSize as TeamSize,
+      gameType: updates.gameType as GameType,
       modes: updates.modes || [],
     };
 
@@ -88,6 +89,7 @@ export default async function handler(
     const err = error as Error;
     logError(err, 'API request failed', {
       component: 'api/scheduled-games/[id]',
+      operation: 'update',
       method: req.method,
       gameId: req.query.id,
     });

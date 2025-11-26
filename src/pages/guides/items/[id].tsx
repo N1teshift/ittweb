@@ -1,9 +1,9 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Link from 'next/link';
-import { ITEMS_DATA, getItemById } from '@/features/ittweb/guides/data/items';
+import { ITEMS_DATA, getItemById } from '@/features/modules/guides/data/items';
 import { ItemData } from '@/types/items';
-import { ColoredText } from '@/features/ittweb/guides/components/ColoredText';
+import { ColoredText } from '@/features/modules/guides/components/ColoredText';
 
 type Props = { item: ItemData };
 

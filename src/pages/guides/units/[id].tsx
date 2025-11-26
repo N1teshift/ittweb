@@ -1,9 +1,9 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Link from 'next/link';
-import { ALL_UNITS, getUnitById, UnitData } from '@/features/ittweb/guides/data/units/allUnits';
-import GuideIcon from '@/features/ittweb/guides/components/GuideIcon';
-import { ColoredText } from '@/features/ittweb/guides/components/ColoredText';
+import { ALL_UNITS, getUnitById, UnitData } from '@/features/modules/guides/data/units/allUnits';
+import GuideIcon from '@/features/modules/guides/components/GuideIcon';
+import { ColoredText } from '@/features/modules/guides/components/ColoredText';
 
 type Props = { unit: UnitData };
 

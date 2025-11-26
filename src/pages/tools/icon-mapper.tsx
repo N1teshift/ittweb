@@ -2,12 +2,12 @@
 
 import { useState, useMemo } from 'react';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
-import { ITTIconCategory } from '@/features/ittweb/guides/utils/iconUtils';
-import { useIconMapperData } from '@/features/ittweb/tools/useIconMapperData';
-import { exportMappingsAsCode, exportMappingsAndDeletions } from '@/features/ittweb/tools/icon-mapper.utils';
-import IconItem from '@/features/ittweb/tools/components/IconItem';
-import EntityProgressStats from '@/features/ittweb/tools/components/EntityProgressStats';
-import IconMapperMappingsList from '@/features/ittweb/tools/components/IconMapperMappingsList';
+import { ITTIconCategory } from '@/features/modules/guides/utils/iconUtils';
+import { useIconMapperData } from '@/features/modules/tools/useIconMapperData';
+import { exportMappingsAsCode, exportMappingsAndDeletions } from '@/features/modules/tools/icon-mapper.utils';
+import IconItem from '@/features/modules/tools/components/IconItem';
+import EntityProgressStats from '@/features/modules/tools/components/EntityProgressStats';
+import IconMapperMappingsList from '@/features/modules/tools/components/IconMapperMappingsList';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);

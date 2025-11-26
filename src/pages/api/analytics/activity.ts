@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-import { getActivityData } from '@/features/ittweb/analytics/lib/analyticsService';
+import { getActivityData } from '@/features/modules/analytics/lib/analyticsService';
 
 /**
  * GET /api/analytics/activity - Get activity data

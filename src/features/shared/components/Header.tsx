@@ -84,6 +84,8 @@ export default function Header() {
     ];
 
     const toolsItems = [
+        { href: '/classes', label: 'Class Statistics' },
+        { href: '/meta', label: 'Meta Statistics' },
         { href: '/tools/duel-simulator', label: 'Duel Simulator' },
         { href: '/tools/map-analyzer', label: 'Map Analyzer' },
         { href: '/tools/icon-mapper', label: 'Icon Mapper' },

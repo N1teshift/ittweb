@@ -5,7 +5,7 @@ import {
   getPostById, 
   updatePost, 
   deletePost 
-} from '@/features/ittweb/blog/lib/postService';
+} from '@/features/modules/blog/lib/postService';
 import { CreatePost } from '@/types/post';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';

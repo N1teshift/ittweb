@@ -1,3 +1,5 @@
+export type ArchiveEntryType = 'story' | 'changelog';
+
 export interface ArchiveEntry {
   id: string;
   title: string;
@@ -5,6 +7,7 @@ export interface ArchiveEntry {
   author: string;
   createdByDiscordId?: string | null;
   createdByName?: string;
+  entryType?: ArchiveEntryType;
   // Deprecated single-media fields kept for backward compatibility
   mediaUrl?: string;
   mediaType?: 'image' | 'video' | 'replay' | 'none';
@@ -36,6 +39,7 @@ export interface CreateArchiveEntry {
   author: string;
   createdByDiscordId?: string | null;
   createdByName?: string;
+  entryType?: ArchiveEntryType;
   // Deprecated single-media fields kept for backward compatibility
   mediaType?: 'image' | 'video' | 'replay' | 'none';
   mediaUrl?: string;

@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
-import { getAllPosts, createPost } from '@/features/ittweb/blog/lib/postService';
+import { getAllPosts, createPost } from '@/features/modules/blog/lib/postService';
 import { CreatePost } from '@/types/post';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 

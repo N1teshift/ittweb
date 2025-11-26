@@ -1,14 +1,14 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Link from 'next/link';
-import { BASE_TROLL_CLASS_SLUGS, getClassBySlug, TrollClassData } from '@/features/ittweb/guides/data/units';
-import { getSubclassesByParentSlug, getSupersByParentSlug } from '@/features/ittweb/guides/data/units';
-import { getAbilitiesByClass, ABILITY_CATEGORIES, AbilityData } from '@/features/ittweb/guides/data/abilities';
-import ClassHeader from '@/features/ittweb/guides/components/ClassHeader';
-import StatsCard from '@/features/ittweb/guides/components/StatsCard';
-import GuideCard from '@/features/ittweb/guides/components/GuideCard';
-import GuideIcon from '@/features/ittweb/guides/components/GuideIcon';
-import { MOVESPEED_PER_LEVEL, getMoveSpeedOffset, ATTR_START_MULTIPLIER } from '@/features/ittweb/guides/config/balance';
+import { BASE_TROLL_CLASS_SLUGS, getClassBySlug, TrollClassData } from '@/features/modules/guides/data/units';
+import { getSubclassesByParentSlug, getSupersByParentSlug } from '@/features/modules/guides/data/units';
+import { getAbilitiesByClass, ABILITY_CATEGORIES, AbilityData } from '@/features/modules/guides/data/abilities';
+import ClassHeader from '@/features/modules/guides/components/ClassHeader';
+import StatsCard from '@/features/modules/guides/components/StatsCard';
+import GuideCard from '@/features/modules/guides/components/GuideCard';
+import GuideIcon from '@/features/modules/guides/components/GuideIcon';
+import { MOVESPEED_PER_LEVEL, getMoveSpeedOffset, ATTR_START_MULTIPLIER } from '@/features/modules/guides/config/balance';
 
 type Props = { cls: TrollClassData };
 
