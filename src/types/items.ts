@@ -28,6 +28,7 @@ export type ItemData = {
   category: ItemCategory;
   subcategory?: ItemSubcategory;
   description: string;
+  tooltip?: string; // Extended tooltip from game data
   recipe?: string[];
   craftedAt?: string;
   mixingPotManaRequirement?: number;

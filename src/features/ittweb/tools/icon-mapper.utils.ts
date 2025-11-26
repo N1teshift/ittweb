@@ -10,20 +10,24 @@ import type { IconMapping } from './icon-mapper.types';
  * Get all game names for a given category
  */
 export function getGameNamesForCategory(category: ITTIconCategory): string[] {
-  if (category === 'items') {
-    return ITEMS_DATA.map(item => item.name);
-  } else if (category === 'abilities') {
-    return ABILITIES.map(ability => ability.name);
-  } else if (category === 'buildings') {
-    // Combine buildings from both ITEMS_DATA and BUILDINGS array
-    const buildingItems = ITEMS_DATA.filter(item => item.category === 'buildings').map(item => item.name);
-    const buildings = BUILDINGS.map(building => building.name);
-    return [...buildingItems, ...buildings];
-  } else if (category === 'trolls') {
-    // Include both base classes and derived classes (subclasses/superclasses)
-    const baseNames = BASE_TROLL_CLASSES.map(cls => cls.name);
-    const derivedNames = DERIVED_CLASSES.map(cls => cls.name);
-    return [...baseNames, ...derivedNames];
+  try {
+    if (category === 'items') {
+      return ITEMS_DATA?.map(item => item.name) || [];
+    } else if (category === 'abilities') {
+      return ABILITIES?.map(ability => ability.name) || [];
+    } else if (category === 'buildings') {
+      // Combine buildings from both ITEMS_DATA and BUILDINGS array
+      const buildingItems = ITEMS_DATA?.filter(item => item.category === 'buildings').map(item => item.name) || [];
+      const buildings = BUILDINGS?.map(building => building.name) || [];
+      return [...buildingItems, ...buildings];
+    } else if (category === 'trolls') {
+      // Include both base classes and derived classes (subclasses/superclasses)
+      const baseNames = BASE_TROLL_CLASSES?.map(cls => cls.name) || [];
+      const derivedNames = DERIVED_CLASSES?.map(cls => cls.name) || [];
+      return [...baseNames, ...derivedNames];
+    }
+  } catch (error) {
+    console.warn(`Error getting game names for category ${category}:`, error);
   }
   return [];
 }
@@ -32,19 +36,23 @@ export function getGameNamesForCategory(category: ITTIconCategory): string[] {
  * Get total count of items for a category
  */
 export function getTotalCountForCategory(category: string, icons: Array<{ category: string }>): number {
-  if (category === 'items') {
-    return ITEMS_DATA.length;
-  } else if (category === 'abilities') {
-    return ABILITIES.length;
-  } else if (category === 'buildings') {
-    // Count buildings from both ITEMS_DATA and BUILDINGS array
-    const buildingItems = ITEMS_DATA.filter(item => item.category === 'buildings').length;
-    return buildingItems + BUILDINGS.length;
-  } else if (category === 'trolls') {
-    return BASE_TROLL_CLASSES.length + DERIVED_CLASSES.length;
+  try {
+    if (category === 'items') {
+      return ITEMS_DATA?.length || 0;
+    } else if (category === 'abilities') {
+      return ABILITIES?.length || 0;
+    } else if (category === 'buildings') {
+      // Count buildings from both ITEMS_DATA and BUILDINGS array
+      const buildingItems = ITEMS_DATA?.filter(item => item.category === 'buildings').length || 0;
+      return buildingItems + (BUILDINGS?.length || 0);
+    } else if (category === 'trolls') {
+      return (BASE_TROLL_CLASSES?.length || 0) + (DERIVED_CLASSES?.length || 0);
+    }
+  } catch (error) {
+    console.warn(`Error getting total count for category ${category}:`, error);
   }
   // For unclassified and base, count icons in those directories
-  return icons.filter(icon => icon.category === category).length;
+  return icons?.filter(icon => icon.category === category).length || 0;
 }
 
 /**

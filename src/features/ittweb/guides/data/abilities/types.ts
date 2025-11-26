@@ -19,6 +19,8 @@ export type AbilityData = {
   category: AbilityCategory;
   classRequirement?: string;
   description: string;
+  tooltip?: string; // Extended tooltip from game data
+  iconPath?: string; // Icon path from game data
   manaCost?: number;
   cooldown?: number;
   range?: number;

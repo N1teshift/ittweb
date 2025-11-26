@@ -26,6 +26,15 @@ export default function EntityProgressStats({ stats }: EntityProgressStatsProps)
     buildings: 'bg-amber-500',
   };
 
+  if (!stats || stats.length === 0) {
+    return (
+      <div className="mb-6 bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-4">
+        <h2 className="font-medieval-brand text-xl mb-4">Entity Mapping Progress</h2>
+        <p className="text-gray-400 text-center py-4">No entity data available yet.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="mb-6 bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-4">
       <h2 className="font-medieval-brand text-xl mb-4">Entity Mapping Progress</h2>

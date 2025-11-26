@@ -1,20 +1,20 @@
 import { ItemData, ItemsByCategory, ItemCategory, ItemSubcategory } from '@/types/items';
-import { RAW_MATERIAL_ITEMS } from './raw-materials';
+import { RAW_MATERIALS_ITEMS } from './raw-materials';
 import { WEAPON_ITEMS } from './weapons';
 import { ARMOR_ITEMS } from './armor';
 import { TOOL_ITEMS } from './tools';
-import { POTION_ITEMS } from './potions';
+import { POTIONS_ITEMS } from './potions';
 import { SCROLL_ITEMS } from './scrolls';
 
 export { getItemIconPathFromRecord } from './iconUtils';
 
 export const ITEMS_DATA: ItemData[] = [
-  ...RAW_MATERIAL_ITEMS,
-  ...WEAPON_ITEMS,
-  ...ARMOR_ITEMS,
-  ...TOOL_ITEMS,
-  ...POTION_ITEMS,
-  ...SCROLL_ITEMS,
+  ...(RAW_MATERIALS_ITEMS || []),
+  ...(WEAPON_ITEMS || []),
+  ...(ARMOR_ITEMS || []),
+  ...(TOOL_ITEMS || []),
+  ...(POTIONS_ITEMS || []),
+  ...(SCROLL_ITEMS || []),
 ];
 
 export const ITEMS_BY_CATEGORY: ItemsByCategory = ITEMS_DATA.reduce((acc, item) => {

@@ -36,6 +36,8 @@ export default function IconItem({ icon, existingMapping, allMappingsForIcon, on
   const isValidGameName = useMemo(() => {
     if (!gameName.trim()) return true; // Empty is valid (not yet entered)
     const validNames = getGameNamesForCategory(selectedCategory);
+    // If no data available, allow any name (user can enter manually)
+    if (validNames.length === 0) return true;
     return validNames.some(name => name.toLowerCase() === gameName.trim().toLowerCase());
   }, [gameName, selectedCategory]);
 
@@ -64,7 +66,8 @@ export default function IconItem({ icon, existingMapping, allMappingsForIcon, on
       if (newName) {
         // Get valid game names for this category
         const validNames = getGameNamesForCategory(selectedCategory);
-        const isValidName = validNames.some(name => name.toLowerCase() === newName.toLowerCase());
+        // If no data available, allow any name (user can enter manually)
+        const isValidName = validNames.length === 0 || validNames.some(name => name.toLowerCase() === newName.toLowerCase());
         
         if (!isValidName) {
           // Invalid name - show error and keep the input for correction

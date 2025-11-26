@@ -107,49 +107,53 @@ export function useIconMapperData() {
   const entityStats: EntityStat[] = useMemo(() => {
     const stats: EntityStat[] = [];
 
-    // Abilities
-    const abilitiesTotal = ABILITIES.length;
-    const abilitiesMapped = Object.keys(mappings.abilities).length;
-    stats.push({
-      category: 'abilities',
-      total: abilitiesTotal,
-      mapped: abilitiesMapped,
-      unmapped: abilitiesTotal - abilitiesMapped,
-      percentage: abilitiesTotal > 0 ? Math.round((abilitiesMapped / abilitiesTotal) * 100) : 0,
-    });
+    try {
+      // Abilities
+      const abilitiesTotal = ABILITIES?.length || 0;
+      const abilitiesMapped = Object.keys(mappings.abilities || {}).length;
+      stats.push({
+        category: 'abilities',
+        total: abilitiesTotal,
+        mapped: abilitiesMapped,
+        unmapped: abilitiesTotal - abilitiesMapped,
+        percentage: abilitiesTotal > 0 ? Math.round((abilitiesMapped / abilitiesTotal) * 100) : 0,
+      });
 
-    // Units (base classes + derived classes)
-    const unitsTotal = BASE_TROLL_CLASSES.length + DERIVED_CLASSES.length;
-    const unitsMapped = Object.keys(mappings.trolls).length;
-    stats.push({
-      category: 'units',
-      total: unitsTotal,
-      mapped: unitsMapped,
-      unmapped: unitsTotal - unitsMapped,
-      percentage: unitsTotal > 0 ? Math.round((unitsMapped / unitsTotal) * 100) : 0,
-    });
+      // Units (base classes + derived classes)
+      const unitsTotal = (BASE_TROLL_CLASSES?.length || 0) + (DERIVED_CLASSES?.length || 0);
+      const unitsMapped = Object.keys(mappings.trolls || {}).length;
+      stats.push({
+        category: 'units',
+        total: unitsTotal,
+        mapped: unitsMapped,
+        unmapped: unitsTotal - unitsMapped,
+        percentage: unitsTotal > 0 ? Math.round((unitsMapped / unitsTotal) * 100) : 0,
+      });
 
-    // Items
-    const itemsTotal = ITEMS_DATA.length;
-    const itemsMapped = Object.keys(mappings.items).length;
-    stats.push({
-      category: 'items',
-      total: itemsTotal,
-      mapped: itemsMapped,
-      unmapped: itemsTotal - itemsMapped,
-      percentage: itemsTotal > 0 ? Math.round((itemsMapped / itemsTotal) * 100) : 0,
-    });
+      // Items
+      const itemsTotal = ITEMS_DATA?.length || 0;
+      const itemsMapped = Object.keys(mappings.items || {}).length;
+      stats.push({
+        category: 'items',
+        total: itemsTotal,
+        mapped: itemsMapped,
+        unmapped: itemsTotal - itemsMapped,
+        percentage: itemsTotal > 0 ? Math.round((itemsMapped / itemsTotal) * 100) : 0,
+      });
 
-    // Buildings
-    const buildingsTotal = BUILDINGS.length;
-    const buildingsMapped = Object.keys(mappings.buildings).length;
-    stats.push({
-      category: 'buildings',
-      total: buildingsTotal,
-      mapped: buildingsMapped,
-      unmapped: buildingsTotal - buildingsMapped,
-      percentage: buildingsTotal > 0 ? Math.round((buildingsMapped / buildingsTotal) * 100) : 0,
-    });
+      // Buildings
+      const buildingsTotal = BUILDINGS?.length || 0;
+      const buildingsMapped = Object.keys(mappings.buildings || {}).length;
+      stats.push({
+        category: 'buildings',
+        total: buildingsTotal,
+        mapped: buildingsMapped,
+        unmapped: buildingsTotal - buildingsMapped,
+        percentage: buildingsTotal > 0 ? Math.round((buildingsMapped / buildingsTotal) * 100) : 0,
+      });
+    } catch (error) {
+      console.warn('Error calculating entity stats:', error);
+    }
 
     return stats;
   }, [mappings]);
