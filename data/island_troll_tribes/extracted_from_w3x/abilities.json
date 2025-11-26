@@ -3643,7 +3643,7 @@
       "id": "A0EJ:AUav",
       "name": "Taste for Blood",
       "description": "",
-      "tooltip": "Nearby friendly melee units gain 800%% of their physical damage dealt when they hit enemy units.",
+      "tooltip": "Nearby friendly melee units gain <A0EJ,DataA1,%>% of their physical damage dealt when they hit enemy units.",
       "icon": "",
       "hero": false,
       "item": false,
@@ -3731,7 +3731,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Nearby friendly melee units gain 800%% of their physical damage dealt when they hit enemy units."
+          "value": "Nearby friendly melee units gain <A0EJ,DataA1,%>% of their physical damage dealt when they hit enemy units."
         }
       ]
     },
@@ -3739,7 +3739,7 @@
       "id": "A0EK:AHad",
       "name": "Bear's Endurance",
       "description": "",
-      "tooltip": "Gives 2. additional armor to nearby friendly units.",
+      "tooltip": "Gives <A0EK,DataA1,.> additional armor to nearby friendly units.",
       "icon": "ReplaceableTextures\\PassiveButtons\\PASBTNDrunkenDodge.blp",
       "hero": false,
       "item": false,
@@ -3820,7 +3820,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Gives 2. additional armor to nearby friendly units."
+          "value": "Gives <A0EK,DataA1,.> additional armor to nearby friendly units."
         }
       ]
     },
@@ -3828,7 +3828,7 @@
       "id": "A0EL:AOae",
       "name": "Cat's Grace",
       "description": "",
-      "tooltip": "Increases nearby friendly units' movement speed by 800%% and attack rate by 800%%.",
+      "tooltip": "Increases nearby friendly units' movement speed by <A0EL,DataA1,%>% and attack rate by <A0EL,DataB1,%>%.",
       "icon": "ReplaceableTextures\\PassiveButtons\\PASBTNEvasion.blp",
       "hero": false,
       "item": false,
@@ -3916,7 +3916,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Increases nearby friendly units' movement speed by 800%% and attack rate by 800%%."
+          "value": "Increases nearby friendly units' movement speed by <A0EL,DataA1,%>% and attack rate by <A0EL,DataB1,%>%."
         }
       ]
     },
@@ -4041,7 +4041,7 @@
       "id": "A0FC:ANcl",
       "name": "Recipe: Armor Salve",
       "description": "",
-      "tooltip": "Slot 1: Mushroom |nSlot 2: Stone |nCreates a salve that grants the target ally 15 bonus armor for 15 seconds.",
+      "tooltip": "Slot 1: Mushroom |nSlot 2: Stone |nCreates a salve that grants the target ally <A0ED,DataB1> bonus armor for <A0ED,DataA1> seconds.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNRockGolem.blp",
       "hero": false,
       "item": false,
@@ -4199,7 +4199,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Slot 1: Mushroom |nSlot 2: Stone |nCreates a salve that grants the target ally 15 bonus armor for 15 seconds."
+          "value": "Slot 1: Mushroom |nSlot 2: Stone |nCreates a salve that grants the target ally <A0ED,DataB1> bonus armor for <A0ED,DataA1> seconds."
         }
       ]
     },
@@ -4207,7 +4207,7 @@
       "id": "A0FD:ANcl",
       "name": "Recipe: Healing Salve",
       "description": "",
-      "tooltip": "Slot 1: Mushroom |nSlot 2: Tinder |nSlot 3: River Root |nCreates a salve with 2 uses that heals for 75 over 75 seconds.",
+      "tooltip": "Slot 1: Mushroom |nSlot 2: Tinder |nSlot 3: River Root |nCreates a salve with 2 uses that heals for <A0EG,DataA1> over <A0EG,HeroDur1> seconds.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNHealingSalve.blp",
       "hero": false,
       "item": false,
@@ -4365,7 +4365,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Slot 1: Mushroom |nSlot 2: Tinder |nSlot 3: River Root |nCreates a salve with 2 uses that heals for 75 over 75 seconds."
+          "value": "Slot 1: Mushroom |nSlot 2: Tinder |nSlot 3: River Root |nCreates a salve with 2 uses that heals for <A0EG,DataA1> over <A0EG,HeroDur1> seconds."
         }
       ]
     },
@@ -4373,7 +4373,7 @@
       "id": "A0FE:ANcl",
       "name": "Recipe: Hypnosis Salve",
       "description": "",
-      "tooltip": "Slot 1: Mushroom |nSlot 2: Athelas Seed |nSlot 3: Athelas Seed |nCreates a salve that sleeps target enemy troll for 30 seconds.",
+      "tooltip": "Slot 1: Mushroom |nSlot 2: Athelas Seed |nSlot 3: Athelas Seed |nCreates a salve that sleeps target enemy troll for <A0DH,HeroDur1> seconds.",
       "icon": "ReplaceableTextures\\PassiveButtons\\PASBTNElunesBlessing.blp",
       "hero": false,
       "item": false,
@@ -4524,7 +4524,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Slot 1: Mushroom |nSlot 2: Athelas Seed |nSlot 3: Athelas Seed |nCreates a salve that sleeps target enemy troll for 30 seconds."
+          "value": "Slot 1: Mushroom |nSlot 2: Athelas Seed |nSlot 3: Athelas Seed |nCreates a salve that sleeps target enemy troll for <A0DH,HeroDur1> seconds."
         }
       ]
     },
@@ -4532,7 +4532,7 @@
       "id": "A0FF:ANcl",
       "name": "Recipe: Poison Salve",
       "description": "",
-      "tooltip": "Slot 1: Mushroom |nSlot 2: Thistles |nCreates a salve that slows target enemy non-troll's movement speed by 15%% and attack speed by 15%% for 15 seconds.",
+      "tooltip": "Slot 1: Mushroom |nSlot 2: Thistles |nCreates a salve that slows target enemy non-troll's movement speed by <A0EE,DataA1,%>% and attack speed by <A0EE,DataB1,%>% for <A0EE,Dur1> seconds.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNVialEmpty.blp",
       "hero": false,
       "item": false,
@@ -4690,7 +4690,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Slot 1: Mushroom |nSlot 2: Thistles |nCreates a salve that slows target enemy non-troll's movement speed by 15%% and attack speed by 15%% for 15 seconds."
+          "value": "Slot 1: Mushroom |nSlot 2: Thistles |nCreates a salve that slows target enemy non-troll's movement speed by <A0EE,DataA1,%>% and attack speed by <A0EE,DataB1,%>% for <A0EE,Dur1> seconds."
         }
       ]
     },
@@ -4698,7 +4698,7 @@
       "id": "A0FG:ANcl",
       "name": "Recipe: Speed Salve",
       "description": "",
-      "tooltip": "Slot 1: Mushroom |nSlot 2: Tinder |nSlot 3: River Stem |nCreates a salve with 2 uses that buffs the user's movement speed by 25%% for 25 seconds.",
+      "tooltip": "Slot 1: Mushroom |nSlot 2: Tinder |nSlot 3: River Stem |nCreates a salve with 2 uses that buffs the user's movement speed by <A0EF,DataA1,%>% for <A0EF,Dur1> seconds.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNPotionRed.blp",
       "hero": false,
       "item": false,
@@ -4863,7 +4863,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Slot 1: Mushroom |nSlot 2: Tinder |nSlot 3: River Stem |nCreates a salve with 2 uses that buffs the user's movement speed by 25%% for 25 seconds."
+          "value": "Slot 1: Mushroom |nSlot 2: Tinder |nSlot 3: River Stem |nCreates a salve with 2 uses that buffs the user's movement speed by <A0EF,DataA1,%>% for <A0EF,Dur1> seconds."
         }
       ]
     },
@@ -5007,7 +5007,7 @@
       "id": "AMd5:ACsl",
       "name": "Sleep Outside",
       "description": "",
-      "tooltip": "The Troll can sleep outside to restore |cff00EAFF80|r mana but lose |cffFF020220|r health point and |cffFE890D15|r heat. This can kill you if any of your stats reach 0. Has |cff6495ED10|r seconds cooldown.",
+      "tooltip": "The Troll can sleep outside to restore |cff00EAFF80|r mana but lose |cffFF020220|r health point and |cffFE890D15|r heat. This can kill you if any of your stats reach 0. Has |cff6495ED<AMd5,Cool1>|r seconds cooldown.",
       "icon": "",
       "hero": false,
       "item": false,
@@ -5109,7 +5109,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "The Troll can sleep outside to restore |cff00EAFF80|r mana but lose |cffFF020220|r health point and |cffFE890D15|r heat. This can kill you if any of your stats reach 0. Has |cff6495ED10|r seconds cooldown."
+          "value": "The Troll can sleep outside to restore |cff00EAFF80|r mana but lose |cffFF020220|r health point and |cffFE890D15|r heat. This can kill you if any of your stats reach 0. Has |cff6495ED<AMd5,Cool1>|r seconds cooldown."
         }
       ]
     },
@@ -5117,7 +5117,7 @@
       "id": "AMdc:ACsl",
       "name": "Sleep Inside Tent",
       "description": "",
-      "tooltip": "The Troll can sleep inside the tent to restore |cff00EAFF80|r mana. Has |cff6495ED10|r seconds cooldown.",
+      "tooltip": "The Troll can sleep inside the tent to restore |cff00EAFF80|r mana. Has |cff6495ED<AMdc,Cool1>|r seconds cooldown.",
       "icon": "",
       "hero": false,
       "item": false,
@@ -5219,7 +5219,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "The Troll can sleep inside the tent to restore |cff00EAFF80|r mana. Has |cff6495ED10|r seconds cooldown."
+          "value": "The Troll can sleep inside the tent to restore |cff00EAFF80|r mana. Has |cff6495ED<AMdc,Cool1>|r seconds cooldown."
         }
       ]
     },
@@ -5227,7 +5227,7 @@
       "id": "AMdd:ACsl",
       "name": "Sleep Inside Hut",
       "description": "",
-      "tooltip": "The Troll can sleep inside the hut to restore |cff00EAFF200|r mana. Has |cff6495ED10|r seconds cooldown.",
+      "tooltip": "The Troll can sleep inside the hut to restore |cff00EAFF200|r mana. Has |cff6495ED<AMdd,Cool1>|r seconds cooldown.",
       "icon": "",
       "hero": false,
       "item": false,
@@ -5329,7 +5329,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "The Troll can sleep inside the hut to restore |cff00EAFF200|r mana. Has |cff6495ED10|r seconds cooldown."
+          "value": "The Troll can sleep inside the hut to restore |cff00EAFF200|r mana. Has |cff6495ED<AMdd,Cool1>|r seconds cooldown."
         }
       ]
     },
@@ -20465,7 +20465,7 @@
       "id": "AM4z:ANcl",
       "name": "Hibernate",
       "description": "",
-      "tooltip": "The Dire Bear can hibernate, restoring |cff7DBEF180.0|r mana and |cff1FBF002.0|rx|cffFE890DStrength|r life based on missing life.Healing reaches maximum effect at |cff94959625%|r\nDuring hibernation Dire Bear has |cffFE890D35.0|r% damage reduction and lowers healing reduction by |cff1FBF0050|r per second.\nConsuming any food will reduce Hibernate cooldown by |cff7DBEF11|r second.\nHibernation can only be interrupted if bear's life drops below what it was at the beginning of Hibernation. Has |cff6495ED1|r seconds cooldown.",
+      "tooltip": "The Dire Bear can hibernate, restoring |cff7DBEF180.0|r mana and |cff1FBF002.0|rx|cffFE890DStrength|r life based on missing life.Healing reaches maximum effect at |cff94959625%|r\nDuring hibernation Dire Bear has |cffFE890D35.0|r% damage reduction and lowers healing reduction by |cff1FBF0050|r per second.\nConsuming any food will reduce Hibernate cooldown by |cff7DBEF11|r second.\nHibernation can only be interrupted if bear's life drops below what it was at the beginning of Hibernation. Has |cff6495ED<AM4z,Cool1>|r seconds cooldown.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNAbility_Hibernation.blp",
       "hero": false,
       "item": false,
@@ -20560,7 +20560,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "The Dire Bear can hibernate, restoring |cff7DBEF180.0|r mana and |cff1FBF002.0|rx|cffFE890DStrength|r life based on missing life.Healing reaches maximum effect at |cff94959625%|r\nDuring hibernation Dire Bear has |cffFE890D35.0|r% damage reduction and lowers healing reduction by |cff1FBF0050|r per second.\nConsuming any food will reduce Hibernate cooldown by |cff7DBEF11|r second.\nHibernation can only be interrupted if bear's life drops below what it was at the beginning of Hibernation. Has |cff6495ED1|r seconds cooldown."
+          "value": "The Dire Bear can hibernate, restoring |cff7DBEF180.0|r mana and |cff1FBF002.0|rx|cffFE890DStrength|r life based on missing life.Healing reaches maximum effect at |cff94959625%|r\nDuring hibernation Dire Bear has |cffFE890D35.0|r% damage reduction and lowers healing reduction by |cff1FBF0050|r per second.\nConsuming any food will reduce Hibernate cooldown by |cff7DBEF11|r second.\nHibernation can only be interrupted if bear's life drops below what it was at the beginning of Hibernation. Has |cff6495ED<AM4z,Cool1>|r seconds cooldown."
         },
         {
           "id": "amcs",
@@ -20645,7 +20645,7 @@
       "id": "AM4v:ACsl",
       "name": "Hibernate",
       "description": "",
-      "tooltip": "The Dire Bear can hibernate, restoring |cff7DBEF180.0|r mana and |cff1FBF002.0|rx|cffFE890DStrength|r life based on missing life.Healing reaches maximum effect at |cff94959625%|r\nDuring hibernation Dire Bear has |cffFE890D35.0|r% damage reduction and lowers healing reduction by |cff1FBF0050|r per second.\nConsuming any food will reduce Hibernate cooldown by |cff7DBEF11|r second.\nHibernation can only be interrupted if bear's life drops below what it was at the beginning of Hibernation. Has |cff6495ED10|r seconds cooldown.",
+      "tooltip": "The Dire Bear can hibernate, restoring |cff7DBEF180.0|r mana and |cff1FBF002.0|rx|cffFE890DStrength|r life based on missing life.Healing reaches maximum effect at |cff94959625%|r\nDuring hibernation Dire Bear has |cffFE890D35.0|r% damage reduction and lowers healing reduction by |cff1FBF0050|r per second.\nConsuming any food will reduce Hibernate cooldown by |cff7DBEF11|r second.\nHibernation can only be interrupted if bear's life drops below what it was at the beginning of Hibernation. Has |cff6495ED<AMd5,Cool1>|r seconds cooldown.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNAbility_Hibernation.blp",
       "hero": false,
       "item": false,
@@ -20712,7 +20712,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "The Dire Bear can hibernate, restoring |cff7DBEF180.0|r mana and |cff1FBF002.0|rx|cffFE890DStrength|r life based on missing life.Healing reaches maximum effect at |cff94959625%|r\nDuring hibernation Dire Bear has |cffFE890D35.0|r% damage reduction and lowers healing reduction by |cff1FBF0050|r per second.\nConsuming any food will reduce Hibernate cooldown by |cff7DBEF11|r second.\nHibernation can only be interrupted if bear's life drops below what it was at the beginning of Hibernation. Has |cff6495ED10|r seconds cooldown."
+          "value": "The Dire Bear can hibernate, restoring |cff7DBEF180.0|r mana and |cff1FBF002.0|rx|cffFE890DStrength|r life based on missing life.Healing reaches maximum effect at |cff94959625%|r\nDuring hibernation Dire Bear has |cffFE890D35.0|r% damage reduction and lowers healing reduction by |cff1FBF0050|r per second.\nConsuming any food will reduce Hibernate cooldown by |cff7DBEF11|r second.\nHibernation can only be interrupted if bear's life drops below what it was at the beginning of Hibernation. Has |cff6495ED<AMd5,Cool1>|r seconds cooldown."
         },
         {
           "id": "aart",
@@ -65261,7 +65261,7 @@
       "id": "AMd9:ACsl",
       "name": "Sleep Inside Tent",
       "description": "",
-      "tooltip": "The Troll can sleep inside the tent to restore {0} mana. Has |cff6495ED10|r seconds cooldown.",
+      "tooltip": "The Troll can sleep inside the tent to restore {0} mana. Has |cff6495ED<AMdc,Cool1>|r seconds cooldown.",
       "icon": "",
       "hero": false,
       "item": false,
@@ -65363,7 +65363,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "The Troll can sleep inside the tent to restore {0} mana. Has |cff6495ED10|r seconds cooldown."
+          "value": "The Troll can sleep inside the tent to restore {0} mana. Has |cff6495ED<AMdc,Cool1>|r seconds cooldown."
         }
       ]
     },
@@ -65371,7 +65371,7 @@
       "id": "AMd8:ACsl",
       "name": "Sleep Outside",
       "description": "",
-      "tooltip": "The Troll can sleep outside to restore |cff00EAFF80|r mana but lose |cffFF020220|r health point and |cffFE890D15|r heat. This can kill you if any of your stats reach 0. Has |cff6495ED10|r seconds cooldown.",
+      "tooltip": "The Troll can sleep outside to restore |cff00EAFF80|r mana but lose |cffFF020220|r health point and |cffFE890D15|r heat. This can kill you if any of your stats reach 0. Has |cff6495ED<AMd5,Cool1>|r seconds cooldown.",
       "icon": "",
       "hero": false,
       "item": false,
@@ -65473,7 +65473,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "The Troll can sleep outside to restore |cff00EAFF80|r mana but lose |cffFF020220|r health point and |cffFE890D15|r heat. This can kill you if any of your stats reach 0. Has |cff6495ED10|r seconds cooldown."
+          "value": "The Troll can sleep outside to restore |cff00EAFF80|r mana but lose |cffFF020220|r health point and |cffFE890D15|r heat. This can kill you if any of your stats reach 0. Has |cff6495ED<AMd5,Cool1>|r seconds cooldown."
         }
       ]
     },
@@ -127758,7 +127758,7 @@
       "id": "AM9d:ANcl",
       "name": "Quick make Battle Gloves",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a pair of |cffBE00FEBattle Gloves. |rIncreases wearer's attack speed by |cffFE890D0.3%%|r, armor by |cff1FBF005|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second.\n\n1x |cffFF0202Steel Gloves|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a pair of |cffBE00FEBattle Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM3b,DataA1,%>%|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second.\n\n1x |cffFF0202Steel Gloves|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNImprovedUnholyStrength.blp",
       "hero": false,
       "item": false,
@@ -127853,7 +127853,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a pair of |cffBE00FEBattle Gloves. |rIncreases wearer's attack speed by |cffFE890D0.3%%|r, armor by |cff1FBF005|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second.\n\n1x |cffFF0202Steel Gloves|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a pair of |cffBE00FEBattle Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM3b,DataA1,%>%|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second.\n\n1x |cffFF0202Steel Gloves|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -128394,7 +128394,7 @@
       "id": "AM9i:ANcl",
       "name": "Quick make Boots of Wolf's Stamina",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get |cffBE00FEBoots of Wolf's Stamina. \n|rIncreases wearer's movement speed by |cffFE890D100|r intelligence by |cff00EAFF10|r, agility by |cff1FBF006|r armor by |cff1FBF003|r and provides warmth.|nRemoves mana cost and extra damage taken penalty from panic.\n\n1x |cffFE890DWolf Skin Boots |r + 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get |cffBE00FEBoots of Wolf's Stamina. \n|rIncreases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r intelligence by |cff00EAFF<AM6p,DataB1>|r, agility by |cff1FBF00<AMem,DataA1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|nRemoves mana cost and extra damage taken penalty from panic.\n\n1x |cffFE890DWolf Skin Boots |r + 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBootsOfWolfStamina.blp",
       "hero": false,
       "item": false,
@@ -128489,7 +128489,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get |cffBE00FEBoots of Wolf's Stamina. \n|rIncreases wearer's movement speed by |cffFE890D100|r intelligence by |cff00EAFF10|r, agility by |cff1FBF006|r armor by |cff1FBF003|r and provides warmth.|nRemoves mana cost and extra damage taken penalty from panic.\n\n1x |cffFE890DWolf Skin Boots |r + 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get |cffBE00FEBoots of Wolf's Stamina. \n|rIncreases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r intelligence by |cff00EAFF<AM6p,DataB1>|r, agility by |cff1FBF00<AMem,DataA1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|nRemoves mana cost and extra damage taken penalty from panic.\n\n1x |cffFE890DWolf Skin Boots |r + 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -128553,7 +128553,7 @@
       "id": "AM9m:ANcl",
       "name": "Quick make Claws of Wolf's Bloodlust",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get |cffBE00FEClaws of Wolf's Bloodlust. \n|rIncreases wearer's attack speed by |cffFE890D0.3%%|r, damage by |cffFF02021|r, armor by |cff1FBF004|r and agility by |cff1FBF004|r. |nFills wearer with insatiable bloodlust, granting permanent bloodlust buff.\n\n1x |cffFE890DWolf Skin Gloves |r +1x |cffFF0202Steel Ingot|r + 1x |cffBE00FEGreater essence|r 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get |cffBE00FEClaws of Wolf's Bloodlust. \n|rIncreases wearer's attack speed by |cffFE890D<AM3b,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2w,DataA1>|r and agility by |cff1FBF00<AMel,DataA1>|r. |nFills wearer with insatiable bloodlust, granting permanent bloodlust buff.\n\n1x |cffFE890DWolf Skin Gloves |r +1x |cffFF0202Steel Ingot|r + 1x |cffBE00FEGreater essence|r 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNWolfSBloodlustClaws.blp",
       "hero": false,
       "item": false,
@@ -128648,7 +128648,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get |cffBE00FEClaws of Wolf's Bloodlust. \n|rIncreases wearer's attack speed by |cffFE890D0.3%%|r, damage by |cffFF02021|r, armor by |cff1FBF004|r and agility by |cff1FBF004|r. |nFills wearer with insatiable bloodlust, granting permanent bloodlust buff.\n\n1x |cffFE890DWolf Skin Gloves |r +1x |cffFF0202Steel Ingot|r + 1x |cffBE00FEGreater essence|r 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get |cffBE00FEClaws of Wolf's Bloodlust. \n|rIncreases wearer's attack speed by |cffFE890D<AM3b,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2w,DataA1>|r and agility by |cff1FBF00<AMel,DataA1>|r. |nFills wearer with insatiable bloodlust, granting permanent bloodlust buff.\n\n1x |cffFE890DWolf Skin Gloves |r +1x |cffFF0202Steel Ingot|r + 1x |cffBE00FEGreater essence|r 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -128712,7 +128712,7 @@
       "id": "AM9h:ANcl",
       "name": "Quick make Coat of Wolf's Voracity",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get |cffBE00FECoat of Wolf's Voracity. \n|rA coat imbued with voracity of a Dire Wolf. Allows wearer to consume raw meat, and to consume corpses instantly.  |cFFFFCC00\nUse this item to consume raw meat instantly restoring|r|cff1FBF0050.0|r|cFFFFCC00 health.|r\n+|cff1FBF004|r Armor\n+|cff1FBF002|r Strength\n+|cff1FBF006|r Agility\n\n1x |cffFE890DWolf Skin Coat |r 1x |cffBE00FESpirit of Darkness|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get |cffBE00FECoat of Wolf's Voracity. \n|rA coat imbued with voracity of a Dire Wolf. Allows wearer to consume raw meat, and to consume corpses instantly.  |cFFFFCC00\nUse this item to consume raw meat instantly restoring|r|cff1FBF0050.0|r|cFFFFCC00 health.|r\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AIs6,DataC1>|r Strength\n+|cff1FBF00<AMem,DataA1>|r Agility\n\n1x |cffFE890DWolf Skin Coat |r 1x |cffBE00FESpirit of Darkness|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNChestOfWolfVoracity.blp",
       "hero": false,
       "item": false,
@@ -128807,7 +128807,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get |cffBE00FECoat of Wolf's Voracity. \n|rA coat imbued with voracity of a Dire Wolf. Allows wearer to consume raw meat, and to consume corpses instantly.  |cFFFFCC00\nUse this item to consume raw meat instantly restoring|r|cff1FBF0050.0|r|cFFFFCC00 health.|r\n+|cff1FBF004|r Armor\n+|cff1FBF002|r Strength\n+|cff1FBF006|r Agility\n\n1x |cffFE890DWolf Skin Coat |r 1x |cffBE00FESpirit of Darkness|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get |cffBE00FECoat of Wolf's Voracity. \n|rA coat imbued with voracity of a Dire Wolf. Allows wearer to consume raw meat, and to consume corpses instantly.  |cFFFFCC00\nUse this item to consume raw meat instantly restoring|r|cff1FBF0050.0|r|cFFFFCC00 health.|r\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AIs6,DataC1>|r Strength\n+|cff1FBF00<AMem,DataA1>|r Agility\n\n1x |cffFE890DWolf Skin Coat |r 1x |cffBE00FESpirit of Darkness|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -128871,7 +128871,7 @@
       "id": "AM9k:ANcl",
       "name": "Quick make Boots of Bear's Tenacity",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get |cffFF0202Boots of Bear's Tenacity. \n|rIncreases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF<AIi6,DataB1>|r, strength by |cffFE890D8|r armor by |cff1FBF005|r and provides warmth.\nGrants wearer tenacity of a bear, no snare will be able to stop you. \nWhenever you are ensnared you gain |cffFFFC002.5|rs decaying movement speed debuff instead of being immobilized\n\n1x |cffFE890DBear Skin Boots |r +  1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get |cffFF0202Boots of Bear's Tenacity. \n|rIncreases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi6,DataB1>|r, strength by |cffFE890D<AMep,DataC1>|r armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.\nGrants wearer tenacity of a bear, no snare will be able to stop you. \nWhenever you are ensnared you gain |cffFFFC002.5|rs decaying movement speed debuff instead of being immobilized\n\n1x |cffFE890DBear Skin Boots |r +  1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBootsOfBearTenacity.blp",
       "hero": false,
       "item": false,
@@ -128966,7 +128966,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get |cffFF0202Boots of Bear's Tenacity. \n|rIncreases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF<AIi6,DataB1>|r, strength by |cffFE890D8|r armor by |cff1FBF005|r and provides warmth.\nGrants wearer tenacity of a bear, no snare will be able to stop you. \nWhenever you are ensnared you gain |cffFFFC002.5|rs decaying movement speed debuff instead of being immobilized\n\n1x |cffFE890DBear Skin Boots |r +  1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get |cffFF0202Boots of Bear's Tenacity. \n|rIncreases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi6,DataB1>|r, strength by |cffFE890D<AMep,DataC1>|r armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.\nGrants wearer tenacity of a bear, no snare will be able to stop you. \nWhenever you are ensnared you gain |cffFFFC002.5|rs decaying movement speed debuff instead of being immobilized\n\n1x |cffFE890DBear Skin Boots |r +  1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -129030,7 +129030,7 @@
       "id": "AM9j:ANcl",
       "name": "Quick make Paws of Bear's Greed",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get |cffFE890DPaws of Bear's Greed. \n|rIncreases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02021|r, armor by |cff1FBF005|r and strength by |cff1FBF008|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb.\n\n1x |cffFE890DBear Skin Gloves |r + |cffFF0202Iron Ingot|r 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get |cffFE890DPaws of Bear's Greed. \n|rIncreases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and strength by |cff1FBF00<AMep,DataC1>|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb.\n\n1x |cffFE890DBear Skin Gloves |r + |cffFF0202Iron Ingot|r 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBearGlovesOfGreed.blp",
       "hero": false,
       "item": false,
@@ -129125,7 +129125,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get |cffFE890DPaws of Bear's Greed. \n|rIncreases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02021|r, armor by |cff1FBF005|r and strength by |cff1FBF008|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb.\n\n1x |cffFE890DBear Skin Gloves |r + |cffFF0202Iron Ingot|r 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get |cffFE890DPaws of Bear's Greed. \n|rIncreases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and strength by |cff1FBF00<AMep,DataC1>|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb.\n\n1x |cffFE890DBear Skin Gloves |r + |cffFF0202Iron Ingot|r 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -129189,7 +129189,7 @@
       "id": "AM9l:ANcl",
       "name": "Quick make Coat of Bear's Terrifying Presence",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get |cffFF0202Coat of Bear's Terrifying Presence. \n|rA coat made out of a hide of ancient bear.|nAnimals will freeze in your terrifying presence.|nEnemies shaken with fear suffer 20% damage penalty.|n+|cff1FBF0012|r Strength.|n+|cff1FBF006|r Armor.\n\n1x |cffFE890DBear Skin Coat |r + |cffFF0202Steel Ingot|r + 1x |cffBE00FESpirit of Darkness|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get |cffFF0202Coat of Bear's Terrifying Presence. \n|rA coat made out of a hide of ancient bear.|nAnimals will freeze in your terrifying presence.|nEnemies shaken with fear suffer 20% damage penalty.|n+|cff1FBF00<AMer,DataC1>|r Strength.|n+|cff1FBF00<AM2x,DataA1>|r Armor.\n\n1x |cffFE890DBear Skin Coat |r + |cffFF0202Steel Ingot|r + 1x |cffBE00FESpirit of Darkness|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNCoatOfBearPresence.blp",
       "hero": false,
       "item": false,
@@ -129284,7 +129284,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get |cffFF0202Coat of Bear's Terrifying Presence. \n|rA coat made out of a hide of ancient bear.|nAnimals will freeze in your terrifying presence.|nEnemies shaken with fear suffer 20% damage penalty.|n+|cff1FBF0012|r Strength.|n+|cff1FBF006|r Armor.\n\n1x |cffFE890DBear Skin Coat |r + |cffFF0202Steel Ingot|r + 1x |cffBE00FESpirit of Darkness|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get |cffFF0202Coat of Bear's Terrifying Presence. \n|rA coat made out of a hide of ancient bear.|nAnimals will freeze in your terrifying presence.|nEnemies shaken with fear suffer 20% damage penalty.|n+|cff1FBF00<AMer,DataC1>|r Strength.|n+|cff1FBF00<AM2x,DataA1>|r Armor.\n\n1x |cffFE890DBear Skin Coat |r + |cffFF0202Steel Ingot|r + 1x |cffBE00FESpirit of Darkness|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -129507,7 +129507,7 @@
       "id": "AM92:ANcl",
       "name": "Quick make Anabolic Boots",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a pair of |cffBE00FEAnabolic Boots. |rIncreases wearer's movement speed by |cffFE890D200|r, armor by |cff1FBF005|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack.\n\n1x |cffFE890DBone Boots|r + 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a pair of |cffBE00FEAnabolic Boots. |rIncreases wearer's movement speed by |cffFE890D<AMdw,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack.\n\n1x |cffFE890DBone Boots|r + 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNWirtsOtherLeg.blp",
       "hero": false,
       "item": false,
@@ -129602,7 +129602,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a pair of |cffBE00FEAnabolic Boots. |rIncreases wearer's movement speed by |cffFE890D200|r, armor by |cff1FBF005|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack.\n\n1x |cffFE890DBone Boots|r + 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a pair of |cffBE00FEAnabolic Boots. |rIncreases wearer's movement speed by |cffFE890D<AMdw,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack.\n\n1x |cffFE890DBone Boots|r + 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -129984,7 +129984,7 @@
       "id": "AM99:ANcl",
       "name": "Quick make Magefist",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get |cffBE00FEMagefist. \n|rCrafted by the most skilled sorcerers of Azeroth, Magefist radiates with an ethereal glow, resonating with the potent energies of magic.\nGrants |cff00EAFFArcane Might|r: \n+|cff1FBF001|r Strength per |cff00EAFF3 Intelligence|r\n+|cffFE890D0.3%%|r Attack speed\n+|cff1FBF004|r Armor\n+|cff1FBF0010|r Intelligence\n\n1x |cffFF0202Bone Gloves |r+ 1x |cffFF0202Steel Ingot|r + 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r+ 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get |cffBE00FEMagefist. \n|rCrafted by the most skilled sorcerers of Azeroth, Magefist radiates with an ethereal glow, resonating with the potent energies of magic.\nGrants |cff00EAFFArcane Might|r: \n+|cff1FBF001|r Strength per |cff00EAFF3 Intelligence|r\n+|cffFE890D<AM3b,DataA1,%>%|r Attack speed\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AM6p,DataB1>|r Intelligence\n\n1x |cffFF0202Bone Gloves |r+ 1x |cffFF0202Steel Ingot|r + 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r+ 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNSpellSteal.blp",
       "hero": false,
       "item": false,
@@ -130079,7 +130079,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get |cffBE00FEMagefist. \n|rCrafted by the most skilled sorcerers of Azeroth, Magefist radiates with an ethereal glow, resonating with the potent energies of magic.\nGrants |cff00EAFFArcane Might|r: \n+|cff1FBF001|r Strength per |cff00EAFF3 Intelligence|r\n+|cffFE890D0.3%%|r Attack speed\n+|cff1FBF004|r Armor\n+|cff1FBF0010|r Intelligence\n\n1x |cffFF0202Bone Gloves |r+ 1x |cffFF0202Steel Ingot|r + 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r+ 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get |cffBE00FEMagefist. \n|rCrafted by the most skilled sorcerers of Azeroth, Magefist radiates with an ethereal glow, resonating with the potent energies of magic.\nGrants |cff00EAFFArcane Might|r: \n+|cff1FBF001|r Strength per |cff00EAFF3 Intelligence|r\n+|cffFE890D<AM3b,DataA1,%>%|r Attack speed\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AM6p,DataB1>|r Intelligence\n\n1x |cffFF0202Bone Gloves |r+ 1x |cffFF0202Steel Ingot|r + 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r+ 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -131415,7 +131415,7 @@
       "id": "AM9v:ANcl",
       "name": "Quick make Cloak Of Flames",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a |cffFF0202Cloak Of Flames. |rProvides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and burns nearby enemies within melee range for |cffFF0202<AM3|,DataA1>|r damage per second.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cffFF0202Flint|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a |cffFF0202Cloak Of Flames. |rProvides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and burns nearby enemies within melee range for |cffFF0202<AM3|,DataA1>|r damage per second.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cffFF0202Flint|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNCloakOfInferno.blp",
       "hero": false,
       "item": false,
@@ -131510,7 +131510,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a |cffFF0202Cloak Of Flames. |rProvides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and burns nearby enemies within melee range for |cffFF0202<AM3|,DataA1>|r damage per second.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cffFF0202Flint|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a |cffFF0202Cloak Of Flames. |rProvides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and burns nearby enemies within melee range for |cffFF0202<AM3|,DataA1>|r damage per second.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cffFF0202Flint|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -131574,7 +131574,7 @@
       "id": "AM9w:ANcl",
       "name": "Quick make Cloak Of Frost",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a |cff00EAFFCloak Of Frost. |rProvides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to emit |cff00EAFF5|r ice waves, each wave freezes nearby enemy units dealing |cffFF020216|r damage, and slowing their movement and attack speeds by |cffFE890D35%|r for |cff7DBEF12|r seconds. Each wave refresh the slow duration, the slow amount does not stack. Has |cff7DBEF135|r seconds cooldown.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cff00EAFFSpirit of Water|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a |cff00EAFFCloak Of Frost. |rProvides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to emit |cff00EAFF5|r ice waves, each wave freezes nearby enemy units dealing |cffFF020216|r damage, and slowing their movement and attack speeds by |cffFE890D35%|r for |cff7DBEF12|r seconds. Each wave refresh the slow duration, the slow amount does not stack. Has |cff7DBEF135|r seconds cooldown.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cff00EAFFSpirit of Water|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNCloakOfFrost.blp",
       "hero": false,
       "item": false,
@@ -131669,7 +131669,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a |cff00EAFFCloak Of Frost. |rProvides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to emit |cff00EAFF5|r ice waves, each wave freezes nearby enemy units dealing |cffFF020216|r damage, and slowing their movement and attack speeds by |cffFE890D35%|r for |cff7DBEF12|r seconds. Each wave refresh the slow duration, the slow amount does not stack. Has |cff7DBEF135|r seconds cooldown.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cff00EAFFSpirit of Water|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a |cff00EAFFCloak Of Frost. |rProvides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to emit |cff00EAFF5|r ice waves, each wave freezes nearby enemy units dealing |cffFF020216|r damage, and slowing their movement and attack speeds by |cffFE890D35%|r for |cff7DBEF12|r seconds. Each wave refresh the slow duration, the slow amount does not stack. Has |cff7DBEF135|r seconds cooldown.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cff00EAFFSpirit of Water|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -131733,7 +131733,7 @@
       "id": "AM9x:ANcl",
       "name": "Quick make Cloak Of Healing",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a |cff1FBF00Cloak Of Healing. |rProvides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to restore all |cff1FBF00150|r health points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cff1FBF00Healing Potion|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a |cff1FBF00Cloak Of Healing. |rProvides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore all |cff1FBF00150|r health points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cff1FBF00Healing Potion|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNCloakOfHealing.blp",
       "hero": false,
       "item": false,
@@ -131828,7 +131828,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a |cff1FBF00Cloak Of Healing. |rProvides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to restore all |cff1FBF00150|r health points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cff1FBF00Healing Potion|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a |cff1FBF00Cloak Of Healing. |rProvides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore all |cff1FBF00150|r health points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cff1FBF00Healing Potion|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -131892,7 +131892,7 @@
       "id": "AM9y:ANcl",
       "name": "Quick make Cloak Of Mana",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a |cffBE00FECloak Of Mana. |rProvides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to restore |cff00EAFF100|r mana points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cff00EAFFMana Potion|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a |cffBE00FECloak Of Mana. |rProvides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore |cff00EAFF100|r mana points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cff00EAFFMana Potion|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNCloakOfMana.blp",
       "hero": false,
       "item": false,
@@ -131987,7 +131987,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a |cffBE00FECloak Of Mana. |rProvides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to restore |cff00EAFF100|r mana points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cff00EAFFMana Potion|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a |cffBE00FECloak Of Mana. |rProvides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore |cff00EAFF100|r mana points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cff00EAFFMana Potion|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -132846,7 +132846,7 @@
       "id": "AM19:ANcl",
       "name": "Quick make Necromancer's cloak",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a |cffBE00FENecromancer's cloak. |rProvides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two skeletal warriors. Cloak can be used to recall your minions. |cffFFFC00\n\nSkeletal bodyguards can be empowered by collecting 10 bones.|r\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cffFFFC00Scroll of Living Dead|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a |cffBE00FENecromancer's cloak. |rProvides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two skeletal warriors. Cloak can be used to recall your minions. |cffFFFC00\n\nSkeletal bodyguards can be empowered by collecting 10 bones.|r\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cffFFFC00Scroll of Living Dead|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNSkullShroudGlowIncreased.blp",
       "hero": false,
       "item": false,
@@ -132941,7 +132941,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a |cffBE00FENecromancer's cloak. |rProvides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two skeletal warriors. Cloak can be used to recall your minions. |cffFFFC00\n\nSkeletal bodyguards can be empowered by collecting 10 bones.|r\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cffFFFC00Scroll of Living Dead|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a |cffBE00FENecromancer's cloak. |rProvides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two skeletal warriors. Cloak can be used to recall your minions. |cffFFFC00\n\nSkeletal bodyguards can be empowered by collecting 10 bones.|r\n\n1x |cff00EAFFMagic|r + 1x |cffFE890DBone Coat|r + 1x |cffFFFC00Scroll of Living Dead|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -135390,7 +135390,7 @@
       "id": "AMa1:ANcl",
       "name": "Quick make Elk Skin Boots",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a pair of|cffFE890D Elk Skin Boots. |rIncreases wearer's movement speed by |cffFE890D60|r, intelligence by |cff00EAFF2|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a pair of|cffFE890D Elk Skin Boots. |rIncreases wearer's movement speed by |cffFE890D<AMds,DataA1>|r, intelligence by |cff00EAFF<AM6m,DataB1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNElkHideBoots.blp",
       "hero": false,
       "item": false,
@@ -135485,7 +135485,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a pair of|cffFE890D Elk Skin Boots. |rIncreases wearer's movement speed by |cffFE890D60|r, intelligence by |cff00EAFF2|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a pair of|cffFE890D Elk Skin Boots. |rIncreases wearer's movement speed by |cffFE890D<AMds,DataA1>|r, intelligence by |cff00EAFF<AM6m,DataB1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -135549,7 +135549,7 @@
       "id": "AMa3:ANcl",
       "name": "Quick make Elk Skin Gloves",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a pair of|cffFE890D  Elk Skin Gloves. |rIncreases wearer's attack speed by |cffFE890D0.1%%|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a pair of|cffFE890D  Elk Skin Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM37,DataA1,%>%|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNElkHideGloves.blp",
       "hero": false,
       "item": false,
@@ -135644,7 +135644,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a pair of|cffFE890D  Elk Skin Gloves. |rIncreases wearer's attack speed by |cffFE890D0.1%%|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a pair of|cffFE890D  Elk Skin Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM37,DataA1,%>%|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -135708,7 +135708,7 @@
       "id": "AMa2:ANcl",
       "name": "Quick make Elk Skin Coat",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get an |cffFE890DElk Skin Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF00<AM6l,DataB1>|r, Armor by |cff1FBF001|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r\n\n3x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get an |cffFE890DElk Skin Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AMef,DataC1>|r, Intelligence by |cff1FBF00<AM6l,DataB1>|r, Armor by |cff1FBF00<AM2t,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r\n\n3x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNElkHideCoat.blp",
       "hero": false,
       "item": false,
@@ -135803,7 +135803,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get an |cffFE890DElk Skin Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF00<AM6l,DataB1>|r, Armor by |cff1FBF001|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r\n\n3x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get an |cffFE890DElk Skin Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AMef,DataC1>|r, Intelligence by |cff1FBF00<AM6l,DataB1>|r, Armor by |cff1FBF00<AM2t,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r\n\n3x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -135867,7 +135867,7 @@
       "id": "AMar:ANcl",
       "name": "Quick make Jungle Wolf Skin Boots",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Wolf Skin Boots. |rIncreases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF<AIi4,DataB1>|r, agility by |cff1FBF004|r armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffFE890DJungle Wolf Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Wolf Skin Boots. |rIncreases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi4,DataB1>|r, agility by |cff1FBF00<AMel,DataA1>|r armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffFE890DJungle Wolf Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNWolfHideBoots.blp",
       "hero": false,
       "item": false,
@@ -135962,7 +135962,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Wolf Skin Boots. |rIncreases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF<AIi4,DataB1>|r, agility by |cff1FBF004|r armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffFE890DJungle Wolf Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Wolf Skin Boots. |rIncreases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi4,DataB1>|r, agility by |cff1FBF00<AMel,DataA1>|r armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffFE890DJungle Wolf Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -136026,7 +136026,7 @@
       "id": "AMat:ANcl",
       "name": "Quick make Jungle Wolf Skin Gloves",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Wolf Skin Gloves. |rIncreases wearer's attack speed by |cffFE890D0.15%%|r, damage by |cffFF02021|r, armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffFE890DJungle Wolf Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Wolf Skin Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM38,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffFE890DJungle Wolf Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNWolfHideGloves.blp",
       "hero": false,
       "item": false,
@@ -136121,7 +136121,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Wolf Skin Gloves. |rIncreases wearer's attack speed by |cffFE890D0.15%%|r, damage by |cffFF02021|r, armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffFE890DJungle Wolf Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Wolf Skin Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM38,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffFE890DJungle Wolf Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -136185,7 +136185,7 @@
       "id": "AMas:ANcl",
       "name": "Quick make Jungle Wolf Skin Coat",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a |cffFE890DJungle Wolf Skin Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF002|r, Armor by |cff1FBF002|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r\n\n1x |cffFE890DJungle Wolf Hide|r\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a |cffFE890DJungle Wolf Skin Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AM6m,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r\n\n1x |cffFE890DJungle Wolf Hide|r\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNWolfHideCoat.blp",
       "hero": false,
       "item": false,
@@ -136280,7 +136280,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a |cffFE890DJungle Wolf Skin Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF002|r, Armor by |cff1FBF002|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r\n\n1x |cffFE890DJungle Wolf Hide|r\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a |cffFE890DJungle Wolf Skin Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AM6m,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r\n\n1x |cffFE890DJungle Wolf Hide|r\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -136344,7 +136344,7 @@
       "id": "AMao:ANcl",
       "name": "Quick make Jungle Bear Skin Boots",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Bear Skin Boots. |rIncreases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF5|r, strength by |cffFE890D2|r armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffFE890DJungle Bear Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Bear Skin Boots. |rIncreases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AM6n,DataB1>|r, strength by |cffFE890D<AIs6,DataC1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffFE890DJungle Bear Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBearHideBoots.blp",
       "hero": false,
       "item": false,
@@ -136439,7 +136439,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Bear Skin Boots. |rIncreases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF5|r, strength by |cffFE890D2|r armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffFE890DJungle Bear Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Bear Skin Boots. |rIncreases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AM6n,DataB1>|r, strength by |cffFE890D<AIs6,DataC1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffFE890DJungle Bear Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -136503,7 +136503,7 @@
       "id": "AMaq:ANcl",
       "name": "Quick make Jungle Bear Skin Gloves",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Bear Skin Gloves. |rIncreases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02021|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffFE890DJungle Bear Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Bear Skin Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIat,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffFE890DJungle Bear Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBearHideGloves.blp",
       "hero": false,
       "item": false,
@@ -136598,7 +136598,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Bear Skin Gloves. |rIncreases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02021|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffFE890DJungle Bear Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a pair of|cffFE890D Jungle Bear Skin Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIat,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffFE890DJungle Bear Hide|r\n1x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -136662,7 +136662,7 @@
       "id": "AMap:ANcl",
       "name": "Quick make Jungle Bear Skin Coat",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a |cffFE890DJungle Bear Skin Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF003|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r\n\n1x |cffFE890DJungle Bear Hide|r\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a |cffFE890DJungle Bear Skin Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AIs6,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r\n\n1x |cffFE890DJungle Bear Hide|r\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBearHideCoat.blp",
       "hero": false,
       "item": false,
@@ -136757,7 +136757,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a |cffFE890DJungle Bear Skin Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF003|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r\n\n1x |cffFE890DJungle Bear Hide|r\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a |cffFE890DJungle Bear Skin Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AIs6,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r\n\n1x |cffFE890DJungle Bear Hide|r\n2x |cffFE890DElk Hide|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -136821,7 +136821,7 @@
       "id": "AMae:ANcl",
       "name": "Quick make Hydra Scale Boots",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a pair of |cff82FF20Hydra Scale Boots. |rIncreases wearer's movement speed by |cffFE890D100|r, armor by |cff1FBF005|r armor and all stats by |cff1FBF005|r. Also gives spell shield with |cff7DBEF175|r second cooldown.\n\n2x |cff82FF20Hydra Scale|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a pair of |cff82FF20Hydra Scale Boots. |rIncreases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r armor and all stats by |cff1FBF005|r. Also gives spell shield with |cff7DBEF1<AMdz,Cool1>|r second cooldown.\n\n2x |cff82FF20Hydra Scale|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNHydraWarStomp.blp",
       "hero": false,
       "item": false,
@@ -136916,7 +136916,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a pair of |cff82FF20Hydra Scale Boots. |rIncreases wearer's movement speed by |cffFE890D100|r, armor by |cff1FBF005|r armor and all stats by |cff1FBF005|r. Also gives spell shield with |cff7DBEF175|r second cooldown.\n\n2x |cff82FF20Hydra Scale|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a pair of |cff82FF20Hydra Scale Boots. |rIncreases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r armor and all stats by |cff1FBF005|r. Also gives spell shield with |cff7DBEF1<AMdz,Cool1>|r second cooldown.\n\n2x |cff82FF20Hydra Scale|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -136980,7 +136980,7 @@
       "id": "AMag:ANcl",
       "name": "Quick make Hydra Scale Gloves",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a pair of |cff82FF20Hydra Scale Gloves. |rIncreases wearer's attack speed by |cffFE890D0.35%%|r, all stats by |cff1FBF005|r and has a poisonous attack effect that lowers attack speed by |cffFFFC000.15%%|r and movement speed by |cffFFFC000.15%%|r and deals |cffFF02020.15|r damage per second for |cff7DBEF10.15|r seconds on trolls and |cff7DBEF10.15|r seconds on units. Can cast |cffFF6347Tsunami|r.|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown.\n\n2x |cff82FF20Hydra Scale|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a pair of |cff82FF20Hydra Scale Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM3c,DataA1,%>%|r, all stats by |cff1FBF005|r and has a poisonous attack effect that lowers attack speed by |cffFFFC00<AM63,DataB1,%>%|r and movement speed by |cffFFFC00<AM63,DataC1,%>%|r and deals |cffFF0202<AM63,DataA1>|r damage per second for |cff7DBEF1<AM63,HeroDur1>|r seconds on trolls and |cff7DBEF1<AM63,Dur1>|r seconds on units. Can cast |cffFF6347Tsunami|r.|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown.\n\n2x |cff82FF20Hydra Scale|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNImprovedStrengthOfTheWild.blp",
       "hero": false,
       "item": false,
@@ -137075,7 +137075,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a pair of |cff82FF20Hydra Scale Gloves. |rIncreases wearer's attack speed by |cffFE890D0.35%%|r, all stats by |cff1FBF005|r and has a poisonous attack effect that lowers attack speed by |cffFFFC000.15%%|r and movement speed by |cffFFFC000.15%%|r and deals |cffFF02020.15|r damage per second for |cff7DBEF10.15|r seconds on trolls and |cff7DBEF10.15|r seconds on units. Can cast |cffFF6347Tsunami|r.|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown.\n\n2x |cff82FF20Hydra Scale|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a pair of |cff82FF20Hydra Scale Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM3c,DataA1,%>%|r, all stats by |cff1FBF005|r and has a poisonous attack effect that lowers attack speed by |cffFFFC00<AM63,DataB1,%>%|r and movement speed by |cffFFFC00<AM63,DataC1,%>%|r and deals |cffFF0202<AM63,DataA1>|r damage per second for |cff7DBEF1<AM63,HeroDur1>|r seconds on trolls and |cff7DBEF1<AM63,Dur1>|r seconds on units. Can cast |cffFF6347Tsunami|r.|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown.\n\n2x |cff82FF20Hydra Scale|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -139365,7 +139365,7 @@
       "id": "AM9p:ANcl",
       "name": "Quick make Bone Boots",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a pair of |cffFE890DBone Boots. |rIncreases wearer's movement speed by |cffFE890D70|r, intelligence by |cff00EAFF<AIi3,DataB1>|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffA46F33Elk Hide Boots|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a pair of |cffFE890DBone Boots. |rIncreases wearer's movement speed by |cffFE890D<AMdt,DataA1>|r, intelligence by |cff00EAFF<AIi3,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffA46F33Elk Hide Boots|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBoneBoots.blp",
       "hero": false,
       "item": false,
@@ -139460,7 +139460,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a pair of |cffFE890DBone Boots. |rIncreases wearer's movement speed by |cffFE890D70|r, intelligence by |cff00EAFF<AIi3,DataB1>|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffA46F33Elk Hide Boots|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a pair of |cffFE890DBone Boots. |rIncreases wearer's movement speed by |cffFE890D<AMdt,DataA1>|r, intelligence by |cff00EAFF<AIi3,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffA46F33Elk Hide Boots|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -139524,7 +139524,7 @@
       "id": "AMai:ANcl",
       "name": "Quick make Iron Boots",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a pair of |cff949596Iron Boots. |rIncreases wearer's movement speed by |cffFE890D80|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a pair of |cff949596Iron Boots. |rIncreases wearer's movement speed by |cffFE890D<AMdu,DataA1>|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBoots.blp",
       "hero": false,
       "item": false,
@@ -139619,7 +139619,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a pair of |cff949596Iron Boots. |rIncreases wearer's movement speed by |cffFE890D80|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a pair of |cff949596Iron Boots. |rIncreases wearer's movement speed by |cffFE890D<AMdu,DataA1>|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -139683,7 +139683,7 @@
       "id": "AMbm:ANcl",
       "name": "Quick make Steel Boots",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a pair of |cff00EAFFSteel Boots. |rIncreases wearer's movement speed by |cffFE890D100|r, intelligence by |cff00EAFF10|r, armor by |cff1FBF005|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a pair of |cff00EAFFSteel Boots. |rIncreases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r, intelligence by |cff00EAFF<AM6p,DataB1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNSteelBoots.blp",
       "hero": false,
       "item": false,
@@ -139778,7 +139778,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a pair of |cff00EAFFSteel Boots. |rIncreases wearer's movement speed by |cffFE890D100|r, intelligence by |cff00EAFF10|r, armor by |cff1FBF005|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a pair of |cff00EAFFSteel Boots. |rIncreases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r, intelligence by |cff00EAFF<AM6p,DataB1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -139842,7 +139842,7 @@
       "id": "AM9r:ANcl",
       "name": "Quick make Bone Gloves",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a |cffFE890DBone Gloves. |rIncreases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02021|r, armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a |cffFE890DBone Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AItg,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNGauntletsOfOgrePower.blp",
       "hero": false,
       "item": false,
@@ -139937,7 +139937,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a |cffFE890DBone Gloves. |rIncreases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02021|r, armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a |cffFE890DBone Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AItg,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -140001,7 +140001,7 @@
       "id": "AMak:ANcl",
       "name": "Quick make Iron Gloves",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get an |cff949596Iron Gloves. |rIncreases wearer's attack speed by |cffFE890D0.25%%|r, damage by |cffFF02021|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get an |cff949596Iron Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM3a,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNIronGloves.blp",
       "hero": false,
       "item": false,
@@ -140096,7 +140096,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get an |cff949596Iron Gloves. |rIncreases wearer's attack speed by |cffFE890D0.25%%|r, damage by |cffFF02021|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get an |cff949596Iron Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM3a,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -140160,7 +140160,7 @@
       "id": "AMbo:ANcl",
       "name": "Quick make Steel Gloves",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a |cff00EAFFSteel Gloves. |rIncreases wearer's attack speed by |cffFE890D0.35%%|r, damage by |cffFF02021|r, armor by |cff1FBF005|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a |cff00EAFFSteel Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM3c,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNAdvancedUnholyStrength.blp",
       "hero": false,
       "item": false,
@@ -140255,7 +140255,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a |cff00EAFFSteel Gloves. |rIncreases wearer's attack speed by |cffFE890D0.35%%|r, damage by |cffFF02021|r, armor by |cff1FBF005|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a |cff00EAFFSteel Gloves. |rIncreases wearer's attack speed by |cffFE890D<AM3c,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -140319,7 +140319,7 @@
       "id": "AM9q:ANcl",
       "name": "Quick make Bone Coat",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a |cffFE890DBone Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF002|r and provides warmth.\n\n1x |cffA46F33Elk Hide Coat|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a |cffFE890DBone Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.\n\n1x |cffA46F33Elk Hide Coat|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBoneCoat.blp",
       "hero": false,
       "item": false,
@@ -140414,7 +140414,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a |cffFE890DBone Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF002|r and provides warmth.\n\n1x |cffA46F33Elk Hide Coat|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a |cffFE890DBone Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.\n\n1x |cffA46F33Elk Hide Coat|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -140478,7 +140478,7 @@
       "id": "AMaj:ANcl",
       "name": "Quick make Iron Coat",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get an |cff949596Iron Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF004|r, Intelligence by |cff1FBF00<AIi6,DataB1>|r, Armor by |cff1FBF003|r and provides warmth.\n\n1x |cffA46F33Elk Hide Coat|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get an |cff949596Iron Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AIs4,DataC1>|r, Intelligence by |cff1FBF00<AIi6,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.\n\n1x |cffA46F33Elk Hide Coat|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNImprovedMoonArmor.blp",
       "hero": false,
       "item": false,
@@ -140573,7 +140573,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get an |cff949596Iron Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF004|r, Intelligence by |cff1FBF00<AIi6,DataB1>|r, Armor by |cff1FBF003|r and provides warmth.\n\n1x |cffA46F33Elk Hide Coat|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get an |cff949596Iron Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AIs4,DataC1>|r, Intelligence by |cff1FBF00<AIi6,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.\n\n1x |cffA46F33Elk Hide Coat|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -140637,7 +140637,7 @@
       "id": "AMbn:ANcl",
       "name": "Quick make Steel Coat",
       "description": "",
-      "tooltip": "Put those materials in the correct order to get a |cff00EAFFSteel Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF008|r, Intelligence by |cff1FBF008|r, Armor by |cff1FBF005|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown.\n\n1x |cffA46F33Elk Hide Coat|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
+      "tooltip": "Put those materials in the correct order to get a |cff00EAFFSteel Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AMep,DataC1>|r, Intelligence by |cff1FBF00<AM6o,DataB1>|r, Armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown.\n\n1x |cffA46F33Elk Hide Coat|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNAdvancedMoonArmor.blp",
       "hero": false,
       "item": false,
@@ -140732,7 +140732,7 @@
           "type": "string",
           "level": 1,
           "column": 0,
-          "value": "Put those materials in the correct order to get a |cff00EAFFSteel Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF008|r, Intelligence by |cff1FBF008|r, Armor by |cff1FBF005|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown.\n\n1x |cffA46F33Elk Hide Coat|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
+          "value": "Put those materials in the correct order to get a |cff00EAFFSteel Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AMep,DataC1>|r, Intelligence by |cff1FBF00<AM6o,DataB1>|r, Armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown.\n\n1x |cffA46F33Elk Hide Coat|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients."
         },
         {
           "id": "acdn",
@@ -152948,5 +152948,5 @@
       ]
     }
   ],
-  "generatedAt": "2025-11-26T01:25:34.032Z"
+  "generatedAt": "2025-11-26T22:19:06.229Z"
 }

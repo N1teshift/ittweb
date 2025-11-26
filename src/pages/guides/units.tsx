@@ -57,7 +57,7 @@ function UnitCard({ unit }: { unit: UnitData }) {
       category="units" 
       name={unit.name} 
       size={48}
-      src={`/icons/itt/units/${unit.iconPath}`}
+      src={`/icons/itt/${unit.iconPath}`}
     />
   ) : (
     <GuideIcon category="units" name={unit.name} size={48} />

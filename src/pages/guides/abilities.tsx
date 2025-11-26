@@ -48,7 +48,12 @@ function AbilityCard({ ability }: { ability: AbilityData }) {
   );
 
   const icon = (
-    <GuideIcon category="abilities" name={ability.name} size={48} />
+    <GuideIcon 
+      category="abilities" 
+      name={ability.name} 
+      size={48}
+      src={ability.iconPath ? `/icons/itt/${ability.iconPath}` : undefined}
+    />
   );
 
   return (

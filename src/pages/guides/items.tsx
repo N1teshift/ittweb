@@ -52,7 +52,12 @@ function ItemCard({ item }: { item: ItemData }) {
     : [];
 
   const icon = (
-    <GuideIcon category="items" name={item.name} size={48} />
+    <GuideIcon 
+      category="items" 
+      name={item.name} 
+      size={48}
+      src={item.iconPath ? `/icons/itt/${item.iconPath}` : undefined}
+    />
   );
 
   return (

@@ -3062,8 +3062,8 @@
     {
       "id": "IM1q:bspd",
       "name": "Elk Skin Coat",
-      "description": "A coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF000|r, Armor by |cff1FBF001|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r",
-      "tooltip": "A coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF000|r, Armor by |cff1FBF001|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r",
+      "description": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AMef,DataC1>|r, Intelligence by |cff1FBF00<AM6l,DataB1>|r, Armor by |cff1FBF00<AM2t,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r",
+      "tooltip": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AMef,DataC1>|r, Intelligence by |cff1FBF00<AM6l,DataB1>|r, Armor by |cff1FBF00<AM2t,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNElkHideCoat.blp",
       "class": "Permanent",
       "level": 0,
@@ -3169,14 +3169,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF000|r, Armor by |cff1FBF001|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r"
+          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AMef,DataC1>|r, Intelligence by |cff1FBF00<AM6l,DataB1>|r, Armor by |cff1FBF00<AM2t,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF000|r, Armor by |cff1FBF001|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r"
+          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AMef,DataC1>|r, Intelligence by |cff1FBF00<AM6l,DataB1>|r, Armor by |cff1FBF00<AM2t,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r"
         },
         {
           "id": "ilum",
@@ -3239,8 +3239,8 @@
     {
       "id": "IM47:bspd",
       "name": "Wolf Skin Coat",
-      "description": "A coat made from animals pelt. Increases Strength by |cff1FBF000|r, Intelligence by |cff1FBF002|r, Armor by |cff1FBF002|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r",
-      "tooltip": "A coat made from animals pelt. Increases Strength by |cff1FBF000|r, Intelligence by |cff1FBF002|r, Armor by |cff1FBF002|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r",
+      "description": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AM6m,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r",
+      "tooltip": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AM6m,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNWolfHideCoat.blp",
       "class": "Permanent",
       "level": 0,
@@ -3346,14 +3346,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF000|r, Intelligence by |cff1FBF002|r, Armor by |cff1FBF002|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r"
+          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AM6m,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF000|r, Intelligence by |cff1FBF002|r, Armor by |cff1FBF002|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r"
+          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AM6m,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r"
         },
         {
           "id": "ilum",
@@ -3416,8 +3416,8 @@
     {
       "id": "IM4a:bspd",
       "name": "Coat of Wolf's Voracity",
-      "description": "A coat imbued with voracity of a Dire Wolf. Allows wearer to consume raw meat, and to consume corpses instantly.  |cFFFFCC00\nUse this item to consume raw meat instantly restoring|r|cff1FBF0050.0|r|cFFFFCC00 health.|r\n+|cff1FBF004|r Armor\n+|cff1FBF000|r Strength\n+|cff1FBF006|r Agility",
-      "tooltip": "A coat imbued with voracity of a Dire Wolf. Allows wearer to consume raw meat, and to consume corpses instantly.  |cFFFFCC00\nUse this item to consume raw meat instantly restoring|r|cff1FBF0050.0|r|cFFFFCC00 health.|r\n+|cff1FBF004|r Armor\n+|cff1FBF000|r Strength\n+|cff1FBF006|r Agility",
+      "description": "A coat imbued with voracity of a Dire Wolf. Allows wearer to consume raw meat, and to consume corpses instantly.  |cFFFFCC00\nUse this item to consume raw meat instantly restoring|r|cff1FBF0050.0|r|cFFFFCC00 health.|r\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AIs6,DataC1>|r Strength\n+|cff1FBF00<AMem,DataA1>|r Agility",
+      "tooltip": "A coat imbued with voracity of a Dire Wolf. Allows wearer to consume raw meat, and to consume corpses instantly.  |cFFFFCC00\nUse this item to consume raw meat instantly restoring|r|cff1FBF0050.0|r|cFFFFCC00 health.|r\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AIs6,DataC1>|r Strength\n+|cff1FBF00<AMem,DataA1>|r Agility",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNChestOfWolfVoracity.blp",
       "class": "Permanent",
       "level": 0,
@@ -3523,14 +3523,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat imbued with voracity of a Dire Wolf. Allows wearer to consume raw meat, and to consume corpses instantly.  |cFFFFCC00\nUse this item to consume raw meat instantly restoring|r|cff1FBF0050.0|r|cFFFFCC00 health.|r\n+|cff1FBF004|r Armor\n+|cff1FBF000|r Strength\n+|cff1FBF006|r Agility"
+          "value": "A coat imbued with voracity of a Dire Wolf. Allows wearer to consume raw meat, and to consume corpses instantly.  |cFFFFCC00\nUse this item to consume raw meat instantly restoring|r|cff1FBF0050.0|r|cFFFFCC00 health.|r\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AIs6,DataC1>|r Strength\n+|cff1FBF00<AMem,DataA1>|r Agility"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat imbued with voracity of a Dire Wolf. Allows wearer to consume raw meat, and to consume corpses instantly.  |cFFFFCC00\nUse this item to consume raw meat instantly restoring|r|cff1FBF0050.0|r|cFFFFCC00 health.|r\n+|cff1FBF004|r Armor\n+|cff1FBF000|r Strength\n+|cff1FBF006|r Agility"
+          "value": "A coat imbued with voracity of a Dire Wolf. Allows wearer to consume raw meat, and to consume corpses instantly.  |cFFFFCC00\nUse this item to consume raw meat instantly restoring|r|cff1FBF0050.0|r|cFFFFCC00 health.|r\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AIs6,DataC1>|r Strength\n+|cff1FBF00<AMem,DataA1>|r Agility"
         },
         {
           "id": "ilum",
@@ -3600,8 +3600,8 @@
     {
       "id": "IM0v:bspd",
       "name": "Bear Skin Coat",
-      "description": "A coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF003|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r",
-      "tooltip": "A coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF003|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r",
+      "description": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs6,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r",
+      "tooltip": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs6,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBearHideCoat.blp",
       "class": "Permanent",
       "level": 0,
@@ -3707,14 +3707,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF003|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r"
+          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs6,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF003|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r"
+          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs6,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r"
         },
         {
           "id": "ilum",
@@ -3777,8 +3777,8 @@
     {
       "id": "IM0w:bspd",
       "name": "Coat of bear's terrifying presence",
-      "description": "A coat made out of a hide of ancient bear.|nAnimals will freeze in your terrifying presence.|nEnemies shaken with fear suffer 20% damage penalty.|n+|cff1FBF0012|r Strength.|n+|cff1FBF006|r Armor.",
-      "tooltip": "A coat made out of a hide of ancient bear.|nAnimals will freeze in your terrifying presence.|nEnemies shaken with fear suffer 20% damage penalty.|n+|cff1FBF0012|r Strength.|n+|cff1FBF006|r Armor.",
+      "description": "A coat made out of a hide of ancient bear.|nAnimals will freeze in your terrifying presence.|nEnemies shaken with fear suffer 20% damage penalty.|n+|cff1FBF00<AMer,DataC1>|r Strength.|n+|cff1FBF00<AM2x,DataA1>|r Armor.",
+      "tooltip": "A coat made out of a hide of ancient bear.|nAnimals will freeze in your terrifying presence.|nEnemies shaken with fear suffer 20% damage penalty.|n+|cff1FBF00<AMer,DataC1>|r Strength.|n+|cff1FBF00<AM2x,DataA1>|r Armor.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNCoatOfBearPresence.blp",
       "class": "Permanent",
       "level": 0,
@@ -3884,14 +3884,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat made out of a hide of ancient bear.|nAnimals will freeze in your terrifying presence.|nEnemies shaken with fear suffer 20% damage penalty.|n+|cff1FBF0012|r Strength.|n+|cff1FBF006|r Armor."
+          "value": "A coat made out of a hide of ancient bear.|nAnimals will freeze in your terrifying presence.|nEnemies shaken with fear suffer 20% damage penalty.|n+|cff1FBF00<AMer,DataC1>|r Strength.|n+|cff1FBF00<AM2x,DataA1>|r Armor."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat made out of a hide of ancient bear.|nAnimals will freeze in your terrifying presence.|nEnemies shaken with fear suffer 20% damage penalty.|n+|cff1FBF0012|r Strength.|n+|cff1FBF006|r Armor."
+          "value": "A coat made out of a hide of ancient bear.|nAnimals will freeze in your terrifying presence.|nEnemies shaken with fear suffer 20% damage penalty.|n+|cff1FBF00<AMer,DataC1>|r Strength.|n+|cff1FBF00<AM2x,DataA1>|r Armor."
         },
         {
           "id": "ilum",
@@ -3954,8 +3954,8 @@
     {
       "id": "IM12:bspd",
       "name": "Bone Coat",
-      "description": "A coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF002|r and provides warmth.",
-      "tooltip": "A coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF002|r and provides warmth.",
+      "description": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.",
+      "tooltip": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBoneCoat.blp",
       "class": "Permanent",
       "level": 0,
@@ -4061,14 +4061,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF002|r and provides warmth."
+          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF002|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF002|r and provides warmth."
+          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth."
         },
         {
           "id": "ilum",
@@ -4131,8 +4131,8 @@
     {
       "id": "IM2a:bspd",
       "name": "Iron Coat",
-      "description": "A coat made from animals pelt. Increases Strength by |cff1FBF004|r, Intelligence by |cff1FBF000|r, Armor by |cff1FBF003|r and provides warmth.",
-      "tooltip": "A coat made from animals pelt. Increases Strength by |cff1FBF004|r, Intelligence by |cff1FBF000|r, Armor by |cff1FBF003|r and provides warmth.",
+      "description": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs4,DataC1>|r, Intelligence by |cff1FBF00<AIi6,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.",
+      "tooltip": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs4,DataC1>|r, Intelligence by |cff1FBF00<AIi6,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNImprovedMoonArmor.blp",
       "class": "Permanent",
       "level": 0,
@@ -4238,14 +4238,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF004|r, Intelligence by |cff1FBF000|r, Armor by |cff1FBF003|r and provides warmth."
+          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs4,DataC1>|r, Intelligence by |cff1FBF00<AIi6,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF004|r, Intelligence by |cff1FBF000|r, Armor by |cff1FBF003|r and provides warmth."
+          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs4,DataC1>|r, Intelligence by |cff1FBF00<AIi6,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth."
         },
         {
           "id": "ilum",
@@ -4308,8 +4308,8 @@
     {
       "id": "IM3p:bspd",
       "name": "Steel Coat",
-      "description": "A coat made from animals pelt. Increases Strength by |cff1FBF008|r, Intelligence by |cff1FBF008|r, Armor by |cff1FBF005|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown.",
-      "tooltip": "A coat made from animals pelt. Increases Strength by |cff1FBF008|r, Intelligence by |cff1FBF008|r, Armor by |cff1FBF005|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown.",
+      "description": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AMep,DataC1>|r, Intelligence by |cff1FBF00<AM6o,DataB1>|r, Armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown.",
+      "tooltip": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AMep,DataC1>|r, Intelligence by |cff1FBF00<AM6o,DataB1>|r, Armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNAdvancedMoonArmor.blp",
       "class": "Permanent",
       "level": 0,
@@ -4415,14 +4415,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF008|r, Intelligence by |cff1FBF008|r, Armor by |cff1FBF005|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown."
+          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AMep,DataC1>|r, Intelligence by |cff1FBF00<AM6o,DataB1>|r, Armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF008|r, Intelligence by |cff1FBF008|r, Armor by |cff1FBF005|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown."
+          "value": "A coat made from animals pelt. Increases Strength by |cff1FBF00<AMep,DataC1>|r, Intelligence by |cff1FBF00<AM6o,DataB1>|r, Armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown."
         },
         {
           "id": "ilum",
@@ -4492,8 +4492,8 @@
     {
       "id": "IM0f:bspd",
       "name": "Makruru Cuirass",
-      "description": "A large Makruru carapace, which can be used as a cuirass. \n+|cff1FBF003|r Armor \n+|cff1FBF008|r Strength \nThis unit gains |cff1FBF002|r armor and |cff1FBF003|r health regeneration while in water. \nCan be activated to apply effects outside of water, tripling their strength. \nLasts |cff6495ED10.0|r seconds. |cff6495ED35.0|r seconds cooldown. ",
-      "tooltip": "A large Makruru carapace, which can be used as a cuirass. \n+|cff1FBF003|r Armor \n+|cff1FBF008|r Strength \nThis unit gains |cff1FBF002|r armor and |cff1FBF003|r health regeneration while in water. \nCan be activated to apply effects outside of water, tripling their strength. \nLasts |cff6495ED10.0|r seconds. |cff6495ED35.0|r seconds cooldown. ",
+      "description": "A large Makruru carapace, which can be used as a cuirass. \n+|cff1FBF00<AM2v,DataA1>|r Armor \n+|cff1FBF00<AMep,DataC1>|r Strength \nThis unit gains |cff1FBF002|r armor and |cff1FBF003|r health regeneration while in water. \nCan be activated to apply effects outside of water, tripling their strength. \nLasts |cff6495ED10.0|r seconds. |cff6495ED35.0|r seconds cooldown. ",
+      "tooltip": "A large Makruru carapace, which can be used as a cuirass. \n+|cff1FBF00<AM2v,DataA1>|r Armor \n+|cff1FBF00<AMep,DataC1>|r Strength \nThis unit gains |cff1FBF002|r armor and |cff1FBF003|r health regeneration while in water. \nCan be activated to apply effects outside of water, tripling their strength. \nLasts |cff6495ED10.0|r seconds. |cff6495ED35.0|r seconds cooldown. ",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNNagaArmorUp3.blp",
       "class": "Permanent",
       "level": 0,
@@ -4599,14 +4599,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A large Makruru carapace, which can be used as a cuirass. \n+|cff1FBF003|r Armor \n+|cff1FBF008|r Strength \nThis unit gains |cff1FBF002|r armor and |cff1FBF003|r health regeneration while in water. \nCan be activated to apply effects outside of water, tripling their strength. \nLasts |cff6495ED10.0|r seconds. |cff6495ED35.0|r seconds cooldown. "
+          "value": "A large Makruru carapace, which can be used as a cuirass. \n+|cff1FBF00<AM2v,DataA1>|r Armor \n+|cff1FBF00<AMep,DataC1>|r Strength \nThis unit gains |cff1FBF002|r armor and |cff1FBF003|r health regeneration while in water. \nCan be activated to apply effects outside of water, tripling their strength. \nLasts |cff6495ED10.0|r seconds. |cff6495ED35.0|r seconds cooldown. "
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "A large Makruru carapace, which can be used as a cuirass. \n+|cff1FBF003|r Armor \n+|cff1FBF008|r Strength \nThis unit gains |cff1FBF002|r armor and |cff1FBF003|r health regeneration while in water. \nCan be activated to apply effects outside of water, tripling their strength. \nLasts |cff6495ED10.0|r seconds. |cff6495ED35.0|r seconds cooldown. "
+          "value": "A large Makruru carapace, which can be used as a cuirass. \n+|cff1FBF00<AM2v,DataA1>|r Armor \n+|cff1FBF00<AMep,DataC1>|r Strength \nThis unit gains |cff1FBF002|r armor and |cff1FBF003|r health regeneration while in water. \nCan be activated to apply effects outside of water, tripling their strength. \nLasts |cff6495ED10.0|r seconds. |cff6495ED35.0|r seconds cooldown. "
         },
         {
           "id": "ilum",
@@ -9899,8 +9899,8 @@
     {
       "id": "IM1p:bspd",
       "name": "Elk Skin Boots",
-      "description": "Increases wearer's movement speed by |cffFE890D60|r, intelligence by |cff00EAFF2|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
-      "tooltip": "Increases wearer's movement speed by |cffFE890D60|r, intelligence by |cff00EAFF2|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
+      "description": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r, intelligence by |cff00EAFF<AM6m,DataB1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
+      "tooltip": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r, intelligence by |cff00EAFF<AM6m,DataB1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNElkHideBoots.blp",
       "class": "Permanent",
       "level": 0,
@@ -10055,14 +10055,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D60|r, intelligence by |cff00EAFF2|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
+          "value": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r, intelligence by |cff00EAFF<AM6m,DataB1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D60|r, intelligence by |cff00EAFF2|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
+          "value": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r, intelligence by |cff00EAFF<AM6m,DataB1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
         },
         {
           "id": "icid",
@@ -10076,8 +10076,8 @@
     {
       "id": "IM45:bspd",
       "name": "Wolf Skin Boots",
-      "description": "Increases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF0|r, agility by |cff1FBF004|r armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
-      "tooltip": "Increases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF0|r, agility by |cff1FBF004|r armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
+      "description": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi4,DataB1>|r, agility by |cff1FBF00<AMel,DataA1>|r armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
+      "tooltip": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi4,DataB1>|r, agility by |cff1FBF00<AMel,DataA1>|r armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNWolfHideBoots.blp",
       "class": "Permanent",
       "level": 0,
@@ -10232,14 +10232,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF0|r, agility by |cff1FBF004|r armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
+          "value": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi4,DataB1>|r, agility by |cff1FBF00<AMel,DataA1>|r armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF0|r, agility by |cff1FBF004|r armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
+          "value": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi4,DataB1>|r, agility by |cff1FBF00<AMel,DataA1>|r armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
         },
         {
           "id": "icid",
@@ -10253,8 +10253,8 @@
     {
       "id": "IM46:bspd",
       "name": "Boots of Wolfs Stamina",
-      "description": "Increases wearer's movement speed by |cffFE890D100|r intelligence by |cff00EAFF10|r, agility by |cff1FBF006|r armor by |cff1FBF003|r and provides warmth.|nRemoves mana cost and extra damage taken penalty from panic.",
-      "tooltip": "Increases wearer's movement speed by |cffFE890D100|r intelligence by |cff00EAFF10|r, agility by |cff1FBF006|r armor by |cff1FBF003|r and provides warmth.|nRemoves mana cost and extra damage taken penalty from panic.",
+      "description": "Increases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r intelligence by |cff00EAFF<AM6p,DataB1>|r, agility by |cff1FBF00<AMem,DataA1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|nRemoves mana cost and extra damage taken penalty from panic.",
+      "tooltip": "Increases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r intelligence by |cff00EAFF<AM6p,DataB1>|r, agility by |cff1FBF00<AMem,DataA1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|nRemoves mana cost and extra damage taken penalty from panic.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBootsOfWolfStamina.blp",
       "class": "Permanent",
       "level": 0,
@@ -10409,14 +10409,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D100|r intelligence by |cff00EAFF10|r, agility by |cff1FBF006|r armor by |cff1FBF003|r and provides warmth.|nRemoves mana cost and extra damage taken penalty from panic."
+          "value": "Increases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r intelligence by |cff00EAFF<AM6p,DataB1>|r, agility by |cff1FBF00<AMem,DataA1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|nRemoves mana cost and extra damage taken penalty from panic."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D100|r intelligence by |cff00EAFF10|r, agility by |cff1FBF006|r armor by |cff1FBF003|r and provides warmth.|nRemoves mana cost and extra damage taken penalty from panic."
+          "value": "Increases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r intelligence by |cff00EAFF<AM6p,DataB1>|r, agility by |cff1FBF00<AMem,DataA1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|nRemoves mana cost and extra damage taken penalty from panic."
         },
         {
           "id": "icid",
@@ -10430,8 +10430,8 @@
     {
       "id": "IM0t:bspd",
       "name": "Bear Skin Boots",
-      "description": "Increases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF5|r, strength by |cffFE890D0|r armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
-      "tooltip": "Increases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF5|r, strength by |cffFE890D0|r armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
+      "description": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AM6n,DataB1>|r, strength by |cffFE890D<AIs6,DataC1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
+      "tooltip": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AM6n,DataB1>|r, strength by |cffFE890D<AIs6,DataC1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBearHideBoots.blp",
       "class": "Permanent",
       "level": 0,
@@ -10586,14 +10586,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF5|r, strength by |cffFE890D0|r armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
+          "value": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AM6n,DataB1>|r, strength by |cffFE890D<AIs6,DataC1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF5|r, strength by |cffFE890D0|r armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
+          "value": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AM6n,DataB1>|r, strength by |cffFE890D<AIs6,DataC1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
         },
         {
           "id": "icid",
@@ -10607,8 +10607,8 @@
     {
       "id": "IM0u:bspd",
       "name": "Boots of Bear's Tenacity",
-      "description": "Increases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF0|r, strength by |cffFE890D8|r armor by |cff1FBF005|r and provides warmth.\nGrants wearer tenacity of a bear, no snare will be able to stop you. \nWhenever you are ensnared you gain |cffFFFC002.5|rs decaying movement speed debuff instead of being immobilized",
-      "tooltip": "Increases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF0|r, strength by |cffFE890D8|r armor by |cff1FBF005|r and provides warmth.\nGrants wearer tenacity of a bear, no snare will be able to stop you. \nWhenever you are ensnared you gain |cffFFFC002.5|rs decaying movement speed debuff instead of being immobilized",
+      "description": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi6,DataB1>|r, strength by |cffFE890D<AMep,DataC1>|r armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.\nGrants wearer tenacity of a bear, no snare will be able to stop you. \nWhenever you are ensnared you gain |cffFFFC002.5|rs decaying movement speed debuff instead of being immobilized",
+      "tooltip": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi6,DataB1>|r, strength by |cffFE890D<AMep,DataC1>|r armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.\nGrants wearer tenacity of a bear, no snare will be able to stop you. \nWhenever you are ensnared you gain |cffFFFC002.5|rs decaying movement speed debuff instead of being immobilized",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBootsOfBearTenacity.blp",
       "class": "Permanent",
       "level": 0,
@@ -10763,14 +10763,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF0|r, strength by |cffFE890D8|r armor by |cff1FBF005|r and provides warmth.\nGrants wearer tenacity of a bear, no snare will be able to stop you. \nWhenever you are ensnared you gain |cffFFFC002.5|rs decaying movement speed debuff instead of being immobilized"
+          "value": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi6,DataB1>|r, strength by |cffFE890D<AMep,DataC1>|r armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.\nGrants wearer tenacity of a bear, no snare will be able to stop you. \nWhenever you are ensnared you gain |cffFFFC002.5|rs decaying movement speed debuff instead of being immobilized"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D60|r intelligence by |cff00EAFF0|r, strength by |cffFE890D8|r armor by |cff1FBF005|r and provides warmth.\nGrants wearer tenacity of a bear, no snare will be able to stop you. \nWhenever you are ensnared you gain |cffFFFC002.5|rs decaying movement speed debuff instead of being immobilized"
+          "value": "Increases wearer's movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi6,DataB1>|r, strength by |cffFE890D<AMep,DataC1>|r armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.\nGrants wearer tenacity of a bear, no snare will be able to stop you. \nWhenever you are ensnared you gain |cffFFFC002.5|rs decaying movement speed debuff instead of being immobilized"
         },
         {
           "id": "icid",
@@ -10784,8 +10784,8 @@
     {
       "id": "IM11:bspd",
       "name": "Bone Boots",
-      "description": "Increases wearer's movement speed by |cffFE890D70|r, intelligence by |cff00EAFF<AIi3,DataB1>|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
-      "tooltip": "Increases wearer's movement speed by |cffFE890D70|r, intelligence by |cff00EAFF<AIi3,DataB1>|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
+      "description": "Increases wearer's movement speed by |cffFE890D<AMdt,DataA1>|r, intelligence by |cff00EAFF<AIi3,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
+      "tooltip": "Increases wearer's movement speed by |cffFE890D<AMdt,DataA1>|r, intelligence by |cff00EAFF<AIi3,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBoneBoots.blp",
       "class": "Permanent",
       "level": 0,
@@ -10940,14 +10940,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D70|r, intelligence by |cff00EAFF<AIi3,DataB1>|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
+          "value": "Increases wearer's movement speed by |cffFE890D<AMdt,DataA1>|r, intelligence by |cff00EAFF<AIi3,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D70|r, intelligence by |cff00EAFF<AIi3,DataB1>|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
+          "value": "Increases wearer's movement speed by |cffFE890D<AMdt,DataA1>|r, intelligence by |cff00EAFF<AIi3,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
         },
         {
           "id": "icid",
@@ -10961,8 +10961,8 @@
     {
       "id": "IM29:bspd",
       "name": "Iron Boots",
-      "description": "Increases wearer's movement speed by |cffFE890D80|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
-      "tooltip": "Increases wearer's movement speed by |cffFE890D80|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
+      "description": "Increases wearer's movement speed by |cffFE890D<AMdu,DataA1>|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
+      "tooltip": "Increases wearer's movement speed by |cffFE890D<AMdu,DataA1>|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBoots.blp",
       "class": "Permanent",
       "level": 0,
@@ -11117,14 +11117,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D80|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
+          "value": "Increases wearer's movement speed by |cffFE890D<AMdu,DataA1>|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D80|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
+          "value": "Increases wearer's movement speed by |cffFE890D<AMdu,DataA1>|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
         },
         {
           "id": "icid",
@@ -11138,8 +11138,8 @@
     {
       "id": "IM3o:bspd",
       "name": "Steel Boots",
-      "description": "Increases wearer's movement speed by |cffFE890D100|r, intelligence by |cff00EAFF10|r, armor by |cff1FBF005|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
-      "tooltip": "Increases wearer's movement speed by |cffFE890D100|r, intelligence by |cff00EAFF10|r, armor by |cff1FBF005|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
+      "description": "Increases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r, intelligence by |cff00EAFF<AM6p,DataB1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
+      "tooltip": "Increases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r, intelligence by |cff00EAFF<AM6p,DataB1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNSteelBoots.blp",
       "class": "Permanent",
       "level": 0,
@@ -11294,14 +11294,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D100|r, intelligence by |cff00EAFF10|r, armor by |cff1FBF005|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
+          "value": "Increases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r, intelligence by |cff00EAFF<AM6p,DataB1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D100|r, intelligence by |cff00EAFF10|r, armor by |cff1FBF005|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
+          "value": "Increases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r, intelligence by |cff00EAFF<AM6p,DataB1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r"
         },
         {
           "id": "icid",
@@ -11315,8 +11315,8 @@
     {
       "id": "IM0i:bspd",
       "name": "Anabolic Boots",
-      "description": "Increases wearer's movement speed by |cffFE890D200|r, armor by |cff1FBF005|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack.",
-      "tooltip": "Increases wearer's movement speed by |cffFE890D200|r, armor by |cff1FBF005|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack.",
+      "description": "Increases wearer's movement speed by |cffFE890D<AMdw,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack.",
+      "tooltip": "Increases wearer's movement speed by |cffFE890D<AMdw,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNWirtsOtherLeg.blp",
       "class": "Permanent",
       "level": 0,
@@ -11471,14 +11471,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D200|r, armor by |cff1FBF005|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack."
+          "value": "Increases wearer's movement speed by |cffFE890D<AMdw,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's movement speed by |cffFE890D200|r, armor by |cff1FBF005|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack."
+          "value": "Increases wearer's movement speed by |cffFE890D<AMdw,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack."
         },
         {
           "id": "icid",
@@ -11492,8 +11492,8 @@
     {
       "id": "IM25:bspd",
       "name": "Hydra Fins",
-      "description": "|cff82FF20Artifact\n|rIncreases wearer's movement speed by |cffFE890D100|r, armor by |cff1FBF005|r armor and all stats by |cff1FBF005|r. Also gives spell shield with |cff7DBEF175|r second cooldown.",
-      "tooltip": "|cff82FF20Artifact\n|rIncreases wearer's movement speed by |cffFE890D100|r, armor by |cff1FBF005|r armor and all stats by |cff1FBF005|r. Also gives spell shield with |cff7DBEF175|r second cooldown.",
+      "description": "|cff82FF20Artifact\n|rIncreases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r armor and all stats by |cff1FBF005|r. Also gives spell shield with |cff7DBEF1<AMdz,Cool1>|r second cooldown.",
+      "tooltip": "|cff82FF20Artifact\n|rIncreases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r armor and all stats by |cff1FBF005|r. Also gives spell shield with |cff7DBEF1<AMdz,Cool1>|r second cooldown.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNSeaGiantWarStomp.blp",
       "class": "Permanent",
       "level": 0,
@@ -11627,14 +11627,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "|cff82FF20Artifact\n|rIncreases wearer's movement speed by |cffFE890D100|r, armor by |cff1FBF005|r armor and all stats by |cff1FBF005|r. Also gives spell shield with |cff7DBEF175|r second cooldown."
+          "value": "|cff82FF20Artifact\n|rIncreases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r armor and all stats by |cff1FBF005|r. Also gives spell shield with |cff7DBEF1<AMdz,Cool1>|r second cooldown."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "|cff82FF20Artifact\n|rIncreases wearer's movement speed by |cffFE890D100|r, armor by |cff1FBF005|r armor and all stats by |cff1FBF005|r. Also gives spell shield with |cff7DBEF175|r second cooldown."
+          "value": "|cff82FF20Artifact\n|rIncreases wearer's movement speed by |cffFE890D<AMdv,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r armor and all stats by |cff1FBF005|r. Also gives spell shield with |cff7DBEF1<AMdz,Cool1>|r second cooldown."
         },
         {
           "id": "icid",
@@ -12237,8 +12237,8 @@
     {
       "id": "IM17:bspd",
       "name": "Cloak of Flames",
-      "description": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and burns nearby enemies within melee range for |cffFF0202<AM3|,DataA1>|r damage per second.",
-      "tooltip": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and burns nearby enemies within melee range for |cffFF0202<AM3|,DataA1>|r damage per second.",
+      "description": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and burns nearby enemies within melee range for |cffFF0202<AM3|,DataA1>|r damage per second.",
+      "tooltip": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and burns nearby enemies within melee range for |cffFF0202<AM3|,DataA1>|r damage per second.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNCloakOfInferno.blp",
       "class": "Permanent",
       "level": 0,
@@ -12358,14 +12358,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and burns nearby enemies within melee range for |cffFF0202<AM3|,DataA1>|r damage per second."
+          "value": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and burns nearby enemies within melee range for |cffFF0202<AM3|,DataA1>|r damage per second."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and burns nearby enemies within melee range for |cffFF0202<AM3|,DataA1>|r damage per second."
+          "value": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and burns nearby enemies within melee range for |cffFF0202<AM3|,DataA1>|r damage per second."
         },
         {
           "id": "ilum",
@@ -12421,8 +12421,8 @@
     {
       "id": "IM1a:bspd",
       "name": "Cloak of Healing",
-      "description": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to restore all |cff1FBF00150|r health points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.",
-      "tooltip": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to restore all |cff1FBF00150|r health points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.",
+      "description": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore all |cff1FBF00150|r health points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.",
+      "tooltip": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore all |cff1FBF00150|r health points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNCloakOfHealing.blp",
       "class": "Permanent",
       "level": 0,
@@ -12542,14 +12542,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to restore all |cff1FBF00150|r health points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown."
+          "value": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore all |cff1FBF00150|r health points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to restore all |cff1FBF00150|r health points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown."
+          "value": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore all |cff1FBF00150|r health points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown."
         },
         {
           "id": "ilum",
@@ -12605,8 +12605,8 @@
     {
       "id": "IM1b:bspd",
       "name": "Cloak of Mana",
-      "description": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to restore |cff00EAFF100|r mana points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.",
-      "tooltip": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to restore |cff00EAFF100|r mana points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.",
+      "description": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore |cff00EAFF100|r mana points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.",
+      "tooltip": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore |cff00EAFF100|r mana points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNCloakOfMana.blp",
       "class": "Permanent",
       "level": 0,
@@ -12726,14 +12726,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to restore |cff00EAFF100|r mana points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown."
+          "value": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore |cff00EAFF100|r mana points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to restore |cff00EAFF100|r mana points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown."
+          "value": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore |cff00EAFF100|r mana points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown."
         },
         {
           "id": "ilum",
@@ -12789,8 +12789,8 @@
     {
       "id": "IM19:bspd",
       "name": "Cloak of Frost",
-      "description": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to emit |cff00EAFF5|r ice waves, each wave freezes nearby enemy units dealing |cffFF020216|r damage, and slowing their movement and attack speeds by |cffFE890D35%|r for |cff7DBEF12|r seconds. Each wave refresh the slow duration, the slow amount does not stack. Has |cff7DBEF135|r seconds cooldown.",
-      "tooltip": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to emit |cff00EAFF5|r ice waves, each wave freezes nearby enemy units dealing |cffFF020216|r damage, and slowing their movement and attack speeds by |cffFE890D35%|r for |cff7DBEF12|r seconds. Each wave refresh the slow duration, the slow amount does not stack. Has |cff7DBEF135|r seconds cooldown.",
+      "description": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to emit |cff00EAFF5|r ice waves, each wave freezes nearby enemy units dealing |cffFF020216|r damage, and slowing their movement and attack speeds by |cffFE890D35%|r for |cff7DBEF12|r seconds. Each wave refresh the slow duration, the slow amount does not stack. Has |cff7DBEF135|r seconds cooldown.",
+      "tooltip": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to emit |cff00EAFF5|r ice waves, each wave freezes nearby enemy units dealing |cffFF020216|r damage, and slowing their movement and attack speeds by |cffFE890D35%|r for |cff7DBEF12|r seconds. Each wave refresh the slow duration, the slow amount does not stack. Has |cff7DBEF135|r seconds cooldown.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNCloakOfFrost.blp",
       "class": "Permanent",
       "level": 0,
@@ -12910,14 +12910,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to emit |cff00EAFF5|r ice waves, each wave freezes nearby enemy units dealing |cffFF020216|r damage, and slowing their movement and attack speeds by |cffFE890D35%|r for |cff7DBEF12|r seconds. Each wave refresh the slow duration, the slow amount does not stack. Has |cff7DBEF135|r seconds cooldown."
+          "value": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to emit |cff00EAFF5|r ice waves, each wave freezes nearby enemy units dealing |cffFF020216|r damage, and slowing their movement and attack speeds by |cffFE890D35%|r for |cff7DBEF12|r seconds. Each wave refresh the slow duration, the slow amount does not stack. Has |cff7DBEF135|r seconds cooldown."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and can be cast to emit |cff00EAFF5|r ice waves, each wave freezes nearby enemy units dealing |cffFF020216|r damage, and slowing their movement and attack speeds by |cffFE890D35%|r for |cff7DBEF12|r seconds. Each wave refresh the slow duration, the slow amount does not stack. Has |cff7DBEF135|r seconds cooldown."
+          "value": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to emit |cff00EAFF5|r ice waves, each wave freezes nearby enemy units dealing |cffFF020216|r damage, and slowing their movement and attack speeds by |cffFE890D35%|r for |cff7DBEF12|r seconds. Each wave refresh the slow duration, the slow amount does not stack. Has |cff7DBEF135|r seconds cooldown."
         },
         {
           "id": "ilum",
@@ -12973,8 +12973,8 @@
     {
       "id": "IM18:bspd",
       "name": "Necromancer's Cloak",
-      "description": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two skeletal warriors. Cloak can be used to recall your minions. |cffFFFC00\n\nSkeletal bodyguards can be empowered by collecting 10 bones.|r",
-      "tooltip": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two skeletal warriors. Cloak can be used to recall your minions. |cffFFFC00\n\nSkeletal bodyguards can be empowered by collecting 10 bones.|r",
+      "description": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two skeletal warriors. Cloak can be used to recall your minions. |cffFFFC00\n\nSkeletal bodyguards can be empowered by collecting 10 bones.|r",
+      "tooltip": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two skeletal warriors. Cloak can be used to recall your minions. |cffFFFC00\n\nSkeletal bodyguards can be empowered by collecting 10 bones.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNSkullShroudGlowIncreased.blp",
       "class": "Permanent",
       "level": 0,
@@ -13087,14 +13087,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two skeletal warriors. Cloak can be used to recall your minions. |cffFFFC00\n\nSkeletal bodyguards can be empowered by collecting 10 bones.|r"
+          "value": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two skeletal warriors. Cloak can be used to recall your minions. |cffFFFC00\n\nSkeletal bodyguards can be empowered by collecting 10 bones.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Provides +|cff1FBF003|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two skeletal warriors. Cloak can be used to recall your minions. |cffFFFC00\n\nSkeletal bodyguards can be empowered by collecting 10 bones.|r"
+          "value": "Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two skeletal warriors. Cloak can be used to recall your minions. |cffFFFC00\n\nSkeletal bodyguards can be empowered by collecting 10 bones.|r"
         },
         {
           "id": "ifil",
@@ -13136,8 +13136,8 @@
     {
       "id": "IM4f:bspd",
       "name": "Empowered Necromancer's Cloak",
-      "description": "Provides +|cff1FBF005|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two greater skeletal warriors. Cloak can be used to recall your minions. |cff1BE5B8\n\nSkeletal minions have been empowered with bones collected, greatly increasing their damage and reducing attack speed.|r",
-      "tooltip": "Provides +|cff1FBF005|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two greater skeletal warriors. Cloak can be used to recall your minions. |cff1BE5B8\n\nSkeletal minions have been empowered with bones collected, greatly increasing their damage and reducing attack speed.|r",
+      "description": "Provides +|cff1FBF00<AM2z,DataA1>|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two greater skeletal warriors. Cloak can be used to recall your minions. |cff1BE5B8\n\nSkeletal minions have been empowered with bones collected, greatly increasing their damage and reducing attack speed.|r",
+      "tooltip": "Provides +|cff1FBF00<AM2z,DataA1>|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two greater skeletal warriors. Cloak can be used to recall your minions. |cff1BE5B8\n\nSkeletal minions have been empowered with bones collected, greatly increasing their damage and reducing attack speed.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNSavageGladiatorChain.blp",
       "class": "Permanent",
       "level": 0,
@@ -13250,14 +13250,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Provides +|cff1FBF005|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two greater skeletal warriors. Cloak can be used to recall your minions. |cff1BE5B8\n\nSkeletal minions have been empowered with bones collected, greatly increasing their damage and reducing attack speed.|r"
+          "value": "Provides +|cff1FBF00<AM2z,DataA1>|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two greater skeletal warriors. Cloak can be used to recall your minions. |cff1BE5B8\n\nSkeletal minions have been empowered with bones collected, greatly increasing their damage and reducing attack speed.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Provides +|cff1FBF005|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two greater skeletal warriors. Cloak can be used to recall your minions. |cff1BE5B8\n\nSkeletal minions have been empowered with bones collected, greatly increasing their damage and reducing attack speed.|r"
+          "value": "Provides +|cff1FBF00<AM2z,DataA1>|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two greater skeletal warriors. Cloak can be used to recall your minions. |cff1BE5B8\n\nSkeletal minions have been empowered with bones collected, greatly increasing their damage and reducing attack speed.|r"
         },
         {
           "id": "ifil",
@@ -13576,8 +13576,8 @@
     {
       "id": "IM1r:bspd",
       "name": "Elk Skin Gloves",
-      "description": "Increases wearer's attack speed by |cffFE890D0.1%%|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
-      "tooltip": "Increases wearer's attack speed by |cffFE890D0.1%%|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
+      "description": "Increases wearer's attack speed by |cffFE890D<AM37,DataA1,%>%|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
+      "tooltip": "Increases wearer's attack speed by |cffFE890D<AM37,DataA1,%>%|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNElkHideGloves.blp",
       "class": "Permanent",
       "level": 0,
@@ -13739,14 +13739,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.1%%|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
+          "value": "Increases wearer's attack speed by |cffFE890D<AM37,DataA1,%>%|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.1%%|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
+          "value": "Increases wearer's attack speed by |cffFE890D<AM37,DataA1,%>%|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
         },
         {
           "id": "icid",
@@ -13760,8 +13760,8 @@
     {
       "id": "IM48:bspd",
       "name": "Wolf Skin Gloves",
-      "description": "Increases wearer's attack speed by |cffFE890D0.15%%|r, damage by |cffFF02022|r, armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
-      "tooltip": "Increases wearer's attack speed by |cffFE890D0.15%%|r, damage by |cffFF02022|r, armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
+      "description": "Increases wearer's attack speed by |cffFE890D<AM38,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
+      "tooltip": "Increases wearer's attack speed by |cffFE890D<AM38,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNWolfHideGloves.blp",
       "class": "Permanent",
       "level": 0,
@@ -13923,14 +13923,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.15%%|r, damage by |cffFF02022|r, armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
+          "value": "Increases wearer's attack speed by |cffFE890D<AM38,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.15%%|r, damage by |cffFF02022|r, armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
+          "value": "Increases wearer's attack speed by |cffFE890D<AM38,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
         },
         {
           "id": "icid",
@@ -13944,8 +13944,8 @@
     {
       "id": "IM49:bspd",
       "name": "Claws of Wolf's Bloodlust",
-      "description": "Increases wearer's attack speed by |cffFE890D0.3%%|r, damage by |cffFF02024|r, armor by |cff1FBF004|r and agility by |cff1FBF004|r. |nFills wearer with insatiable bloodlust, granting permanent bloodlust buff.",
-      "tooltip": "Increases wearer's attack speed by |cffFE890D0.3%%|r, damage by |cffFF02024|r, armor by |cff1FBF004|r and agility by |cff1FBF004|r. |nFills wearer with insatiable bloodlust, granting permanent bloodlust buff.",
+      "description": "Increases wearer's attack speed by |cffFE890D<AM3b,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2w,DataA1>|r and agility by |cff1FBF00<AMel,DataA1>|r. |nFills wearer with insatiable bloodlust, granting permanent bloodlust buff.",
+      "tooltip": "Increases wearer's attack speed by |cffFE890D<AM3b,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2w,DataA1>|r and agility by |cff1FBF00<AMel,DataA1>|r. |nFills wearer with insatiable bloodlust, granting permanent bloodlust buff.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNWolfSBloodlustClaws.blp",
       "class": "Permanent",
       "level": 0,
@@ -14107,14 +14107,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.3%%|r, damage by |cffFF02024|r, armor by |cff1FBF004|r and agility by |cff1FBF004|r. |nFills wearer with insatiable bloodlust, granting permanent bloodlust buff."
+          "value": "Increases wearer's attack speed by |cffFE890D<AM3b,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2w,DataA1>|r and agility by |cff1FBF00<AMel,DataA1>|r. |nFills wearer with insatiable bloodlust, granting permanent bloodlust buff."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.3%%|r, damage by |cffFF02024|r, armor by |cff1FBF004|r and agility by |cff1FBF004|r. |nFills wearer with insatiable bloodlust, granting permanent bloodlust buff."
+          "value": "Increases wearer's attack speed by |cffFE890D<AM3b,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2w,DataA1>|r and agility by |cff1FBF00<AMel,DataA1>|r. |nFills wearer with insatiable bloodlust, granting permanent bloodlust buff."
         },
         {
           "id": "icid",
@@ -14128,8 +14128,8 @@
     {
       "id": "IM0x:bspd",
       "name": "Bear Skin Gloves",
-      "description": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02023|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
-      "tooltip": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02023|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
+      "description": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIat,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
+      "tooltip": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIat,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBearHideGloves.blp",
       "class": "Permanent",
       "level": 0,
@@ -14284,14 +14284,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02023|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
+          "value": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIat,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02023|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
+          "value": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIat,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
         },
         {
           "id": "iusa",
@@ -14305,8 +14305,8 @@
     {
       "id": "IM0y:bspd",
       "name": "Paws of Bear's Greed",
-      "description": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02025|r, armor by |cff1FBF005|r and strength by |cff1FBF008|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb.",
-      "tooltip": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02025|r, armor by |cff1FBF005|r and strength by |cff1FBF008|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb.",
+      "description": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and strength by |cff1FBF00<AMep,DataC1>|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb.",
+      "tooltip": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and strength by |cff1FBF00<AMep,DataC1>|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNBearGlovesOfGreed.blp",
       "class": "Permanent",
       "level": 0,
@@ -14440,14 +14440,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02025|r, armor by |cff1FBF005|r and strength by |cff1FBF008|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb."
+          "value": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and strength by |cff1FBF00<AMep,DataC1>|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02025|r, armor by |cff1FBF005|r and strength by |cff1FBF008|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb."
+          "value": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and strength by |cff1FBF00<AMep,DataC1>|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb."
         },
         {
           "id": "iusa",
@@ -14468,8 +14468,8 @@
     {
       "id": "IM06:bspd",
       "name": "Paws of Bear's Greed",
-      "description": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02025|r, armor by |cff1FBF005|r and strength by |cff1FBF008|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb for every charge of greed.\nYou gain 1 charge of greed per minute up to a maximum of 4.",
-      "tooltip": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02025|r, armor by |cff1FBF005|r and strength by |cff1FBF008|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb for every charge of greed.\nYou gain 1 charge of greed per minute up to a maximum of 4.",
+      "description": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and strength by |cff1FBF00<AMep,DataC1>|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb for every charge of greed.\nYou gain 1 charge of greed per minute up to a maximum of 4.",
+      "tooltip": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and strength by |cff1FBF00<AMep,DataC1>|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb for every charge of greed.\nYou gain 1 charge of greed per minute up to a maximum of 4.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNStrengthOfTheWild.blp",
       "class": "Permanent",
       "level": 0,
@@ -14603,14 +14603,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02025|r, armor by |cff1FBF005|r and strength by |cff1FBF008|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb for every charge of greed.\nYou gain 1 charge of greed per minute up to a maximum of 4."
+          "value": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and strength by |cff1FBF00<AMep,DataC1>|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb for every charge of greed.\nYou gain 1 charge of greed per minute up to a maximum of 4."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02025|r, armor by |cff1FBF005|r and strength by |cff1FBF008|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb for every charge of greed.\nYou gain 1 charge of greed per minute up to a maximum of 4."
+          "value": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and strength by |cff1FBF00<AMep,DataC1>|r. |nBears greed for honey is so strong it allows you to find it where there's none.\nUse this item on a hidden stash to find a honeycomb for every charge of greed.\nYou gain 1 charge of greed per minute up to a maximum of 4."
         },
         {
           "id": "iusa",
@@ -14631,8 +14631,8 @@
     {
       "id": "IM13:bspd",
       "name": "Bone Gloves",
-      "description": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02022|r, armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
-      "tooltip": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02022|r, armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
+      "description": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AItg,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
+      "tooltip": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AItg,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNGauntletsOfOgrePower.blp",
       "class": "Permanent",
       "level": 0,
@@ -14794,14 +14794,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02022|r, armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
+          "value": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AItg,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.2%%|r, damage by |cffFF02022|r, armor by |cff1FBF002|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
+          "value": "Increases wearer's attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AItg,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
         },
         {
           "id": "icid",
@@ -14815,8 +14815,8 @@
     {
       "id": "IM2b:bspd",
       "name": "Iron Gloves",
-      "description": "Increases wearer's attack speed by |cffFE890D0.25%%|r, damage by |cffFF02023|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
-      "tooltip": "Increases wearer's attack speed by |cffFE890D0.25%%|r, damage by |cffFF02023|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
+      "description": "Increases wearer's attack speed by |cffFE890D<AM3a,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
+      "tooltip": "Increases wearer's attack speed by |cffFE890D<AM3a,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNIronGloves.blp",
       "class": "Permanent",
       "level": 0,
@@ -14978,14 +14978,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.25%%|r, damage by |cffFF02023|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
+          "value": "Increases wearer's attack speed by |cffFE890D<AM3a,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.25%%|r, damage by |cffFF02023|r, armor by |cff1FBF003|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
+          "value": "Increases wearer's attack speed by |cffFE890D<AM3a,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
         },
         {
           "id": "icid",
@@ -14999,8 +14999,8 @@
     {
       "id": "IM3q:bspd",
       "name": "Steel Gloves",
-      "description": "Increases wearer's attack speed by |cffFE890D0.35%%|r, damage by |cffFF02025|r, armor by |cff1FBF005|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
-      "tooltip": "Increases wearer's attack speed by |cffFE890D0.35%%|r, damage by |cffFF02025|r, armor by |cff1FBF005|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
+      "description": "Increases wearer's attack speed by |cffFE890D<AM3c,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
+      "tooltip": "Increases wearer's attack speed by |cffFE890D<AM3c,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNAdvancedUnholyStrength.blp",
       "class": "Permanent",
       "level": 0,
@@ -15162,14 +15162,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.35%%|r, damage by |cffFF02025|r, armor by |cff1FBF005|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
+          "value": "Increases wearer's attack speed by |cffFE890D<AM3c,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.35%%|r, damage by |cffFF02025|r, armor by |cff1FBF005|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
+          "value": "Increases wearer's attack speed by |cffFE890D<AM3c,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r"
         },
         {
           "id": "icid",
@@ -15183,8 +15183,8 @@
     {
       "id": "IM0r:bspd",
       "name": "Battle Gloves",
-      "description": "Increases wearer's attack speed by |cffFE890D0.3%%|r, armor by |cff1FBF005|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second.",
-      "tooltip": "Increases wearer's attack speed by |cffFE890D0.3%%|r, armor by |cff1FBF005|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second.",
+      "description": "Increases wearer's attack speed by |cffFE890D<AM3b,DataA1,%>%|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second.",
+      "tooltip": "Increases wearer's attack speed by |cffFE890D<AM3b,DataA1,%>%|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNImprovedUnholyStrength.blp",
       "class": "Permanent",
       "level": 0,
@@ -15346,14 +15346,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.3%%|r, armor by |cff1FBF005|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second."
+          "value": "Increases wearer's attack speed by |cffFE890D<AM3b,DataA1,%>%|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Increases wearer's attack speed by |cffFE890D0.3%%|r, armor by |cff1FBF005|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second."
+          "value": "Increases wearer's attack speed by |cffFE890D<AM3b,DataA1,%>%|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second."
         },
         {
           "id": "icid",
@@ -15367,8 +15367,8 @@
     {
       "id": "IM23:bspd",
       "name": "Hydra Claws",
-      "description": "|cff82FF20Artifact\n|rIncreases wearer's attack speed by |cffFE890D0.35%%|r, all stats by |cff1FBF005|r and has a poisonous attack effect that lowers attack speed by |cffFFFC000.15%%|r and movement speed by |cffFFFC000.15%%|r and deals |cffFF02020.15|r damage per second for |cff7DBEF10.15|r seconds on trolls and |cff7DBEF10.15|r seconds on units. Can cast |cffFF6347Tsunami|r.|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown.",
-      "tooltip": "|cff82FF20Artifact\n|rIncreases wearer's attack speed by |cffFE890D0.35%%|r, all stats by |cff1FBF005|r and has a poisonous attack effect that lowers attack speed by |cffFFFC000.15%%|r and movement speed by |cffFFFC000.15%%|r and deals |cffFF02020.15|r damage per second for |cff7DBEF10.15|r seconds on trolls and |cff7DBEF10.15|r seconds on units. Can cast |cffFF6347Tsunami|r.|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown.",
+      "description": "|cff82FF20Artifact\n|rIncreases wearer's attack speed by |cffFE890D<AM3c,DataA1,%>%|r, all stats by |cff1FBF005|r and has a poisonous attack effect that lowers attack speed by |cffFFFC00<AM63,DataB1,%>%|r and movement speed by |cffFFFC00<AM63,DataC1,%>%|r and deals |cffFF0202<AM63,DataA1>|r damage per second for |cff7DBEF1<AM63,HeroDur1>|r seconds on trolls and |cff7DBEF1<AM63,Dur1>|r seconds on units. Can cast |cffFF6347Tsunami|r.|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown.",
+      "tooltip": "|cff82FF20Artifact\n|rIncreases wearer's attack speed by |cffFE890D<AM3c,DataA1,%>%|r, all stats by |cff1FBF005|r and has a poisonous attack effect that lowers attack speed by |cffFFFC00<AM63,DataB1,%>%|r and movement speed by |cffFFFC00<AM63,DataC1,%>%|r and deals |cffFF0202<AM63,DataA1>|r damage per second for |cff7DBEF1<AM63,HeroDur1>|r seconds on trolls and |cff7DBEF1<AM63,Dur1>|r seconds on units. Can cast |cffFF6347Tsunami|r.|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown.",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNImprovedStrengthOfTheWild.blp",
       "class": "Permanent",
       "level": 0,
@@ -15530,14 +15530,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "|cff82FF20Artifact\n|rIncreases wearer's attack speed by |cffFE890D0.35%%|r, all stats by |cff1FBF005|r and has a poisonous attack effect that lowers attack speed by |cffFFFC000.15%%|r and movement speed by |cffFFFC000.15%%|r and deals |cffFF02020.15|r damage per second for |cff7DBEF10.15|r seconds on trolls and |cff7DBEF10.15|r seconds on units. Can cast |cffFF6347Tsunami|r.|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown."
+          "value": "|cff82FF20Artifact\n|rIncreases wearer's attack speed by |cffFE890D<AM3c,DataA1,%>%|r, all stats by |cff1FBF005|r and has a poisonous attack effect that lowers attack speed by |cffFFFC00<AM63,DataB1,%>%|r and movement speed by |cffFFFC00<AM63,DataC1,%>%|r and deals |cffFF0202<AM63,DataA1>|r damage per second for |cff7DBEF1<AM63,HeroDur1>|r seconds on trolls and |cff7DBEF1<AM63,Dur1>|r seconds on units. Can cast |cffFF6347Tsunami|r.|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown."
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "|cff82FF20Artifact\n|rIncreases wearer's attack speed by |cffFE890D0.35%%|r, all stats by |cff1FBF005|r and has a poisonous attack effect that lowers attack speed by |cffFFFC000.15%%|r and movement speed by |cffFFFC000.15%%|r and deals |cffFF02020.15|r damage per second for |cff7DBEF10.15|r seconds on trolls and |cff7DBEF10.15|r seconds on units. Can cast |cffFF6347Tsunami|r.|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown."
+          "value": "|cff82FF20Artifact\n|rIncreases wearer's attack speed by |cffFE890D<AM3c,DataA1,%>%|r, all stats by |cff1FBF005|r and has a poisonous attack effect that lowers attack speed by |cffFFFC00<AM63,DataB1,%>%|r and movement speed by |cffFFFC00<AM63,DataC1,%>%|r and deals |cffFF0202<AM63,DataA1>|r damage per second for |cff7DBEF1<AM63,HeroDur1>|r seconds on trolls and |cff7DBEF1<AM63,Dur1>|r seconds on units. Can cast |cffFF6347Tsunami|r.|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown."
         },
         {
           "id": "icid",
@@ -15551,8 +15551,8 @@
     {
       "id": "IM24:bspd",
       "name": "Magefist",
-      "description": "Crafted by the most skilled sorcerers of Azeroth, Magefist radiates with an ethereal glow, resonating with the potent energies of magic.\nGrants |cff00EAFFArcane Might|r: \n+|cff1FBF001|r Strength per |cff00EAFF3 Intelligence|r\n+|cffFE890D0.3%%|r Attack speed\n+|cff1FBF004|r Armor\n+|cff1FBF0010|r Intelligence",
-      "tooltip": "Crafted by the most skilled sorcerers of Azeroth, Magefist radiates with an ethereal glow, resonating with the potent energies of magic.\nGrants |cff00EAFFArcane Might|r: \n+|cff1FBF001|r Strength per |cff00EAFF3 Intelligence|r\n+|cffFE890D0.3%%|r Attack speed\n+|cff1FBF004|r Armor\n+|cff1FBF0010|r Intelligence",
+      "description": "Crafted by the most skilled sorcerers of Azeroth, Magefist radiates with an ethereal glow, resonating with the potent energies of magic.\nGrants |cff00EAFFArcane Might|r: \n+|cff1FBF001|r Strength per |cff00EAFF3 Intelligence|r\n+|cffFE890D<AM3b,DataA1,%>%|r Attack speed\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AM6p,DataB1>|r Intelligence",
+      "tooltip": "Crafted by the most skilled sorcerers of Azeroth, Magefist radiates with an ethereal glow, resonating with the potent energies of magic.\nGrants |cff00EAFFArcane Might|r: \n+|cff1FBF001|r Strength per |cff00EAFF3 Intelligence|r\n+|cffFE890D<AM3b,DataA1,%>%|r Attack speed\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AM6p,DataB1>|r Intelligence",
       "icon": "ReplaceableTextures\\CommandButtons\\BTNSpellSteal.blp",
       "class": "Permanent",
       "level": 0,
@@ -15714,14 +15714,14 @@
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Crafted by the most skilled sorcerers of Azeroth, Magefist radiates with an ethereal glow, resonating with the potent energies of magic.\nGrants |cff00EAFFArcane Might|r: \n+|cff1FBF001|r Strength per |cff00EAFF3 Intelligence|r\n+|cffFE890D0.3%%|r Attack speed\n+|cff1FBF004|r Armor\n+|cff1FBF0010|r Intelligence"
+          "value": "Crafted by the most skilled sorcerers of Azeroth, Magefist radiates with an ethereal glow, resonating with the potent energies of magic.\nGrants |cff00EAFFArcane Might|r: \n+|cff1FBF001|r Strength per |cff00EAFF3 Intelligence|r\n+|cffFE890D<AM3b,DataA1,%>%|r Attack speed\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AM6p,DataB1>|r Intelligence"
         },
         {
           "id": "ides",
           "type": "string",
           "level": 0,
           "column": 0,
-          "value": "Crafted by the most skilled sorcerers of Azeroth, Magefist radiates with an ethereal glow, resonating with the potent energies of magic.\nGrants |cff00EAFFArcane Might|r: \n+|cff1FBF001|r Strength per |cff00EAFF3 Intelligence|r\n+|cffFE890D0.3%%|r Attack speed\n+|cff1FBF004|r Armor\n+|cff1FBF0010|r Intelligence"
+          "value": "Crafted by the most skilled sorcerers of Azeroth, Magefist radiates with an ethereal glow, resonating with the potent energies of magic.\nGrants |cff00EAFFArcane Might|r: \n+|cff1FBF001|r Strength per |cff00EAFF3 Intelligence|r\n+|cffFE890D<AM3b,DataA1,%>%|r Attack speed\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AM6p,DataB1>|r Intelligence"
         },
         {
           "id": "icid",
@@ -32680,5 +32680,5 @@
       ]
     }
   ],
-  "generatedAt": "2025-11-26T01:25:34.025Z"
+  "generatedAt": "2025-11-26T22:19:06.222Z"
 }

@@ -1,610 +1,1698 @@
 {
   "units": [
     {
+      "id": "the-one",
+      "unitId": "HM0u:Obla",
+      "name": "The One",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 500,
+      "baseMana": 192,
+      "baseMoveSpeed": 450
+    },
+    {
+      "id": "x01e-nwe3",
+      "unitId": "x01e:nwe3",
+      "name": "",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 135,
+      "baseMana": 192,
+      "baseMoveSpeed": 400
+    },
+    {
+      "id": "track-trap",
+      "unitId": "x02f:nglm",
+      "name": "Track Trap",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 15,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "spiked-trap",
+      "unitId": "x020:nglm",
+      "name": "Spiked Trap",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 15,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "bear-trap",
+      "unitId": "x00q:nglm",
+      "name": "Bear Trap",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 15,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "blur-afterimage",
+      "unitId": "x04f:nder",
+      "name": "Blur AfterImage",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 125,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "merchant-ship",
+      "unitId": "x02~:obot",
+      "name": "Merchant Ship",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 500000,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "troll-merchant",
+      "unitId": "x02h:nfsp",
+      "name": "Troll Merchant",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 500000,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "makrura",
+      "unitId": "x00e:nmdr",
+      "name": "Makrura",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 1175,
+      "baseMana": 192,
+      "baseMoveSpeed": 350
+    },
+    {
+      "id": "disc0-duck",
+      "unitId": "x00{:nmdr",
+      "name": "Disc0-Duck",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 3000,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "x00l-nahy",
+      "unitId": "x00l:nahy",
+      "name": "",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 2200,
+      "baseMana": 4,
+      "baseMoveSpeed": 250
+    },
+    {
+      "id": "lesser-hydra",
+      "unitId": "x01j:nhyd",
+      "name": "Lesser Hydra",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 650,
+      "baseMana": 192,
+      "baseMoveSpeed": 350
+    },
+    {
+      "id": "jungle-mammoth",
+      "unitId": "x01o:nmdr",
+      "name": "Jungle Mammoth",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 2750,
+      "baseMana": 192,
+      "baseMoveSpeed": 400
+    },
+    {
+      "id": "elk",
+      "unitId": "x00}:nder",
+      "name": "Elk",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 115,
+      "baseMana": 192,
+      "baseMoveSpeed": 500
+    },
+    {
+      "id": "fawn",
+      "unitId": "x010:nder",
+      "name": "Fawn",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 45,
+      "baseMana": 192,
+      "baseMoveSpeed": 250
+    },
+    {
+      "id": "adult-elk",
+      "unitId": "x00g:nder",
+      "name": "Adult Elk",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 140,
+      "baseMana": 192,
+      "baseMoveSpeed": 350
+    },
+    {
+      "id": "x01c-nwe1",
+      "unitId": "x01c:nwe1",
+      "name": "",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 135,
+      "baseMana": 192,
+      "baseMoveSpeed": 400
+    },
+    {
+      "id": "hawk-hatchling",
+      "unitId": "x01f:nwe1",
+      "name": "Hawk Hatchling",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 40,
+      "baseMana": 192,
+      "baseMoveSpeed": 300
+    },
+    {
+      "id": "tamed-hawk",
+      "unitId": "x01d:nwe1",
+      "name": "Tamed Hawk",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 135,
+      "baseMana": 192,
+      "baseMoveSpeed": 260
+    },
+    {
+      "id": "alpha-hawk",
+      "unitId": "x00k:nwe1",
+      "name": "Alpha Hawk",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 230,
+      "baseMana": 192,
+      "baseMoveSpeed": 220
+    },
+    {
+      "id": "forest-dragon-hatchling",
+      "unitId": "x014:nwe1",
+      "name": "Forest Dragon Hatchling",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 40,
+      "baseMana": 192,
+      "baseMoveSpeed": 300
+    },
+    {
+      "id": "tamed-forest-dragon",
+      "unitId": "x013:nwe1",
+      "name": "Tamed Forest Dragon",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 135,
+      "baseMana": 192,
+      "baseMoveSpeed": 260
+    },
+    {
+      "id": "greater-forest-dragon",
+      "unitId": "x017:nwe1",
+      "name": "Greater Forest Dragon",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 230,
+      "baseMana": 192,
+      "baseMoveSpeed": 220
+    },
+    {
+      "id": "red-dragon-hatchling",
+      "unitId": "x01|:nwe1",
+      "name": "Red Dragon Hatchling",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 80,
+      "baseMana": 192,
+      "baseMoveSpeed": 360
+    },
+    {
+      "id": "tamed-red-dragon",
+      "unitId": "x01{:nwe1",
+      "name": "Tamed Red Dragon",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 150,
+      "baseMana": 192,
+      "baseMoveSpeed": 260
+    },
+    {
+      "id": "greater-red-dragon",
+      "unitId": "x019:nwe1",
+      "name": "Greater Red Dragon",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 230,
+      "baseMana": 192,
+      "baseMoveSpeed": 220
+    },
+    {
+      "id": "bronze-dragon-hatchling",
+      "unitId": "x00w:nwe1",
+      "name": "Bronze Dragon Hatchling",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 100,
+      "baseMana": 192,
+      "baseMoveSpeed": 300
+    },
+    {
+      "id": "tamed-bronze-dragon",
+      "unitId": "x00v:nwe1",
+      "name": "Tamed Bronze Dragon",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 205,
+      "baseMana": 192,
+      "baseMoveSpeed": 260
+    },
+    {
+      "id": "greater-bronze-dragon",
+      "unitId": "x016:nwe1",
+      "name": "Greater Bronze Dragon",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 320,
+      "baseMana": 192,
+      "baseMoveSpeed": 220
+    },
+    {
+      "id": "nether-dragon-hatchling",
+      "unitId": "x01t:nwe1",
+      "name": "Nether Dragon Hatchling",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 300,
+      "baseMana": 192,
+      "baseMoveSpeed": 522
+    },
+    {
+      "id": "tamed-nether-dragon",
+      "unitId": "x01s:nwe1",
+      "name": "Tamed Nether Dragon",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 400,
+      "baseMana": 192,
+      "baseMoveSpeed": 522
+    },
+    {
+      "id": "greater-nether-dragon",
+      "unitId": "x018:nwe1",
+      "name": "Greater Nether Dragon",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 600,
+      "baseMana": 192,
+      "baseMoveSpeed": 522
+    },
+    {
+      "id": "bear-cub",
+      "unitId": "x00o:nder",
+      "name": "Bear Cub",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 45,
+      "baseMana": 192,
+      "baseMoveSpeed": 250
+    },
+    {
+      "id": "jungle-bear",
+      "unitId": "x01h:nplg",
+      "name": "Jungle Bear",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 255,
+      "baseMana": 192,
+      "baseMoveSpeed": 270
+    },
+    {
+      "id": "adolescent-jungle-bear",
+      "unitId": "x00p:nplg",
+      "name": "Adolescent Jungle Bear",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 255,
+      "baseMana": 192,
+      "baseMoveSpeed": 270
+    },
+    {
+      "id": "adult-jungle-bear",
+      "unitId": "x00h:nplg",
+      "name": "Adult Jungle Bear",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 300,
+      "baseMana": 192,
+      "baseMoveSpeed": 320
+    },
+    {
+      "id": "wolf-pup",
+      "unitId": "x02n:nder",
+      "name": "Wolf Pup",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 45,
+      "baseMana": 192,
+      "baseMoveSpeed": 250
+    },
+    {
+      "id": "jungle-wolf",
+      "unitId": "x01i:nwwg",
+      "name": "Jungle Wolf",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 135,
+      "baseMana": 192,
+      "baseMoveSpeed": 400
+    },
+    {
+      "id": "adolescent-jungle-wolf",
+      "unitId": "x02o:nwwg",
+      "name": "Adolescent Jungle Wolf",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 135,
+      "baseMana": 192,
+      "baseMoveSpeed": 400
+    },
+    {
+      "id": "adult-jungle-wolf",
+      "unitId": "x00i:nwwg",
+      "name": "Adult Jungle Wolf",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 135,
+      "baseMana": 192,
+      "baseMoveSpeed": 320
+    },
+    {
+      "id": "panther",
+      "unitId": "x01x:nwwg",
+      "name": "Panther",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 230,
+      "baseMana": 192,
+      "baseMoveSpeed": 400
+    },
+    {
+      "id": "elder-panther",
+      "unitId": "x00|:nwwg",
+      "name": "Elder Panther",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 230,
+      "baseMana": 192,
+      "baseMoveSpeed": 400
+    },
+    {
+      "id": "snake",
+      "unitId": "x02!:nwwg",
+      "name": "Snake",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 45,
+      "baseMana": 192,
+      "baseMoveSpeed": 300
+    },
+    {
+      "id": "bee-hive",
+      "unitId": "x00s:ntn2",
+      "name": "Bee Hive",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 50,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "uber-hive",
+      "unitId": "x02k:ntn2",
+      "name": "Uber Hive",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 50,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "x077-nnsw",
+      "unitId": "x077:nnsw",
+      "name": "",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 500000,
+      "baseMana": 47,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "x078-nmam",
+      "unitId": "x078:nmam",
+      "name": "",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 500000,
+      "baseMana": 112,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "alligator-man",
+      "unitId": "x00j:nplb",
+      "name": "Alligator Man",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 1500,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "x079-nfsp",
+      "unitId": "x079:nfsp",
+      "name": "",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 500000,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "ner-kaz-the-hunter",
+      "unitId": "x00d:nmrr",
+      "name": "Nerâkaz The Hunter",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 1175,
+      "baseMana": 192,
+      "baseMoveSpeed": 450
+    },
+    {
+      "id": "r-thrak-the-venomblade",
+      "unitId": "x00b:nmrm",
+      "name": "Râthrak The Venomblade",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 1175,
+      "baseMana": 192,
+      "baseMoveSpeed": 450
+    },
+    {
+      "id": "mixing-pot",
+      "unitId": "x01y:hhou",
+      "name": "Mixing Pot",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 260,
+      "baseMana": 100,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "tannery",
+      "unitId": "x023:hhou",
+      "name": "Tannery",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 275,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "armory",
+      "unitId": "x00m:hhou",
+      "name": "Armory",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 250,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "forge",
+      "unitId": "x015:hhou",
+      "name": "Forge",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 250,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "witch-doctor-s-hut",
+      "unitId": "x02m:hhou",
+      "name": "Witch Doctor's Hut",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 325,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "workshop",
+      "unitId": "x02p:hhou",
+      "name": "Workshop",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 250,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "smoke-house",
+      "unitId": "x01~:hhou",
+      "name": "Smoke House",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 200,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "storage-hut",
+      "unitId": "x022:hhou",
+      "name": "Storage Hut",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 230,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "hatchery",
+      "unitId": "x01b:hhou",
+      "name": "Hatchery",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 150,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "ensnare-trap",
+      "unitId": "x01!:owtw",
+      "name": "Ensnare Trap",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 80,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "bonfire",
+      "unitId": "x00u:hwtw",
+      "name": "Bonfire",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 1,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "camp-fire",
+      "unitId": "x011:hwtw",
+      "name": "Camp Fire",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 75,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "mage-fire",
+      "unitId": "x01m:hwtw",
+      "name": "Mage Fire",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 50,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "x026-ntn2",
+      "unitId": "x026:ntn2",
+      "name": "",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 100,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "troll-hut",
+      "unitId": "x02g:osld",
+      "name": "Troll Hut",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 250,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "mud-hut",
+      "unitId": "x01q:osld",
+      "name": "Mud Hut",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 250,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "craftmaster-5000",
+      "unitId": "x00z:ngad",
+      "name": "CraftMaster 5000",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 500000,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "ominous-altar",
+      "unitId": "x01u:ngad",
+      "name": "Ominous Altar",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 500000,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "hidden-stash",
+      "unitId": "x01g:hwtw",
+      "name": "Hidden Stash",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 100,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "thistle-shrub",
+      "unitId": "x028:hwtw",
+      "name": "Thistle Shrub",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 100,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "water-herb",
+      "unitId": "x02l:hwtw",
+      "name": "Water Herb",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 100,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "blue-herb",
+      "unitId": "x00t:hwtw",
+      "name": "Blue Herb",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 100,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "orange-herb",
+      "unitId": "x01w:hwtw",
+      "name": "Orange Herb",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 100,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "yellow-herb",
+      "unitId": "x02q:hwtw",
+      "name": "Yellow Herb",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 100,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "mushroom-colony",
+      "unitId": "x01r:hwtw",
+      "name": "Mushroom Colony",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 100,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "athelas-bush",
+      "unitId": "x00n:hwtw",
+      "name": "Athelas Bush",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 100,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "purple-herb",
+      "unitId": "x01z:hwtw",
+      "name": "Purple Herb",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 100,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "thief-s-bush",
+      "unitId": "x027:hwtw",
+      "name": "Thief's Bush",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 100,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "scout-s-bush",
+      "unitId": "x01}:hwtw",
+      "name": "Scout's Bush",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 100,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "omnitower",
+      "unitId": "x01v:hhou",
+      "name": "Omnitower",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 150,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "troll-totem",
+      "unitId": "x021:hwtw",
+      "name": "Troll Totem",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 500,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "teleportation-beacon",
+      "unitId": "x024:hhou",
+      "name": "Teleportation Beacon",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 200,
+      "baseMana": 192,
+      "baseMoveSpeed": 290
+    },
+    {
+      "id": "troll-transport-ship",
+      "unitId": "x02j:etrs",
+      "name": "Troll Transport Ship",
+      "type": "unknown",
+      "growth": {
+        "strength": 1,
+        "agility": 1,
+        "intelligence": 1
+      },
+      "baseHp": 200,
+      "baseMana": 192,
+      "baseMoveSpeed": 280
+    },
+    {
       "id": "hunter",
-      "unitId": "UNIT_HUNTER",
+      "unitId": "HM0j:Obla",
       "name": "Hunter",
       "type": "base",
       "growth": {
-        "strength": 1.3,
-        "agility": 1.2,
-        "intelligence": 0.5
+        "strength": 4,
+        "agility": 4,
+        "intelligence": 2
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 300
     },
     {
-      "id": "hunter-1",
-      "unitId": "UNIT_HUNTER_1",
-      "name": "Hunter 1",
-      "type": "unknown",
-      "growth": {
-        "strength": 1.3,
-        "agility": 1.2,
-        "intelligence": 0.5
-      },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
-    },
-    {
-      "id": "warrior",
-      "unitId": "UNIT_WARRIOR",
-      "name": "Warrior",
+      "id": "gurubashi-warrior",
+      "unitId": "HM17:Obla",
+      "name": "Gurubashi Warrior",
       "type": "subclass",
       "growth": {
-        "strength": 2.0,
-        "agility": 1.0,
-        "intelligence": 0.5
+        "strength": 16,
+        "agility": 8,
+        "intelligence": 4
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 300
     },
     {
       "id": "tracker",
-      "unitId": "UNIT_TRACKER",
+      "unitId": "HM14:Obla",
       "name": "Tracker",
       "type": "subclass",
       "growth": {
-        "strength": 1.3,
-        "agility": 1.7,
-        "intelligence": 0.5
+        "strength": 11,
+        "agility": 14,
+        "intelligence": 4
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 310
     },
     {
-      "id": "juggernaut",
-      "unitId": "UNIT_JUGGERNAUT",
-      "name": "Juggernaut",
+      "id": "gurubashi-champion",
+      "unitId": "HM0n:Obla",
+      "name": "Gurubashi Champion",
       "type": "superclass",
       "growth": {
-        "strength": 2.5,
-        "agility": 1.5,
-        "intelligence": 0.5
+        "strength": 28,
+        "agility": 28,
+        "intelligence": 28
       },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseHp": 210,
+      "baseMana": 210,
+      "baseMoveSpeed": 330
     },
     {
       "id": "mage",
-      "unitId": "UNIT_MAGE",
+      "unitId": "HM0o:Obla",
       "name": "Mage",
       "type": "base",
       "growth": {
-        "strength": 0.5,
-        "agility": 0.5,
-        "intelligence": 2.0
+        "strength": 2,
+        "agility": 2,
+        "intelligence": 6
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
-    },
-    {
-      "id": "mage-1",
-      "unitId": "UNIT_MAGE_1",
-      "name": "Mage 1",
-      "type": "unknown",
-      "growth": {
-        "strength": 0.5,
-        "agility": 0.5,
-        "intelligence": 2.0
-      },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 270
     },
     {
       "id": "elementalist",
-      "unitId": "UNIT_ELEMENTALIST",
+      "unitId": "HM0d:Obla",
       "name": "Elementalist",
       "type": "subclass",
       "growth": {
-        "strength": 0.5,
-        "agility": 0.5,
-        "intelligence": 2.25
+        "strength": 4,
+        "agility": 4,
+        "intelligence": 18
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
-    },
-    {
-      "id": "elementalist-1",
-      "unitId": "UNIT_ELEMENTALIST_1",
-      "name": "Elementalist 1",
-      "type": "subclass",
-      "growth": {
-        "strength": 0.5,
-        "agility": 0.5,
-        "intelligence": 2.25
-      },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 280
     },
     {
       "id": "hypnotist",
-      "unitId": "UNIT_HYPNOTIST",
+      "unitId": "HM0l:Obla",
       "name": "Hypnotist",
       "type": "subclass",
       "growth": {
-        "strength": 1.0,
-        "agility": 0.5,
-        "intelligence": 2.25
+        "strength": 8,
+        "agility": 4,
+        "intelligence": 18
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 280
     },
     {
       "id": "dreamwalker",
-      "unitId": "UNIT_DREAMWALKER",
+      "unitId": "HM0m:Obla",
       "name": "Dreamwalker",
       "type": "subclass",
       "growth": {
-        "strength": 1.0,
-        "agility": 0.8,
-        "intelligence": 2.25
+        "strength": 8,
+        "agility": 7,
+        "intelligence": 18
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 280
     },
     {
       "id": "dementia-master",
-      "unitId": "UNIT_DEMENTIA_MASTER",
+      "unitId": "HM0b:Obla",
       "name": "Dementia Master",
       "type": "superclass",
       "growth": {
-        "strength": 1.0,
-        "agility": 1.0,
-        "intelligence": 3.0
+        "strength": 11,
+        "agility": 11,
+        "intelligence": 11
       },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseHp": 210,
+      "baseMana": 210,
+      "baseMoveSpeed": 300
     },
     {
       "id": "priest",
-      "unitId": "UNIT_PRIEST",
+      "unitId": "HM0v:Obla",
       "name": "Priest",
       "type": "base",
       "growth": {
-        "strength": 0.6,
-        "agility": 0.4,
-        "intelligence": 1.35
+        "strength": 2,
+        "agility": 2,
+        "intelligence": 5
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 270
     },
     {
       "id": "booster",
-      "unitId": "UNIT_BOOSTER",
+      "unitId": "HM06:Obla",
       "name": "Booster",
       "type": "subclass",
       "growth": {
-        "strength": 1.5,
-        "agility": 0.6,
-        "intelligence": 1.35
+        "strength": 12,
+        "agility": 5,
+        "intelligence": 11
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
-    },
-    {
-      "id": "booster-1",
-      "unitId": "UNIT_BOOSTER_1",
-      "name": "Booster 1",
-      "type": "subclass",
-      "growth": {
-        "strength": 1.5,
-        "agility": 0.6,
-        "intelligence": 1.5
-      },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 280
     },
     {
       "id": "master-healer",
-      "unitId": "UNIT_MASTER_HEALER",
+      "unitId": "HM0q:Obla",
       "name": "Master Healer",
       "type": "subclass",
       "growth": {
-        "strength": 1.0,
-        "agility": 0.5,
-        "intelligence": 1.75
+        "strength": 8,
+        "agility": 4,
+        "intelligence": 14
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
-    },
-    {
-      "id": "master-healer-1",
-      "unitId": "UNIT_MASTER_HEALER_1",
-      "name": "Master Healer 1",
-      "type": "subclass",
-      "growth": {
-        "strength": 1.0,
-        "agility": 0.5,
-        "intelligence": 1.75
-      },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 280
     },
     {
       "id": "sage",
-      "unitId": "UNIT_SAGE",
+      "unitId": "HM0|:Obla",
       "name": "Sage",
       "type": "superclass",
       "growth": {
-        "strength": 1.5,
-        "agility": 1.0,
-        "intelligence": 3.0
+        "strength": 17,
+        "agility": 17,
+        "intelligence": 17
       },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseHp": 210,
+      "baseMana": 210,
+      "baseMoveSpeed": 300
     },
     {
       "id": "beastmaster",
-      "unitId": "UNIT_BEASTMASTER",
+      "unitId": "HM04:Obla",
       "name": "Beastmaster",
       "type": "base",
       "growth": {
-        "strength": 1.2,
-        "agility": 1.0,
-        "intelligence": 0.5
+        "strength": 4,
+        "agility": 3,
+        "intelligence": 2
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 300
     },
     {
-      "id": "beastmaster-1",
-      "unitId": "UNIT_BEASTMASTER_1",
-      "name": "Beastmaster 1",
+      "id": "wolf-form",
+      "unitId": "HM11:Obla",
+      "name": "Wolf Form",
       "type": "unknown",
       "growth": {
-        "strength": 1.2,
-        "agility": 1.0,
-        "intelligence": 0.5
+        "strength": 12,
+        "agility": 12,
+        "intelligence": 4
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
-    },
-    {
-      "id": "shapeshifter-wolf",
-      "unitId": "UNIT_SHAPESHIFTER_WOLF",
-      "name": "Shapeshifter Wolf",
-      "type": "subclass",
-      "growth": {
-        "strength": 1.5,
-        "agility": 1.4,
-        "intelligence": 0.5
-      },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
-    },
-    {
-      "id": "shapeshifter-bear",
-      "unitId": "UNIT_SHAPESHIFTER_BEAR",
-      "name": "Shapeshifter Bear",
-      "type": "subclass",
-      "growth": {
-        "strength": 2.5,
-        "agility": 0.3,
-        "intelligence": 0.5
-      },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
-    },
-    {
-      "id": "shapeshifter-panther",
-      "unitId": "UNIT_SHAPESHIFTER_PANTHER",
-      "name": "Shapeshifter Panther",
-      "type": "subclass",
-      "growth": {
-        "strength": 1.0,
-        "agility": 2.0,
-        "intelligence": 0.5
-      },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
-    },
-    {
-      "id": "shapeshifter-tiger",
-      "unitId": "UNIT_SHAPESHIFTER_TIGER",
-      "name": "Shapeshifter Tiger",
-      "type": "subclass",
-      "growth": {
-        "strength": 2.0,
-        "agility": 1.0,
-        "intelligence": 0.5
-      },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 310
     },
     {
       "id": "dire-wolf",
-      "unitId": "UNIT_DIRE_WOLF",
+      "unitId": "HM02:Obla",
       "name": "Dire Wolf",
       "type": "unknown",
       "growth": {
-        "strength": 1.5,
-        "agility": 1.4,
-        "intelligence": 0.5
+        "strength": 12,
+        "agility": 12,
+        "intelligence": 4
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 310
+    },
+    {
+      "id": "bear-form",
+      "unitId": "HM0~:Obla",
+      "name": "Bear Form",
+      "type": "unknown",
+      "growth": {
+        "strength": 20,
+        "agility": 3,
+        "intelligence": 4
+      },
+      "baseHp": 192,
+      "baseMana": 192,
+      "baseMoveSpeed": 300
     },
     {
       "id": "dire-bear",
-      "unitId": "UNIT_DIRE_BEAR",
+      "unitId": "HM01:Obla",
       "name": "Dire Bear",
       "type": "unknown",
       "growth": {
-        "strength": 2.5,
-        "agility": 0.3,
-        "intelligence": 0.5
+        "strength": 20,
+        "agility": 3,
+        "intelligence": 4
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 300
+    },
+    {
+      "id": "panther-form",
+      "unitId": "HM1!:Obla",
+      "name": "Panther Form",
+      "type": "unknown",
+      "growth": {
+        "strength": 8,
+        "agility": 16,
+        "intelligence": 4
+      },
+      "baseHp": 192,
+      "baseMana": 192,
+      "baseMoveSpeed": 320
+    },
+    {
+      "id": "tiger-form",
+      "unitId": "HM10:Obla",
+      "name": "Tiger Form",
+      "type": "unknown",
+      "growth": {
+        "strength": 16,
+        "agility": 8,
+        "intelligence": 4
+      },
+      "baseHp": 192,
+      "baseMana": 192,
+      "baseMoveSpeed": 320
     },
     {
       "id": "druid",
-      "unitId": "UNIT_DRUID",
+      "unitId": "HM0c:Obla",
       "name": "Druid",
       "type": "subclass",
       "growth": {
-        "strength": 1.6,
-        "agility": 1.4,
-        "intelligence": 1.6
+        "strength": 13,
+        "agility": 12,
+        "intelligence": 13
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 300
     },
     {
       "id": "jungle-tyrant",
-      "unitId": "UNIT_JUNGLE_TYRANT",
+      "unitId": "HM16:Obla",
       "name": "Jungle Tyrant",
       "type": "superclass",
       "growth": {
-        "strength": 2.5,
-        "agility": 2.2,
-        "intelligence": 2.0
+        "strength": 28,
+        "agility": 28,
+        "intelligence": 28
       },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseHp": 210,
+      "baseMana": 210,
+      "baseMoveSpeed": 330
     },
     {
       "id": "thief",
-      "unitId": "UNIT_THIEF",
+      "unitId": "HM13:Obla",
       "name": "Thief",
       "type": "base",
       "growth": {
-        "strength": 0.75,
-        "agility": 1.5,
-        "intelligence": 0.5
+        "strength": 3,
+        "agility": 5,
+        "intelligence": 2
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
-    },
-    {
-      "id": "rogue",
-      "unitId": "UNIT_ROGUE",
-      "name": "Rogue",
-      "type": "subclass",
-      "growth": {
-        "strength": 0.75,
-        "agility": 2.3,
-        "intelligence": 0.5
-      },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
-    },
-    {
-      "id": "telethief",
-      "unitId": "UNIT_TELETHIEF",
-      "name": "Telethief",
-      "type": "subclass",
-      "growth": {
-        "strength": 1.0,
-        "agility": 1.5,
-        "intelligence": 1.5
-      },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 300
     },
     {
       "id": "escape-artist",
-      "unitId": "UNIT_ESCAPE_ARTIST",
+      "unitId": "HM0f:Obla",
       "name": "Escape Artist",
-      "type": "subclass",
+      "type": "unknown",
       "growth": {
-        "strength": 1.0,
-        "agility": 1.0,
-        "intelligence": 1.0
+        "strength": 8,
+        "agility": 8,
+        "intelligence": 8
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 300
+    },
+    {
+      "id": "rogue",
+      "unitId": "HM0g:Obla",
+      "name": "Rogue",
+      "type": "subclass",
+      "growth": {
+        "strength": 6,
+        "agility": 19,
+        "intelligence": 4
+      },
+      "baseHp": 192,
+      "baseMana": 192,
+      "baseMoveSpeed": 300
     },
     {
       "id": "contortionist",
-      "unitId": "UNIT_CONTORTIONIST",
+      "unitId": "HM0a:Obla",
       "name": "Contortionist",
-      "type": "subclass",
+      "type": "unknown",
       "growth": {
-        "strength": 1.0,
-        "agility": 1.0,
-        "intelligence": 1.0
+        "strength": 8,
+        "agility": 8,
+        "intelligence": 8
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 300
+    },
+    {
+      "id": "telethief",
+      "unitId": "HM08:Obla",
+      "name": "Telethief",
+      "type": "unknown",
+      "growth": {
+        "strength": 8,
+        "agility": 12,
+        "intelligence": 12
+      },
+      "baseHp": 192,
+      "baseMana": 192,
+      "baseMoveSpeed": 300
     },
     {
       "id": "assassin",
-      "unitId": "UNIT_ASSASSIN",
+      "unitId": "HM03:Obla",
       "name": "Assassin",
       "type": "superclass",
       "growth": {
-        "strength": 1.5,
-        "agility": 2.5,
-        "intelligence": 1.5
+        "strength": 17,
+        "agility": 17,
+        "intelligence": 17
       },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseHp": 210,
+      "baseMana": 210,
+      "baseMoveSpeed": 300
     },
     {
       "id": "scout",
-      "unitId": "UNIT_SCOUT",
+      "unitId": "HM0}:Obla",
       "name": "Scout",
       "type": "base",
       "growth": {
-        "strength": 1.0,
-        "agility": 1.3,
-        "intelligence": 1.2
+        "strength": 3,
+        "agility": 4,
+        "intelligence": 4
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 300
     },
     {
-      "id": "observer",
-      "unitId": "UNIT_OBSERVER",
-      "name": "Observer",
-      "type": "subclass",
+      "id": "hawk",
+      "unitId": "HM0s:Obla",
+      "name": "Hawk",
+      "type": "unknown",
       "growth": {
-        "strength": 1.3,
-        "agility": 1.7,
-        "intelligence": 1.5
+        "strength": 11,
+        "agility": 14,
+        "intelligence": 12
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 300
     },
     {
       "id": "trapper",
-      "unitId": "UNIT_TRAPPER",
+      "unitId": "HM15:Obla",
       "name": "Trapper",
       "type": "subclass",
       "growth": {
-        "strength": 1.3,
-        "agility": 1.7,
-        "intelligence": 1.5
+        "strength": 11,
+        "agility": 14,
+        "intelligence": 12
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 300
     },
     {
       "id": "spy",
-      "unitId": "UNIT_SPY",
+      "unitId": "HM12:Obla",
       "name": "Spy",
       "type": "superclass",
       "growth": {
-        "strength": 1.8,
-        "agility": 2.2,
-        "intelligence": 1.9
+        "strength": 20,
+        "agility": 20,
+        "intelligence": 20
       },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseHp": 210,
+      "baseMana": 210,
+      "baseMoveSpeed": 330
     },
     {
       "id": "gatherer",
-      "unitId": "UNIT_GATHERER",
+      "unitId": "HM0h:Obla",
       "name": "Gatherer",
       "type": "base",
       "growth": {
-        "strength": 0.8,
-        "agility": 0.9,
-        "intelligence": 1.5
+        "strength": 3,
+        "agility": 3,
+        "intelligence": 5
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 300
     },
     {
       "id": "herb-master",
-      "unitId": "UNIT_HERB_MASTER",
+      "unitId": "HM0i:Obla",
       "name": "Herb Master",
       "type": "subclass",
       "growth": {
-        "strength": 1.35,
-        "agility": 1.25,
-        "intelligence": 1.5
+        "strength": 11,
+        "agility": 10,
+        "intelligence": 12
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 300
     },
     {
       "id": "radar-gatherer",
-      "unitId": "UNIT_RADAR_GATHERER",
+      "unitId": "HM0w:Obla",
       "name": "Radar Gatherer",
       "type": "subclass",
       "growth": {
-        "strength": 1.25,
-        "agility": 1.35,
-        "intelligence": 1.5
+        "strength": 10,
+        "agility": 11,
+        "intelligence": 12
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
-    },
-    {
-      "id": "omnigatherer",
-      "unitId": "UNIT_OMNIGATHERER",
-      "name": "Omnigatherer",
-      "type": "superclass",
-      "growth": {
-        "strength": 2.0,
-        "agility": 2.0,
-        "intelligence": 2.0
-      },
-      "baseHp": 192,
-      "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 310
     },
     {
       "id": "alchemist",
-      "unitId": "UNIT_ALCHEMIST",
+      "unitId": "HM0y:Obla",
       "name": "Alchemist",
       "type": "subclass",
       "growth": {
-        "strength": 1.1,
-        "agility": 1.2,
-        "intelligence": 2.0
+        "strength": 9,
+        "agility": 10,
+        "intelligence": 16
       },
       "baseHp": 192,
       "baseMana": 192,
-      "baseMoveSpeed": 290
+      "baseMoveSpeed": 310
+    },
+    {
+      "id": "omni-gatherer",
+      "unitId": "HM0t:Obla",
+      "name": "Omni Gatherer",
+      "type": "superclass",
+      "growth": {
+        "strength": 22,
+        "agility": 22,
+        "intelligence": 22
+      },
+      "baseHp": 210,
+      "baseMana": 210,
+      "baseMoveSpeed": 300
     }
-  ],
-  "metadata": {
-    "totalUnits": 43,
-    "extractedAt": 1764029545.392645
-  }
+  ]
 }

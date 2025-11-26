@@ -8,6 +8,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { ICON_CATEGORIES } from '../lib/constants.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,7 +23,7 @@ const ICON_MAP_FILE = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides'
 function getAllIconFiles() {
   const icons = new Map(); // lowercase -> { category, filename }
   const allFilenames = []; // All actual filenames for fuzzy matching
-  const categories = ['abilities', 'items', 'buildings', 'trolls', 'units', 'base', 'unclassified'];
+  const categories = ICON_CATEGORIES;
   
   for (const category of categories) {
     const categoryDir = path.join(ICONS_DIR, category);

@@ -53,7 +53,7 @@ export default function UnitDetailPage({ unit }: Props) {
       category="units" 
       name={unit.name} 
       size={64}
-      src={`/icons/itt/units/${unit.iconPath}`}
+      src={`/icons/itt/${unit.iconPath}`}
     />
   ) : (
     <GuideIcon category="units" name={unit.name} size={64} />

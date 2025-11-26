@@ -51,7 +51,7 @@ export default function IconMapperMappingsList({
                 <div key={gameName} className="flex items-center gap-4 p-2 hover:bg-black/20 rounded">
                   {hasSpecial ? (
                     <img
-                      src={`/icons/itt/${selectedCategory}/${filename}`}
+                      src={`/icons/itt/${filename}`}
                       alt={gameName}
                       width={32}
                       height={32}
@@ -61,13 +61,13 @@ export default function IconMapperMappingsList({
                         // Prevent infinite loop: only set fallback once per image
                         if (!imageErrorHandledRefs.current.get(imageKey) && !img.src.includes('BTNYellowHerb.png')) {
                           imageErrorHandledRefs.current.set(imageKey, true);
-                          img.src = '/icons/itt/items/BTNYellowHerb.png';
+                          img.src = '/icons/itt/BTNYellowHerb.png';
                         }
                       }}
                     />
                   ) : (
                     <Image
-                      src={`/icons/itt/${selectedCategory}/${filename}`}
+                      src={`/icons/itt/${filename}`}
                       alt={gameName}
                       width={32}
                       height={32}
@@ -78,7 +78,7 @@ export default function IconMapperMappingsList({
                         // Prevent infinite loop: only set fallback once per image
                         if (!imageErrorHandledRefs.current.get(imageKey) && !img.src.includes('BTNYellowHerb.png')) {
                           imageErrorHandledRefs.current.set(imageKey, true);
-                          img.src = '/icons/itt/items/BTNYellowHerb.png';
+                          img.src = '/icons/itt/BTNYellowHerb.png';
                         }
                       }}
                     />

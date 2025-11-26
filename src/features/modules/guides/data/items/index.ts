@@ -47,4 +47,3 @@ export function searchItems(query: string): ItemData[] {
     item.recipe?.some(ingredient => ingredient.toLowerCase().includes(lowercaseQuery))
   );
 }
-

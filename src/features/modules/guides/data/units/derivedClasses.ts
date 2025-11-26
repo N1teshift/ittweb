@@ -1,3 +1,5 @@
+import { BASE_TROLL_CLASSES } from './classes';
+
 export type DerivedClassType = 'sub' | 'super';
 
 export type DerivedClassData = {
@@ -18,14 +20,14 @@ export type DerivedClassData = {
 
 export const DERIVED_CLASSES: DerivedClassData[] = [
   {
-    slug: 'warrior',
-    name: 'Warrior',
+    slug: 'gurubashi-warrior',
+    name: 'Gurubashi Warrior',
     parentSlug: 'hunter',
     type: 'sub',
-    summary: 'Warrior class description coming soon.',
-    growth: { strength: 2, agility: 1, intelligence: 0.5 },
+    summary: 'Gurubashi Warrior class description coming soon.',
+    growth: { strength: 16, agility: 8, intelligence: 4 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
+    baseMoveSpeed: 300,
     baseHp: 192,
     baseMana: 192,
   },
@@ -35,23 +37,23 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'hunter',
     type: 'sub',
     summary: 'Tracker class description coming soon.',
-    growth: { strength: 1.3, agility: 1.7, intelligence: 0.5 },
+    growth: { strength: 11, agility: 14, intelligence: 4 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
+    baseMoveSpeed: 310,
     baseHp: 192,
     baseMana: 192,
   },
   {
-    slug: 'juggernaut',
-    name: 'Juggernaut',
+    slug: 'gurubashi-champion',
+    name: 'Gurubashi Champion',
     parentSlug: 'hunter',
     type: 'super',
-    summary: 'Juggernaut class description coming soon.',
-    growth: { strength: 2.5, agility: 1.5, intelligence: 0.5 },
+    summary: 'Gurubashi Champion class description coming soon.',
+    growth: { strength: 28, agility: 28, intelligence: 28 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
-    baseHp: 192,
-    baseMana: 192,
+    baseMoveSpeed: 330,
+    baseHp: 210,
+    baseMana: 210,
   },
   {
     slug: 'elementalist',
@@ -59,9 +61,9 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'mage',
     type: 'sub',
     summary: 'Elementalist class description coming soon.',
-    growth: { strength: 0.5, agility: 0.5, intelligence: 2.25 },
+    growth: { strength: 4, agility: 4, intelligence: 18 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
+    baseMoveSpeed: 280,
     baseHp: 192,
     baseMana: 192,
   },
@@ -71,9 +73,9 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'mage',
     type: 'sub',
     summary: 'Hypnotist class description coming soon.',
-    growth: { strength: 1, agility: 0.5, intelligence: 2.25 },
+    growth: { strength: 8, agility: 4, intelligence: 18 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
+    baseMoveSpeed: 280,
     baseHp: 192,
     baseMana: 192,
   },
@@ -83,9 +85,9 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'mage',
     type: 'sub',
     summary: 'Dreamwalker class description coming soon.',
-    growth: { strength: 1, agility: 0.8, intelligence: 2.25 },
+    growth: { strength: 8, agility: 7, intelligence: 18 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
+    baseMoveSpeed: 280,
     baseHp: 192,
     baseMana: 192,
   },
@@ -95,11 +97,11 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'mage',
     type: 'super',
     summary: 'Dementia Master class description coming soon.',
-    growth: { strength: 1, agility: 1, intelligence: 3 },
+    growth: { strength: 11, agility: 11, intelligence: 11 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
-    baseHp: 192,
-    baseMana: 192,
+    baseMoveSpeed: 300,
+    baseHp: 210,
+    baseMana: 210,
   },
   {
     slug: 'booster',
@@ -107,9 +109,9 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'priest',
     type: 'sub',
     summary: 'Booster class description coming soon.',
-    growth: { strength: 1.5, agility: 0.6, intelligence: 1.35 },
+    growth: { strength: 12, agility: 5, intelligence: 11 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
+    baseMoveSpeed: 280,
     baseHp: 192,
     baseMana: 192,
   },
@@ -119,9 +121,9 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'priest',
     type: 'sub',
     summary: 'Master Healer class description coming soon.',
-    growth: { strength: 1, agility: 0.5, intelligence: 1.75 },
+    growth: { strength: 8, agility: 4, intelligence: 14 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
+    baseMoveSpeed: 280,
     baseHp: 192,
     baseMana: 192,
   },
@@ -131,59 +133,11 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'priest',
     type: 'super',
     summary: 'Sage class description coming soon.',
-    growth: { strength: 1.5, agility: 1, intelligence: 3 },
+    growth: { strength: 17, agility: 17, intelligence: 17 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
-    baseHp: 192,
-    baseMana: 192,
-  },
-  {
-    slug: 'shapeshifter-wolf',
-    name: 'Shapeshifter Wolf',
-    parentSlug: 'beastmaster',
-    type: 'sub',
-    summary: 'Shapeshifter Wolf class description coming soon.',
-    growth: { strength: 1.5, agility: 1.4, intelligence: 0.5 },
-    baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
-    baseHp: 192,
-    baseMana: 192,
-  },
-  {
-    slug: 'shapeshifter-bear',
-    name: 'Shapeshifter Bear',
-    parentSlug: 'beastmaster',
-    type: 'sub',
-    summary: 'Shapeshifter Bear class description coming soon.',
-    growth: { strength: 2.5, agility: 0.3, intelligence: 0.5 },
-    baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
-    baseHp: 192,
-    baseMana: 192,
-  },
-  {
-    slug: 'shapeshifter-panther',
-    name: 'Shapeshifter Panther',
-    parentSlug: 'beastmaster',
-    type: 'sub',
-    summary: 'Shapeshifter Panther class description coming soon.',
-    growth: { strength: 1, agility: 2, intelligence: 0.5 },
-    baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
-    baseHp: 192,
-    baseMana: 192,
-  },
-  {
-    slug: 'shapeshifter-tiger',
-    name: 'Shapeshifter Tiger',
-    parentSlug: 'beastmaster',
-    type: 'sub',
-    summary: 'Shapeshifter Tiger class description coming soon.',
-    growth: { strength: 2, agility: 1, intelligence: 0.5 },
-    baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
-    baseHp: 192,
-    baseMana: 192,
+    baseMoveSpeed: 300,
+    baseHp: 210,
+    baseMana: 210,
   },
   {
     slug: 'druid',
@@ -191,9 +145,9 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'beastmaster',
     type: 'sub',
     summary: 'Druid class description coming soon.',
-    growth: { strength: 1.6, agility: 1.4, intelligence: 1.6 },
+    growth: { strength: 13, agility: 12, intelligence: 13 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
+    baseMoveSpeed: 300,
     baseHp: 192,
     baseMana: 192,
   },
@@ -203,11 +157,11 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'beastmaster',
     type: 'super',
     summary: 'Jungle Tyrant class description coming soon.',
-    growth: { strength: 2.5, agility: 2.2, intelligence: 2 },
+    growth: { strength: 28, agility: 28, intelligence: 28 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
-    baseHp: 192,
-    baseMana: 192,
+    baseMoveSpeed: 330,
+    baseHp: 210,
+    baseMana: 210,
   },
   {
     slug: 'rogue',
@@ -215,45 +169,9 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'thief',
     type: 'sub',
     summary: 'Rogue class description coming soon.',
-    growth: { strength: 0.75, agility: 2.3, intelligence: 0.5 },
+    growth: { strength: 6, agility: 19, intelligence: 4 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
-    baseHp: 192,
-    baseMana: 192,
-  },
-  {
-    slug: 'telethief',
-    name: 'Telethief',
-    parentSlug: 'thief',
-    type: 'sub',
-    summary: 'Telethief class description coming soon.',
-    growth: { strength: 1, agility: 1.5, intelligence: 1.5 },
-    baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
-    baseHp: 192,
-    baseMana: 192,
-  },
-  {
-    slug: 'escape-artist',
-    name: 'Escape Artist',
-    parentSlug: 'thief',
-    type: 'sub',
-    summary: 'Escape Artist class description coming soon.',
-    growth: { strength: 1, agility: 1, intelligence: 1 },
-    baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
-    baseHp: 192,
-    baseMana: 192,
-  },
-  {
-    slug: 'contortionist',
-    name: 'Contortionist',
-    parentSlug: 'thief',
-    type: 'sub',
-    summary: 'Contortionist class description coming soon.',
-    growth: { strength: 1, agility: 1, intelligence: 1 },
-    baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
+    baseMoveSpeed: 300,
     baseHp: 192,
     baseMana: 192,
   },
@@ -263,23 +181,11 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'thief',
     type: 'super',
     summary: 'Assassin class description coming soon.',
-    growth: { strength: 1.5, agility: 2.5, intelligence: 1.5 },
+    growth: { strength: 17, agility: 17, intelligence: 17 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
-    baseHp: 192,
-    baseMana: 192,
-  },
-  {
-    slug: 'observer',
-    name: 'Observer',
-    parentSlug: 'scout',
-    type: 'sub',
-    summary: 'Observer class description coming soon.',
-    growth: { strength: 1.3, agility: 1.7, intelligence: 1.5 },
-    baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
-    baseHp: 192,
-    baseMana: 192,
+    baseMoveSpeed: 300,
+    baseHp: 210,
+    baseMana: 210,
   },
   {
     slug: 'trapper',
@@ -287,9 +193,9 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'scout',
     type: 'sub',
     summary: 'Trapper class description coming soon.',
-    growth: { strength: 1.3, agility: 1.7, intelligence: 1.5 },
+    growth: { strength: 11, agility: 14, intelligence: 12 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
+    baseMoveSpeed: 300,
     baseHp: 192,
     baseMana: 192,
   },
@@ -299,11 +205,11 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'scout',
     type: 'super',
     summary: 'Spy class description coming soon.',
-    growth: { strength: 1.8, agility: 2.2, intelligence: 1.9 },
+    growth: { strength: 20, agility: 20, intelligence: 20 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
-    baseHp: 192,
-    baseMana: 192,
+    baseMoveSpeed: 330,
+    baseHp: 210,
+    baseMana: 210,
   },
   {
     slug: 'herb-master',
@@ -311,9 +217,9 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'gatherer',
     type: 'sub',
     summary: 'Herb Master class description coming soon.',
-    growth: { strength: 1.35, agility: 1.25, intelligence: 1.5 },
+    growth: { strength: 11, agility: 10, intelligence: 12 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
+    baseMoveSpeed: 300,
     baseHp: 192,
     baseMana: 192,
   },
@@ -323,21 +229,9 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'gatherer',
     type: 'sub',
     summary: 'Radar Gatherer class description coming soon.',
-    growth: { strength: 1.25, agility: 1.35, intelligence: 1.5 },
+    growth: { strength: 10, agility: 11, intelligence: 12 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
-    baseHp: 192,
-    baseMana: 192,
-  },
-  {
-    slug: 'omnigatherer',
-    name: 'Omnigatherer',
-    parentSlug: 'gatherer',
-    type: 'super',
-    summary: 'Omnigatherer class description coming soon.',
-    growth: { strength: 2, agility: 2, intelligence: 2 },
-    baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
+    baseMoveSpeed: 310,
     baseHp: 192,
     baseMana: 192,
   },
@@ -347,34 +241,74 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
     parentSlug: 'gatherer',
     type: 'sub',
     summary: 'Alchemist class description coming soon.',
-    growth: { strength: 1.1, agility: 1.2, intelligence: 2 },
+    growth: { strength: 9, agility: 10, intelligence: 16 },
     baseAttackSpeed: 1.5,
-    baseMoveSpeed: 290,
+    baseMoveSpeed: 310,
     baseHp: 192,
     baseMana: 192,
+  },
+  {
+    slug: 'omni-gatherer',
+    name: 'Omni Gatherer',
+    parentSlug: 'gatherer',
+    type: 'super',
+    summary: 'Omni Gatherer class description coming soon.',
+    growth: { strength: 22, agility: 22, intelligence: 22 },
+    baseAttackSpeed: 1.5,
+    baseMoveSpeed: 300,
+    baseHp: 210,
+    baseMana: 210,
   }
 ];
-
-export const SUBCLASS_SLUGS: string[] = DERIVED_CLASSES
-  .filter(c => c.type === 'sub')
-  .map(c => c.slug);
-
-export const SUPERCLASS_SLUGS: string[] = DERIVED_CLASSES
-  .filter(c => c.type === 'super')
-  .map(c => c.slug);
 
 export function getDerivedClassBySlug(slug: string): DerivedClassData | undefined {
   return DERIVED_CLASSES.find(c => c.slug === slug);
 }
 
-export function getDerivedBySlug(slug: string): DerivedClassData | undefined {
-  return getDerivedClassBySlug(slug);
-}
-
+/**
+ * Get all subclasses for a given parent class slug.
+ */
 export function getSubclassesByParentSlug(parentSlug: string): DerivedClassData[] {
-  return DERIVED_CLASSES.filter(c => c.parentSlug === parentSlug && c.type === 'sub');
+  // First try to find by parentSlug in derived classes
+  const byParentSlug = DERIVED_CLASSES.filter(c => c.parentSlug === parentSlug && c.type === 'sub');
+  
+  // Also check the base class's subclasses array
+  const baseClass = BASE_TROLL_CLASSES.find(c => c.slug === parentSlug);
+  if (baseClass && baseClass.subclasses && baseClass.subclasses.length > 0) {
+    const fromBaseClass = baseClass.subclasses
+      .map(slug => DERIVED_CLASSES.find(c => c.slug === slug && c.type === 'sub'))
+      .filter((c): c is DerivedClassData => c !== undefined);
+    
+    // Merge and deduplicate by slug
+    const all = [...byParentSlug, ...fromBaseClass];
+    return all.filter((c, index, self) => 
+      index === self.findIndex(d => d.slug === c.slug)
+    );
+  }
+  
+  return byParentSlug;
 }
 
+/**
+ * Get all superclasses for a given parent class slug.
+ */
 export function getSupersByParentSlug(parentSlug: string): DerivedClassData[] {
-  return DERIVED_CLASSES.filter(c => c.parentSlug === parentSlug && c.type === 'super');
+  // First try to find by parentSlug in derived classes
+  const byParentSlug = DERIVED_CLASSES.filter(c => c.parentSlug === parentSlug && c.type === 'super');
+  
+  // Also check the base class's superclasses array
+  const baseClass = BASE_TROLL_CLASSES.find(c => c.slug === parentSlug);
+  if (baseClass && baseClass.superclasses && baseClass.superclasses.length > 0) {
+    const fromBaseClass = baseClass.superclasses
+      .map(slug => DERIVED_CLASSES.find(c => c.slug === slug && c.type === 'super'))
+      .filter((c): c is DerivedClassData => c !== undefined);
+    
+    // Merge and deduplicate by slug
+    const all = [...byParentSlug, ...fromBaseClass];
+    return all.filter((c, index, self) => 
+      index === self.findIndex(d => d.slug === c.slug)
+    );
+  }
+  
+  return byParentSlug;
 }

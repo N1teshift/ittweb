@@ -16,7 +16,19 @@ scripts/
 
 ## Quick Start
 
-### Data Extraction Workflow
+### Master Data Generation (Recommended)
+
+**Generate all TypeScript data files and icon mappings in one command:**
+```bash
+node scripts/data/generate-all-data.mjs
+```
+
+This script will:
+1. Reset/clean all data directories
+2. Generate TypeScript data files (items, abilities, units)
+3. Generate icon mapping (iconMap.ts)
+
+### Data Extraction Workflow (Step-by-Step)
 
 1. **Extract from game files:**
    ```bash

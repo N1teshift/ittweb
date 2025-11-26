@@ -184,7 +184,7 @@ export default function IconItem({ icon, existingMapping, allMappingsForIcon, on
               // Prevent infinite loop: only set fallback once and check if already using fallback
               if (!imageErrorHandledRef.current && !img.src.includes('BTNYellowHerb.png')) {
                 imageErrorHandledRef.current = true;
-                img.src = '/icons/itt/items/BTNYellowHerb.png';
+                img.src = '/icons/itt/BTNYellowHerb.png';
               }
             }}
           />
@@ -201,7 +201,7 @@ export default function IconItem({ icon, existingMapping, allMappingsForIcon, on
               // Prevent infinite loop: only set fallback once and check if already using fallback
               if (!imageErrorHandledRef.current && !img.src.includes('BTNYellowHerb.png')) {
                 imageErrorHandledRef.current = true;
-                img.src = '/icons/itt/items/BTNYellowHerb.png';
+                img.src = '/icons/itt/BTNYellowHerb.png';
               }
             }}
           />

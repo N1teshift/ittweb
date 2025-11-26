@@ -1,8 +1,8 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Link from 'next/link';
-import { BASE_TROLL_CLASS_SLUGS, getClassBySlug, TrollClassData } from '@/features/modules/guides/data/units';
-import { getSubclassesByParentSlug, getSupersByParentSlug } from '@/features/modules/guides/data/units';
+import { BASE_TROLL_CLASS_SLUGS, getClassBySlug, TrollClassData } from '@/features/modules/guides/data/units/classes';
+import { getSubclassesByParentSlug, getSupersByParentSlug } from '@/features/modules/guides/data/units/derivedClasses';
 import { getAbilitiesByClass, ABILITY_CATEGORIES, AbilityData } from '@/features/modules/guides/data/abilities';
 import ClassHeader from '@/features/modules/guides/components/ClassHeader';
 import StatsCard from '@/features/modules/guides/components/StatsCard';
@@ -29,6 +29,13 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) 
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  if (!BASE_TROLL_CLASS_SLUGS || BASE_TROLL_CLASS_SLUGS.length === 0) {
+    console.error('BASE_TROLL_CLASS_SLUGS is undefined or empty');
+    return {
+      paths: [],
+      fallback: false,
+    };
+  }
   return {
     paths: BASE_TROLL_CLASS_SLUGS.map((slug) => ({ params: { slug } })),
     fallback: false,
@@ -72,7 +79,12 @@ function AbilityCard({ ability }: { ability: AbilityData }) {
   );
 
   const icon = (
-    <GuideIcon category="abilities" name={ability.name} size={48} />
+    <GuideIcon 
+      category="abilities" 
+      name={ability.name} 
+      size={48}
+      src={ability.iconPath ? `/icons/itt/${ability.iconPath}` : undefined}
+    />
   );
 
   return (
@@ -119,13 +131,17 @@ export default function TrollClassDetail({ cls }: Props) {
         <div className="grid md:grid-cols-2 gap-6">
           <section className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
             <h2 className="font-medieval-brand text-2xl mb-3">Subclass paths</h2>
-            <ul className="text-gray-300 list-disc pl-5 space-y-1">
-              {subs.map((s) => (
-                <li key={s.slug}>
-                  <Link href={`/guides/subclasses/${s.slug}`} className="text-amber-400 hover:text-amber-300">{s.name}</Link>
-                </li>
-              ))}
-            </ul>
+            {subs.length > 0 ? (
+              <ul className="text-gray-300 list-disc pl-5 space-y-1">
+                {subs.map((s) => (
+                  <li key={s.slug}>
+                    <Link href={`/guides/subclasses/${s.slug}`} className="text-amber-400 hover:text-amber-300">{s.name}</Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-400">None</p>
+            )}
           </section>
 
           <section className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">

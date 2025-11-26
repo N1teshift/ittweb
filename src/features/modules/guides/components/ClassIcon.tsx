@@ -14,8 +14,8 @@ export default function ClassIcon({ slug, name, iconSrc, size = 56, className = 
   const dimensionStyle = { width: size, height: size } as React.CSSProperties;
 
   const mapping: Record<string, { category: ITTIconCategory; displayName: string } | { src: string }> = {
-    hunter: { src: '/icons/itt/trolls/btnforesttroll.png' },
-    scout: { src: '/icons/itt/trolls/BTNTrollScout.png' },
+    hunter: { src: '/icons/itt/btnforesttroll.png' },
+    scout: { src: '/icons/itt/BTNTrollScout.png' },
   };
 
   const mapped = mapping[slug];

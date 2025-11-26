@@ -97,18 +97,23 @@ function readItemsFromTS() {
     
     for (const arrayMatch of arrayMatches) {
       const arrayContent = arrayMatch[1];
-      // Parse items - handle multiline objects
-      const itemMatches = arrayContent.matchAll(/\{\s*id:\s*'([^']+)',\s*name:\s*'([^']+)'([\s\S]*?)\},?\s*(?=\{|$)/g);
+      // Parse items - handle multiline objects and escaped quotes
+      // Pattern: '((?:\\.|[^'])*)' matches strings with escaped quotes
+      const itemMatches = arrayContent.matchAll(/\{\s*id:\s*'((?:\\.|[^'])*)',\s*name:\s*'((?:\\.|[^'])*)'([\s\S]*?)\},?\s*(?=\{|$)/g);
       
       for (const match of itemMatches) {
         const itemContent = match[0];
-        const iconMatch = itemContent.match(/iconPath:\s*'([^']+)'/);
+        // Parse iconPath with escaped quotes support
+        const iconMatch = itemContent.match(/iconPath:\s*'((?:\\.|[^'])*)'/);
         const iconPath = iconMatch ? iconMatch[1] : null;
         
+        // Unescape the strings (convert \' to ')
+        const unescapeString = (str) => str.replace(/\\'/g, "'").replace(/\\\\/g, "\\");
+        
         items.push({
-          id: match[1],
-          name: match[2],
-          iconPath: iconPath
+          id: unescapeString(match[1]),
+          name: unescapeString(match[2]),
+          iconPath: iconPath ? unescapeString(iconPath) : null
         });
       }
     }
@@ -146,19 +151,29 @@ function readAbilitiesFromTS() {
     
     for (const arrayMatch of arrayMatches) {
       const arrayContent = arrayMatch[1];
-      // Parse abilities - handle multiline objects
-      const abilityMatches = arrayContent.matchAll(/\{\s*id:\s*'([^']+)',\s*name:\s*'([^']+)'([\s\S]*?)\},?\s*(?=\{|$)/g);
+      // Parse abilities - handle multiline objects and escaped quotes
+      // Pattern: '((?:\\.|[^'])*)' matches strings with escaped quotes
+      const abilityMatches = arrayContent.matchAll(/\{\s*id:\s*'((?:\\.|[^'])*)',\s*name:\s*'((?:\\.|[^'])*)'([\s\S]*?)\},?\s*(?=\{|$)/g);
       
       for (const match of abilityMatches) {
         const abilityContent = match[0];
-        const iconMatch = abilityContent.match(/iconPath:\s*'([^']+)'/);
+        // Parse iconPath with escaped quotes support
+        const iconMatch = abilityContent.match(/iconPath:\s*'((?:\\.|[^'])*)'/);
         const iconPath = iconMatch ? iconMatch[1] : null;
         
-        abilities.push({
-          id: match[1],
-          name: match[2],
-          iconPath: iconPath
-        });
+        // Unescape the strings (convert \' to ')
+        const unescapeString = (str) => str.replace(/\\'/g, "'").replace(/\\\\/g, "\\");
+        
+        const ability = {
+          id: unescapeString(match[1]),
+          name: unescapeString(match[2]),
+          iconPath: iconPath ? unescapeString(iconPath) : null
+        };
+        // Debug: log abilities with apostrophes during parsing
+        if (ability.name.includes("'")) {
+          console.log(`DEBUG PARSING: "${ability.name}", id: ${ability.id}, iconPath: ${ability.iconPath}`);
+        }
+        abilities.push(ability);
       }
     }
   }
@@ -227,14 +242,20 @@ function updateIconMap(itemMappings, abilityMappings) {
   }
   
   for (const mapping of abilityMappings) {
+    // Debug: log all abilities with apostrophes
+    if (mapping.ability.name.includes("'")) {
+      console.log(`DEBUG: Ability with apostrophe: "${mapping.ability.name}", found: ${mapping.found}, iconPath: ${mapping.ability.iconPath}`);
+    }
     if (mapping.found) {
       abilitiesMap[mapping.ability.name] = mapping.iconFile.filename;
     }
   }
   
-  // Format the mappings
-  const itemsEntries = Object.entries(itemsMap).map(([key, value]) => `    '${key}': '${value}'`).join(',\n');
-  const abilitiesEntries = Object.entries(abilitiesMap).map(([key, value]) => `    '${key}': '${value}'`).join(',\n');
+  // Format the mappings with proper escaping
+  // Escape backslashes first, then single quotes
+  const escapeForJS = (str) => str.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+  const itemsEntries = Object.entries(itemsMap).map(([key, value]) => `    '${escapeForJS(key)}': '${escapeForJS(value)}'`).join(',\n');
+  const abilitiesEntries = Object.entries(abilitiesMap).map(([key, value]) => `    '${escapeForJS(key)}': '${escapeForJS(value)}'`).join(',\n');
   
   const newMapContent = `export const ICON_MAP: IconMap = {
   abilities: {

@@ -11,6 +11,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { ICON_CATEGORIES } from '../lib/constants.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,7 +32,7 @@ const EXTRACTED_DIR = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'extrac
  */
 function getAllIconFiles() {
   const icons = new Set();
-  const categories = ['abilities', 'items', 'buildings', 'trolls', 'units', 'base', 'unclassified'];
+  const categories = ICON_CATEGORIES;
   
   for (const category of categories) {
     const categoryDir = path.join(ICONS_DIR, category);

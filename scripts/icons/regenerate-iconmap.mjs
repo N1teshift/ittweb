@@ -10,13 +10,15 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.join(__dirname, '..', '..');
 const ICONS_DIR = path.join(ROOT_DIR, 'public', 'icons', 'itt');
-const ICON_MAP_FILE = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'utils', 'iconMap.ts');
+const ICON_MAP_FILE = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'data', 'iconMap.ts');
 
 const ITEMS_DIR = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'data', 'items');
 const ABILITIES_DIR = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'data', 'abilities');
+const UNITS_FILE = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'data', 'units', 'allUnits.ts');
 
 /**
- * Get all PNG files in a directory
+ * Get all PNG files in a flat directory
+ * All icons are now in a single flat directory structure
  */
 function getAllIconFiles(dir) {
   const files = [];
@@ -25,14 +27,18 @@ function getAllIconFiles(dir) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   
   for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
+    // Skip subdirectories (all icons should be flat now)
     if (entry.isDirectory()) {
-      files.push(...getAllIconFiles(fullPath));
-    } else if (entry.isFile() && entry.name.toLowerCase().endsWith('.png')) {
+      continue;
+    }
+    
+    if (entry.isFile() && entry.name.toLowerCase().endsWith('.png')) {
       files.push({
         filename: entry.name,
         basename: path.basename(entry.name, '.png').toLowerCase(),
-        category: path.relative(ICONS_DIR, dir).split(path.sep)[0] || 'items'
+        // Category is no longer determined by directory since all icons are flat
+        // We'll use 'icons' as a generic category, but matching will search all icons anyway
+        category: 'icons'
       });
     }
   }
@@ -165,6 +171,41 @@ function readItemsFromTS() {
 }
 
 /**
+ * Read units from TypeScript files
+ */
+function readUnitsFromTS() {
+  const units = [];
+  const filePath = UNITS_FILE;
+  if (!fs.existsSync(filePath)) return units;
+  
+  const content = fs.readFileSync(filePath, 'utf-8');
+  const arrayMatch = content.match(/export const ALL_UNITS[^=]*=\s*\[([\s\S]*?)\];/);
+  if (!arrayMatch) return units;
+  
+  const arrayContent = arrayMatch[1];
+  const objectMatches = arrayContent.matchAll(/\{([\s\S]*?)\}(?=\s*,|\s*$)/g);
+  
+  for (const match of objectMatches) {
+    const objContent = match[1];
+    
+    const idMatch = objContent.match(/id:\s*(['"])((?:\\.|(?!\1).)*)\1/);
+    if (!idMatch) continue;
+    const id = parseJSString(idMatch[0].match(/id:\s*(['"].*?['"])/)[1]);
+    
+    const nameMatch = objContent.match(/name:\s*(['"])((?:\\.|(?!\1).)*)\1/);
+    if (!nameMatch) continue;
+    const name = parseJSString(nameMatch[0].match(/name:\s*(['"].*?['"])/)[1]);
+    
+    const iconMatch = objContent.match(/iconPath:\s*(['"])((?:\\.|(?!\1).)*)\1/);
+    const iconPath = iconMatch ? parseJSString(iconMatch[0].match(/iconPath:\s*(['"].*?['"])/)[1]) : null;
+    
+    units.push({ id, name, iconPath });
+  }
+  
+  return units;
+}
+
+/**
  * Read abilities from TypeScript files
  */
 function readAbilitiesFromTS() {
@@ -219,15 +260,14 @@ function readAbilitiesFromTS() {
 /**
  * Generate iconMap.ts content
  */
-function generateIconMap(items, abilities, allIcons) {
-  const itemIcons = allIcons.filter(icon => icon.category === 'items');
-  const abilityIcons = allIcons.filter(icon => icon.category === 'abilities');
+function generateIconMap(items, abilities, units, allIcons) {
+  // Since all icons are now in a flat directory, we search all icons for matches
+  // The category filtering is no longer needed, but we keep the logic for clarity
   
   // Build item mappings
   const itemMappings = {};
   for (const item of items) {
-    const icon = findIconForName(item.name, item.iconPath, itemIcons) || 
-                 findIconForName(item.name, item.iconPath, allIcons);
+    const icon = findIconForName(item.name, item.iconPath, allIcons);
     if (icon) {
       itemMappings[item.name] = icon;
     }
@@ -236,10 +276,18 @@ function generateIconMap(items, abilities, allIcons) {
   // Build ability mappings
   const abilityMappings = {};
   for (const ability of abilities) {
-    const icon = findIconForName(ability.name, ability.iconPath, abilityIcons) || 
-                 findIconForName(ability.name, ability.iconPath, allIcons);
+    const icon = findIconForName(ability.name, ability.iconPath, allIcons);
     if (icon) {
       abilityMappings[ability.name] = icon;
+    }
+  }
+  
+  // Build unit mappings
+  const unitMappings = {};
+  for (const unit of units) {
+    const icon = findIconForName(unit.name, unit.iconPath, allIcons);
+    if (icon) {
+      unitMappings[unit.name] = icon;
     }
   }
   
@@ -254,16 +302,23 @@ function generateIconMap(items, abilities, allIcons) {
     .map(([key, value]) => `    '${escapeForJS(key)}': '${value}'`)
     .join(',\n');
   
-  return `import { ITTIconCategory } from './iconUtils';
+  const unitsEntries = Object.entries(unitMappings)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, value]) => `    '${escapeForJS(key)}': '${value}'`)
+    .join(',\n');
+  
+  return `import { ITTIconCategory } from '../utils/iconUtils';
 
 export type IconMap = {
   abilities: Record<string, string>;
   items: Record<string, string>;
   buildings: Record<string, string>;
   trolls: Record<string, string>;
+  units: Record<string, string>;
 };
 
 // Central, explicit mapping (display name/id -> icon filename without path, with extension)
+// This file is generated - do not edit manually
 export const ICON_MAP: IconMap = {
   abilities: {
 ${abilitiesEntries || '    // No mappings yet'}
@@ -273,52 +328,10 @@ ${itemsEntries || '    // No mappings yet'}
   },
   buildings: {},
   trolls: {},
+  units: {
+${unitsEntries || '    // No mappings yet'}
+  },
 };
-
-export function resolveExplicitIcon(category: ITTIconCategory, key: string): string | undefined {
-  // First, check the requested category
-  const table = ICON_MAP[category];
-  const filename = table[key];
-  
-  if (!filename) {
-    // If not found in requested category, search all categories
-    const allCategories: ITTIconCategory[] = ['abilities', 'items', 'buildings', 'trolls'];
-    for (const cat of allCategories) {
-      const catTable = ICON_MAP[cat];
-      const foundFilename = catTable[key];
-      if (foundFilename) {
-        // Found the mapping, now determine which directory the file is in
-        return findIconPath(foundFilename);
-      }
-    }
-    return undefined;
-  }
-  
-  // Found in requested category, determine which directory the file is actually in
-  return findIconPath(filename);
-}
-
-/**
- * Finds the actual directory path for an icon filename.
- * Since icons can be shared across categories, we check which category
- * has this filename mapped and prefer items directory for shared icons.
- */
-function findIconPath(filename: string): string {
-  const allCategories: ITTIconCategory[] = ['items', 'abilities', 'buildings', 'trolls'];
-  
-  // Check each category to see if this filename is mapped there
-  // Priority: items first (most shared icons are there), then others
-  for (const cat of allCategories) {
-    const catTable = ICON_MAP[cat];
-    if (Object.values(catTable).includes(filename)) {
-      return \`/icons/itt/\${cat}/\${filename}\`;
-    }
-  }
-  
-  // Fallback: if somehow not found, try items directory (most common)
-  return \`/icons/itt/items/\${filename}\`;
-}
-
 
 `;
 }
@@ -340,23 +353,32 @@ function main() {
   const abilities = readAbilitiesFromTS();
   console.log(`   Found ${abilities.length} abilities\n`);
   
+  console.log('👤 Reading units from TypeScript files...');
+  const units = readUnitsFromTS();
+  console.log(`   Found ${units.length} units\n`);
+  
   // Generate iconMap
   console.log('🔗 Generating icon mappings...');
-  const iconMapContent = generateIconMap(items, abilities, allIcons);
+  const iconMapContent = generateIconMap(items, abilities, units, allIcons);
   
   // Write to file
   console.log('💾 Writing iconMap.ts...');
   fs.writeFileSync(ICON_MAP_FILE, iconMapContent);
   
   // Count mappings
-  const itemCount = (iconMapContent.match(/'[^']+': '[^']+'/g) || []).length;
-  const abilityCount = (iconMapContent.match(/abilities: \{[\s\S]*?\}/)[0].match(/'[^']+': '[^']+'/g) || []).length;
-  const itemsCount = (iconMapContent.match(/items: \{[\s\S]*?\}/)[0].match(/'[^']+': '[^']+'/g) || []).length;
+  const itemsMatch = iconMapContent.match(/items: \{[\s\S]*?\}/);
+  const abilitiesMatch = iconMapContent.match(/abilities: \{[\s\S]*?\}/);
+  const unitsMatch = iconMapContent.match(/units: \{[\s\S]*?\}/);
+  
+  const itemsCount = itemsMatch ? (itemsMatch[0].match(/'[^']+': '[^']+'/g) || []).length : 0;
+  const abilityCount = abilitiesMatch ? (abilitiesMatch[0].match(/'[^']+': '[^']+'/g) || []).length : 0;
+  const unitsCount = unitsMatch ? (unitsMatch[0].match(/'[^']+': '[^']+'/g) || []).length : 0;
   
   console.log(`✅ Generated iconMap.ts`);
   console.log(`\n📊 Summary:`);
   console.log(`   Items mapped: ${itemsCount}`);
   console.log(`   Abilities mapped: ${abilityCount}`);
+  console.log(`   Units mapped: ${unitsCount}`);
 }
 
 main();

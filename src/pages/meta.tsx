@@ -5,4 +5,3 @@ const pageNamespaces = ["common"];
 export default function Meta() {
   return <MetaPage pageNamespaces={pageNamespaces} />;
 }
-

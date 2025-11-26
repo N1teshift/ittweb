@@ -1,0 +1,218 @@
+/**
+ * Master script to generate TypeScript data files directly from external/Work/ decompiled map files
+ * 
+ * This script:
+ * 1. Extracts category mappings from ts_data backup (if needed)
+ * 2. Parses war3map files from external/Work/
+ * 3. Generates TypeScript data files (items, abilities, units)
+ * 4. Generates icon mapping (iconMap.ts)
+ * 
+ * Usage: node scripts/data/generate-from-work.mjs
+ */
+
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { spawn } from 'child_process';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT_DIR = path.join(__dirname, '..', '..');
+
+// Directories
+const WORK_DIR = path.join(ROOT_DIR, 'external', 'Work');
+const DATA_DIR = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'data');
+const ITEMS_DIR = path.join(DATA_DIR, 'items');
+const ABILITIES_DIR = path.join(DATA_DIR, 'abilities');
+const UNITS_DIR = path.join(DATA_DIR, 'units');
+
+// Static category mappings file (manually curated, not regenerated)
+const CATEGORY_MAPPINGS_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'category-mappings.json');
+
+// Optional metadata files (used if they exist)
+const RECIPES_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'recipes.json');
+const BUILDINGS_META_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'buildings.json');
+const UNITS_META_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'units.json');
+const ABILITIES_META_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'abilities.json');
+
+// Scripts
+const EXTRACT_FROM_W3X_SCRIPT = path.join(__dirname, 'extract-from-w3x.mjs');
+const EXTRACT_METADATA_SCRIPT = path.join(__dirname, 'extract-metadata.mjs');
+const CONVERT_SCRIPT = path.join(__dirname, 'convert-extracted-to-typescript.mjs');
+const REGENERATE_ICONMAP_SCRIPT = path.join(ROOT_DIR, 'scripts', 'icons', 'regenerate-iconmap.mjs');
+
+/**
+ * Clean a directory by removing all .ts files
+ */
+function cleanDirectory(dir) {
+  if (!fs.existsSync(dir)) {
+    console.log(`📁 Directory doesn't exist: ${dir}`);
+    return;
+  }
+
+  const files = fs.readdirSync(dir);
+  let removedCount = 0;
+
+  for (const file of files) {
+    if (file.endsWith('.ts')) {
+      const filePath = path.join(dir, file);
+      fs.unlinkSync(filePath);
+      removedCount++;
+    }
+  }
+
+  if (removedCount > 0) {
+    console.log(`🧹 Cleaned ${removedCount} files from ${path.relative(ROOT_DIR, dir)}`);
+  }
+}
+
+/**
+ * Reset all data directories
+ */
+function resetDataDirectories() {
+  console.log('\n🧹 Resetting data directories...\n');
+  
+  cleanDirectory(ITEMS_DIR);
+  cleanDirectory(ABILITIES_DIR);
+  cleanDirectory(UNITS_DIR);
+  
+  // Remove iconMap.ts from data directory
+  const iconMapPath = path.join(DATA_DIR, 'iconMap.ts');
+  if (fs.existsSync(iconMapPath)) {
+    fs.unlinkSync(iconMapPath);
+    console.log(`🧹 Removed ${path.relative(ROOT_DIR, iconMapPath)}`);
+  }
+  
+  // Remove data/index.ts (will be regenerated)
+  const dataIndexPath = path.join(DATA_DIR, 'index.ts');
+  if (fs.existsSync(dataIndexPath)) {
+    fs.unlinkSync(dataIndexPath);
+    console.log(`🧹 Removed ${path.relative(ROOT_DIR, dataIndexPath)}`);
+  }
+  
+  console.log('✅ Data directories reset\n');
+}
+
+/**
+ * Check if category mappings file exists
+ */
+function checkCategoryMappings() {
+  if (fs.existsSync(CATEGORY_MAPPINGS_FILE)) {
+    const mappings = JSON.parse(fs.readFileSync(CATEGORY_MAPPINGS_FILE, 'utf-8'));
+    const itemCount = Object.keys(mappings.items || {}).length;
+    const abilityCount = Object.keys(mappings.abilities || {}).length;
+    console.log(`📚 Using static category mappings: ${itemCount} items, ${abilityCount} abilities\n`);
+    return true;
+  }
+  
+  console.warn('⚠️  Category mappings file not found:');
+  console.warn(`   ${path.relative(ROOT_DIR, CATEGORY_MAPPINGS_FILE)}`);
+  console.warn('   Items and abilities will default to "unknown" category\n');
+  return false;
+}
+
+/**
+ * Run a script and wait for it to complete
+ */
+function runScript(scriptPath, scriptName) {
+  return new Promise((resolve, reject) => {
+    console.log(`\n${'='.repeat(60)}`);
+    console.log(`🔄 Running: ${scriptName}`);
+    console.log('='.repeat(60) + '\n');
+    
+    const script = spawn('node', [scriptPath], {
+      cwd: ROOT_DIR,
+      stdio: 'inherit',
+      shell: true
+    });
+    
+    script.on('close', (code) => {
+      if (code === 0) {
+        console.log(`\n✅ ${scriptName} completed successfully\n`);
+        resolve();
+      } else {
+        console.error(`\n❌ ${scriptName} failed with exit code ${code}\n`);
+        reject(new Error(`${scriptName} failed with exit code ${code}`));
+      }
+    });
+    
+    script.on('error', (error) => {
+      console.error(`\n❌ Error running ${scriptName}:`, error);
+      reject(error);
+    });
+  });
+}
+
+/**
+ * Check if Work directory has required files
+ */
+function checkWorkDirectory() {
+  if (!fs.existsSync(WORK_DIR)) {
+    throw new Error(`Work directory not found: ${WORK_DIR}`);
+  }
+  
+  const requiredFiles = ['war3map.w3t', 'war3map.w3a', 'war3map.w3u', 'war3map.w3b'];
+  const missingFiles = requiredFiles.filter(file => !fs.existsSync(path.join(WORK_DIR, file)));
+  
+  if (missingFiles.length > 0) {
+    throw new Error(`Missing required files in Work directory: ${missingFiles.join(', ')}`);
+  }
+  
+  console.log('✅ Work directory check passed\n');
+}
+
+/**
+ * Main function
+ */
+async function main() {
+  console.log('='.repeat(60));
+  console.log('🚀 Master Data Generation from Work Directory');
+  console.log('='.repeat(60));
+  console.log('\nThis script will:');
+  console.log('  1. Use static category mappings file');
+  console.log('  2. Parse war3map files from external/Work/');
+  console.log('  3. Extract metadata (units, buildings)');
+  console.log('  4. Generate TypeScript data files (items, abilities, units)');
+  console.log('  5. Generate icon mapping (iconMap.ts)');
+  console.log('\n' + '='.repeat(60) + '\n');
+  
+  try {
+    // Step 0: Check Work directory
+    checkWorkDirectory();
+    
+    // Step 1: Check category mappings file exists
+    checkCategoryMappings();
+    
+    // Step 2: Reset data directories
+    resetDataDirectories();
+    
+    // Step 3: Extract from Work files (this will create extracted_from_w3x/ JSON files)
+    await runScript(EXTRACT_FROM_W3X_SCRIPT, 'extract-from-w3x.mjs');
+    
+    // Step 4: Extract metadata (recipes, buildings, units)
+    await runScript(EXTRACT_METADATA_SCRIPT, 'extract-metadata.mjs');
+    
+    // Step 5: Generate TypeScript data files
+    // Uses static category-mappings.json file (not regenerated)
+    await runScript(CONVERT_SCRIPT, 'convert-extracted-to-typescript.mjs');
+    
+    // Step 6: Generate icon mapping
+    await runScript(REGENERATE_ICONMAP_SCRIPT, 'regenerate-iconmap.mjs');
+    
+    console.log('='.repeat(60));
+    console.log('✅ All data generation complete!');
+    console.log('='.repeat(60));
+    console.log('\nGenerated files:');
+    console.log(`  📦 Items: ${DATA_DIR}/items/`);
+    console.log(`  ✨ Abilities: ${DATA_DIR}/abilities/`);
+    console.log(`  👤 Units: ${DATA_DIR}/units/`);
+    console.log(`  🗺️  Icon Map: ${DATA_DIR}/iconMap.ts`);
+    console.log('\n');
+    
+  } catch (error) {
+    console.error('\n❌ Error during data generation:', error.message);
+    process.exit(1);
+  }
+}
+
+main();
+

@@ -1,178 +1,175 @@
 {
   "buildings": [
     {
-      "id": "tannery",
-      "unitId": "UNIT_TANNERY",
-      "name": "Tannery",
+      "id": "high-grass",
+      "unitId": "B000:ZTtw",
+      "name": "High Grass",
       "description": "",
       "hp": null,
       "armor": null,
-      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst",
-      "craftableItems": [
-        "ITEM_ELK_HIDE",
-        "ITEM_ELK_HIDE",
-        "ITEM_ELK_HIDE",
-        "ITEM_JUNGLE_WOLF_HIDE",
-        "ITEM_JUNGLE_WOLF_HIDE",
-        "ITEM_JUNGLE_WOLF_HIDE",
-        "ITEM_JUNGLE_BEAR_HIDE",
-        "ITEM_JUNGLE_BEAR_HIDE",
-        "ITEM_JUNGLE_BEAR_HIDE"
-      ]
+      "craftableItems": []
     },
     {
-      "id": "smoke-house",
-      "unitId": "UNIT_SMOKE_HOUSE",
-      "name": "Smoke House",
+      "id": "canopy-tree",
+      "unitId": "B002:ZTtw",
+      "name": "Canopy Tree",
       "description": "",
       "hp": null,
       "armor": null,
-      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst"
+      "craftableItems": []
     },
     {
-      "id": "workshop",
-      "unitId": "UNIT_WORKSHOP",
-      "name": "Workshop",
+      "id": "normal-tree",
+      "unitId": "B006:ZTtw",
+      "name": "Normal Tree",
       "description": "",
       "hp": null,
       "armor": null,
-      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst",
-      "craftableItems": [
-        "ITEM_TINDER",
-        "ITEM_STICK",
-        "ITEM_THISTLES",
-        "ITEM_SPIRIT_WIND",
-        "ITEM_MANA_CRYSTAL",
-        "ITEM_POISON",
-        "ITEM_TINDER",
-        "ITEM_NETS",
-        "ITEM_ATHELAS_SEED",
-        "ITEM_BANANA",
-        "ITEM_SMOKE_BOMB",
-        "ITEM_THISTLES",
-        "ITEM_MANA_CRYSTAL",
-        "ITEM_STICK"
-      ]
+      "craftableItems": []
     },
     {
-      "id": "storage-hut",
-      "unitId": "UNIT_STORAGE_HUT",
-      "name": "Storage Hut",
+      "id": "rotten-tree",
+      "unitId": "B003:ZTtw",
+      "name": "Rotten Tree",
       "description": "",
       "hp": null,
       "armor": null,
-      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst"
+      "craftableItems": []
     },
     {
-      "id": "hatchery",
-      "unitId": "UNIT_HATCHERY",
-      "name": "Hatchery",
+      "id": "magic-tree",
+      "unitId": "B001:ZTtw",
+      "name": "Magic Tree",
       "description": "",
       "hp": null,
       "armor": null,
-      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst"
+      "craftableItems": []
     },
     {
-      "id": "witch-doctors-hut",
-      "unitId": "UNIT_WITCH_DOCTORS_HUT",
-      "name": "Witch Doctors Hut",
+      "id": "hanging-bridge",
+      "unitId": "B005:YT42",
+      "name": "hanging bridge",
       "description": "",
       "hp": null,
       "armor": null,
-      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst",
-      "craftableItems": [
-        "ITEM_MAGIC",
-        "ITEM_MAGIC",
-        "ITEM_MAGIC",
-        "ITEM_MAGIC",
-        "ITEM_MAGIC",
-        "ITEM_PANTHER_FANG",
-        "ITEM_TINDER",
-        "ITEM_STONE",
-        "ITEM_SPIRIT_WATER",
-        "ITEM_BONE",
-        "ITEM_MUSHROOM",
-        "ITEM_FLINT",
-        "ITEM_SPIRIT_WIND",
-        "ITEM_ELK_SKIN_BOOTS",
-        "ITEM_STICK",
-        "ITEM_MANA_CRYSTAL"
-      ]
+      "craftableItems": []
     },
     {
-      "id": "mixing-pot",
-      "unitId": "UNIT_MIXING_POT",
-      "name": "Mixing Pot",
+      "id": "entrance-left",
+      "unitId": "B007:ZTtw",
+      "name": "entrance_left",
       "description": "",
       "hp": null,
       "armor": null,
-      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst"
+      "craftableItems": []
     },
     {
-      "id": "armory",
-      "unitId": "UNIT_ARMORY",
-      "name": "Armory",
+      "id": "new-bridge",
+      "unitId": "B008:DTrf",
+      "name": "new bridge",
       "description": "",
       "hp": null,
       "armor": null,
-      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst",
-      "craftableItems": [
-        "ITEM_GREATER_ESSENCE",
-        "ITEM_BONE_BOOTS",
-        "ITEM_BEAR_SKIN_BOOTS",
-        "ITEM_BEAR_SKIN_GLOVES",
-        "ITEM_BEAR_SKIN_GLOVES",
-        "ITEM_BONE_GLOVES",
-        "ITEM_WOLF_SKIN_GLOVES",
-        "ITEM_WOLF_SKIN_BOOTS",
-        "ITEM_IRON_STAFF",
-        "ITEM_IRON_SHIELD",
-        "ITEM_BONE_SHIELD",
-        "ITEM_STEEL_GLOVES",
-        "ITEM_BEAR_SKIN_COAT",
-        "ITEM_BONE_COAT",
-        "ITEM_WOLF_SKIN_COAT",
-        "ITEM_BONE_COAT"
-      ]
+      "craftableItems": []
     },
     {
-      "id": "forge",
-      "unitId": "UNIT_FORGE",
-      "name": "Forge",
+      "id": "entrance-right",
+      "unitId": "B00C:ZTtw",
+      "name": "entrance_right",
       "description": "",
       "hp": null,
       "armor": null,
-      "filePath": "wurst\\objects\\units\\Buildings\\CraftingBuildings.wurst",
-      "craftableItems": [
-        "ITEM_ELK_SKIN_GLOVES",
-        "ITEM_ELK_SKIN_BOOTS",
-        "ITEM_ELK_SKIN_COAT",
-        "ITEM_ELK_SKIN_BOOTS",
-        "ITEM_STICK",
-        "ITEM_ELK_SKIN_COAT",
-        "ITEM_ELK_SKIN_GLOVES",
-        "ITEM_ELK_SKIN_GLOVES",
-        "ITEM_ELK_SKIN_BOOTS",
-        "ITEM_ELK_SKIN_COAT",
-        "ITEM_STICK",
-        "ITEM_STICK",
-        "ITEM_STICK",
-        "ITEM_SHIELD",
-        "ITEM_ELK_HIDE",
-        "ITEM_SHIELD",
-        "ITEM_SHIELD",
-        "ITEM_IRON_INGOT",
-        "ITEM_STONE",
-        "ITEM_STICK",
-        "ITEM_STICK",
-        "ITEM_STICK",
-        "ITEM_STICK",
-        "ITEM_IRON_AXE"
-      ]
+      "craftableItems": []
+    },
+    {
+      "id": "normal-tree-walkable",
+      "unitId": "B009:ZTtw",
+      "name": "Normal Tree(walkable)",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "craftableItems": []
+    },
+    {
+      "id": "durotarpalm",
+      "unitId": "B00B:ZTtw",
+      "name": "durotarpalm",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "craftableItems": []
+    },
+    {
+      "id": "canopy-durotarpalm",
+      "unitId": "B00A:ZTtw",
+      "name": "Canopy durotarpalm",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "craftableItems": []
+    },
+    {
+      "id": "waterpalm",
+      "unitId": "B00D:ZTtw",
+      "name": "waterpalm",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "craftableItems": []
+    },
+    {
+      "id": "durotartiltedpalm",
+      "unitId": "B00E:ZTtw",
+      "name": "durotartiltedpalm",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "craftableItems": []
+    },
+    {
+      "id": "durotarpalm-walkable",
+      "unitId": "B00F:ZTtw",
+      "name": "durotarpalm(walkable)",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "craftableItems": []
+    },
+    {
+      "id": "arena-gates1",
+      "unitId": "B004:ZTw3",
+      "name": "arena_gates1",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "craftableItems": []
+    },
+    {
+      "id": "arena-gates2",
+      "unitId": "B00G:ZTw3",
+      "name": "arena_gates2",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "craftableItems": []
+    },
+    {
+      "id": "magic-tree",
+      "unitId": "DM02:ATtr",
+      "name": "Magic Tree",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "craftableItems": []
+    },
+    {
+      "id": "normal-tree",
+      "unitId": "DM01:ZTtw",
+      "name": "Normal Tree",
+      "description": "",
+      "hp": null,
+      "armor": null,
+      "craftableItems": []
     }
-  ],
-  "metadata": {
-    "totalBuildings": 9,
-    "extractedAt": 1764029545.3146183
-  }
+  ]
 }

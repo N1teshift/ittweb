@@ -1,6 +1,7 @@
 import React from 'react';
 import type { DragPayload, TrollSide } from '@/features/modules/tools/types';
 import type { ItemData } from '@/types/items';
+import { getItemIconPathFromRecord } from '@/features/modules/guides/data/items';
 
 export default function InventoryGrid({
   side,
@@ -58,8 +59,8 @@ export default function InventoryGrid({
           >
             {item ? (
               <>
-                <span
-                  className="px-1 leading-tight"
+                <div
+                  className="absolute inset-0 w-full h-full rounded-md overflow-hidden"
                   draggable
                   onDragStart={(e) => {
                     e.dataTransfer.effectAllowed = 'move';
@@ -68,10 +69,19 @@ export default function InventoryGrid({
                       JSON.stringify({ kind: 'inventoryItem', side, index: idx })
                     );
                   }}
+                  title={item.name}
                 >
-                  {item.name}
-                </span>
-                <span className="absolute -top-2 -right-2">
+                  <img
+                    src={getItemIconPathFromRecord(item)}
+                    alt={item.name}
+                    className="w-full h-full object-cover rounded-md"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = '/icons/itt/BTNYellowHerb.png'; // fallback icon
+                    }}
+                  />
+                </div>
+                <span className="absolute -top-2 -right-2 z-10">
                   <button
                     type="button"
                     aria-label="Clear slot"
@@ -86,7 +96,7 @@ export default function InventoryGrid({
                 </span>
               </>
             ) : (
-              <span className="text-amber-300/60">Empty</span>
+              <span className="text-amber-300/60 text-xs">Empty</span>
             )}
           </button>
         );

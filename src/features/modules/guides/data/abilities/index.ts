@@ -11,6 +11,7 @@ import { MAGE_ABILITIES } from './mage';
 import { PRIEST_ABILITIES } from './priest';
 import { SCOUT_ABILITIES } from './scout';
 import { THIEF_ABILITIES } from './thief';
+import { BUILDING_ABILITIES } from './building';
 import { UNKNOWN_ABILITIES } from './unknown';
 
 // Combine all abilities
@@ -24,6 +25,7 @@ export const ABILITIES: AbilityData[] = [
   ...PRIEST_ABILITIES,
   ...SCOUT_ABILITIES,
   ...THIEF_ABILITIES,
+  ...BUILDING_ABILITIES,
   ...UNKNOWN_ABILITIES,
 ];
 
