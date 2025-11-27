@@ -3,6 +3,7 @@ import { useSession, signIn } from 'next-auth/react';
 import { useEffect, useState, FormEvent } from 'react';
 import Link from 'next/link';
 import type { ScheduledGame } from '@/types/scheduledGame';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 
 interface ApiResponse {
   success?: boolean;
@@ -22,7 +23,6 @@ export default function UploadReplayPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
-  const [gameDataText, setGameDataText] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -55,15 +55,6 @@ export default function UploadReplayPage() {
       setError('Please select a replay file');
       return;
     }
-    if (gameDataText.trim()) {
-      // Validate JSON before sending
-      try {
-        JSON.parse(gameDataText);
-      } catch {
-        setError('Invalid JSON format for game data');
-        return;
-      }
-    }
 
     try {
       setSubmitting(true);
@@ -72,9 +63,6 @@ export default function UploadReplayPage() {
 
       const formData = new FormData();
       formData.append('replay', file);
-      if (gameDataText.trim()) {
-        formData.append('gameData', gameDataText);
-      }
 
       if (!scheduledGameId) {
         setError('Missing scheduled game ID');
@@ -94,7 +82,6 @@ export default function UploadReplayPage() {
 
       setSuccessMessage(data.message || 'Replay uploaded successfully!');
       setFile(null);
-      setGameDataText('');
 
       // Redirect back to scheduled games after a short delay
       setTimeout(() => {
@@ -144,7 +131,7 @@ export default function UploadReplayPage() {
     );
   }
 
-  const scheduledTime = new Date(game.scheduledDateTime).toLocaleString();
+  const scheduledTime = new Date(typeof game.scheduledDateTime === 'string' ? game.scheduledDateTime : timestampToIso(game.scheduledDateTime)).toLocaleString();
 
   return (
     <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center">
@@ -178,6 +165,9 @@ export default function UploadReplayPage() {
 
         <div className="bg-black/30 border border-amber-500/30 rounded-lg p-6 space-y-6">
           <h2 className="text-2xl font-medieval-brand text-amber-300">Replay Upload</h2>
+          <p className="text-gray-400">
+            Upload your replay file (.w3g). Game data will be automatically extracted from the replay file.
+          </p>
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label className="block text-amber-500 mb-2">Replay File (.w3g) *</label>
@@ -188,25 +178,8 @@ export default function UploadReplayPage() {
                 className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
                 required
               />
-            </div>
-
-            <div>
-              <label className="block text-amber-500 mb-2">
-                Game Data JSON (optional)
-              </label>
-              <textarea
-                value={gameDataText}
-                onChange={(e) => setGameDataText(e.target.value)}
-                placeholder='Paste the JSON body you would send to /api/games (you can use the "/test/create-game" page to generate it).'
-                className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none min-h-[200px]"
-              />
               <p className="text-sm text-gray-400 mt-2">
-                Optional: paste the JSON payload you would normally send to{' '}
-                <code className="text-amber-400">/api/games</code>. You can use the{' '}
-                <Link href="/test/create-game" className="text-amber-400 hover:text-amber-300 underline">
-                  test/create-game
-                </Link>{' '}
-                page to help build this payload. If left empty, the replay will still upload and mark the game as awaiting stats.
+                The replay file will be parsed automatically to extract game data including players, stats, and match results.
               </p>
             </div>
 

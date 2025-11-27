@@ -45,7 +45,7 @@ export function useArchiveBaseState(mode: 'create' | 'edit', initialEntry?: Arch
       setFormData({
         title: initialEntry.title,
         content: initialEntry.content,
-        author: initialEntry.author,
+        creatorName: initialEntry.creatorName,
         entryType: (initialEntry.entryType || '') as '' | 'story' | 'changelog',
         mediaUrl: initialEntry.videoUrl || initialEntry.mediaUrl || '',
         twitchClipUrl: initialEntry.twitchClipUrl || '',

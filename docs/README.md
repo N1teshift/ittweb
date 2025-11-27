@@ -19,6 +19,9 @@ Use this index to jump to the latest, audience-focused docs.
 - `scripts/` – icon mapping, extractor guides, plus an `archive/` folder for historical write-ups. All active scripts now live in `scripts/data/`.
 - `/meta` (`src/pages/meta.tsx`) – live analytics dashboard backed by `src/features/modules/analytics`.
 
+## Schemas (`docs/schemas/`)
+- **`firestore-collections.md`** – **CRITICAL**: Standardized Firestore collection schemas. **ALL code MUST follow these schemas exactly. No backward compatibility or migration code allowed.** This is the single source of truth for all collection field names and structures.
+
 ## Archive (`docs/archive/`)
 - `phase-0-complete.md` and the TWGB analyses live here once they’re purely historical.
 - Use this folder to stash any doc that’s no longer the source of truth.

@@ -12,7 +12,7 @@
 import fs from 'fs';
 import path from 'path';
 import { loadJson, writeJson, slugify, getField } from './utils.mjs';
-import { TMP_RAW_DIR, TMP_METADATA_DIR, WORK_DIR, ensureTmpDirs } from './paths.mjs';
+import { TMP_RAW_DIR, TMP_METADATA_DIR, WORK_DIR, ROOT_DIR, ensureTmpDirs } from './paths.mjs';
 
 const EXTRACTED_DIR = TMP_RAW_DIR;
 const OUTPUT_DIR = TMP_METADATA_DIR;
@@ -415,6 +415,201 @@ function extractRecipesMetadata() {
 }
 
 /**
+ * Extract item metadata from war3map.j
+ * Maps item constants to their names for better categorization
+ */
+function extractItemsMetadata() {
+  const itemIdToNameMap = new Map(); // Maps item constant to normalized name
+  
+  // Parse war3map.j to extract LocalObjectIDs_ITEM_* constants and their names
+  if (fs.existsSync(WAR3MAP_FILE)) {
+    const warContent = fs.readFileSync(WAR3MAP_FILE, 'utf-8');
+    const lines = warContent.split(/\r?\n/);
+    const { objectMap, aliasMap } = buildLocalObjectMetadata(lines);
+    
+    // Extract all ITEM constants
+    const itemIdRegex = /integer\s+LocalObjectIDs_ITEM_([A-Z0-9_]+)\s*=/g;
+    let match;
+    
+    while ((match = itemIdRegex.exec(warContent)) !== null) {
+      const itemConstName = `LocalObjectIDs_ITEM_${match[1]}`;
+      const resolved = resolveAlias(itemConstName, aliasMap);
+      
+      if (resolved && resolved.startsWith('LocalObjectIDs_ITEM_')) {
+        const itemMeta = objectMap.get(resolved);
+        if (itemMeta && itemMeta.name) {
+          // Normalize the name for mapping
+          const normalizedName = itemMeta.name
+            .toLowerCase()
+            .trim();
+          
+          // Map both the constant name (without prefix) and the object name
+          const constNameWithoutPrefix = match[1].toLowerCase().replace(/_/g, '-');
+          itemIdToNameMap.set(constNameWithoutPrefix, normalizedName);
+          itemIdToNameMap.set(normalizedName, normalizedName);
+          
+          // Also map slugified versions
+          const slugified = slugify(itemMeta.name);
+          if (slugified && slugified !== normalizedName) {
+            itemIdToNameMap.set(slugified, normalizedName);
+          }
+        }
+      }
+    }
+    
+    console.log(`  Found ${itemIdToNameMap.size} item ID mappings from war3map.j`);
+  }
+  
+  return {
+    generatedAt: new Date().toISOString(),
+    source: 'war3map.j',
+    itemIdToNameMap: Object.fromEntries(itemIdToNameMap),
+    totalMappings: itemIdToNameMap.size,
+  };
+}
+
+/**
+ * Extract ability metadata from war3map.j and Wurst source files
+ * Maps ability IDs and names to their categories (hunter, mage, priest, etc.)
+ */
+function extractAbilitiesMetadata() {
+  const abilityCategoryMap = new Map(); // Maps ability name/id to category
+  const abilityIdToNameMap = new Map(); // Maps ability ID to name from war3map.j
+  
+  // Step 1: Parse war3map.j to extract LocalObjectIDs_ABILITY_* constants
+  if (fs.existsSync(WAR3MAP_FILE)) {
+    const warContent = fs.readFileSync(WAR3MAP_FILE, 'utf-8');
+    const abilityIdRegex = /integer\s+LocalObjectIDs_ABILITY_([A-Z0-9_]+)\s*=/g;
+    let match;
+    
+    while ((match = abilityIdRegex.exec(warContent)) !== null) {
+      const abilityName = match[1];
+      // Convert ABILITY_NAME to ability-name format
+      const normalizedName = abilityName
+        .toLowerCase()
+        .replace(/_/g, '-')
+        .replace(/^ability-/, '');
+      abilityIdToNameMap.set(abilityName, normalizedName);
+    }
+    
+    console.log(`  Found ${abilityIdToNameMap.size} ability IDs in war3map.j`);
+  }
+  
+  // Step 2: Parse Wurst source file to extract ability-to-class mappings
+  const wurstFile = path.join(ROOT_DIR, 'island-troll-tribes', 'wurst', 'objects', 'units', 'TrollUnitTextConstant.wurst');
+  if (fs.existsSync(wurstFile)) {
+    const wurstContent = fs.readFileSync(wurstFile, 'utf-8');
+    
+    // Map class names to categories
+    const classToCategoryMap = {
+      'HUNTER': 'hunter',
+      'MAGE': 'mage',
+      'PRIEST': 'priest',
+      'BEASTMASTER': 'beastmaster',
+      'THIEF': 'thief',
+      'SCOUT': 'scout',
+      'GATHERER': 'gatherer',
+      'WARRIOR': 'hunter', // Warrior is a hunter subclass
+      'TRACKER': 'hunter', // Tracker is a hunter subclass
+      'JUGGERNAUT': 'hunter', // Juggernaut is a hunter superclass
+      'ELEMENTALIST': 'mage', // Elementalist is a mage subclass
+      'HYPNOTIST': 'mage', // Hypnotist is a mage subclass
+      'DREAMWALKER': 'mage', // Dreamwalker is a mage subclass
+      'DEMENTIA_MASTER': 'mage', // Dementia Master is a mage superclass
+      'BOOSTER': 'priest', // Booster is a priest subclass
+      'MASTER_HEALER': 'priest', // Master Healer is a priest subclass
+      'SAGE': 'priest', // Sage is a priest superclass
+      'ESCAPE_ARTIST': 'thief', // Escape Artist is a thief subclass
+      'ROGUE': 'thief', // Rogue is a thief subclass
+      'TELETHIEF': 'thief', // TeleThief is a thief subclass
+      'CONTORTIONIST': 'thief', // Contortionist is a thief subclass
+      'ASSASSIN': 'thief', // Assassin is a thief superclass
+      'OBSERVER': 'scout', // Observer is a scout subclass
+      'TRAPPER': 'scout', // Trapper is a scout subclass
+      'HAWK': 'scout', // Hawk is a scout subclass
+      'SPY': 'scout', // Spy is a scout superclass
+      'RADAR_GATHERER': 'gatherer', // Radar Gatherer is a gatherer subclass
+      'HERB_MASTER': 'gatherer', // Herb Master is a gatherer subclass
+      'ALCHEMIST': 'gatherer', // Alchemist is a gatherer subclass
+      'OMNIGATHERER': 'gatherer', // Omnigatherer is a gatherer superclass
+      'DRUID': 'beastmaster', // Druid is a beastmaster subclass
+      'SHAPESHIFTER': 'beastmaster', // Shapeshifter is a beastmaster subclass
+      'DIRE_WOLF': 'beastmaster', // Dire Wolf is a beastmaster subclass
+      'DIRE_BEAR': 'beastmaster', // Dire Bear is a beastmaster subclass
+      'JUNGLE_TYRANT': 'beastmaster', // Jungle Tyrant is a beastmaster superclass
+    };
+    
+    // Extract HERO_SPELLS_*, NORMAL_SPELLS_*, and BASIC_TROLL_SPELLS constants
+    const spellListRegex = /(?:HERO_SPELLS|NORMAL_SPELLS|BASIC_TROLL_SPELLS)_?([A-Z_]*)\s*=\s*commaList\(([^)]+)\)/g;
+    let spellMatch;
+    
+    while ((spellMatch = spellListRegex.exec(wurstContent)) !== null) {
+      const className = spellMatch[1] || ''; // Empty for BASIC_TROLL_SPELLS
+      const abilityList = spellMatch[2];
+      
+      // Handle BASIC_TROLL_SPELLS
+      let category;
+      if (!className) {
+        category = 'basic';
+      } else {
+        category = classToCategoryMap[className];
+      }
+      
+      if (category) {
+        // Parse ability list (comma-separated ABILITY_* constants)
+        const abilities = abilityList
+          .split(',')
+          .map(a => a.trim())
+          .filter(a => a && a.startsWith('ABILITY_'))
+          .map(a => {
+            // Remove ABILITY_ prefix and normalize
+            const name = a.replace(/^ABILITY_/, '').toLowerCase().replace(/_/g, '-');
+            return name;
+          });
+        
+        // Map each ability to the category
+        for (const abilityName of abilities) {
+          abilityCategoryMap.set(abilityName, category);
+          // Also try with 'ability-' prefix
+          abilityCategoryMap.set(`ability-${abilityName}`, category);
+        }
+      }
+    }
+    
+    console.log(`  Found ${abilityCategoryMap.size} ability-to-category mappings from Wurst source`);
+  }
+  
+  // Step 3: Parse LocalObjectIDs.wurst to get ability constant names
+  const localObjectIdsFile = path.join(ROOT_DIR, 'island-troll-tribes', 'wurst', 'assets', 'LocalObjectIDs.wurst');
+  if (fs.existsSync(localObjectIdsFile)) {
+    const localContent = fs.readFileSync(localObjectIdsFile, 'utf-8');
+    // Extract ability constant definitions
+    const abilityConstRegex = /public\s+let\s+ABILITY_([A-Z0-9_]+)\s*=/g;
+    let constMatch;
+    
+    while ((constMatch = abilityConstRegex.exec(localContent)) !== null) {
+      const abilityConstName = constMatch[1];
+      const normalizedName = abilityConstName.toLowerCase().replace(/_/g, '-');
+      
+      // If we have a category for this ability, map the constant name too
+      if (abilityCategoryMap.has(normalizedName)) {
+        const category = abilityCategoryMap.get(normalizedName);
+        abilityCategoryMap.set(abilityConstName.toLowerCase().replace(/_/g, '-'), category);
+        abilityCategoryMap.set(`ability-${normalizedName}`, category);
+      }
+    }
+  }
+  
+  return {
+    generatedAt: new Date().toISOString(),
+    source: 'war3map.j + Wurst source files',
+    abilityCategoryMap: Object.fromEntries(abilityCategoryMap),
+    abilityIdToNameMap: Object.fromEntries(abilityIdToNameMap),
+    totalMappings: abilityCategoryMap.size,
+  };
+}
+
+/**
  * Main function
  */
 function main() {
@@ -442,12 +637,17 @@ function main() {
   writeJson(path.join(OUTPUT_DIR, 'recipes.json'), recipesMetadata);
   console.log(`✅ Extracted ${recipesMetadata.recipes.length} recipes\n`);
   
-  // Extract abilities metadata (if needed)
-  const existingAbilities = loadJson(path.join(OUTPUT_DIR, 'abilities.json'));
-  if (!existingAbilities) {
-    writeJson(path.join(OUTPUT_DIR, 'abilities.json'), { abilities: [] });
-    console.log('✅ Created empty abilities.json\n');
-  }
+  // Extract items metadata from war3map.j
+  console.log('📦 Extracting items metadata...');
+  const itemsMetadata = extractItemsMetadata();
+  writeJson(path.join(OUTPUT_DIR, 'items.json'), itemsMetadata);
+  console.log(`✅ Extracted ${itemsMetadata.totalMappings} item ID mappings\n`);
+  
+  // Extract abilities metadata from war3map.j and Wurst source
+  console.log('✨ Extracting abilities metadata...');
+  const abilitiesMetadata = extractAbilitiesMetadata();
+  writeJson(path.join(OUTPUT_DIR, 'abilities.json'), abilitiesMetadata);
+  console.log(`✅ Extracted ${abilitiesMetadata.totalMappings} ability category mappings\n`);
   
   console.log('✅ Metadata extraction complete!');
 }

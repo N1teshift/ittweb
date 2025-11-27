@@ -35,7 +35,7 @@ export default async function handler(
     }
 
     // Check if user is the creator
-    const isCreator = game.scheduledByDiscordId === session.discordId;
+    const isCreator = game.createdByDiscordId === session.discordId;
 
     // Check if user is admin
     let userIsAdmin = false;

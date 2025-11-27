@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { PageHero } from '@/features/shared/components';
 import type { ArchiveEntry } from '@/types/archive';
+import type { GameFilters } from '@/features/modules/games/types';
 import { 
   ArchiveForm, 
   ArchiveEditForm,
@@ -11,6 +12,7 @@ import {
 } from '@/features/modules/archives/components';
 import ImageModal from '@/features/modules/archives/components/sections/ImageModal';
 import { useArchivesPage, useArchivesActions } from '@/features/modules/archives/hooks';
+import { useGames } from '@/features/modules/games/hooks/useGames';
 import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
 import { UserRole } from '@/types/userData';
 import { isAdmin } from '@/features/shared/utils/userRoleUtils';
@@ -20,12 +22,13 @@ interface ArchivesPageProps {
   pageNamespaces: string[];
 }
 
-const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces }) => {
+const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces: _pageNamespaces }) => {
   const logger = createComponentLogger('ArchivesPage');
   const { data: session, status } = useSession();
   const [userRole, setUserRole] = useState<UserRole | undefined>();
   const [entryPendingDelete, setEntryPendingDelete] = useState<ArchiveEntry | null>(null);
   const [isDeletingEntry, setIsDeletingEntry] = useState(false);
+  const [gameFilters, setGameFilters] = useState<GameFilters>({});
   
   // Use our custom hooks
   const {
@@ -68,6 +71,9 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces }) => {
     entries,
     sortOrder,
   });
+
+  // Fetch games with filters
+  const { games, loading: gamesLoading } = useGames({ ...gameFilters, limit: 100 });
 
   useEffect(() => {
     let isMounted = true;
@@ -150,25 +156,28 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces }) => {
   return (
     <div className="min-h-[calc(100vh-8rem)]">
       <PageHero
-        title="Archives"
-        description="Welcome to the Island Troll Tribes Archives! Explore the history and legacy of our game development, and contribute your own memories to this living timeline."
+        title="Archives & Games"
+        description="Explore all games and archive entries in one unified timeline. Filter by category, player, or date range to find exactly what you're looking for."
       />
 
       <ArchivesToolbar
         isAuthenticated={isAuthenticated}
         entriesCount={entries.length}
         sortOrder={sortOrder}
+        filters={gameFilters}
         onAddClick={handleAddClick}
         onSignInClick={handleSignIn}
         onSortOrderChange={handleSortOrderChange}
+        onFiltersChange={setGameFilters}
       />
 
       <ArchivesContent
-        loading={loading}
+        loading={loading || gamesLoading}
         error={error}
         entries={entries}
         datedEntries={datedEntries}
         undatedEntries={undatedEntries}
+        games={games}
         isAuthenticated={isAuthenticated}
         canManageEntries={canManageEntries}
         canDeleteEntry={(entry) =>

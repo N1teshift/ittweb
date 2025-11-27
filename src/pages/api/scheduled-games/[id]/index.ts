@@ -42,7 +42,7 @@ export default async function handler(
     }
 
     // Check if user is the creator
-    if (game.scheduledByDiscordId !== session.discordId) {
+    if (game.createdByDiscordId !== session.discordId) {
       return res.status(403).json({ error: 'Only the game creator can edit this game' });
     }
 

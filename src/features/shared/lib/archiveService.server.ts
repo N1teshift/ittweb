@@ -1,28 +1,10 @@
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import { ArchiveEntry } from '@/types/archive';
 
 const logger = createComponentLogger('archiveService.server');
 const ARCHIVE_COLLECTION = 'archives';
-
-/**
- * Convert Firestore timestamp to ISO string
- * Handles both client SDK Timestamp and Admin SDK Timestamp
- */
-interface TimestampLike {
-  toDate?: () => Date;
-}
-function timestampToIso(timestamp: TimestampLike | string | Date | undefined): string {
-  if (!timestamp) return new Date().toISOString();
-  if (typeof timestamp === 'string') return timestamp;
-  if ('toDate' in timestamp && typeof timestamp.toDate === 'function') {
-    return timestamp.toDate().toISOString();
-  }
-  if (timestamp instanceof Date) {
-    return timestamp.toISOString();
-  }
-  return new Date().toISOString();
-}
 
 /**
  * Get all archive entries (server-side only)
@@ -50,19 +32,19 @@ export async function getAllArchiveEntries(): Promise<ArchiveEntry[]> {
             id: docSnap.id,
             title: data.title,
             content: data.content,
-            author: data.author,
+            creatorName: data.creatorName || 'Unknown',
             createdByDiscordId: data.createdByDiscordId ?? null,
-            createdByName: data.createdByName,
-            mediaUrl: data.mediaUrl,
-            mediaType: data.mediaType,
+            entryType: data.entryType,
             images: data.images,
             videoUrl: data.videoUrl,
             twitchClipUrl: data.twitchClipUrl,
             replayUrl: data.replayUrl,
+            linkedGameDocumentId: data.linkedGameDocumentId,
             sectionOrder: data.sectionOrder,
             dateInfo: data.dateInfo,
             createdAt: timestampToIso(data.createdAt),
             updatedAt: timestampToIso(data.updatedAt),
+            submittedAt: data.submittedAt ? timestampToIso(data.submittedAt) : undefined,
             isDeleted: data.isDeleted ?? false,
             deletedAt: data.deletedAt ? timestampToIso(data.deletedAt) : null,
           });
@@ -87,19 +69,21 @@ export async function getAllArchiveEntries(): Promise<ArchiveEntry[]> {
               id: docSnap.id,
               title: data.title,
               content: data.content,
-              author: data.author,
+              creatorName: data.creatorName || 'Unknown',
               createdByDiscordId: data.createdByDiscordId ?? null,
-              createdByName: data.createdByName,
+              entryType: data.entryType,
               mediaUrl: data.mediaUrl,
               mediaType: data.mediaType,
               images: data.images,
               videoUrl: data.videoUrl,
               twitchClipUrl: data.twitchClipUrl,
               replayUrl: data.replayUrl,
+              linkedGameDocumentId: data.linkedGameDocumentId,
               sectionOrder: data.sectionOrder,
               dateInfo: data.dateInfo,
-              createdAt: timestampToIso(data.createdAt),
-              updatedAt: timestampToIso(data.updatedAt),
+              createdAt: data.createdAt,
+              updatedAt: data.updatedAt,
+              submittedAt: data.submittedAt ? timestampToIso(data.submittedAt) : undefined,
               isDeleted: data.isDeleted ?? false,
               deletedAt: data.deletedAt ? timestampToIso(data.deletedAt) : null,
             });
@@ -107,8 +91,8 @@ export async function getAllArchiveEntries(): Promise<ArchiveEntry[]> {
 
           // Sort by createdAt descending
           entries.sort((a, b) => {
-            const timeA = new Date(a.createdAt).getTime();
-            const timeB = new Date(b.createdAt).getTime();
+            const timeA = new Date(timestampToIso(a.createdAt)).getTime();
+            const timeB = new Date(timestampToIso(b.createdAt)).getTime();
             return timeB - timeA;
           });
         } else {

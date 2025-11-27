@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScheduledGame } from '@/types/scheduledGame';
 import { formatDateTimeInTimezone, getUserTimezone } from '../utils/timezoneUtils';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import { useSession } from 'next-auth/react';
 
 interface ScheduledGamesListProps {
@@ -78,7 +79,7 @@ export default function ScheduledGamesList({
 
   const isUserCreator = (game: ScheduledGame): boolean => {
     if (!session?.discordId) return false;
-    return game.scheduledByDiscordId === session.discordId;
+    return game.createdByDiscordId === session.discordId;
   };
 
   const handleEditClick = (e: React.MouseEvent, game: ScheduledGame) => {
@@ -118,7 +119,10 @@ export default function ScheduledGamesList({
   return (
     <div className="space-y-4">
       {games.map(game => {
-        const gameDate = formatDateTimeInTimezone(game.scheduledDateTime, game.timezone, {
+        // Ensure scheduledDateTime is a string (handle both Timestamp and string)
+        const scheduledDateTimeString = timestampToIso(game.scheduledDateTime);
+        
+        const gameDate = formatDateTimeInTimezone(scheduledDateTimeString, game.timezone, {
           year: 'numeric',
           month: 'long',
           day: 'numeric',
@@ -127,7 +131,7 @@ export default function ScheduledGamesList({
           timeZoneName: 'short',
         });
         
-        const userLocalDate = formatDateTimeInTimezone(game.scheduledDateTime, userTimezone, {
+        const userLocalDate = formatDateTimeInTimezone(scheduledDateTimeString, userTimezone, {
           year: 'numeric',
           month: 'long',
           day: 'numeric',
@@ -159,7 +163,7 @@ export default function ScheduledGamesList({
                   </span>
                 </div>
                 <p className="text-gray-300">
-                  Scheduled by: <span className="text-amber-400">{game.scheduledByName}</span>
+                  Scheduled by: <span className="text-amber-400">{game.creatorName}</span>
                 </p>
               </div>
               <div className="flex flex-col items-end gap-2">

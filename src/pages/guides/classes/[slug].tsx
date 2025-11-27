@@ -53,6 +53,12 @@ function AbilityCard({ ability }: { ability: AbilityData }) {
     ability.range !== undefined
       ? { label: `Range: ${ability.range}`, variant: 'green' as const }
       : null,
+    ability.areaOfEffect !== undefined
+      ? { label: `AOE: ${ability.areaOfEffect}`, variant: 'green' as const }
+      : null,
+    ability.maxTargets !== undefined
+      ? { label: `Targets: ${ability.maxTargets}`, variant: 'purple' as const }
+      : null,
     ability.duration !== undefined
       ? { label: `Duration: ${ability.duration}s`, variant: 'amber' as const }
       : null,
@@ -62,10 +68,13 @@ function AbilityCard({ ability }: { ability: AbilityData }) {
   ].filter(Boolean) as { label: string; variant: 'blue' | 'purple' | 'green' | 'amber' | 'red' }[];
 
   const secondaryBadges = [
+    ability.hotkey
+      ? { label: `[${ability.hotkey}]`, variant: 'amber' as const }
+      : null,
     ability.category
       ? { label: ABILITY_CATEGORIES[ability.category] || ability.category, variant: 'gray' as const }
       : null,
-  ].filter(Boolean) as { label: string; variant: 'gray' }[];
+  ].filter(Boolean) as { label: string; variant: 'amber' | 'gray' }[];
 
   const footer = ability.effects && ability.effects.length > 0 && (
     <div className="text-xs">

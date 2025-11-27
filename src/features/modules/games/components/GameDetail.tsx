@@ -38,13 +38,30 @@ export function GameDetail({ game }: GameDetailProps) {
           </div>
           <div>
             <span className="text-gray-500">Creator:</span>
-            <p className="text-amber-300">{game.creatorname}</p>
+            <p className="text-amber-300">{game.creatorName}</p>
           </div>
           <div>
             <span className="text-gray-500">Owner:</span>
             <p className="text-amber-300">{game.ownername}</p>
           </div>
         </div>
+        
+        {game.replayUrl && (
+          <div className="mt-4 pt-4 border-t border-amber-500/20">
+            <a
+              href={game.replayUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              download={game.replayFileName || 'replay.w3g'}
+              className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 underline transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download replay {game.replayFileName ? `(${game.replayFileName})` : '(.w3g)'}
+            </a>
+          </div>
+        )}
       </Card>
 
       {winners.length > 0 && (

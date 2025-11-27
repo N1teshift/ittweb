@@ -5,11 +5,13 @@ import React from 'react';
  * 
  * Color codes:
  * - |cffRRGGBB - Start color (RR = red, GG = green, BB = blue in hex, format is cff + 6 hex digits)
+ * - |cAARRGGBB - Start color with alpha (AA = alpha, RRGGBB = color, format is c + 8 hex digits)
  * - |r - Reset to default color
  * - |n - Newline
  * 
- * Format example: "for |cffFE890D2|r/|cffFE890D8|r seconds"
- * This means: "for " (default), "2" (in color #FE890D), "/" (default), "8" (in color #FE890D), " seconds" (default)
+ * Format examples:
+ * - "for |cffFE890D2|r/|cffFE890D8|r seconds" - uses |cff format
+ * - "|cFFFFFFC9Tip text|r" - uses |cAARRGGBB format (alpha channel is ignored, only RGB is used)
  */
 export function ColoredText({ text, className = '' }: { text: string; className?: string }) {
   if (!text) return null;
@@ -19,9 +21,11 @@ export function ColoredText({ text, className = '' }: { text: string; className?
   let currentColor: string | null = null;
   let key = 0;
 
-  // Regex to match color codes: |cffRRGGBB or |r or |n
-  // The format is |cff followed by 6 hex digits (RRGGBB)
-  const colorCodeRegex = /\|(cff[0-9a-fA-F]{6}|r|n)/g;
+  // Regex to match color codes: |cAARRGGBB (8 hex digits) or |cffRRGGBB (6 hex digits) or |r or |n
+  // Warcraft 3 supports both formats:
+  // - |cAARRGGBB where AA is alpha (transparency) and RRGGBB is color
+  // - |cffRRGGBB where ff means fully opaque and RRGGBB is color
+  const colorCodeRegex = /\|(c[0-9a-fA-F]{8}|cff[0-9a-fA-F]{6}|r|n)/g;
   let match: RegExpExecArray | null;
   const matches: Array<{ index: number; code: string; fullMatch: string }> = [];
 
@@ -59,10 +63,18 @@ export function ColoredText({ text, className = '' }: { text: string; className?
     } else if (code === 'n') {
       // Newline
       parts.push(<br key={key++} />);
-    } else if (code.startsWith('cff') && code.length === 9) {
-      // Color code: cff + 6 hex digits (RRGGBB)
-      const hexColor = code.substring(3); // Skip 'cff' and get RRGGBB
-      currentColor = `#${hexColor}`;
+    } else if (code.startsWith('c')) {
+      // Color code: either |cAARRGGBB (8 hex digits) or |cffRRGGBB (6 hex digits)
+      if (code.startsWith('cff') && code.length === 9) {
+        // Format: cff + 6 hex digits (RRGGBB)
+        const hexColor = code.substring(3); // Skip 'cff' and get RRGGBB
+        currentColor = `#${hexColor}`;
+      } else if (code.length === 9 && code.startsWith('c') && !code.startsWith('cff')) {
+        // Format: c + 8 hex digits (AARRGGBB) - extract RRGGBB (skip AA alpha channel)
+        // Example: cFFFFFFC9 -> skip 'c' + 'FF' (alpha), get 'FFFFC9' (RGB)
+        const hexColor = code.substring(3); // Skip 'c' + 2 alpha digits, get RRGGBB
+        currentColor = `#${hexColor}`;
+      }
     }
 
     currentIndex = matchIndex + fullMatch.length;

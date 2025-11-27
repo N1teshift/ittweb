@@ -10,8 +10,6 @@ import { useArchiveBaseState } from '../hooks/useArchiveBaseState';
 import { useArchiveMedia, uploadSelectedMedia } from '../hooks/useArchiveMedia';
 import { useArchiveHandlers } from '../hooks/useArchiveHandlers';
 
-type SectionKey = 'images' | 'video' | 'replay' | 'text';
-
 interface ArchiveFormBaseProps {
   mode: 'create' | 'edit';
   initialEntry?: ArchiveEntry;
@@ -34,14 +32,14 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
 
   const { 
     handleInputChange,
-    handleImageUpload,
+    handleImageUpload: _handleImageUpload,
     handleReorderImages,
     handleReorderSections,
     handleVideoUrlChange,
-    handleTwitchUrlChange,
-    handleReplayUpload,
+    handleTwitchUrlChange: _handleTwitchUrlChange,
+    handleReplayUpload: _handleReplayUpload,
     handleCombinedFileUpload,
-    handleMediaFieldChange,
+    handleMediaFieldChange: _handleMediaFieldChange,
     handleRemoveExistingImage,
     handleRemoveReplay,
   } = useArchiveHandlers({
@@ -61,7 +59,7 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
       const validationError = validateArchiveForm({
         title: formData.title,
         content: formData.content,
-        author: mode === 'create' ? (defaultAuthor || '') : formData.author,
+        creatorName: mode === 'create' ? (defaultAuthor || '') : formData.creatorName,
         dateType: formData.dateType,
         singleDate: formData.singleDate,
         approximateText: formData.approximateText,
@@ -94,8 +92,9 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
       const hasVideo = Boolean(formData.mediaUrl);
       const hasTwitch = Boolean(formData.twitchClipUrl);
       const hasReplay = Boolean(replayUrl || existingReplayUrl);
+      const hasGame = Boolean(entry?.linkedGameDocumentId);
       const hasText = Boolean(formData.content && formData.content.trim().length > 0);
-      const effectiveSectionOrder = computeEffectiveSectionOrder(sectionOrder, { hasImages, hasVideo, hasTwitch, hasReplay, hasText });
+      const effectiveSectionOrder = computeEffectiveSectionOrder(sectionOrder, { hasImages, hasVideo, hasTwitch, hasReplay, hasGame, hasText });
 
       if (mode === 'create') {
         const payload: CreateArchiveEntry = {
@@ -120,7 +119,7 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
       const updates: Partial<CreateArchiveEntry> = {
         title: formData.title.trim(),
         content: formData.content.trim(),
-        author: formData.author.trim(),
+        creatorName: formData.creatorName.trim(),
         mediaType: hasImages ? 'image' : hasVideo ? 'video' : (replayUrl || existingReplayUrl) ? 'replay' : 'none',
         dateInfo,
         ...(images && images.length > 0 ? { images } : {}),

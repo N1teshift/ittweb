@@ -18,7 +18,7 @@ export default function ArchiveForm({ onSuccess, onCancel }: ArchiveFormProps) {
     const entryPayload: CreateArchiveEntry = {
       ...(payload as CreateArchiveEntry),
       createdByDiscordId: session?.discordId || null,
-      createdByName: session?.user?.name || defaultAuthor,
+      creatorName: payload.creatorName || defaultAuthor,
     };
     await createArchiveEntry(entryPayload);
   };

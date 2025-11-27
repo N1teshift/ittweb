@@ -18,7 +18,22 @@ import {
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import type { Game, GamePlayer, GamePlayerFlag, GameWithPlayers, CreateGame, UpdateGame, GameFilters, GameListResponse } from '../types';
+import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import type { 
+  Game, 
+  GamePlayer, 
+  GamePlayerFlag, 
+  GameWithPlayers, 
+  CreateGame, 
+  CreateScheduledGame,
+  CreateCompletedGame,
+  UpdateGame, 
+  GameFilters, 
+  GameListResponse,
+  GameState,
+  GameArchiveContent,
+} from '../types';
 import { normalizePlayerName } from '../../players/lib/playerService';
 import { updateEloScores } from './eloCalculator';
 
@@ -26,55 +41,113 @@ const GAMES_COLLECTION = 'games';
 const logger = createComponentLogger('gameService');
 
 /**
- * Remove undefined values from an object (Firestore doesn't allow undefined)
+ * Get the next available game ID
+ * Queries all games and finds the highest gameId, then increments by 1
  */
-function removeUndefined<T extends Record<string, unknown>>(obj: T): Partial<T> {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([_, value]) => value !== undefined)
-  ) as Partial<T>;
-}
+async function getNextGameId(): Promise<number> {
+  try {
+    if (isServerSide()) {
+      const adminDb = getFirestoreAdmin();
+      const querySnapshot = await adminDb.collection(GAMES_COLLECTION)
+        .orderBy('gameId', 'desc')
+        .limit(1)
+        .get();
 
-/**
- * Convert Firestore timestamp to ISO string
- */
-interface TimestampLike {
-  toDate?: () => Date;
-}
-function timestampToIso(timestamp: Timestamp | TimestampLike | string | Date | undefined): string {
-  if (!timestamp) return new Date().toISOString();
-  if (typeof timestamp === 'string') return timestamp;
-  if ('toDate' in timestamp && typeof timestamp.toDate === 'function') {
-    return timestamp.toDate().toISOString();
+      if (querySnapshot.empty) {
+        return 1;
+      }
+
+      const lastGame = querySnapshot.docs[0].data();
+      const lastId = lastGame.gameId || 0;
+      return lastId + 1;
+    } else {
+      const db = getFirestoreInstance();
+      const q = query(
+        collection(db, GAMES_COLLECTION),
+        orderBy('gameId', 'desc')
+      );
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        return 1;
+      }
+
+      const lastGame = querySnapshot.docs[0].data();
+      const lastId = lastGame.gameId || 0;
+      return lastId + 1;
+    }
+  } catch (error) {
+    logger.warn('Error getting next game ID, defaulting to 1', { error });
+    return 1;
   }
-  if (timestamp instanceof Date) {
-    return timestamp.toISOString();
-  }
-  return new Date().toISOString();
 }
 
 /**
  * Convert game document from Firestore to Game type
+ * Handles both scheduled and completed games
  */
 function convertGameDoc(docData: Record<string, unknown>, id: string): Game {
-  return {
+  const gameState = (docData.gameState as GameState) || 'completed'; // Default to completed for backward compatibility
+  
+  const baseGame: Game = {
     id,
     gameId: typeof docData.gameId === 'number' ? docData.gameId : Number(docData.gameId) || 0,
-    datetime: timestampToIso(docData.datetime as Timestamp | TimestampLike | string | Date | undefined),
+    gameState,
+    creatorName: typeof docData.creatorName === 'string' ? docData.creatorName : String(docData.creatorName || ''),
+    createdByDiscordId: typeof docData.createdByDiscordId === 'string' ? docData.createdByDiscordId : undefined,
+    createdAt: docData.createdAt,
+    updatedAt: docData.updatedAt,
+    submittedAt: docData.submittedAt,
+    isDeleted: typeof docData.isDeleted === 'boolean' ? docData.isDeleted : false,
+    deletedAt: docData.deletedAt || null,
+  };
+
+  // Add scheduled game fields if gameState is 'scheduled'
+  if (gameState === 'scheduled') {
+    return {
+      ...baseGame,
+      scheduledDateTime: docData.scheduledDateTime,
+      timezone: typeof docData.timezone === 'string' ? docData.timezone : undefined,
+      teamSize: docData.teamSize as any,
+      customTeamSize: typeof docData.customTeamSize === 'string' ? docData.customTeamSize : undefined,
+      gameType: docData.gameType as any,
+      gameVersion: typeof docData.gameVersion === 'string' ? docData.gameVersion : undefined,
+      gameLength: typeof docData.gameLength === 'number' ? docData.gameLength : undefined,
+      modes: Array.isArray(docData.modes) ? docData.modes : [],
+      participants: Array.isArray(docData.participants) ? docData.participants : [],
+      status: docData.status as any,
+    };
+  }
+
+  // Add completed game fields if gameState is 'completed'
+  const playerNames = Array.isArray(docData.playerNames) 
+    ? docData.playerNames.map(n => String(n))
+    : undefined;
+  const playerCount = typeof docData.playerCount === 'number' 
+    ? docData.playerCount 
+    : (playerNames ? playerNames.length : undefined);
+
+  const completedGame: Game = {
+    ...baseGame,
+    datetime: docData.datetime,
     duration: typeof docData.duration === 'number' ? docData.duration : Number(docData.duration) || 0,
     gamename: typeof docData.gamename === 'string' ? docData.gamename : String(docData.gamename || ''),
     map: typeof docData.map === 'string' ? docData.map : String(docData.map || ''),
-    creatorname: typeof docData.creatorname === 'string' ? docData.creatorname : String(docData.creatorname || ''),
     ownername: typeof docData.ownername === 'string' ? docData.ownername : String(docData.ownername || ''),
     category: typeof docData.category === 'string' ? docData.category : undefined,
     replayUrl: typeof docData.replayUrl === 'string' ? docData.replayUrl : undefined,
     replayFileName: typeof docData.replayFileName === 'string' ? docData.replayFileName : undefined,
-    submittedBy: typeof docData.submittedBy === 'string' ? docData.submittedBy : undefined,
-    submittedAt: timestampToIso(docData.submittedAt as Timestamp | TimestampLike | string | Date | undefined),
-    scheduledGameId: typeof docData.scheduledGameId === 'number' ? docData.scheduledGameId : (docData.scheduledGameId ? Number(docData.scheduledGameId) : undefined),
+    playerNames,
+    playerCount,
     verified: typeof docData.verified === 'boolean' ? docData.verified : false,
-    createdAt: timestampToIso(docData.createdAt as Timestamp | TimestampLike | string | Date | undefined),
-    updatedAt: timestampToIso(docData.updatedAt as Timestamp | TimestampLike | string | Date | undefined),
   };
+
+  // Add archive content if present
+  if (docData.archiveContent) {
+    completedGame.archiveContent = docData.archiveContent as GameArchiveContent;
+  }
+
+  return completedGame;
 }
 
 /**
@@ -101,12 +174,250 @@ function convertGamePlayerDoc(docData: Record<string, unknown>, id: string): Gam
     gold: typeof docData.gold === 'number' ? docData.gold : undefined,
     damageDealt: typeof docData.damageDealt === 'number' ? docData.damageDealt : undefined,
     damageTaken: typeof docData.damageTaken === 'number' ? docData.damageTaken : undefined,
-    createdAt: timestampToIso(docData.createdAt as Timestamp | TimestampLike | string | Date | undefined),
+    createdAt: timestampToIso(docData.createdAt as Timestamp | { toDate?: () => Date } | string | Date | undefined),
   };
 }
 
 /**
- * Create a new game
+ * Create a new scheduled game
+ */
+export async function createScheduledGame(gameData: CreateScheduledGame): Promise<string> {
+  try {
+    // Get the next available game ID if not provided
+    const gameId = gameData.gameId || await getNextGameId();
+    
+    logger.info('Creating scheduled game', { 
+      gameId,
+      scheduledDateTime: gameData.scheduledDateTime,
+      teamSize: gameData.teamSize 
+    });
+
+    const cleanedData = removeUndefined(gameData as unknown as Record<string, unknown>);
+    
+    if (isServerSide()) {
+      const adminDb = getFirestoreAdmin();
+      const adminTimestamp = getAdminTimestamp();
+      
+      const scheduledDateTime = cleanedData.scheduledDateTime && typeof cleanedData.scheduledDateTime === 'string'
+        ? adminTimestamp.fromDate(new Date(cleanedData.scheduledDateTime))
+        : adminTimestamp.now();
+      
+      const docRef = await adminDb.collection(GAMES_COLLECTION).add({
+        ...cleanedData,
+        gameId,
+        gameState: 'scheduled',
+        creatorName: cleanedData.creatorName || 'Unknown',
+        createdByDiscordId: cleanedData.createdByDiscordId || '',
+        scheduledDateTime,
+        scheduledDateTimeString: cleanedData.scheduledDateTime,
+        ...(cleanedData.submittedAt ? { submittedAt: adminTimestamp.fromDate(new Date(cleanedData.submittedAt as string)) } : {}),
+        status: cleanedData.status ?? 'scheduled',
+        participants: cleanedData.participants || [],
+        createdAt: adminTimestamp.now(),
+        updatedAt: adminTimestamp.now(),
+        isDeleted: false,
+      });
+      logger.info('Scheduled game created', { id: docRef.id, gameId });
+      return docRef.id;
+    } else {
+      const db = getFirestoreInstance();
+      
+      const scheduledDateTime = cleanedData.scheduledDateTime && typeof cleanedData.scheduledDateTime === 'string'
+        ? Timestamp.fromDate(new Date(cleanedData.scheduledDateTime))
+        : Timestamp.now();
+      
+      const docRef = await addDoc(collection(db, GAMES_COLLECTION), {
+        ...cleanedData,
+        gameId,
+        gameState: 'scheduled',
+        creatorName: cleanedData.creatorName || 'Unknown',
+        createdByDiscordId: cleanedData.createdByDiscordId || '',
+        scheduledDateTime,
+        scheduledDateTimeString: cleanedData.scheduledDateTime,
+        ...(cleanedData.submittedAt ? { submittedAt: Timestamp.fromDate(new Date(cleanedData.submittedAt as string)) } : {}),
+        status: cleanedData.status ?? 'scheduled',
+        participants: cleanedData.participants || [],
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+        isDeleted: false,
+      });
+      logger.info('Scheduled game created', { id: docRef.id, gameId });
+      return docRef.id;
+    }
+  } catch (error) {
+    const err = error as Error;
+    logError(err, 'Failed to create scheduled game', {
+      component: 'gameService',
+      operation: 'createScheduledGame',
+    });
+    throw err;
+  }
+}
+
+/**
+ * Create a new completed game
+ */
+export async function createCompletedGame(gameData: CreateCompletedGame): Promise<string> {
+  try {
+    logger.info('Creating completed game', { gameId: gameData.gameId });
+
+    // Validate required fields
+    if (!gameData.gameId || !gameData.datetime || !gameData.players || gameData.players.length < 2) {
+      throw new Error('Invalid game data: gameId, datetime, and at least 2 players are required');
+    }
+
+    // Check for duplicate gameId
+    const existingGames = await getGames({ gameId: gameData.gameId, limit: 1 });
+    if (existingGames.games.length > 0) {
+      throw new Error(`Game with gameId ${gameData.gameId} already exists`);
+    }
+
+    const cleanedData = removeUndefined(gameData as unknown as Record<string, unknown>);
+    
+    if (isServerSide()) {
+      const adminDb = getFirestoreAdmin();
+      const adminTimestamp = getAdminTimestamp();
+      
+      const gameDatetime = adminTimestamp.fromDate(new Date(gameData.datetime));
+      
+      // Extract player names for quick access
+      const playerNames = gameData.players.map(p => p.name);
+      const playerCount = gameData.players.length;
+      
+      // Create game document
+      const baseGameDoc = {
+        gameId: gameData.gameId,
+        gameState: 'completed' as GameState,
+        datetime: gameDatetime,
+        duration: gameData.duration,
+        gamename: gameData.gamename,
+        map: gameData.map,
+        creatorName: gameData.creatorName,
+        ownername: gameData.ownername,
+        category: gameData.category,
+        playerNames,
+        playerCount,
+        ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
+        ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
+        ...(gameData.createdByDiscordId ? { createdByDiscordId: gameData.createdByDiscordId } : {}),
+        ...(gameData.submittedAt ? { submittedAt: adminTimestamp.fromDate(new Date(gameData.submittedAt)) } : {}),
+        verified: gameData.verified ?? false,
+        ...(gameData.archiveContent ? { archiveContent: gameData.archiveContent } : {}),
+        createdAt: adminTimestamp.now(),
+        updatedAt: adminTimestamp.now(),
+        isDeleted: false,
+      };
+      const gameDocRef = await adminDb.collection(GAMES_COLLECTION).add(baseGameDoc);
+
+      // Create player documents in subcollection
+      const playersCollection = gameDocRef.collection('players');
+      for (const player of gameData.players) {
+        await playersCollection.add({
+          gameId: gameDocRef.id,
+          name: player.name,
+          pid: player.pid,
+          flag: player.flag,
+          category: gameData.category,
+          class: player.class,
+          randomClass: player.randomClass,
+          kills: player.kills,
+          deaths: player.deaths,
+          assists: player.assists,
+          gold: player.gold,
+          damageDealt: player.damageDealt,
+          damageTaken: player.damageTaken,
+          createdAt: adminTimestamp.now(),
+        });
+      }
+
+      // Update ELO scores
+      try {
+        await updateEloScores(gameData.players, gameData.category);
+      } catch (eloError) {
+        logger.warn('Failed to update ELO scores', { error: eloError });
+      }
+
+      logger.info('Completed game created', { id: gameDocRef.id, gameId: gameData.gameId });
+      return gameDocRef.id;
+    } else {
+      const db = getFirestoreInstance();
+      
+      const gameDatetime = Timestamp.fromDate(new Date(gameData.datetime));
+      
+      // Extract player names for quick access
+      const playerNames = gameData.players.map(p => p.name);
+      const playerCount = gameData.players.length;
+      
+      // Create game document
+      const baseGameDoc = {
+        gameId: gameData.gameId,
+        gameState: 'completed' as GameState,
+        datetime: gameDatetime,
+        duration: gameData.duration,
+        gamename: gameData.gamename,
+        map: gameData.map,
+        creatorName: gameData.creatorName,
+        ownername: gameData.ownername,
+        category: gameData.category,
+        playerNames,
+        playerCount,
+        ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
+        ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
+        ...(gameData.createdByDiscordId ? { createdByDiscordId: gameData.createdByDiscordId } : {}),
+        ...(gameData.submittedAt ? { submittedAt: Timestamp.fromDate(new Date(gameData.submittedAt)) } : {}),
+        verified: gameData.verified ?? false,
+        ...(gameData.archiveContent ? { archiveContent: gameData.archiveContent } : {}),
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+        isDeleted: false,
+      };
+      const gameDocRef = await addDoc(collection(db, GAMES_COLLECTION), baseGameDoc);
+
+      // Create player documents in subcollection
+      const playersCollection = collection(db, GAMES_COLLECTION, gameDocRef.id, 'players');
+      for (const player of gameData.players) {
+        await addDoc(playersCollection, {
+          gameId: gameDocRef.id,
+          name: player.name,
+          pid: player.pid,
+          flag: player.flag,
+          category: gameData.category,
+          class: player.class,
+          randomClass: player.randomClass,
+          kills: player.kills,
+          deaths: player.deaths,
+          assists: player.assists,
+          gold: player.gold,
+          damageDealt: player.damageDealt,
+          damageTaken: player.damageTaken,
+          createdAt: Timestamp.now(),
+        });
+      }
+
+      // Update ELO scores
+      try {
+        await updateEloScores(gameData.players, gameData.category);
+      } catch (eloError) {
+        logger.warn('Failed to update ELO scores', { error: eloError });
+      }
+
+      logger.info('Completed game created', { id: gameDocRef.id, gameId: gameData.gameId });
+      return gameDocRef.id;
+    }
+  } catch (error) {
+    const err = error as Error;
+    logError(err, 'Failed to create completed game', {
+      component: 'gameService',
+      operation: 'createCompletedGame',
+      gameId: gameData.gameId,
+    });
+    throw err;
+  }
+}
+
+/**
+ * Create a new game (legacy function - now calls createCompletedGame)
+ * @deprecated Use createCompletedGame instead
  */
 export async function createGame(gameData: CreateGame): Promise<string> {
   try {
@@ -132,6 +443,10 @@ export async function createGame(gameData: CreateGame): Promise<string> {
       
       const gameDatetime = adminTimestamp.fromDate(new Date(gameData.datetime));
       
+      // Extract player names for quick access
+      const playerNames = gameData.players.map(p => p.name);
+      const playerCount = gameData.players.length;
+      
       // Create game document
       const baseGameDoc = {
         gameId: gameData.gameId,
@@ -139,11 +454,16 @@ export async function createGame(gameData: CreateGame): Promise<string> {
         duration: gameData.duration,
         gamename: gameData.gamename,
         map: gameData.map,
-        creatorname: gameData.creatorname,
+        creatorName: gameData.creatorName,
         ownername: gameData.ownername,
         category: gameData.category,
+        playerNames,
+        playerCount,
         ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
         ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
+        ...(gameData.createdByDiscordId ? { createdByDiscordId: gameData.createdByDiscordId } : {}),
+        ...(gameData.submittedAt ? { submittedAt: adminTimestamp.fromDate(new Date(gameData.submittedAt)) } : {}),
+        ...(gameData.scheduledGameId ? { scheduledGameId: gameData.scheduledGameId } : {}),
         verified: false,
         createdAt: adminTimestamp.now(),
         updatedAt: adminTimestamp.now(),
@@ -182,6 +502,10 @@ export async function createGame(gameData: CreateGame): Promise<string> {
       
       const gameDatetime = Timestamp.fromDate(new Date(gameData.datetime));
       
+      // Extract player names for quick access
+      const playerNames = gameData.players.map(p => p.name);
+      const playerCount = gameData.players.length;
+      
       // Create game document
       const baseGameDoc = {
         gameId: gameData.gameId,
@@ -189,11 +513,16 @@ export async function createGame(gameData: CreateGame): Promise<string> {
         duration: gameData.duration,
         gamename: gameData.gamename,
         map: gameData.map,
-        creatorname: gameData.creatorname,
+        creatorName: gameData.creatorName,
         ownername: gameData.ownername,
         category: gameData.category,
+        playerNames,
+        playerCount,
         ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
         ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
+        ...(gameData.createdByDiscordId ? { createdByDiscordId: gameData.createdByDiscordId } : {}),
+        ...(gameData.submittedAt ? { submittedAt: Timestamp.fromDate(new Date(gameData.submittedAt)) } : {}),
+        ...(gameData.scheduledGameId ? { scheduledGameId: gameData.scheduledGameId } : {}),
         verified: false,
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
@@ -331,6 +660,7 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
       ally,
       enemy,
       teamFormat,
+      gameId,
       page = 1,
       limit = 20,
       cursor,
@@ -351,9 +681,14 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
       if (category) {
         gamesQuery = gamesQuery.where('category', '==', category);
       }
-
-      // Order by datetime descending
-      gamesQuery = gamesQuery.orderBy('datetime', 'desc');
+      if (gameId !== undefined) {
+        gamesQuery = gamesQuery.where('gameId', '==', gameId);
+        // When filtering by gameId (which should be unique), we don't need to order
+        // This avoids requiring a composite index
+      } else {
+        // Order by datetime descending only when not filtering by gameId
+        gamesQuery = gamesQuery.orderBy('datetime', 'desc');
+      }
 
       // Apply pagination
       if (cursor) {
@@ -398,9 +733,14 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
       if (category) {
         constraints.push(where('category', '==', category));
       }
-
-      // Order by datetime descending
-      constraints.push(orderBy('datetime', 'desc'));
+      if (gameId !== undefined) {
+        constraints.push(where('gameId', '==', gameId));
+        // When filtering by gameId (which should be unique), we don't need to order
+        // This avoids requiring a composite index
+      } else {
+        // Order by datetime descending only when not filtering by gameId
+        constraints.push(orderBy('datetime', 'desc'));
+      }
 
       // Apply pagination
       constraints.push(firestoreLimit(limit));

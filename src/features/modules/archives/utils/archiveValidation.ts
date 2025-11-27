@@ -10,7 +10,7 @@ export interface ArchiveFormFieldsState {
 export function validateArchiveForm(fields: ArchiveFormFieldsState): string | null {
   if (!fields.title.trim()) return 'Title is required';
   // Content (Story/Memory) is now optional
-  if (!fields.author.trim()) return 'Author name is required';
+  if (!fields.creatorName?.trim()) return 'Creator name is required';
 
   if (fields.dateType === 'single') {
     if (!fields.singleDate || !fields.singleDate.trim()) {

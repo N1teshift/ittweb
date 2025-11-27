@@ -171,10 +171,8 @@ export async function updateEloScores(gameId: string): Promise<void> {
       }
     }
 
-    // Update player stats
-    for (const player of game.players) {
-      await updatePlayerStats(gameId);
-    }
+    // Update player stats (this function processes all players in the game)
+    await updatePlayerStats(gameId);
 
     logger.info('ELO scores updated', { gameId, playersUpdated: game.players.length });
   } catch (error) {

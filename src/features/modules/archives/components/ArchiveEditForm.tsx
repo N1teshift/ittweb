@@ -11,8 +11,9 @@ interface ArchiveEditFormProps {
 
 export default function ArchiveEditForm({ entry, onSuccess, onCancel }: ArchiveEditFormProps) {
   const handleSubmit = async (updates: Partial<CreateArchiveEntry>) => {
-    const { author: _omitAuthor, ...rest } = updates;
-    await updateArchiveEntry(entry.id, rest);
+    // Remove any legacy fields that don't exist in CreateArchiveEntry
+    const { author: _omitAuthor, mediaUrl: _omitMediaUrl, mediaType: _omitMediaType, ...rest } = updates as Record<string, unknown>;
+    await updateArchiveEntry(entry.id, rest as Partial<CreateArchiveEntry>);
   };
 
   return (

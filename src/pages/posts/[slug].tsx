@@ -192,7 +192,7 @@ export const getServerSideProps: GetServerSideProps<PostPageProps> = async (cont
         translationNamespaces: pageNamespaces,
         title: post.meta.title,
         date: post.meta.date,
-        author: post.meta.author,
+        author: post.meta.creatorName,
         postId: post.meta.id,
         content: mdxSource,
         canEdit,

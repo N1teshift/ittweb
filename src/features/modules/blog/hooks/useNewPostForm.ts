@@ -30,7 +30,7 @@ const slugify = (value: string) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
 
-export function useNewPostForm() {
+export function useNewPostForm(onSuccess?: () => void) {
   const router = useRouter();
   const { status } = useSession();
   const isAuthenticated = status === 'authenticated';
@@ -126,16 +126,18 @@ export function useNewPostForm() {
           },
           body: JSON.stringify({ path: '/' }),
         });
-        // Force a full page reload to fetch the revalidated page
-        setTimeout(() => {
-          window.location.href = '/';
-        }, 1200);
       } catch (revalidateError) {
         // Log but don't fail the creation if revalidation fails
         logger.error('Failed to revalidate homepage', revalidateError instanceof Error ? revalidateError : new Error(String(revalidateError)), { slug: formState.slug });
-        // Still navigate even if revalidation fails
+      }
+
+      // If onSuccess callback is provided, use it instead of redirecting
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        // Force a full page reload to fetch the revalidated page
         setTimeout(() => {
-          router.push('/').catch(() => undefined);
+          window.location.href = '/';
         }, 1200);
       }
     } catch (error) {

@@ -7,6 +7,8 @@ import { createComponentLogger, logError } from '@/features/infrastructure/loggi
 import { getFirestoreAdmin, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
 import { createGame } from '@/features/modules/games/lib/gameService';
 import type { CreateGame } from '@/features/modules/games/types';
+import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
+import { isAdmin } from '@/features/shared/utils/userRoleUtils';
 
 const logger = createComponentLogger('api/scheduled-games');
 
@@ -41,21 +43,30 @@ export default async function handler(
 
       // Validate scheduledDateTime is in the future (only for scheduled games, not manual entries)
       // Manual entries with status 'awaiting_replay' or 'archived' can be in the past
+      // Admins can also create games in the past
       const isManualEntry = gameData.status === 'awaiting_replay' || gameData.status === 'archived';
       if (!isManualEntry) {
         const scheduledDate = new Date(gameData.scheduledDateTime);
-        if (scheduledDate < new Date()) {
-          return res.status(400).json({ 
-            error: 'Scheduled date must be in the future' 
-          });
+        const isPastDate = scheduledDate < new Date();
+        
+        if (isPastDate) {
+          // Check if user is admin
+          const userData = await getUserDataByDiscordId(session.discordId || '');
+          const userIsAdmin = isAdmin(userData?.role);
+          
+          if (!userIsAdmin) {
+            return res.status(400).json({ 
+              error: 'Scheduled date must be in the future' 
+            });
+          }
         }
       }
 
-      // Add user info from session
+      // Add user info from session (using standardized fields only)
       const gameWithUser: CreateScheduledGame = {
         ...gameData,
-        scheduledByDiscordId: session.discordId || '',
-        scheduledByName: session.user?.name ?? 'Unknown',
+        creatorName: gameData.creatorName || (session.user?.name ?? 'Unknown'),
+        createdByDiscordId: gameData.createdByDiscordId || (session.discordId || ''),
       };
 
       // Add creator as participant if requested (only if no participants provided)
@@ -96,9 +107,10 @@ export default async function handler(
               duration: createdGame.gameLength || 1800,
               gamename: `Test Game #${createdGame.scheduledGameId}`,
               map: 'Island Troll Tribes',
-              creatorname: createdGame.scheduledByName,
-              ownername: createdGame.scheduledByName,
+              creatorName: createdGame.creatorName,
+              ownername: createdGame.creatorName,
               category,
+              createdByDiscordId: createdGame.createdByDiscordId,
               scheduledGameId: createdGame.scheduledGameId,
               players: createdGame.participants.map((participant, index) => ({
                 name: participant.name,
@@ -124,9 +136,8 @@ export default async function handler(
             const archiveEntryData = {
               title: `Game #${createdGame.scheduledGameId} - ${createdGame.teamSize === 'custom' ? createdGame.customTeamSize : createdGame.teamSize}`,
               content: `Test game created for development/testing purposes.\n\n**Game Type:** ${createdGame.gameType === 'elo' ? 'ELO' : 'Normal'}\n**Participants:** ${participantSummary || 'None specified'}\n**Game Version:** ${createdGame.gameVersion || 'N/A'}\n**Game Length:** ${createdGame.gameLength ? `${Math.floor(createdGame.gameLength / 60)} minutes` : 'N/A'}`,
-              author: createdGame.scheduledByName,
-              createdByDiscordId: createdGame.scheduledByDiscordId,
-              createdByName: createdGame.scheduledByName,
+              creatorName: createdGame.creatorName,
+              createdByDiscordId: createdGame.createdByDiscordId,
               replayUrl: '',
               mediaType: 'none' as const,
               sectionOrder: ['text'] as const,
@@ -145,8 +156,8 @@ export default async function handler(
             
             // Link archive and game to scheduled game
             await updateScheduledGame(gameId, { 
-              archiveId,
-              gameId: createdGameId,
+              linkedArchiveDocumentId: archiveId,
+              linkedGameDocumentId: createdGameId,
             });
             
             logger.info('Archive entry created for archived scheduled game', { 

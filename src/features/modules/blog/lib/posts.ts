@@ -12,7 +12,7 @@ export type PostMeta = {
   date: string; // ISO string preferred
   slug: string;
   excerpt?: string;
-  author?: string;
+  creatorName?: string;
   createdByDiscordId?: string | null;
 };
 
@@ -36,7 +36,7 @@ function postToMeta(post: Post): PostMeta {
     date: post.date,
     slug: post.slug,
     excerpt: post.excerpt,
-    author: post.createdByName,
+    creatorName: post.creatorName,
     createdByDiscordId: post.createdByDiscordId,
   };
 }

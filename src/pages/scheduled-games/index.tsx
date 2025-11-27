@@ -9,6 +9,7 @@ import ScheduleGameForm from '@/features/modules/scheduled-games/components/Sche
 import EditGameForm from '@/features/modules/scheduled-games/components/EditGameForm';
 import GameDeleteDialog from '@/features/modules/scheduled-games/components/GameDeleteDialog';
 import CreateGameInlineForm from '@/features/modules/scheduled-games/components/CreateGameInlineForm';
+import UploadReplayModal from '@/features/modules/scheduled-games/components/UploadReplayModal';
 import { ScheduledGame, CreateScheduledGame } from '@/types/scheduledGame';
 import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
 import { isAdmin } from '@/features/shared/utils/userRoleUtils';
@@ -39,8 +40,8 @@ export default function ScheduledGames() {
   const [isJoining, setIsJoining] = useState<string | null>(null);
   const [isLeaving, setIsLeaving] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
-  const [isUploadingReplay, setIsUploadingReplay] = useState<string | null>(null);
   const [pendingDeleteGame, setPendingDeleteGame] = useState<ScheduledGame | null>(null);
+  const [uploadingReplayGame, setUploadingReplayGame] = useState<ScheduledGame | null>(null);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
 
   const loadGames = useCallback(async () => {
@@ -325,8 +326,15 @@ export default function ScheduledGames() {
       signIn('discord');
       return;
     }
-    setIsUploadingReplay(game.id);
-    router.push(`/scheduled-games/${game.id}/upload-replay`);
+    setUploadingReplayGame(game);
+  };
+
+  const handleUploadReplayClose = () => {
+    setUploadingReplayGame(null);
+  };
+
+  const handleUploadReplaySuccess = async () => {
+    await loadGames();
   };
 
   if (typeof window !== 'undefined') {
@@ -352,7 +360,7 @@ export default function ScheduledGames() {
               onClick={handleScheduleClick}
               className="px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-lg font-medium transition-colors"
             >
-              Join to schedule a game
+              {status === 'authenticated' ? 'Schedule a game' : 'Join to schedule a game'}
             </button>
             {userIsAdmin && (
               <button
@@ -389,7 +397,7 @@ export default function ScheduledGames() {
               isJoining={isJoining}
               isLeaving={isLeaving}
               isDeleting={isDeleting}
-              isUploadingReplay={isUploadingReplay}
+              isUploadingReplay={uploadingReplayGame?.id || null}
               userIsAdmin={userIsAdmin}
             />
           )}
@@ -401,6 +409,7 @@ export default function ScheduledGames() {
             onSubmit={handleFormSubmit}
             onCancel={handleFormCancel}
             isSubmitting={isSubmitting}
+            userIsAdmin={userIsAdmin}
           />
         )}
 
@@ -418,6 +427,15 @@ export default function ScheduledGames() {
         {showCreateGameForm && (
           <CreateGameInlineForm
             onClose={() => setShowCreateGameForm(false)}
+          />
+        )}
+
+        {/* Upload Replay Modal */}
+        {uploadingReplayGame && (
+          <UploadReplayModal
+            game={uploadingReplayGame}
+            onClose={handleUploadReplayClose}
+            onSuccess={handleUploadReplaySuccess}
           />
         )}
 

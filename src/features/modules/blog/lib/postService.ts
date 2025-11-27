@@ -15,38 +15,11 @@ import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
 import { Post, CreatePost } from '@/types/post';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 
 const POSTS_COLLECTION = 'posts';
 const logger = createComponentLogger('postService');
-
-/**
- * Remove undefined values from an object (Firestore doesn't allow undefined)
- */
-function removeUndefined<T extends Record<string, unknown>>(obj: T): Partial<T> {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([_, value]) => value !== undefined)
-  ) as Partial<T>;
-}
-
-/**
- * Convert Firestore timestamp to ISO string
- * Handles both client SDK Timestamp and Admin SDK Timestamp
- */
-interface TimestampLike {
-  toDate?: () => Date;
-}
-function timestampToIso(timestamp: Timestamp | TimestampLike | string | Date | undefined): string {
-  if (!timestamp) return new Date().toISOString();
-  if (typeof timestamp === 'string') return timestamp;
-  // Handle both client SDK (has toDate method) and Admin SDK (has toDate method or is already a Date)
-  if ('toDate' in timestamp && typeof timestamp.toDate === 'function') {
-    return timestamp.toDate().toISOString();
-  }
-  if (timestamp instanceof Date) {
-    return timestamp.toISOString();
-  }
-  return new Date().toISOString();
-}
 
 /**
  * Create a new post in Firestore
@@ -71,8 +44,10 @@ export async function createPost(postData: CreatePost): Promise<string> {
       
       const docRef = await adminDb.collection(POSTS_COLLECTION).add({
         ...cleanedData,
+        creatorName: cleanedData.creatorName,
         date: dateTimestamp, // Store as Timestamp for querying/sorting
         dateString: cleanedData.date, // Keep string version for display
+        ...(cleanedData.submittedAt ? { submittedAt: adminTimestamp.fromDate(new Date(cleanedData.submittedAt as string)) } : {}),
         published: cleanedData.published ?? true,
         createdAt: adminTimestamp.now(),
         updatedAt: adminTimestamp.now(),
@@ -90,8 +65,10 @@ export async function createPost(postData: CreatePost): Promise<string> {
       
       const docRef = await addDoc(collection(db, POSTS_COLLECTION), {
         ...cleanedData,
+        creatorName: cleanedData.creatorName,
         date: dateTimestamp, // Store as Timestamp for querying/sorting
         dateString: cleanedData.date, // Keep string version for display
+        ...(cleanedData.submittedAt ? { submittedAt: Timestamp.fromDate(new Date(cleanedData.submittedAt as string)) } : {}),
         published: cleanedData.published ?? true,
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
@@ -134,10 +111,11 @@ export async function getPostById(id: string): Promise<Post | null> {
       date: timestampToIso(data.date as Timestamp | string),
       slug: data.slug,
       excerpt: data.excerpt,
-      createdAt: timestampToIso(data.createdAt),
-      updatedAt: timestampToIso(data.updatedAt),
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      creatorName: data.creatorName || 'Unknown',
       createdByDiscordId: data.createdByDiscordId ?? null,
-      createdByName: data.createdByName,
+      submittedAt: data.submittedAt,
       published: data.published ?? true,
     };
   } catch (error) {
@@ -184,10 +162,11 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       date: dateValue,
       slug: data.slug,
       excerpt: data.excerpt,
-      createdAt: timestampToIso(data.createdAt),
-      updatedAt: timestampToIso(data.updatedAt),
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      creatorName: data.creatorName || 'Unknown',
       createdByDiscordId: data.createdByDiscordId ?? null,
-      createdByName: data.createdByName,
+      submittedAt: data.submittedAt,
       published: data.published ?? true,
     };
   } catch (error) {

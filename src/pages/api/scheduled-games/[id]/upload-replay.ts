@@ -6,6 +6,7 @@ import { createGame } from '@/features/modules/games/lib/gameService';
 import { parseReplayFile } from '@/features/modules/games/lib/replayParser';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { getFirestoreAdmin, getAdminTimestamp, getStorageAdmin, getStorageBucketName } from '@/features/infrastructure/api/firebase/admin';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { CreateGame } from '@/features/modules/games/types';
 import type { ScheduledGame } from '@/types/scheduledGame';
 import { IncomingForm, Fields, Files, File as FormidableFile } from 'formidable';
@@ -86,18 +87,19 @@ export default async function handler(
     const adminTimestamp = getAdminTimestamp();
     
     // Create archive entry first to get the ID
+    // Convert scheduledDateTime to ISO string if it's a Timestamp
+    const scheduledDateTimeString = timestampToIso(scheduledGame.scheduledDateTime);
+    
     const archiveEntryData = {
       title: `Game #${scheduledGame.scheduledGameId} - ${scheduledGame.teamSize === 'custom' ? scheduledGame.customTeamSize : scheduledGame.teamSize}`,
       content: `Scheduled game completed. ${scheduledGame.gameType === 'elo' ? 'ELO' : 'Normal'} game.`,
-      author: scheduledGame.scheduledByName,
-      createdByDiscordId: scheduledGame.scheduledByDiscordId,
-      createdByName: scheduledGame.scheduledByName,
+      creatorName: scheduledGame.creatorName,
+      createdByDiscordId: scheduledGame.createdByDiscordId,
       replayUrl: '', // Will be updated after upload
-      mediaType: 'replay',
       sectionOrder: ['replay', 'text'],
       dateInfo: {
         type: 'single',
-        singleDate: scheduledGame.scheduledDateTime,
+        singleDate: scheduledDateTimeString,
       },
       isDeleted: false,
       deletedAt: null,
@@ -143,7 +145,7 @@ export default async function handler(
     try {
       const parsed = await parseReplayFile(fileBuffer, {
         scheduledGameId: scheduledGame.scheduledGameId,
-        fallbackDatetime: scheduledGame.scheduledDateTime,
+        fallbackDatetime: scheduledDateTimeString,
         fallbackCategory: scheduledCategory,
       });
       gameData = parsed.gameData;
@@ -169,7 +171,7 @@ export default async function handler(
     if (!preparedGameData) {
       await updateScheduledGame(scheduledGameId, {
         status: 'awaiting_replay',
-        archiveId,
+        linkedArchiveDocumentId: archiveId,
       });
       return res.status(422).json({
         error: 'Replay uploaded, but parsing failed. Please supply gameData JSON or try again later.',
@@ -182,11 +184,18 @@ export default async function handler(
 
     const gameId = await createGame(preparedGameData);
 
+    // Update archive entry with linkedGameDocumentId and update sectionOrder to include game details
+    await archiveDocRef.update({
+      linkedGameDocumentId: gameId,
+      sectionOrder: ['game', 'replay', 'text'],
+      updatedAt: adminTimestamp.now(),
+    });
+
     // Update scheduled game status to archived and link game/archive
     await updateScheduledGame(scheduledGameId, {
       status: 'archived',
-      gameId,
-      archiveId,
+      linkedGameDocumentId: gameId,
+      linkedArchiveDocumentId: archiveId,
     });
 
     logger.info('Replay uploaded and game archived', { 
@@ -238,15 +247,19 @@ function withScheduledGameDefaults(gameData: CreateGame | null, scheduledGame: S
     ? scheduledGame.customTeamSize
     : scheduledGame.teamSize;
 
+  // Convert scheduledDateTime to ISO string if it's a Timestamp
+  const scheduledDateTimeString = timestampToIso(scheduledGame.scheduledDateTime);
+
   return {
     ...gameData,
     gameId: gameData.gameId || scheduledGame.scheduledGameId || Date.now(),
-    datetime: gameData.datetime || scheduledGame.scheduledDateTime,
+    datetime: gameData.datetime || scheduledDateTimeString,
     duration: gameData.duration || scheduledGame.gameLength || 1800,
     gamename: gameData.gamename || `Scheduled Game ${scheduledGame.scheduledGameId}`,
     map: gameData.map || 'Unknown',
-    creatorname: gameData.creatorname || scheduledGame.scheduledByName || 'Unknown',
-    ownername: gameData.ownername || scheduledGame.scheduledByName || 'Unknown',
+    creatorName: gameData.creatorName || scheduledGame.creatorName || 'Unknown',
+    ownername: gameData.ownername || scheduledGame.creatorName || 'Unknown',
+    createdByDiscordId: gameData.createdByDiscordId || scheduledGame.createdByDiscordId,
     category: gameData.category || fallbackCategory,
     players,
   };

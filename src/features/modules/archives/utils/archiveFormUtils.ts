@@ -1,8 +1,8 @@
 import { DateInfo, CreateArchiveEntry } from '@/types/archive';
 
-export type SectionKey = 'images' | 'video' | 'twitch' | 'replay' | 'text';
+export type SectionKey = 'images' | 'video' | 'twitch' | 'replay' | 'game' | 'text';
 
-const CANONICAL_SECTION_ORDER: SectionKey[] = ['images', 'video', 'twitch', 'replay', 'text'];
+const CANONICAL_SECTION_ORDER: SectionKey[] = ['images', 'video', 'twitch', 'replay', 'game', 'text'];
 
 export function buildDateInfo(params: {
   dateType: 'single' | 'undated';
@@ -18,16 +18,17 @@ export function buildDateInfo(params: {
 }
 
 export function computeEffectiveSectionOrder(
-  sectionOrder: Array<'images' | 'video' | 'twitch' | 'replay' | 'text'>,
-  flags: { hasImages: boolean; hasVideo: boolean; hasTwitch: boolean; hasReplay: boolean; hasText: boolean }
-): Array<'images' | 'video' | 'twitch' | 'replay' | 'text'> {
+  sectionOrder: Array<'images' | 'video' | 'twitch' | 'replay' | 'game' | 'text'>,
+  flags: { hasImages: boolean; hasVideo: boolean; hasTwitch: boolean; hasReplay: boolean; hasGame: boolean; hasText: boolean }
+): Array<'images' | 'video' | 'twitch' | 'replay' | 'game' | 'text'> {
   const normalizedOrder = normalizeSectionOrder(sectionOrder);
-  const { hasImages, hasVideo, hasTwitch, hasReplay, hasText } = flags;
+  const { hasImages, hasVideo, hasTwitch, hasReplay, hasGame, hasText } = flags;
   return normalizedOrder.filter((s) =>
     (s === 'images' && hasImages) ||
     (s === 'video' && hasVideo) ||
     (s === 'twitch' && hasTwitch) ||
     (s === 'replay' && hasReplay) ||
+    (s === 'game' && hasGame) ||
     (s === 'text' && hasText)
   );
 }

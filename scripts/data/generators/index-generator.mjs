@@ -82,6 +82,9 @@ import { PRIEST_ABILITIES } from './priest';
 import { SCOUT_ABILITIES } from './scout';
 import { THIEF_ABILITIES } from './thief';
 import { BUILDING_ABILITIES } from './building';
+import { BONUSHANDLER_ABILITIES } from './bonushandler';
+import { BUFF_ABILITIES } from './buff';
+import { AURADUMMY_ABILITIES } from './auradummy';
 import { UNKNOWN_ABILITIES } from './unknown';
 
 export const ABILITIES: AbilityData[] = [
@@ -95,6 +98,9 @@ export const ABILITIES: AbilityData[] = [
   ...SCOUT_ABILITIES,
   ...THIEF_ABILITIES,
   ...BUILDING_ABILITIES,
+  ...BONUSHANDLER_ABILITIES,
+  ...BUFF_ABILITIES,
+  ...AURADUMMY_ABILITIES,
   ...UNKNOWN_ABILITIES,
 ];
 
@@ -109,6 +115,9 @@ export const ABILITY_CATEGORIES: Record<AbilityCategory, string> = {
   gatherer: 'Gatherer Abilities',
   item: 'Item Abilities',
   building: 'Building Abilities',
+  bonushandler: 'BonusHandler Abilities',
+  buff: 'Buff Abilities',
+  auradummy: 'Aura Dummy Abilities',
   unknown: 'Unknown Abilities'
 };
 

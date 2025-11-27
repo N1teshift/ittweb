@@ -36,14 +36,14 @@ const baseConfig: NextConfig = {
                         key: 'Content-Security-Policy',
                         value: [
                             "default-src 'self'",
-                            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.youtube.com https://s.ytimg.com",
+                            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.youtube.com https://s.ytimg.com https://www.googletagmanager.com https://www.google-analytics.com",
                             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.youtube.com https://s.ytimg.com",
                             "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com",
                             "font-src 'self' data: https://fonts.gstatic.com",
                             "frame-src 'self' https://www.youtube.com https://clips.twitch.tv",
                             "img-src 'self' data: https: blob:",
                             "media-src 'self' https:",
-                            "connect-src 'self' https:",
+                            "connect-src 'self' https: https://www.google-analytics.com https://www.googletagmanager.com",
                         ].join('; ')
                     }
                 ]

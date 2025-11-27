@@ -1,7 +1,9 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { ALL_UNITS, getUnitById, UnitData } from '@/features/modules/guides/data/units/allUnits';
+import { getItemById } from '@/features/modules/guides/data/items';
 import GuideIcon from '@/features/modules/guides/components/GuideIcon';
 import { ColoredText } from '@/features/modules/guides/components/ColoredText';
 
@@ -12,15 +14,14 @@ const pageNamespaces = ["common"];
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: ALL_UNITS.map((unit) => ({ 
-      params: { id: encodeURIComponent(unit.id) } 
+      params: { id: unit.id } 
     })),
     fallback: false,
   };
 };
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) => {
-  const encodedId = String(params?.id || '');
-  const id = decodeURIComponent(encodedId);
+  const id = String(params?.id || '');
   const unit = getUnitById(id);
   if (!unit) {
     return { notFound: true };
@@ -51,6 +52,11 @@ const typeDisplayNames: Record<string, string> = {
 };
 
 export default function UnitDetailPage({ unit }: Props) {
+  const router = useRouter();
+  const fromItem = router.query.from === 'item';
+  const itemId = router.query.itemId as string | undefined;
+  const item = itemId ? getItemById(itemId) : null;
+
   const icon = unit.iconPath ? (
     <GuideIcon 
       category="units" 
@@ -64,8 +70,18 @@ export default function UnitDetailPage({ unit }: Props) {
 
   return (
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
-        <div className="mb-6">
-          <Link href="/guides/units" className="text-amber-400 hover:text-amber-300">← Units Overview</Link>
+        <div className="mb-6 space-x-4">
+          {fromItem && item ? (
+            <>
+              <Link href={`/guides/items/${item.id}`} className="text-amber-400 hover:text-amber-300">
+                ← Back to {item.name}
+              </Link>
+              <span className="text-gray-500">•</span>
+              <Link href="/guides/units" className="text-amber-400 hover:text-amber-300">All Units</Link>
+            </>
+          ) : (
+            <Link href="/guides/units" className="text-amber-400 hover:text-amber-300">← Units Overview</Link>
+          )}
         </div>
 
         <header className="mb-6 flex items-start gap-4">

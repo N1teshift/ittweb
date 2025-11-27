@@ -13,39 +13,14 @@ import {
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { PlayerStats, PlayerProfile, CategoryStats, PlayerSearchFilters, PlayerComparison } from '../types';
 import { STARTING_ELO } from '../../games/lib/eloCalculator';
 import { getGames, getGameById } from '../../games/lib/gameService';
 
 const PLAYER_STATS_COLLECTION = 'playerStats';
 const logger = createComponentLogger('playerService');
-
-/**
- * Remove undefined values from an object (Firestore doesn't allow undefined)
- */
-function removeUndefined<T extends Record<string, unknown>>(obj: T): Partial<T> {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([_, value]) => value !== undefined)
-  ) as Partial<T>;
-}
-
-/**
- * Convert Firestore timestamp to ISO string
- */
-interface TimestampLike {
-  toDate?: () => Date;
-}
-function timestampToIso(timestamp: Timestamp | TimestampLike | string | Date | undefined): string {
-  if (!timestamp) return new Date().toISOString();
-  if (typeof timestamp === 'string') return timestamp;
-  if ('toDate' in timestamp && typeof timestamp.toDate === 'function') {
-    return timestamp.toDate().toISOString();
-  }
-  if (timestamp instanceof Date) {
-    return timestamp.toISOString();
-  }
-  return new Date().toISOString();
-}
 
 /**
  * Calculate total games from categories
@@ -178,6 +153,10 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
       return;
     }
 
+    // Convert datetime to ISO string once for all players (game.datetime can be Timestamp or string)
+    const gameDatetimeString = timestampToIso(game.datetime);
+    const gameDatetime = new Date(gameDatetimeString);
+
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
       const adminTimestamp = getAdminTimestamp();
@@ -207,8 +186,8 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
             name: player.name,
             categories,
             totalGames: 1,
-            lastPlayed: adminTimestamp.fromDate(new Date(game.datetime as string)),
-            firstPlayed: adminTimestamp.fromDate(new Date(game.datetime as string)),
+            lastPlayed: adminTimestamp.fromDate(gameDatetime),
+            firstPlayed: adminTimestamp.fromDate(gameDatetime),
             createdAt: adminTimestamp.now(),
             updatedAt: adminTimestamp.now(),
           });
@@ -237,7 +216,7 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
           // Update peak ELO
           if (eloAfter > (categoryStats.peakElo || STARTING_ELO)) {
             categoryStats.peakElo = eloAfter;
-            categoryStats.peakEloDate = adminTimestamp.fromDate(new Date(game.datetime as string));
+            categoryStats.peakEloDate = adminTimestamp.fromDate(gameDatetime);
           }
 
           categories[category] = categoryStats;
@@ -246,7 +225,7 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
             name: player.name,
             categories,
             totalGames: (data.totalGames || 0) + 1,
-            lastPlayed: adminTimestamp.fromDate(new Date(game.datetime as string)),
+            lastPlayed: adminTimestamp.fromDate(gameDatetime),
             updatedAt: adminTimestamp.now(),
           });
         }
@@ -279,8 +258,8 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
             name: player.name,
             categories,
             totalGames: 1,
-            lastPlayed: Timestamp.fromDate(new Date(game.datetime as string)),
-            firstPlayed: Timestamp.fromDate(new Date(game.datetime as string)),
+            lastPlayed: Timestamp.fromDate(gameDatetime),
+            firstPlayed: Timestamp.fromDate(gameDatetime),
             createdAt: Timestamp.now(),
             updatedAt: Timestamp.now(),
           });
@@ -309,7 +288,7 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
           // Update peak ELO
           if (eloAfter > (categoryStats.peakElo || STARTING_ELO)) {
             categoryStats.peakElo = eloAfter;
-            categoryStats.peakEloDate = Timestamp.fromDate(new Date(game.datetime as string));
+            categoryStats.peakEloDate = Timestamp.fromDate(gameDatetime);
           }
 
           categories[category] = categoryStats;
@@ -318,7 +297,7 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
             name: player.name,
             categories,
             totalGames: (data.totalGames || 0) + 1,
-            lastPlayed: Timestamp.fromDate(new Date(game.datetime as string)),
+            lastPlayed: Timestamp.fromDate(gameDatetime),
             updatedAt: Timestamp.now(),
           });
         }

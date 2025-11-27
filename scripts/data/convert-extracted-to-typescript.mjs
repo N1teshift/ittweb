@@ -9,7 +9,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { loadJson } from './utils.mjs';
+import { loadJson, slugify } from './utils.mjs';
 import { mapAbilityCategory, isGarbageAbilityName, getMissingAbilityCategorySlugs } from './converters/category-mapper.mjs';
 import { convertItem, loadRecipesMap } from './converters/item-converter.mjs';
 import { convertAbility } from './converters/ability-converter.mjs';
@@ -173,10 +173,68 @@ function main() {
     console.log(`✅ Wrote ${items.length} items to ${fileName}`);
   }
 
+  // Load additional ability data sources
+  const wurstDetailsData = loadJson(path.join(TMP_METADATA_DIR, 'ability-details-wurst.json'));
+  const relationshipsData = loadJson(path.join(TMP_METADATA_DIR, 'ability-relationships.json'));
+  
+  // Create lookup maps for merging
+  const wurstDetailsMap = new Map();
+  if (wurstDetailsData && wurstDetailsData.abilities) {
+    for (const [abilityId, details] of Object.entries(wurstDetailsData.abilities)) {
+      wurstDetailsMap.set(abilityId, details);
+      // Also try with 'ability-' prefix
+      wurstDetailsMap.set(`ability-${abilityId}`, details);
+    }
+    console.log(`  📚 Loaded ${Object.keys(wurstDetailsData.abilities).length} ability details from Wurst source`);
+  }
+  
+  const relationshipsMap = new Map();
+  if (relationshipsData && relationshipsData.relationships) {
+    for (const [abilityId, rel] of Object.entries(relationshipsData.relationships)) {
+      relationshipsMap.set(abilityId, rel);
+      // Also try with 'ability-' prefix
+      relationshipsMap.set(`ability-${abilityId}`, rel);
+    }
+    console.log(`  🔗 Loaded ${Object.keys(relationshipsData.relationships).length} ability relationships`);
+  }
+  console.log();
+
   // Convert abilities (deduplicate by name, filter garbage)
   const abilityMap = new Map();
   let filteredCount = 0;
   for (const ability of abilitiesData.abilities) {
+    // Merge Wurst details if available
+    const abilitySlug = slugify(ability.name || ability.id);
+    const wurstDetails = wurstDetailsMap.get(abilitySlug) || wurstDetailsMap.get(ability.id?.toLowerCase());
+    
+    if (wurstDetails) {
+      // Merge Wurst data into ability, but prefer raw data if Wurst data looks invalid (contains placeholders)
+      const isInvalidHotkey = (val) => !val || typeof val !== 'string' || val.includes('TOOLTIP') || val.includes('lvl') || val.length > 5;
+      const isInvalidTargets = (val) => !val || typeof val !== 'string' || val.includes('TARGET_ALLOWED') || val.includes('DUMMY') || val.includes('commaList') || val.includes('TargetsAllowed.');
+      
+      Object.assign(ability, {
+        areaOfEffect: wurstDetails.areaOfEffect ?? ability.areaOfEffect,
+        maxTargets: wurstDetails.maxTargets ?? ability.maxTargets,
+        hotkey: (isInvalidHotkey(wurstDetails.hotkey) ? ability.hotkey : wurstDetails.hotkey) ?? ability.hotkey,
+        targetsAllowed: (isInvalidTargets(wurstDetails.targetsAllowed) ? ability.targetsAllowed : wurstDetails.targetsAllowed) ?? ability.targetsAllowed,
+        castRange: wurstDetails.castRange ?? ability.castRange,
+        duration: wurstDetails.duration ?? ability.duration,
+        damage: wurstDetails.damage ?? ability.damage,
+        manaCost: wurstDetails.manaCost ?? ability.manaCost,
+        cooldown: wurstDetails.cooldown ?? ability.cooldown,
+        visualEffects: wurstDetails.visualEffects ?? ability.visualEffects,
+        buttonPosition: wurstDetails.buttonPosition ?? ability.buttonPosition,
+      });
+    }
+    
+    // Merge relationships if available
+    const rel = relationshipsMap.get(abilitySlug) || relationshipsMap.get(ability.id?.toLowerCase());
+    if (rel) {
+      ability.availableToClasses = rel.classes;
+      ability.spellbook = rel.spellTypes.includes('hero') ? 'hero' : 
+                         rel.spellTypes.includes('normal') ? 'normal' : undefined;
+    }
+    
     const converted = convertAbility(ability);
     if (!converted.name) {
       filteredCount++;
@@ -189,8 +247,27 @@ function main() {
       continue;
     }
 
+    // Deduplicate by ID, merging fields from duplicates (prefer non-undefined values)
     if (!abilityMap.has(converted.id)) {
       abilityMap.set(converted.id, converted);
+    } else {
+      // Merge the new ability into the existing one, keeping non-undefined values
+      const existing = abilityMap.get(converted.id);
+      for (const [key, value] of Object.entries(converted)) {
+        // If existing value is undefined/null/empty and new value is defined, use new value
+        if ((existing[key] === undefined || existing[key] === null || existing[key] === '') && 
+            value !== undefined && value !== null && value !== '') {
+          existing[key] = value;
+        }
+        // For levels, merge the objects
+        else if (key === 'levels' && value && typeof value === 'object' && existing[key] && typeof existing[key] === 'object') {
+          existing[key] = { ...existing[key], ...value };
+        }
+        // For arrays like availableToClasses, merge and deduplicate
+        else if (Array.isArray(value) && Array.isArray(existing[key])) {
+          existing[key] = [...new Set([...existing[key], ...value])];
+        }
+      }
     }
   }
   const convertedAbilities = Array.from(abilityMap.values());
@@ -220,6 +297,9 @@ function main() {
     'gatherer': 'gatherer.ts',
     'item': 'item.ts',
     'building': 'building.ts',
+    'bonushandler': 'bonushandler.ts',
+    'buff': 'buff.ts',
+    'auradummy': 'auradummy.ts',
     'unknown': 'unknown.ts',
   };
 

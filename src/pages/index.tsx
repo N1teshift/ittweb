@@ -1,36 +1,73 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
+import { useState, useEffect } from 'react';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import BlogPost from '@/features/modules/blog/components/BlogPost';
 import { MDXRemote } from 'next-mdx-remote';
-import { getAllArchiveEntries } from '@/features/shared/lib/archiveService.server';
+import { getAllEntriesServer } from '@/features/modules/entries/lib/entryService.server';
+import EntryFormModal from '@/features/modules/entries/components/EntryFormModal';
+import ScheduleGameForm from '@/features/modules/scheduled-games/components/ScheduleGameForm';
+import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
+import { isAdmin } from '@/features/shared/utils/userRoleUtils';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import type { GetStaticProps } from 'next';
-import type { PostMeta } from '@/features/modules/blog/lib/posts';
-import type { ArchiveEntry } from '@/types/archive';
-import type { ScheduledGame } from '@/types/scheduledGame';
+import type { Entry } from '@/types/entry';
+import type { Game, CreateScheduledGame } from '@/features/modules/games/types';
 import { Button } from '@/features/infrastructure/shared/components/ui';
 
 const pageNamespaces = ["common"];
 
 type RecentActivityItem = 
-  | { type: 'post'; data: PostMeta }
-  | { type: 'archive'; data: ArchiveEntry }
-  | { type: 'scheduled-game'; data: ScheduledGame };
+  | { type: 'entry'; data: Entry }
+  | { type: 'game'; data: Game };
 
 type HomeProps = {
   translationNamespaces?: string[];
-  latestTitle?: string | null;
-  latestDate?: string | null;
-  latestAuthor?: string | null;
+  latestEntry?: Entry | null;
   mdxSource?: MDXRemoteSerializeResult | null;
   recentActivity: RecentActivityItem[];
 };
 
-export default function Home({ latestTitle, latestDate, latestAuthor, mdxSource, recentActivity }: HomeProps) {
-  const { status } = useSession();
+export default function Home({ latestEntry, mdxSource, recentActivity }: HomeProps) {
+  const { data: session, status } = useSession();
   const router = useRouter();
+  const [showEntryForm, setShowEntryForm] = useState(false);
+  const [showScheduleForm, setShowScheduleForm] = useState(false);
+  const [isSubmittingSchedule, setIsSubmittingSchedule] = useState(false);
+  const [userIsAdmin, setUserIsAdmin] = useState(false);
+
+  // Fetch user role to check if admin
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchUserRole = async () => {
+      if (status !== 'authenticated' || !session?.discordId) {
+        if (isMounted) {
+          setUserIsAdmin(false);
+        }
+        return;
+      }
+
+      try {
+        const userData = await getUserDataByDiscordId(session.discordId);
+        if (isMounted) {
+          setUserIsAdmin(isAdmin(userData?.role));
+        }
+      } catch (error) {
+        if (isMounted) {
+          setUserIsAdmin(false);
+        }
+      }
+    };
+
+    fetchUserRole();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [status, session?.discordId]);
 
   const formatDate = (dateString: string) => {
     try {
@@ -41,20 +78,82 @@ export default function Home({ latestTitle, latestDate, latestAuthor, mdxSource,
     }
   };
 
-  const handleCreatePost = () => {
-    router.push('/posts/new').catch(() => {
-      // Navigation failures are surfaced in the console by Next.js
-    });
+  const handleCreateEntry = () => {
+    if (status !== 'authenticated') {
+      signIn('discord');
+      return;
+    }
+    setShowEntryForm(true);
+  };
+
+  const handleScheduleClick = () => {
+    if (status !== 'authenticated') {
+      signIn('discord');
+      return;
+    }
+    setShowScheduleForm(true);
+  };
+
+  const handleScheduleSubmit = async (gameData: CreateScheduledGame, addCreatorToParticipants: boolean) => {
+    try {
+      setIsSubmittingSchedule(true);
+
+      const response = await fetch('/api/games', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...gameData,
+          gameState: 'scheduled',
+          addCreatorToParticipants,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to schedule game');
+      }
+
+      setShowScheduleForm(false);
+      // Reload the page to show the new game in recent activity
+      router.reload();
+    } catch (err) {
+      console.error('Failed to schedule game:', err);
+      throw err;
+    } finally {
+      setIsSubmittingSchedule(false);
+    }
+  };
+
+  const handleScheduleCancel = () => {
+    setShowScheduleForm(false);
+  };
+
+  const handleEntrySuccess = () => {
+    setShowEntryForm(false);
+    // Force a full page reload to fetch the revalidated page
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 500);
+  };
+
+  const handleEntryCancel = () => {
+    setShowEntryForm(false);
   };
 
   const getActivityDate = (item: RecentActivityItem): string => {
     switch (item.type) {
-      case 'post':
+      case 'entry':
         return item.data.date;
-      case 'archive':
-        return item.data.createdAt;
-      case 'scheduled-game':
-        return item.data.createdAt;
+      case 'game':
+        if (item.data.gameState === 'scheduled' && item.data.scheduledDateTime) {
+          return timestampToIso(item.data.scheduledDateTime);
+        }
+        if (item.data.gameState === 'completed' && item.data.datetime) {
+          return timestampToIso(item.data.datetime);
+        }
+        return timestampToIso(item.data.createdAt);
       default:
         return new Date().toISOString();
     }
@@ -62,13 +161,14 @@ export default function Home({ latestTitle, latestDate, latestAuthor, mdxSource,
 
   const getActivityTitle = (item: RecentActivityItem): string => {
     switch (item.type) {
-      case 'post':
+      case 'entry':
         return item.data.title;
-      case 'archive':
-        return item.data.title;
-      case 'scheduled-game':
-        const teamSize = item.data.teamSize === 'custom' ? item.data.customTeamSize : item.data.teamSize;
-        return `${teamSize} - ${item.data.gameType === 'elo' ? 'ELO' : 'Normal'} Game #${item.data.scheduledGameId}`;
+      case 'game':
+        if (item.data.gameState === 'scheduled') {
+          const teamSize = item.data.teamSize === 'custom' ? item.data.customTeamSize : item.data.teamSize;
+          return `${teamSize} - ${item.data.gameType === 'elo' ? 'ELO' : 'Normal'} Game #${item.data.gameId}`;
+        }
+        return item.data.archiveContent?.title || `Game #${item.data.gameId}`;
       default:
         return '';
     }
@@ -76,12 +176,10 @@ export default function Home({ latestTitle, latestDate, latestAuthor, mdxSource,
 
   const getActivityAuthor = (item: RecentActivityItem): string | undefined => {
     switch (item.type) {
-      case 'post':
-        return item.data.author;
-      case 'archive':
-        return item.data.author;
-      case 'scheduled-game':
-        return item.data.scheduledByName;
+      case 'entry':
+        return item.data.creatorName;
+      case 'game':
+        return item.data.creatorName;
       default:
         return undefined;
     }
@@ -89,12 +187,10 @@ export default function Home({ latestTitle, latestDate, latestAuthor, mdxSource,
 
   const getActivityUrl = (item: RecentActivityItem): string => {
     switch (item.type) {
-      case 'post':
-        return `/posts/${item.data.slug}`;
-      case 'archive':
-        return `/archives`;
-      case 'scheduled-game':
-        return `/scheduled-games`;
+      case 'entry':
+        return `/entries/${item.data.id}`;
+      case 'game':
+        return `/games/${item.data.id}`;
       default:
         return '/';
     }
@@ -102,12 +198,10 @@ export default function Home({ latestTitle, latestDate, latestAuthor, mdxSource,
 
   const getActivityTypeLabel = (item: RecentActivityItem): string => {
     switch (item.type) {
-      case 'post':
-        return 'Post';
-      case 'archive':
-        return 'Archive';
-      case 'scheduled-game':
-        return 'Scheduled Game';
+      case 'entry':
+        return item.data.contentType === 'post' ? 'Post' : 'Memory';
+      case 'game':
+        return item.data.gameState === 'scheduled' ? 'Scheduled Game' : 'Game';
       default:
         return '';
     }
@@ -116,26 +210,49 @@ export default function Home({ latestTitle, latestDate, latestAuthor, mdxSource,
   return (
     <div className="flex justify-center min-h-[calc(100vh-8rem)]">
       <div className="w-full px-6 py-12 max-w-4xl">
-        {/* Latest Post */}
-        {mdxSource && latestTitle && (
+        {/* Login Message - Only visible to non-authenticated users */}
+        {status !== 'authenticated' && (
+          <div className="mb-8 p-4 bg-amber-900/20 border border-amber-500/30 rounded-lg">
+            <p className="text-amber-300 text-center font-medium">
+              Log in to post, schedule games and archive memories!
+            </p>
+          </div>
+        )}
+
+        {/* Latest Entry */}
+        {latestEntry && mdxSource && (
           <BlogPost 
-            title={latestTitle} 
-            date={latestDate ? formatDate(latestDate) : undefined} 
-            author={latestAuthor || undefined}
+            title={latestEntry.title} 
+            date={formatDate(latestEntry.date)} 
+            author={latestEntry.creatorName}
           >
-            <MDXRemote {...mdxSource} />
+            <div className="prose prose-invert max-w-none">
+              {latestEntry.contentType === 'memory' && latestEntry.images && latestEntry.images.length > 0 && (
+                <div className="mb-4">
+                  <img src={latestEntry.images[0]} alt={latestEntry.title} className="w-full rounded-lg" />
+                </div>
+              )}
+              <MDXRemote {...mdxSource} />
+            </div>
           </BlogPost>
         )}
 
-        {/* Create Post Button - Only visible to authenticated users */}
+        {/* Action Buttons - Only visible to authenticated users */}
         {status === 'authenticated' && (
-          <div className="mt-12 mb-8 flex justify-end">
+          <div className="mt-12 mb-8 flex flex-wrap justify-end gap-3">
             <Button
               type="button"
-              onClick={handleCreatePost}
+              onClick={handleCreateEntry}
               className="bg-amber-600 hover:bg-amber-500 text-white"
             >
-              Create Post
+              Create Entry
+            </Button>
+            <Button
+              type="button"
+              onClick={handleScheduleClick}
+              className="bg-amber-600 hover:bg-amber-500 text-white"
+            >
+              Schedule a game
             </Button>
           </div>
         )}
@@ -154,10 +271,8 @@ export default function Home({ latestTitle, latestDate, latestAuthor, mdxSource,
                 const url = getActivityUrl(item);
                 const date = getActivityDate(item);
                 const typeLabel = getActivityTypeLabel(item);
-                const key = item.type === 'post' 
-                  ? `post-${item.data.slug}` 
-                  : item.type === 'archive'
-                  ? `archive-${item.data.id}`
+                const key = item.type === 'entry' 
+                  ? `entry-${item.data.id}` 
                   : `game-${item.data.id}`;
 
                 return (
@@ -177,9 +292,6 @@ export default function Home({ latestTitle, latestDate, latestAuthor, mdxSource,
                           <h3 className="text-sm md:text-base font-semibold text-amber-400 group-hover:text-amber-300 transition-colors font-medieval truncate">
                             {title}
                           </h3>
-                          {item.type === 'post' && item.data.excerpt && (
-                            <p className="text-xs text-gray-300 mt-0.5 leading-snug line-clamp-1">{item.data.excerpt}</p>
-                          )}
                         </div>
                         <div className="flex items-center gap-3 text-xs text-gray-400 flex-shrink-0">
                           <div className="flex items-center gap-1">
@@ -211,6 +323,24 @@ export default function Home({ latestTitle, latestDate, latestAuthor, mdxSource,
           <BlogPost title="Latest Update">
             <p className="text-gray-300">No recent activity yet.</p>
           </BlogPost>
+        )}
+
+        {/* Schedule Game Form Modal */}
+        {showScheduleForm && (
+          <ScheduleGameForm
+            onSubmit={handleScheduleSubmit}
+            onCancel={handleScheduleCancel}
+            isSubmitting={isSubmittingSchedule}
+            userIsAdmin={userIsAdmin}
+          />
+        )}
+
+        {/* Entry Form Modal */}
+        {showEntryForm && (
+          <EntryFormModal
+            onSuccess={handleEntrySuccess}
+            onCancel={handleEntryCancel}
+          />
         )}
       </div>
     </div>
@@ -245,65 +375,93 @@ function removeUndefined<T>(obj: T): T {
 export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
   const withI18n = getStaticPropsWithTranslations(pageNamespaces);
   const i18nResult = await withI18n({ locale: locale as string });
-  const [{ loadLatestPostSerialized, loadAllPosts }, { getAllScheduledGames }] = await Promise.all([
-    import('@/features/modules/blog/lib/posts'),
-    import('@/features/modules/scheduled-games/lib/scheduledGameService'),
+  const [{ getAllEntriesServer }, { getGames }] = await Promise.all([
+    import('@/features/modules/entries/lib/entryService.server'),
+    import('@/features/modules/games/lib/gameService'),
   ]);
   
   try {
-    const [latest, allPostsData, archiveEntries, scheduledGames] = await Promise.all([
-      loadLatestPostSerialized().catch(() => null),
-      loadAllPosts().catch(() => []),
-      getAllArchiveEntries().catch(() => []),
-      getAllScheduledGames(true, false).catch(() => []), // includePast=true to get recent games
+    const [allEntries, allGames] = await Promise.all([
+      getAllEntriesServer().catch((err) => {
+        console.error('Failed to fetch entries:', err);
+        return [];
+      }),
+      getGames({ limit: 100 }).catch((err) => {
+        console.error('Failed to fetch games:', err);
+        return { games: [], hasMore: false };
+      }),
     ]);
+    
+    console.log('Fetched entries:', allEntries.length);
+    console.log('Fetched games:', allGames.games.length);
+    
+    // Debug: Log entry details
+    if (allEntries.length > 0) {
+      console.log('Entry details:', allEntries.map(e => ({
+        id: e.id,
+        title: e.title,
+        contentType: e.contentType,
+        date: e.date,
+        isDeleted: e.isDeleted
+      })));
+    } else {
+      console.log('No entries found - checking if query failed silently');
+    }
 
-    // Convert loaded posts to PostMeta format and sanitize undefined values
-    const allPosts: PostMeta[] = allPostsData.map((post) => {
-      const meta = post.meta;
-      // Remove undefined properties for JSON serialization (null is fine, undefined is not)
-      const sanitized: PostMeta = {
-        title: meta.title,
-        date: meta.date,
-        slug: meta.slug,
-      };
-      if (meta.id !== undefined) sanitized.id = meta.id;
-      if (meta.excerpt !== undefined) sanitized.excerpt = meta.excerpt;
-      if (meta.author !== undefined) sanitized.author = meta.author;
-      if (meta.createdByDiscordId !== undefined) {
-        sanitized.createdByDiscordId = meta.createdByDiscordId;
-      }
-      return sanitized;
-    });
-
-    // Sanitize archive entries and scheduled games to remove undefined values
-    const sanitizedArchiveEntries = archiveEntries.map(removeUndefined) as ArchiveEntry[];
-    const sanitizedScheduledGames = scheduledGames.map(removeUndefined) as ScheduledGame[];
+    // Sanitize entries and games to remove undefined values
+    const sanitizedEntries = allEntries.map(removeUndefined) as Entry[];
+    const sanitizedGames = allGames.games.map(removeUndefined) as Game[];
+    
+    console.log('Sanitized entries:', sanitizedEntries.length);
 
     // Combine all activity items
     const activityItems: RecentActivityItem[] = [
-      ...allPosts.map((post): RecentActivityItem => ({ type: 'post', data: post })),
-      ...sanitizedArchiveEntries.map((entry): RecentActivityItem => ({ type: 'archive', data: entry })),
-      ...sanitizedScheduledGames.map((game): RecentActivityItem => ({ type: 'scheduled-game', data: game })),
+      ...sanitizedEntries.map((entry): RecentActivityItem => ({ type: 'entry', data: entry })),
+      ...sanitizedGames.map((game): RecentActivityItem => ({ type: 'game', data: game })),
     ];
 
-    // Sort by date (most recent first) and limit to 5
+    // Sort by date (most recent first)
+    // Import timestampToIso for server-side conversion
+    const { timestampToIso: serverTimestampToIso } = await import('@/features/infrastructure/utils/timestampUtils');
     const getItemDate = (item: RecentActivityItem): Date => {
       switch (item.type) {
-        case 'post':
+        case 'entry':
           return new Date(item.data.date);
-        case 'archive':
-          return new Date(item.data.createdAt);
-        case 'scheduled-game':
-          return new Date(item.data.createdAt);
+        case 'game':
+          if (item.data.gameState === 'scheduled' && item.data.scheduledDateTime) {
+            return new Date(serverTimestampToIso(item.data.scheduledDateTime));
+          }
+          if (item.data.gameState === 'completed' && item.data.datetime) {
+            return new Date(serverTimestampToIso(item.data.datetime));
+          }
+          return new Date(serverTimestampToIso(item.data.createdAt));
         default:
           return new Date(0);
       }
     };
 
     const sortedActivity = activityItems
-      .sort((a, b) => getItemDate(b).getTime() - getItemDate(a).getTime())
-      .slice(0, 5);
+      .sort((a, b) => getItemDate(b).getTime() - getItemDate(a).getTime());
+    
+    console.log('Total activity items:', sortedActivity.length);
+    console.log('Activity breakdown:', {
+      entries: sortedActivity.filter(a => a.type === 'entry').length,
+      games: sortedActivity.filter(a => a.type === 'game').length
+    });
+    
+    // Get latest entry (post) for display
+    const latestEntry = sanitizedEntries
+      .filter(e => e.contentType === 'post')
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0] || null;
+    
+    console.log('Latest entry:', latestEntry ? { id: latestEntry.id, title: latestEntry.title } : 'none');
+    
+    // Serialize latest entry content if exists
+    let mdxSource: MDXRemoteSerializeResult | null = null;
+    if (latestEntry) {
+      const { serialize } = await import('next-mdx-remote/serialize');
+      mdxSource = await serialize(latestEntry.content);
+    }
 
     // Sanitize the final activity array to remove any undefined values
     const sanitizedActivity = sortedActivity.map((item) => {
@@ -313,25 +471,14 @@ export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
       } as RecentActivityItem;
     });
 
-    // Build props object, only including properties that have values
+    // Build props object
     const props: HomeProps = {
       ...(i18nResult.props || {}),
       translationNamespaces: pageNamespaces,
       recentActivity: sanitizedActivity,
+      latestEntry: latestEntry ? removeUndefined(latestEntry) : null,
+      mdxSource,
     };
-
-    if (latest?.meta.title) {
-      props.latestTitle = latest.meta.title;
-    }
-    if (latest?.meta.date) {
-      props.latestDate = latest.meta.date;
-    }
-    if (latest?.meta.author) {
-      props.latestAuthor = latest.meta.author;
-    }
-    if (latest?.mdxSource) {
-      props.mdxSource = latest.mdxSource;
-    }
 
     return {
       props,

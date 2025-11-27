@@ -15,36 +15,11 @@ import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
 import { ScheduledGame, CreateScheduledGame } from '@/types/scheduledGame';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
+import { timestampToIso, type TimestampLike } from '@/features/infrastructure/utils/timestampUtils';
 
 const SCHEDULED_GAMES_COLLECTION = 'scheduledGames';
 const logger = createComponentLogger('scheduledGameService');
-
-/**
- * Remove undefined values from an object (Firestore doesn't allow undefined)
- */
-function removeUndefined<T extends Record<string, unknown>>(obj: T): Partial<T> {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([_, value]) => value !== undefined)
-  ) as Partial<T>;
-}
-
-/**
- * Convert Firestore timestamp to ISO string
- */
-interface TimestampLike {
-  toDate?: () => Date;
-}
-function timestampToIso(timestamp: Timestamp | TimestampLike | string | Date | undefined): string {
-  if (!timestamp) return new Date().toISOString();
-  if (typeof timestamp === 'string') return timestamp;
-  if ('toDate' in timestamp && typeof timestamp.toDate === 'function') {
-    return timestamp.toDate().toISOString();
-  }
-  if (timestamp instanceof Date) {
-    return timestamp.toISOString();
-  }
-  return new Date().toISOString();
-}
 
 function deriveGameStatus(data: {
   status?: string;
@@ -186,8 +161,11 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
       const docRef = await adminDb.collection(SCHEDULED_GAMES_COLLECTION).add({
         ...cleanedData,
         scheduledGameId,
+        creatorName: cleanedData.creatorName || 'Unknown',
+        createdByDiscordId: cleanedData.createdByDiscordId || '',
         scheduledDateTime,
         scheduledDateTimeString: cleanedData.scheduledDateTime,
+        ...(cleanedData.submittedAt ? { submittedAt: adminTimestamp.fromDate(new Date(cleanedData.submittedAt as string)) } : {}),
         status: cleanedData.status ?? 'scheduled',
         participants: cleanedData.participants || [],
         createdAt: adminTimestamp.now(),
@@ -205,8 +183,11 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
       const docRef = await addDoc(collection(db, SCHEDULED_GAMES_COLLECTION), {
         ...cleanedData,
         scheduledGameId,
+        creatorName: cleanedData.creatorName || 'Unknown',
+        createdByDiscordId: cleanedData.createdByDiscordId || '',
         scheduledDateTime,
         scheduledDateTimeString: cleanedData.scheduledDateTime,
+        ...(cleanedData.submittedAt ? { submittedAt: Timestamp.fromDate(new Date(cleanedData.submittedAt as string)) } : {}),
         status: cleanedData.status ?? 'scheduled',
         participants: cleanedData.participants || [],
         createdAt: Timestamp.now(),
@@ -275,16 +256,16 @@ export async function getAllScheduledGames(includePast: boolean = false, include
           
           const derivedStatus = deriveGameStatus({
             status: data.status,
-            scheduledDateTime,
+            scheduledDateTime: scheduledDateTime,
             gameLength: data.gameLength,
           });
 
           games.push({
             id: docSnap.id,
             scheduledGameId: data.scheduledGameId || 0,
-            scheduledByDiscordId: data.scheduledByDiscordId,
-            scheduledByName: data.scheduledByName || 'Unknown',
-            scheduledDateTime,
+            creatorName: data.creatorName || 'Unknown',
+            createdByDiscordId: data.createdByDiscordId,
+            scheduledDateTime: scheduledDateTime,
             timezone: data.timezone || 'UTC',
             teamSize: data.teamSize,
             customTeamSize: data.customTeamSize,
@@ -300,9 +281,10 @@ export async function getAllScheduledGames(includePast: boolean = false, include
             })),
             createdAt: timestampToIso(data.createdAt),
             updatedAt: timestampToIso(data.updatedAt),
+            submittedAt: data.submittedAt ? timestampToIso(data.submittedAt) : undefined,
             status: derivedStatus,
-            gameId: data.gameId,
-            archiveId: data.archiveId,
+            linkedGameDocumentId: data.linkedGameDocumentId,
+            linkedArchiveDocumentId: data.linkedArchiveDocumentId,
           });
         });
       } catch (error: unknown) {
@@ -336,16 +318,16 @@ export async function getAllScheduledGames(includePast: boolean = false, include
             
             const derivedStatus = deriveGameStatus({
               status: data.status,
-              scheduledDateTime,
+              scheduledDateTime: scheduledDateTime,
               gameLength: data.gameLength,
             });
             
             games.push({
               id: docSnap.id,
               scheduledGameId: data.scheduledGameId || 0,
-              scheduledByDiscordId: data.scheduledByDiscordId,
-              scheduledByName: data.scheduledByName || 'Unknown',
-              scheduledDateTime,
+              creatorName: data.creatorName || 'Unknown',
+              createdByDiscordId: data.createdByDiscordId || '',
+              scheduledDateTime: scheduledDateTime,
               timezone: data.timezone || 'UTC',
               teamSize: data.teamSize,
               customTeamSize: data.customTeamSize,
@@ -362,15 +344,15 @@ export async function getAllScheduledGames(includePast: boolean = false, include
               createdAt: timestampToIso(data.createdAt),
               updatedAt: timestampToIso(data.updatedAt),
               status: derivedStatus,
-              gameId: data.gameId,
-              archiveId: data.archiveId,
+              linkedGameDocumentId: data.linkedGameDocumentId,
+              linkedArchiveDocumentId: data.linkedArchiveDocumentId,
             });
           });
           
           // Sort by scheduled date (ascending - upcoming first) in memory
           games.sort((a, b) => {
-            const dateA = new Date(a.scheduledDateTime).getTime();
-            const dateB = new Date(b.scheduledDateTime).getTime();
+            const dateA = new Date(timestampToIso(a.scheduledDateTime)).getTime();
+            const dateB = new Date(timestampToIso(b.scheduledDateTime)).getTime();
             return dateA - dateB; // Ascending order
           });
         } else {
@@ -405,16 +387,16 @@ export async function getAllScheduledGames(includePast: boolean = false, include
           
           const derivedStatus = deriveGameStatus({
             status: data.status,
-            scheduledDateTime,
+            scheduledDateTime: scheduledDateTime,
             gameLength: data.gameLength,
           });
           
           games.push({
             id: docSnap.id,
             scheduledGameId: data.scheduledGameId || 0,
-            scheduledByDiscordId: data.scheduledByDiscordId,
-            scheduledByName: data.scheduledByName || 'Unknown',
-            scheduledDateTime,
+            creatorName: data.creatorName || 'Unknown',
+            createdByDiscordId: data.createdByDiscordId,
+            scheduledDateTime: scheduledDateTime,
             timezone: data.timezone || 'UTC',
             teamSize: data.teamSize,
             customTeamSize: data.customTeamSize,
@@ -430,9 +412,10 @@ export async function getAllScheduledGames(includePast: boolean = false, include
             })),
             createdAt: timestampToIso(data.createdAt),
             updatedAt: timestampToIso(data.updatedAt),
+            submittedAt: data.submittedAt ? timestampToIso(data.submittedAt) : undefined,
             status: derivedStatus,
-            gameId: data.gameId,
-            archiveId: data.archiveId,
+            linkedGameDocumentId: data.linkedGameDocumentId,
+            linkedArchiveDocumentId: data.linkedArchiveDocumentId,
           });
         });
       } catch (error: unknown) {
@@ -466,16 +449,16 @@ export async function getAllScheduledGames(includePast: boolean = false, include
             
             const derivedStatus = deriveGameStatus({
               status: data.status,
-              scheduledDateTime,
+              scheduledDateTime: scheduledDateTime,
               gameLength: data.gameLength,
             });
             
             games.push({
               id: docSnap.id,
               scheduledGameId: data.scheduledGameId || 0,
-              scheduledByDiscordId: data.scheduledByDiscordId,
-              scheduledByName: data.scheduledByName || 'Unknown',
-              scheduledDateTime,
+              creatorName: data.creatorName || 'Unknown',
+              createdByDiscordId: data.createdByDiscordId || '',
+              scheduledDateTime: scheduledDateTime,
               timezone: data.timezone || 'UTC',
               teamSize: data.teamSize,
               customTeamSize: data.customTeamSize,
@@ -492,15 +475,15 @@ export async function getAllScheduledGames(includePast: boolean = false, include
               createdAt: timestampToIso(data.createdAt),
               updatedAt: timestampToIso(data.updatedAt),
               status: derivedStatus,
-              gameId: data.gameId,
-              archiveId: data.archiveId,
+              linkedGameDocumentId: data.linkedGameDocumentId,
+              linkedArchiveDocumentId: data.linkedArchiveDocumentId,
             });
           });
           
           // Sort by scheduled date (ascending - upcoming first) in memory
           games.sort((a, b) => {
-            const dateA = new Date(a.scheduledDateTime).getTime();
-            const dateB = new Date(b.scheduledDateTime).getTime();
+            const dateA = new Date(timestampToIso(a.scheduledDateTime)).getTime();
+            const dateB = new Date(timestampToIso(b.scheduledDateTime)).getTime();
             return dateA - dateB; // Ascending order
           });
         } else {
@@ -567,16 +550,16 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
       
       const derivedStatus = deriveGameStatus({
         status: data.status,
-        scheduledDateTime,
+            scheduledDateTime: scheduledDateTime,
         gameLength: data.gameLength,
       });
 
       return {
         id: docSnap.id,
         scheduledGameId: data.scheduledGameId || 0,
-        scheduledByDiscordId: data.scheduledByDiscordId,
-        scheduledByName: data.scheduledByName || 'Unknown',
-        scheduledDateTime,
+        creatorName: data.creatorName || 'Unknown',
+        createdByDiscordId: data.createdByDiscordId || '',
+            scheduledDateTime: scheduledDateTime,
         timezone: data.timezone || 'UTC',
         teamSize: data.teamSize,
         customTeamSize: data.customTeamSize,
@@ -590,11 +573,12 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
           joinedAt: typeof p.joinedAt === 'string' ? p.joinedAt : timestampToIso(p.joinedAt as Timestamp | TimestampLike | Date | undefined),
           result: p.result as string | undefined,
         })),
-        createdAt: timestampToIso(data.createdAt),
-        updatedAt: timestampToIso(data.updatedAt),
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
+        submittedAt: data.submittedAt ? timestampToIso(data.submittedAt) : undefined,
         status: derivedStatus,
-        gameId: data.gameId,
-        archiveId: data.archiveId,
+        linkedGameDocumentId: data.linkedGameDocumentId,
+        linkedArchiveDocumentId: data.linkedArchiveDocumentId,
       };
     } else {
       const db = getFirestoreInstance();
@@ -610,16 +594,16 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
       const scheduledDateTime = data.scheduledDateTimeString || timestampToIso(data.scheduledDateTime as Timestamp);
       const derivedStatus = deriveGameStatus({
         status: data.status,
-        scheduledDateTime,
+            scheduledDateTime: scheduledDateTime,
         gameLength: data.gameLength,
       });
       
       return {
         id: docSnap.id,
         scheduledGameId: data.scheduledGameId || 0,
-        scheduledByDiscordId: data.scheduledByDiscordId,
-        scheduledByName: data.scheduledByName || 'Unknown',
-        scheduledDateTime,
+        creatorName: data.creatorName || 'Unknown',
+        createdByDiscordId: data.createdByDiscordId || '',
+            scheduledDateTime: scheduledDateTime,
         timezone: data.timezone || 'UTC',
         teamSize: data.teamSize,
         customTeamSize: data.customTeamSize,
@@ -633,11 +617,12 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
           joinedAt: typeof p.joinedAt === 'string' ? p.joinedAt : timestampToIso(p.joinedAt as Timestamp | TimestampLike | Date | undefined),
           result: p.result as string | undefined,
         })),
-        createdAt: timestampToIso(data.createdAt),
-        updatedAt: timestampToIso(data.updatedAt),
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
+        submittedAt: data.submittedAt ? timestampToIso(data.submittedAt) : undefined,
         status: derivedStatus,
-        gameId: data.gameId,
-        archiveId: data.archiveId,
+        linkedGameDocumentId: data.linkedGameDocumentId,
+        linkedArchiveDocumentId: data.linkedArchiveDocumentId,
       };
     }
   } catch (error) {
@@ -658,24 +643,85 @@ export async function updateScheduledGame(
   id: string, 
   updates: Partial<CreateScheduledGame> & { 
     status?: 'scheduled' | 'ongoing' | 'awaiting_replay' | 'archived' | 'cancelled';
-    gameId?: string;
-    archiveId?: string;
+    linkedGameDocumentId?: string;
+    linkedArchiveDocumentId?: string;
   }
 ): Promise<void> {
   try {
     logger.info('Updating scheduled game', { id });
 
-    const cleanedUpdates = removeUndefined(updates);
-    const updateData: Record<string, unknown> = { ...cleanedUpdates };
+    // Only extract fields that are safe to update
+    const updateData: Record<string, unknown> = {};
+    
+    // Handle status
+    if (updates.status !== undefined) {
+      updateData.status = updates.status;
+    }
+    
+    // Handle link fields
+    if (updates.linkedGameDocumentId !== undefined) {
+      updateData.linkedGameDocumentId = updates.linkedGameDocumentId;
+    }
+    if (updates.linkedArchiveDocumentId !== undefined) {
+      updateData.linkedArchiveDocumentId = updates.linkedArchiveDocumentId;
+    }
+    
+    // Handle scheduledDateTime (convert to Timestamp if provided)
+    if (updates.scheduledDateTime !== undefined && typeof updates.scheduledDateTime === 'string') {
+      const date = new Date(updates.scheduledDateTime);
+      if (isNaN(date.getTime())) {
+        throw new Error(`Invalid scheduledDateTime: ${updates.scheduledDateTime}`);
+      }
+      if (isServerSide()) {
+        const adminTimestamp = getAdminTimestamp();
+        updateData.scheduledDateTime = adminTimestamp.fromDate(date);
+        updateData.scheduledDateTimeString = updates.scheduledDateTime;
+      } else {
+        updateData.scheduledDateTime = Timestamp.fromDate(date);
+        updateData.scheduledDateTimeString = updates.scheduledDateTime;
+      }
+    }
+    
+    // Handle other optional fields from CreateScheduledGame (only if they're strings/numbers, not Timestamps)
+    if (updates.timezone !== undefined) updateData.timezone = updates.timezone;
+    if (updates.teamSize !== undefined) updateData.teamSize = updates.teamSize;
+    if (updates.customTeamSize !== undefined) updateData.customTeamSize = updates.customTeamSize;
+    if (updates.gameType !== undefined) updateData.gameType = updates.gameType;
+    if (updates.gameVersion !== undefined) updateData.gameVersion = updates.gameVersion;
+    if (updates.gameLength !== undefined) updateData.gameLength = updates.gameLength;
+    if (updates.modes !== undefined) updateData.modes = updates.modes;
+    if (updates.participants !== undefined) updateData.participants = updates.participants;
+    if (updates.creatorName !== undefined) updateData.creatorName = updates.creatorName;
+    if (updates.createdByDiscordId !== undefined) updateData.createdByDiscordId = updates.createdByDiscordId;
+    
+    // Handle submittedAt (convert to Timestamp if provided as string)
+    if (updates.submittedAt !== undefined) {
+      if (typeof updates.submittedAt === 'string') {
+        const date = new Date(updates.submittedAt);
+        if (isNaN(date.getTime())) {
+          throw new Error(`Invalid submittedAt: ${updates.submittedAt}`);
+        }
+        if (isServerSide()) {
+          const adminTimestamp = getAdminTimestamp();
+          updateData.submittedAt = adminTimestamp.fromDate(date);
+        } else {
+          updateData.submittedAt = Timestamp.fromDate(date);
+        }
+      } else {
+        // If it's already a Timestamp, use it directly
+        updateData.submittedAt = updates.submittedAt;
+      }
+    }
+
+    // Only update if we have data to update
+    if (Object.keys(updateData).length === 0) {
+      logger.warn('No valid fields to update', { id });
+      return;
+    }
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
       const adminTimestamp = getAdminTimestamp();
-      
-      if (cleanedUpdates.scheduledDateTime) {
-        updateData.scheduledDateTime = adminTimestamp.fromDate(new Date(cleanedUpdates.scheduledDateTime));
-        updateData.scheduledDateTimeString = cleanedUpdates.scheduledDateTime;
-      }
       
       await adminDb.collection(SCHEDULED_GAMES_COLLECTION).doc(id).update({
         ...updateData,
@@ -684,11 +730,6 @@ export async function updateScheduledGame(
     } else {
       const db = getFirestoreInstance();
       const docRef = doc(db, SCHEDULED_GAMES_COLLECTION, id);
-      
-      if (cleanedUpdates.scheduledDateTime) {
-        updateData.scheduledDateTime = Timestamp.fromDate(new Date(cleanedUpdates.scheduledDateTime));
-        updateData.scheduledDateTimeString = cleanedUpdates.scheduledDateTime;
-      }
       
       await updateDoc(docRef, {
         ...updateData,

@@ -9,15 +9,21 @@
  * 1. Uses static category mappings from category-mappings.json (manually curated)
  * 2. Extracts raw data from war3map files in external/Work/
  * 3. Extracts metadata (units, buildings, recipes)
- * 4. Converts extracted data to TypeScript format (items, abilities, units)
- * 5. Generates icon mapping (iconMap.ts)
+ * 4. Extracts ability details from Wurst source files
+ * 5. Extracts ability relationships (class/spellbook mappings)
+ * 6. Converts extracted data to TypeScript format (items, abilities, units)
+ * 7. Generates icon mapping (iconMap.ts)
+ * 8. Fixes icon paths in generated TypeScript files
  * 
  * PIPELINE SCRIPTS (automatically called in order):
  * ============================================================================
- * 1. extract-from-w3x.mjs           - Extracts raw game data from war3map files
- * 2. extract-metadata.mjs           - Extracts units, buildings, and recipe metadata
- * 3. convert-extracted-to-typescript.mjs - Converts JSON to TypeScript data files
- * 4. regenerate-iconmap.mjs         - Generates icon mapping from icon files
+ * 1. extract-from-w3x.mjs                    - Extracts raw game data from war3map files
+ * 2. extract-metadata.mjs                     - Extracts units, buildings, and recipe metadata
+ * 3. extract-ability-details-from-wurst.mjs   - Extracts detailed ability properties from Wurst source
+ * 4. extract-ability-relationships.mjs        - Extracts ability-to-class/spellbook relationships
+ * 5. convert-extracted-to-typescript.mjs      - Converts JSON to TypeScript data files
+ * 6. regenerate-iconmap.mjs                   - Generates icon mapping from icon files
+ * 7. fix-icon-paths.mjs                       - Validates and fixes icon paths in generated files
  * 
  * See scripts/data/README.md for detailed documentation.
  * 
@@ -49,8 +55,14 @@ const CATEGORY_MAPPINGS_FILE = path.join(ROOT_DIR, 'scripts', 'data', 'category-
 // ============================================================================
 const EXTRACT_FROM_W3X_SCRIPT = path.join(__dirname, 'extract-from-w3x.mjs');
 const EXTRACT_METADATA_SCRIPT = path.join(__dirname, 'extract-metadata.mjs');
+const EXTRACT_ABILITY_DETAILS_SCRIPT = path.join(__dirname, 'extract-ability-details-from-wurst.mjs');
+const EXTRACT_ABILITY_RELATIONSHIPS_SCRIPT = path.join(__dirname, 'extract-ability-relationships.mjs');
+const EXTRACT_ITEM_DETAILS_SCRIPT = path.join(__dirname, 'extract-item-details-from-wurst.mjs');
+const GENERATE_ABILITY_ID_MAPPING_SCRIPT = path.join(__dirname, 'generate-ability-id-mapping.mjs');
+const EXTRACT_ABILITY_CODES_SCRIPT = path.join(__dirname, 'extract-ability-codes-from-items.mjs');
 const CONVERT_SCRIPT = path.join(__dirname, 'convert-extracted-to-typescript.mjs');
 const REGENERATE_ICONMAP_SCRIPT = path.join(__dirname, 'regenerate-iconmap.mjs');
+const FIX_ICON_PATHS_SCRIPT = path.join(__dirname, 'fix-icon-paths.mjs');
 
 /**
  * Clean a directory by removing all .ts files
@@ -189,8 +201,13 @@ async function main() {
   console.log('  1. Use static category mappings file (category-mappings.json)');
   console.log('  2. Extract raw data from war3map files in external/Work/');
   console.log('  3. Extract metadata (units, buildings, recipes)');
-  console.log('  4. Convert to TypeScript data files (items, abilities, units)');
-  console.log('  5. Generate icon mapping (iconMap.ts)');
+    console.log('  4. Extract ability details from Wurst source files');
+    console.log('  5. Extract ability relationships (class/spellbook mappings)');
+    console.log('  5.5. Extract item details from Wurst source files (stat bonuses)');
+    console.log('  5.6. Generate ability ID mapping (raw IDs to ability slugs)');
+    console.log('  6. Convert to TypeScript data files (items, abilities, units)');
+  console.log('  7. Generate icon mapping (iconMap.ts)');
+  console.log('  8. Fix icon paths in generated files');
   console.log('\n' + '='.repeat(60) + '\n');
 
   try {
@@ -209,12 +226,31 @@ async function main() {
     // Step 4: Extract metadata (recipes, buildings, units)
     await runScript(EXTRACT_METADATA_SCRIPT, 'extract-metadata.mjs');
 
-    // Step 5: Generate TypeScript data files
+    // Step 5: Extract ability details from Wurst source files
+    await runScript(EXTRACT_ABILITY_DETAILS_SCRIPT, 'extract-ability-details-from-wurst.mjs');
+
+    // Step 6: Extract ability relationships (class/spellbook mappings)
+    await runScript(EXTRACT_ABILITY_RELATIONSHIPS_SCRIPT, 'extract-ability-relationships.mjs');
+
+    // Step 6.5: Extract item details from Wurst source files (stat bonuses, properties)
+    await runScript(EXTRACT_ITEM_DETAILS_SCRIPT, 'extract-item-details-from-wurst.mjs');
+
+    // Step 6.6: Generate ability ID mapping (raw IDs to slugs)
+    await runScript(GENERATE_ABILITY_ID_MAPPING_SCRIPT, 'generate-ability-id-mapping.mjs');
+
+    // Step 6.7: Extract ability codes from item descriptions to find missing mappings
+    await runScript(EXTRACT_ABILITY_CODES_SCRIPT, 'extract-ability-codes-from-items.mjs');
+
+    // Step 7: Generate TypeScript data files
     // Uses static category-mappings.json file for categorization
+    // Merges data from war3map.w3a, Wurst source, and relationships
     await runScript(CONVERT_SCRIPT, 'convert-extracted-to-typescript.mjs');
 
-    // Step 6: Generate icon mapping
+    // Step 8: Generate icon mapping
     await runScript(REGENERATE_ICONMAP_SCRIPT, 'regenerate-iconmap.mjs');
+
+    // Step 9: Fix icon paths
+    await runScript(FIX_ICON_PATHS_SCRIPT, 'fix-icon-paths.mjs');
 
     console.log('='.repeat(60));
     console.log('✅ All data generation complete!');

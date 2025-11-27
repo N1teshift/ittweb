@@ -377,7 +377,7 @@ export async function getGameLengthData(
       }
 
       const date = format(new Date(game.datetime as string), 'yyyy-MM-dd');
-      const durationMinutes = game.duration / 60; // Convert seconds to minutes
+      const durationMinutes = (game.duration || 0) / 60; // Convert seconds to minutes
       const existing = gamesByDate.get(date) || { total: 0, count: 0 };
       gamesByDate.set(date, {
         total: existing.total + durationMinutes,

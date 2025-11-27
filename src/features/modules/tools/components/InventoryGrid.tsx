@@ -23,14 +23,21 @@ export default function InventoryGrid({
       {inventory.map((item, idx) => {
         const isSelected = selectedIndex === idx;
         return (
-          <button
+          <div
             key={idx}
-            type="button"
             className={`group relative aspect-square rounded-md border ${
               isSelected ? 'border-amber-400 ring-2 ring-amber-400/40' : 'border-amber-500/30'
-            } bg-black/40 flex items-center justify-center text-center text-sm text-gray-200 hover:border-amber-400 transition`}
+            } bg-black/40 flex items-center justify-center text-center text-sm text-gray-200 hover:border-amber-400 transition cursor-pointer`}
             onClick={() => onSelectSlot(idx)}
+            role="button"
+            tabIndex={0}
             aria-pressed={isSelected}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onSelectSlot(idx);
+              }
+            }}
             onDragOver={(e) => {
               e.preventDefault();
               let dropEffect: DataTransfer['dropEffect'] = 'move';
@@ -98,7 +105,7 @@ export default function InventoryGrid({
             ) : (
               <span className="text-amber-300/60 text-xs">Empty</span>
             )}
-          </button>
+          </div>
         );
       })}
     </div>

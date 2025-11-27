@@ -19,6 +19,12 @@ function AbilityCard({ ability }: { ability: AbilityData }) {
     ability.range !== undefined
       ? { label: `Range: ${ability.range}`, variant: 'green' as const }
       : null,
+    ability.areaOfEffect !== undefined
+      ? { label: `AOE: ${ability.areaOfEffect}`, variant: 'green' as const }
+      : null,
+    ability.maxTargets !== undefined
+      ? { label: `Targets: ${ability.maxTargets}`, variant: 'purple' as const }
+      : null,
     ability.duration !== undefined
       ? { label: `Duration: ${ability.duration}s`, variant: 'amber' as const }
       : null,
@@ -28,13 +34,19 @@ function AbilityCard({ ability }: { ability: AbilityData }) {
   ].filter(Boolean) as { label: string; variant: 'blue' | 'purple' | 'green' | 'amber' | 'red' }[];
 
   const secondaryBadges = [
+    ability.hotkey
+      ? { label: `[${ability.hotkey}]`, variant: 'amber' as const }
+      : null,
     ability.classRequirement
       ? { label: ability.classRequirement, variant: 'amber' as const }
+      : null,
+    ability.availableToClasses && ability.availableToClasses.length > 0
+      ? { label: `${ability.availableToClasses.length} class${ability.availableToClasses.length > 1 ? 'es' : ''}`, variant: 'blue' as const }
       : null,
     ability.category
       ? { label: ABILITY_CATEGORIES[ability.category] || ability.category, variant: 'gray' as const }
       : null,
-  ].filter(Boolean) as { label: string; variant: 'amber' | 'gray' }[];
+  ].filter(Boolean) as { label: string; variant: 'amber' | 'gray' | 'blue' }[];
 
   const footer = ability.effects && ability.effects.length > 0 && (
     <div className="text-xs">
@@ -96,7 +108,13 @@ export default function AbilitiesPage() {
   }
 
   const filteredAbilities = searchQuery
-    ? searchAbilities(searchQuery)
+    ? (() => {
+        const results = searchAbilities(searchQuery);
+        // Also filter by category if selected
+        return selectedCategory === 'all' 
+          ? results 
+          : results.filter(a => a.category === selectedCategory);
+      })()
     : selectedCategory === 'all'
     ? ABILITIES
     : getAbilitiesByCategory(selectedCategory);

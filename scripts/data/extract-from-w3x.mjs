@@ -106,11 +106,29 @@ function extractItems() {
         const level = getField('ilev') || 0;
         const uses = getField('iuse') || 0;
         const classId = getField('icla') || '';
+        const lumberCost = getField('ilum') || 0;
+        const hitPoints = getField('ihpc') || 0;
+        const maxStack = getField('ista') || 0;
+        const stockMaximum = getField('isto') || 0;
+        const stockReplenishInterval = getField('istr') || 0;
+        const scalingValue = getField('isca') || 0;
+        
+        // Extract string fields
+        const hotkey = getField('uhot') || getField('ihot') || '';
+        const abilities = getField('iabi') || '';
+        const modelPath = getField('ifil') || '';
         
         // Extract boolean fields (1 = true, 0 = false)
         const droppable = getField('idrp') !== 0;
         const pawnable = getField('ipaw') !== 0;
         const perishable = getField('iper') !== 0;
+        const activelyUsed = getField('iusa') !== 0;
+        const ignoreCooldown = getField('iucd') !== 0;
+        
+        // Parse abilities string (comma-separated list)
+        const abilitiesList = typeof abilities === 'string' && abilities.trim()
+          ? abilities.split(',').map(a => a.trim()).filter(Boolean)
+          : [];
         
         return {
           id,
@@ -118,11 +136,25 @@ function extractItems() {
           description: typeof description === 'string' ? description : '',
           tooltip: typeof tooltip === 'string' ? tooltip : '',
           icon: typeof icon === 'string' ? icon : '',
-          // Additional properties
+          // Cost & Stock
+          cost: typeof cost === 'number' ? cost : 0,
+          lumberCost: typeof lumberCost === 'number' ? lumberCost : 0,
+          stockMaximum: typeof stockMaximum === 'number' ? stockMaximum : 0,
+          stockReplenishInterval: typeof stockReplenishInterval === 'number' ? stockReplenishInterval : 0,
+          // Item Properties
           class: typeof classId === 'string' ? classId : '',
           level: typeof level === 'number' ? level : 0,
-          cost: typeof cost === 'number' ? cost : 0,
           uses: typeof uses === 'number' ? uses : 0,
+          hitPoints: typeof hitPoints === 'number' ? hitPoints : 0,
+          maxStack: typeof maxStack === 'number' ? maxStack : 0,
+          scalingValue: typeof scalingValue === 'number' ? scalingValue : 0,
+          modelPath: typeof modelPath === 'string' ? modelPath : '',
+          // Usage & Abilities
+          hotkey: typeof hotkey === 'string' ? hotkey : '',
+          abilities: abilitiesList,
+          activelyUsed,
+          ignoreCooldown,
+          // Boolean Flags
           droppable,
           pawnable,
           perishable,
@@ -179,12 +211,49 @@ function extractAbilities() {
           return field ? field.value : '';
         };
         
+        // Helper to get all levels for a field
+        const getAllLevels = (fieldId) => {
+          const levels = {};
+          modifications
+            .filter(m => m.id === fieldId)
+            .forEach(m => {
+              if (m.value !== '' && m.value !== null && m.value !== undefined) {
+                levels[m.level] = m.value;
+              }
+            });
+          return Object.keys(levels).length > 0 ? levels : undefined;
+        };
+        
         // Extract common fields
         // For tooltips, prefer level 1 (aub1 level 1 often has more detailed tooltips)
         const name = getField('anam') || getField('unam') || '';
         const tooltip = getField('aub1', 1) || getField('aub1') || getField('aub2', 1) || getField('aub2') || getField('utub') || '';
         const icon = getField('aart') || getField('uico') || '';
         const description = getField('ades') || '';
+        
+        // Extract additional fields
+        const areaOfEffect = getField('aare');
+        const maxTargets = getField('acap');
+        const hotkey = getField('ahky');
+        const targetsAllowed = getField('atar');
+        const castTime = getField('acat');
+        
+        // Extract attachment points (visual effects)
+        const attachmentPoints = modifications
+          .filter(m => m.id.startsWith('ata') && m.id !== 'atar' && m.id !== 'atat')
+          .map(m => m.value)
+          .filter(v => v && v !== '');
+        const attachmentTarget = getField('atat');
+        
+        // Extract level-specific data
+        const levels = {
+          damage: getAllLevels('ahd1') || getAllLevels('ahd2'),
+          manaCost: getAllLevels('amcs') || getAllLevels('amc1') || getAllLevels('amc2'),
+          cooldown: getAllLevels('acdn') || getAllLevels('acd1') || getAllLevels('acd2'),
+          duration: getAllLevels('adur') || getAllLevels('ahdu'),
+          range: getAllLevels('aran') || getAllLevels('arng'),
+          areaOfEffect: getAllLevels('aare'),
+        };
         
         return {
           id,
@@ -195,6 +264,15 @@ function extractAbilities() {
           hero: getField('aher') === 1,
           item: getField('aite') === 1,
           race: getField('arac') || '',
+          // Additional fields
+          areaOfEffect: areaOfEffect !== '' ? (typeof areaOfEffect === 'number' ? areaOfEffect : parseFloat(areaOfEffect) || undefined) : undefined,
+          maxTargets: maxTargets !== '' ? (typeof maxTargets === 'number' ? maxTargets : parseInt(maxTargets, 10) || undefined) : undefined,
+          hotkey: hotkey !== '' ? hotkey : undefined,
+          targetsAllowed: targetsAllowed !== '' ? targetsAllowed : undefined,
+          castTime: castTime !== '' ? castTime : undefined,
+          attachmentPoints: attachmentPoints.length > 0 ? attachmentPoints : undefined,
+          attachmentTarget: attachmentTarget !== '' ? attachmentTarget : undefined,
+          levels: Object.keys(levels).length > 0 ? levels : undefined,
           raw: modifications
         };
       });

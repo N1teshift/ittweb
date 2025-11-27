@@ -40,6 +40,56 @@ ${items.map(item => {
   if (item.mixingPotManaRequirement !== undefined) {
     lines.push(`    mixingPotManaRequirement: ${item.mixingPotManaRequirement},`);
   }
+  // Cost information
+  if (item.cost !== undefined && item.cost > 0) {
+    lines.push(`    cost: ${item.cost},`);
+  }
+  if (item.lumberCost !== undefined && item.lumberCost > 0) {
+    lines.push(`    lumberCost: ${item.lumberCost},`);
+  }
+  // Usage information
+  if (item.hotkey) {
+    lines.push(`    hotkey: '${item.hotkey}',`);
+  }
+  if (item.uses !== undefined && item.uses > 0) {
+    lines.push(`    uses: ${item.uses},`);
+  }
+  if (item.hitPoints !== undefined && item.hitPoints > 0) {
+    lines.push(`    hitPoints: ${item.hitPoints},`);
+  }
+  if (item.maxStack !== undefined && item.maxStack > 0) {
+    lines.push(`    maxStack: ${item.maxStack},`);
+  }
+  // Stock information
+  if (item.stockMaximum !== undefined && item.stockMaximum > 0) {
+    lines.push(`    stockMaximum: ${item.stockMaximum},`);
+  }
+  if (item.stockReplenishInterval !== undefined && item.stockReplenishInterval > 0) {
+    lines.push(`    stockReplenishInterval: ${item.stockReplenishInterval},`);
+  }
+  // Abilities
+  if (item.abilities && Array.isArray(item.abilities) && item.abilities.length > 0) {
+    lines.push(`    abilities: [${item.abilities.map(a => `'${a}'`).join(', ')}],`);
+  }
+  // Stats
+  if (item.stats && Object.keys(item.stats).length > 0) {
+    const statsLines = ['    stats: {'];
+    const statEntries = [];
+    if (item.stats.damage !== undefined) statEntries.push(`      damage: ${item.stats.damage}`);
+    if (item.stats.armor !== undefined) statEntries.push(`      armor: ${item.stats.armor}`);
+    if (item.stats.health !== undefined) statEntries.push(`      health: ${item.stats.health}`);
+    if (item.stats.mana !== undefined) statEntries.push(`      mana: ${item.stats.mana}`);
+    if (item.stats.strength !== undefined) statEntries.push(`      strength: ${item.stats.strength}`);
+    if (item.stats.agility !== undefined) statEntries.push(`      agility: ${item.stats.agility}`);
+    if (item.stats.intelligence !== undefined) statEntries.push(`      intelligence: ${item.stats.intelligence}`);
+    if (item.stats.attackSpeed !== undefined) statEntries.push(`      attackSpeed: ${item.stats.attackSpeed}`);
+    if (item.stats.other && Array.isArray(item.stats.other) && item.stats.other.length > 0) {
+      statEntries.push(`      other: [${item.stats.other.map(o => `'${escapeString(o)}'`).join(', ')}]`);
+    }
+    statsLines.push(statEntries.join(',\n'));
+    statsLines.push('    },');
+    lines.push(statsLines.join('\n'));
+  }
   lines.push(`  }`);
   return lines.join('\n');
 }).join(',\n')}
@@ -91,6 +141,42 @@ ${abilities.map(ability => {
   }
   if (ability.damage !== undefined) {
     lines.push(`    damage: '${ability.damage}',`);
+  }
+  if (ability.areaOfEffect !== undefined) {
+    lines.push(`    areaOfEffect: ${ability.areaOfEffect},`);
+  }
+  if (ability.maxTargets !== undefined) {
+    lines.push(`    maxTargets: ${ability.maxTargets},`);
+  }
+  if (ability.hotkey) {
+    lines.push(`    hotkey: '${ability.hotkey}',`);
+  }
+  if (ability.targetsAllowed) {
+    lines.push(`    targetsAllowed: '${escapeString(ability.targetsAllowed)}',`);
+  }
+  if (ability.castTime !== undefined) {
+    if (typeof ability.castTime === 'string') {
+      lines.push(`    castTime: '${escapeString(ability.castTime)}',`);
+    } else {
+      lines.push(`    castTime: ${ability.castTime},`);
+    }
+  }
+  if (ability.levels && Object.keys(ability.levels).length > 0) {
+    const levelsStr = JSON.stringify(ability.levels, null, 6).split('\n').map((line, idx) => idx === 0 ? line : '      ' + line).join('\n');
+    lines.push(`    levels: ${levelsStr},`);
+  }
+  if (ability.availableToClasses && ability.availableToClasses.length > 0) {
+    lines.push(`    availableToClasses: [${ability.availableToClasses.map(c => `'${c}'`).join(', ')}],`);
+  }
+  if (ability.spellbook) {
+    lines.push(`    spellbook: '${ability.spellbook}',`);
+  }
+  if (ability.visualEffects) {
+    const visualEffectsStr = JSON.stringify(ability.visualEffects, null, 6).split('\n').map((line, idx) => idx === 0 ? line : '      ' + line).join('\n');
+    lines.push(`    visualEffects: ${visualEffectsStr},`);
+  }
+  if (ability.buttonPosition) {
+    lines.push(`    buttonPosition: { x: ${ability.buttonPosition.x}, y: ${ability.buttonPosition.y} },`);
   }
   lines.push(`  }`);
   return lines.join('\n');

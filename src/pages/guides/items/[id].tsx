@@ -1,9 +1,14 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Link from 'next/link';
-import { ITEMS_DATA, getItemById } from '@/features/modules/guides/data/items';
-import { ItemData } from '@/types/items';
+import { useRouter } from 'next/router';
+import { ITEMS_DATA, getItemById, getItemIconPathFromRecord } from '@/features/modules/guides/data/items';
+import { ABILITIES, getAbilityById } from '@/features/modules/guides/data/abilities';
+import { getAbilitySlugFromRawId, findAbilitySlugByRawId } from '@/features/modules/guides/data/items/abilityIdMapper';
+import { ALL_UNITS, getUnitById } from '@/features/modules/guides/data/units/allUnits';
+import { ItemData, ItemCategory } from '@/types/items';
 import { ColoredText } from '@/features/modules/guides/components/ColoredText';
+import GuideIcon from '@/features/modules/guides/components/GuideIcon';
 
 type Props = { item: ItemData };
 
@@ -38,10 +43,18 @@ function StatBadge({ label, value, colorClass }: { label: string; value: string 
 }
 
 export default function ItemDetailPage({ item }: Props) {
+  const router = useRouter();
+  const categoryParam = router.query.category as string;
+  
+  // Build back link with category if provided
+  const backHref = categoryParam && categoryParam !== 'all'
+    ? `/guides/items?category=${categoryParam}`
+    : '/guides/items';
+
   return (
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6">
-          <Link href="/guides/items" className="text-amber-400 hover:text-amber-300">← Items Overview</Link>
+          <Link href={backHref} className="text-amber-400 hover:text-amber-300">← Items Overview</Link>
         </div>
 
         <header className="mb-6">
@@ -71,16 +84,87 @@ export default function ItemDetailPage({ item }: Props) {
                   <span className="text-amber-300 capitalize">{item.subcategory.replace('-', ' ')}</span>
                 </div>
               )}
-              {item.craftedAt && (
-                <div>
-                  <span className="text-gray-400">Crafted at:</span>{' '}
-                  <span className="text-blue-300">{item.craftedAt}</span>
-                </div>
-              )}
+              {item.craftedAt && (() => {
+                // Normalize both names for comparison (remove apostrophes, lowercase, trim spaces)
+                const normalizeName = (name: string) => 
+                  name.toLowerCase().replace(/'/g, '').replace(/\s+/g, ' ').trim();
+                
+                const craftedAtNormalized = normalizeName(item.craftedAt);
+                
+                // Find the building/unit by matching the craftedAt name
+                const building = ALL_UNITS.find(
+                  unit => {
+                    const unitNameNormalized = normalizeName(unit.name);
+                    return unitNameNormalized === craftedAtNormalized ||
+                           (item.craftedAt && unit.name.toLowerCase() === item.craftedAt.toLowerCase());
+                  }
+                );
+                
+                if (building) {
+                  // Use raw ID - Next.js Link will handle encoding automatically
+                  // This matches the pattern used in src/pages/guides/units.tsx
+                  // Add query parameters to enable back navigation
+                  return (
+                    <div>
+                      <span className="text-gray-400">Crafted at:</span>{' '}
+                      <Link 
+                        href={`/guides/units/${building.id}?from=item&itemId=${item.id}`}
+                        className="text-blue-300 hover:text-blue-200 underline transition-colors"
+                      >
+                        {item.craftedAt}
+                      </Link>
+                    </div>
+                  );
+                }
+                
+                // Fallback: show as plain text if building not found
+                return (
+                  <div>
+                    <span className="text-gray-400">Crafted at:</span>{' '}
+                    <span className="text-blue-300">{item.craftedAt}</span>
+                  </div>
+                );
+              })()}
               {item.mixingPotManaRequirement && (
                 <div>
                   <span className="text-gray-400">Mana cost:</span>{' '}
                   <span className="text-purple-300">{item.mixingPotManaRequirement} mana</span>
+                </div>
+              )}
+              {item.cost !== undefined && item.cost > 0 && (
+                <div>
+                  <span className="text-gray-400">Gold cost:</span>{' '}
+                  <span className="text-yellow-300">{item.cost} gold</span>
+                </div>
+              )}
+              {item.lumberCost !== undefined && item.lumberCost > 0 && (
+                <div>
+                  <span className="text-gray-400">Lumber cost:</span>{' '}
+                  <span className="text-green-300">{item.lumberCost} lumber</span>
+                </div>
+              )}
+              {item.hotkey && (
+                <div>
+                  <span className="text-gray-400">Hotkey:</span>{' '}
+                  <span className="text-amber-300 font-mono">{item.hotkey}</span>
+                </div>
+              )}
+              {item.uses !== undefined && item.uses > 0 && (
+                <div>
+                  <span className="text-gray-400">Charges:</span>{' '}
+                  <span className="text-blue-300">{item.uses}</span>
+                </div>
+              )}
+              {item.hitPoints !== undefined && item.hitPoints > 0 && (
+                <div>
+                  <span className="text-gray-400">Durability:</span>{' '}
+                  <span className="text-red-300">{item.hitPoints} HP</span>
+                </div>
+              )}
+              {item.maxStack !== undefined && item.maxStack > 0 && (
+                <div>
+                  <span className="text-gray-400">Max stack:</span>{' '}
+                  <span className="text-purple-300">{item.maxStack}</span>
                 </div>
               )}
             </div>
@@ -102,6 +186,18 @@ export default function ItemDetailPage({ item }: Props) {
                 {typeof item.stats.mana === 'number' && (
                   <StatBadge label="Mana" value={`+${item.stats.mana}`} colorClass="bg-purple-500/20 text-purple-200" />
                 )}
+                {typeof item.stats.strength === 'number' && (
+                  <StatBadge label="Strength" value={`+${item.stats.strength}`} colorClass="bg-orange-500/20 text-orange-200" />
+                )}
+                {typeof item.stats.agility === 'number' && (
+                  <StatBadge label="Agility" value={`+${item.stats.agility}`} colorClass="bg-green-500/20 text-green-200" />
+                )}
+                {typeof item.stats.intelligence === 'number' && (
+                  <StatBadge label="Intelligence" value={`+${item.stats.intelligence}`} colorClass="bg-blue-500/20 text-blue-200" />
+                )}
+                {typeof item.stats.attackSpeed === 'number' && (
+                  <StatBadge label="Attack Speed" value={`+${item.stats.attackSpeed}%`} colorClass="bg-yellow-500/20 text-yellow-200" />
+                )}
                 {(item.stats.other || []).map((eff, i) => (
                   <span key={i} className="text-xs bg-green-500/20 text-green-200 px-2 py-1 rounded">{eff}</span>
                 ))}
@@ -110,17 +206,97 @@ export default function ItemDetailPage({ item }: Props) {
               <p className="text-gray-400">No stats available.</p>
             )}
           </section>
+          
+          {item.abilities && item.abilities.length > 0 && (
+            <section className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+              <h2 className="font-medieval-brand text-2xl mb-3">Abilities</h2>
+              <div className="flex flex-wrap gap-3">
+                {item.abilities.map((rawAbilityId, i) => {
+                  // Try to map raw ability ID to ability slug
+                  let abilitySlug = getAbilitySlugFromRawId(rawAbilityId);
+                  
+                  // If not found in direct mapping, try to find by searching
+                  if (!abilitySlug) {
+                    abilitySlug = findAbilitySlugByRawId(rawAbilityId, ABILITIES.map(ab => ({ id: ab.id, name: ab.name })));
+                  }
+                  
+                  // Get the ability if we found a slug
+                  const ability = abilitySlug ? getAbilityById(abilitySlug) : null;
+                  
+                  if (ability) {
+                    return (
+                      <Link
+                        key={i}
+                        href={`/guides/abilities/${ability.id}?from=item&itemId=${item.id}`}
+                        className="flex items-center gap-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-200 px-3 py-2 rounded transition-colors group"
+                      >
+                        {ability.iconPath && (
+                          <GuideIcon
+                            category="abilities"
+                            name={ability.name}
+                            size={24}
+                            src={`/icons/itt/${ability.iconPath}`}
+                            className="group-hover:scale-110 transition-transform"
+                          />
+                        )}
+                        <span className="text-sm">{ability.name}</span>
+                      </Link>
+                    );
+                  }
+                  
+                  // Fallback: show raw ID
+                  return (
+                    <div key={i} className="flex items-center gap-2 bg-purple-500/20 text-purple-200 px-3 py-2 rounded">
+                      <span className="text-xs font-mono">{rawAbilityId}</span>
+                      <span className="text-xs text-gray-400">(Unknown ability)</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
 
           <section className="md:col-span-2 bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
             <h2 className="font-medieval-brand text-2xl mb-3">Recipe</h2>
             {item.recipe && item.recipe.length > 0 ? (
               <div>
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {item.recipe.map((ing, i) => (
-                    <span key={i} className="text-sm bg-amber-500/20 text-amber-200 px-2 py-1 rounded">
-                      {ing.replace(/-/g, ' ')}
-                    </span>
-                  ))}
+                <div className="flex flex-wrap gap-4 mb-3 items-center">
+                  {item.recipe.map((ingredientSlug, i) => {
+                    const ingredientItem = getItemById(ingredientSlug);
+                    if (ingredientItem) {
+                      return (
+                        <Link
+                          key={i}
+                          href={`/guides/items/${ingredientItem.id}`}
+                          className="flex flex-col items-center gap-1 hover:opacity-80 transition-opacity group"
+                        >
+                          <div className="relative">
+                            <GuideIcon
+                              category={ingredientItem.category === 'buildings' ? 'buildings' : 'items'}
+                              name={ingredientItem.name}
+                              size={48}
+                              src={ingredientItem.iconPath ? `/icons/itt/${ingredientItem.iconPath}` : undefined}
+                              className="group-hover:scale-110 transition-transform"
+                            />
+                          </div>
+                          <span className="text-xs text-amber-300 text-center max-w-[60px] break-words">
+                            {ingredientItem.name}
+                          </span>
+                        </Link>
+                      );
+                    }
+                    // Fallback if item not found
+                    return (
+                      <div key={i} className="flex flex-col items-center gap-1">
+                        <div className="w-12 h-12 bg-gray-700 rounded flex items-center justify-center">
+                          <span className="text-xs text-gray-400">?</span>
+                        </div>
+                        <span className="text-xs text-gray-400 text-center max-w-[60px] break-words">
+                          {ingredientSlug.replace(/-/g, ' ')}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
                 {item.mixingPotManaRequirement && (
                   <div className="mt-2 text-sm text-purple-300">

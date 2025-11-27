@@ -216,21 +216,22 @@ export const getArchiveEntries = async (): Promise<ArchiveEntry[]> => {
       id: doc.id,
       title: data.title,
       content: data.content,
-      author: data.author,
+      creatorName: data.creatorName || 'Unknown',
       createdByDiscordId: data.createdByDiscordId ?? null,
-      createdByName: data.createdByName,
-      mediaUrl: data.mediaUrl,
+      entryType: data.entryType,
       mediaType: data.mediaType,
       images: data.images,
       videoUrl: data.videoUrl,
       twitchClipUrl: data.twitchClipUrl,
       replayUrl: data.replayUrl,
+      linkedGameDocumentId: data.linkedGameDocumentId,
       sectionOrder: data.sectionOrder,
       dateInfo: data.dateInfo,
-      createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt,
-      updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate().toISOString() : data.updatedAt,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+      submittedAt: data.submittedAt,
       isDeleted: data.isDeleted ?? false,
-      deletedAt: data.deletedAt?.toDate ? data.deletedAt.toDate().toISOString() : data.deletedAt ?? null,
+      deletedAt: data.deletedAt,
     });
   });
   
@@ -269,8 +270,8 @@ export const sortArchiveEntries = (entries: ArchiveEntry[], order: 'newest' | 'o
   return entries.sort((a, b) => {
     // If both are undated, sort by creation date
     if (a.dateInfo.type === 'undated' && b.dateInfo.type === 'undated') {
-      const timeA = new Date(a.createdAt).getTime();
-      const timeB = new Date(b.createdAt).getTime();
+      const timeA = new Date(timestampToIso(a.createdAt)).getTime();
+      const timeB = new Date(timestampToIso(b.createdAt)).getTime();
       return order === 'newest' ? timeB - timeA : timeA - timeB;
     }
     

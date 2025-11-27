@@ -1,28 +1,28 @@
 export type ArchiveEntryType = 'story' | 'changelog';
 
+import { Timestamp } from 'firebase/firestore';
+
 export interface ArchiveEntry {
   id: string;
   title: string;
   content: string;
-  author: string;
+  creatorName: string;
   createdByDiscordId?: string | null;
-  createdByName?: string;
   entryType?: ArchiveEntryType;
-  // Deprecated single-media fields kept for backward compatibility
-  mediaUrl?: string;
-  mediaType?: 'image' | 'video' | 'replay' | 'none';
-  // New multi-media fields
+  // Multi-media fields
   images?: string[];
   videoUrl?: string;
   twitchClipUrl?: string;
   replayUrl?: string;
+  linkedGameDocumentId?: string; // Link to Game document when archive entry is for a game
   // Optional ordered section layout
-  sectionOrder?: Array<'images' | 'video' | 'twitch' | 'replay' | 'text'>;
+  sectionOrder?: Array<'images' | 'video' | 'twitch' | 'replay' | 'game' | 'text'>;
   dateInfo: DateInfo;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Timestamp | string;
+  updatedAt: Timestamp | string;
+  submittedAt?: Timestamp | string;
   isDeleted?: boolean;
-  deletedAt?: string | null;
+  deletedAt?: Timestamp | string | null;
 }
 
 export interface DateInfo {
@@ -36,23 +36,21 @@ export interface DateInfo {
 export interface CreateArchiveEntry {
   title: string;
   content: string;
-  author: string;
+  creatorName: string;
   createdByDiscordId?: string | null;
-  createdByName?: string;
   entryType?: ArchiveEntryType;
-  // Deprecated single-media fields kept for backward compatibility
-  mediaType?: 'image' | 'video' | 'replay' | 'none';
-  mediaUrl?: string;
-  // New multi-media fields
+  // Multi-media fields
   images?: string[];
   videoUrl?: string;
   twitchClipUrl?: string;
   replayUrl?: string;
+  linkedGameDocumentId?: string; // Link to Game document when archive entry is for a game
   // Optional ordered section layout
-  sectionOrder?: Array<'images' | 'video' | 'twitch' | 'replay' | 'text'>;
+  sectionOrder?: Array<'images' | 'video' | 'twitch' | 'replay' | 'game' | 'text'>;
   dateInfo: DateInfo;
+  submittedAt?: Timestamp | string;
   isDeleted?: boolean;
-  deletedAt?: string | null;
+  deletedAt?: Timestamp | string | null;
 }
 
 export interface ArchiveFilters {

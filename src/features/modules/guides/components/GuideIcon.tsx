@@ -21,15 +21,24 @@ export default function GuideIcon({ category, name, size = 48, state, className,
     return getDefaultIconPath();
   }, [srcOverride, explicit]);
 
-  // Track if image failed to load, fallback to default icon
+  // Track if image failed to load, fallback to appropriate icon
   const [iconSrc, setIconSrc] = useState(initialIconSrc);
   const [hasErrored, setHasErrored] = useState(false);
+  
+  // Fallback icon for when a mapping exists but the file is missing
+  const MAPPING_FALLBACK_ICON = '/icons/itt/btnselectherooff.png';
+  const NO_MAPPING_FALLBACK_ICON = getDefaultIconPath(); // btncancel.png
 
   const handleError = () => {
     // Only fallback once to prevent infinite loops
-    if (!hasErrored && iconSrc !== getDefaultIconPath()) {
+    if (!hasErrored) {
       setHasErrored(true);
-      setIconSrc(getDefaultIconPath());
+      // If there was a mapping (explicit exists), use mapping fallback
+      // Otherwise, use no-mapping fallback
+      const fallbackIcon = explicit ? MAPPING_FALLBACK_ICON : NO_MAPPING_FALLBACK_ICON;
+      if (iconSrc !== fallbackIcon) {
+        setIconSrc(fallbackIcon);
+      }
     }
   };
 

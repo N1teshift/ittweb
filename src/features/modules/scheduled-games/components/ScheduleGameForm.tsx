@@ -1,11 +1,12 @@
 import React, { useState, FormEvent } from 'react';
-import { TeamSize, GameType, CreateScheduledGame } from '@/types/scheduledGame';
+import { TeamSize, GameType, CreateScheduledGame } from '@/features/modules/games/types';
 import { getUserTimezone, convertLocalToUTC, getCommonTimezones, getTimezoneAbbreviation } from '../utils/timezoneUtils';
 
 interface ScheduleGameFormProps {
   onSubmit: (gameData: CreateScheduledGame, addCreatorToParticipants: boolean) => Promise<void>;
   onCancel: () => void;
   isSubmitting?: boolean;
+  userIsAdmin?: boolean;
 }
 
 // Placeholder for game modes - will be updated when user provides the list
@@ -16,10 +17,16 @@ const GAME_MODES: string[] = [
   // Add more modes when provided
 ];
 
-export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = false }: ScheduleGameFormProps) {
+export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = false, userIsAdmin = false }: ScheduleGameFormProps) {
   const userTimezone = getUserTimezone();
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedTime, setSelectedTime] = useState('');
+  
+  // Initialize with current date and time
+  const now = new Date();
+  const currentDate = now.toISOString().split('T')[0]; // YYYY-MM-DD format
+  const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`; // HH:MM format
+  
+  const [selectedDate, setSelectedDate] = useState(currentDate);
+  const [selectedTime, setSelectedTime] = useState(currentTime);
   const [selectedTimezone, setSelectedTimezone] = useState(userTimezone);
   const [teamSize, setTeamSize] = useState<TeamSize>('1v1');
   const [customTeamSize, setCustomTeamSize] = useState('');
@@ -40,12 +47,14 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
       return;
     }
 
-    // Validate the selected date/time is in the future
-    const localDateTime = `${selectedDate}T${selectedTime}`;
-    const selectedDateTime = new Date(localDateTime);
-    if (selectedDateTime < new Date()) {
-      setError('Scheduled date and time must be in the future');
-      return;
+    // Validate the selected date/time is in the future (unless user is admin)
+    if (!userIsAdmin) {
+      const localDateTime = `${selectedDate}T${selectedTime}`;
+      const selectedDateTime = new Date(localDateTime);
+      if (selectedDateTime < new Date()) {
+        setError('Scheduled date and time must be in the future');
+        return;
+      }
     }
 
     // Convert local date/time to UTC
@@ -89,47 +98,49 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Date and Time Selection */}
           <div className="space-y-4">
-            <div>
-              <label className="block text-amber-500 mb-2">Date *</label>
-              <input
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                min={new Date().toISOString().split('T')[0]}
-                required
-                className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
-              />
-            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-amber-500 mb-2">Date *</label>
+                <input
+                  type="date"
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  min={userIsAdmin ? undefined : new Date().toISOString().split('T')[0]}
+                  required
+                  className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
+                />
+              </div>
 
-            <div>
-              <label className="block text-amber-500 mb-2">Time *</label>
-              <input
-                type="time"
-                value={selectedTime}
-                onChange={(e) => setSelectedTime(e.target.value)}
-                required
-                className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
-              />
-            </div>
+              <div>
+                <label className="block text-amber-500 mb-2">Time *</label>
+                <input
+                  type="time"
+                  value={selectedTime}
+                  onChange={(e) => setSelectedTime(e.target.value)}
+                  required
+                  className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
+                />
+              </div>
 
-            <div>
-              <label className="block text-amber-500 mb-2">Timezone *</label>
-              <select
-                value={selectedTimezone}
-                onChange={(e) => setSelectedTimezone(e.target.value)}
-                required
-                className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
-              >
-                {commonTimezones.map(tz => (
-                  <option key={tz.value} value={tz.value}>
-                    {tz.label} ({getTimezoneAbbreviation(tz.value)})
-                  </option>
-                ))}
-              </select>
-              <p className="text-sm text-gray-400 mt-1">
-                Selected timezone: {tzAbbreviation}
-              </p>
+              <div>
+                <label className="block text-amber-500 mb-2">Timezone *</label>
+                <select
+                  value={selectedTimezone}
+                  onChange={(e) => setSelectedTimezone(e.target.value)}
+                  required
+                  className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
+                >
+                  {commonTimezones.map(tz => (
+                    <option key={tz.value} value={tz.value}>
+                      {tz.label} ({getTimezoneAbbreviation(tz.value)})
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
+            <p className="text-sm text-gray-400">
+              Selected timezone: {tzAbbreviation}
+            </p>
           </div>
 
           {/* Team Size */}
@@ -162,53 +173,54 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
             )}
           </div>
 
-          {/* Game Type */}
-          <div>
-            <label className="block text-amber-500 mb-2">Game Type *</label>
-            <div className="flex gap-4">
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="radio"
-                  name="gameType"
-                  value="normal"
-                  checked={gameType === 'normal'}
-                  onChange={(e) => setGameType(e.target.value as GameType)}
-                  className="mr-2"
-                />
-                <span className="text-white">Normal</span>
-              </label>
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="radio"
-                  name="gameType"
-                  value="elo"
-                  checked={gameType === 'elo'}
-                  onChange={(e) => setGameType(e.target.value as GameType)}
-                  className="mr-2"
-                />
-                <span className="text-white">ELO</span>
-              </label>
+          {/* Game Type, Version, and Length */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Game Type */}
+            <div>
+              <label className="block text-amber-500 mb-2">Game Type *</label>
+              <div className="flex gap-4">
+                <label className="flex items-center cursor-pointer">
+                  <input
+                    type="radio"
+                    name="gameType"
+                    value="normal"
+                    checked={gameType === 'normal'}
+                    onChange={(e) => setGameType(e.target.value as GameType)}
+                    className="mr-2"
+                  />
+                  <span className="text-white">Normal</span>
+                </label>
+                <label className="flex items-center cursor-pointer">
+                  <input
+                    type="radio"
+                    name="gameType"
+                    value="elo"
+                    checked={gameType === 'elo'}
+                    onChange={(e) => setGameType(e.target.value as GameType)}
+                    className="mr-2"
+                  />
+                  <span className="text-white">ELO</span>
+                </label>
+              </div>
             </div>
-          </div>
 
-          {/* Game Version */}
-          <div>
-            <label className="block text-amber-500 mb-2">Game Version *</label>
-            <select
-              value={gameVersion}
-              onChange={(e) => setGameVersion(e.target.value)}
-              required
-              className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
-            >
-              <option value="v3.28">v3.28</option>
-            </select>
-          </div>
+            {/* Game Version */}
+            <div>
+              <label className="block text-amber-500 mb-2">Game Version *</label>
+              <select
+                value={gameVersion}
+                onChange={(e) => setGameVersion(e.target.value)}
+                required
+                className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
+              >
+                <option value="v3.28">v3.28</option>
+              </select>
+            </div>
 
-          {/* Game Length */}
-          <div>
-            <label className="block text-amber-500 mb-2">Game Length *</label>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
+            {/* Game Length */}
+            <div>
+              <label className="block text-amber-500 mb-2">Game Length *</label>
+              <div className="space-y-2">
                 <input
                   type="number"
                   value={gameLength}
@@ -219,19 +231,16 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
                   className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
                   placeholder="Duration in seconds"
                 />
-              </div>
-              <div className="flex items-center text-gray-300 text-sm">
-                <span>
-                  {gameLength >= 60 
-                    ? `${Math.floor(gameLength / 60)} minute${Math.floor(gameLength / 60) !== 1 ? 's' : ''}`
-                    : `${gameLength} second${gameLength !== 1 ? 's' : ''}`
-                  }
-                </span>
+                <div className="text-gray-300 text-sm">
+                  <span>
+                    {gameLength >= 60 
+                      ? `${Math.floor(gameLength / 60)} minute${Math.floor(gameLength / 60) !== 1 ? 's' : ''}`
+                      : `${gameLength} second${gameLength !== 1 ? 's' : ''}`
+                    }
+                  </span>
+                </div>
               </div>
             </div>
-            <p className="text-sm text-gray-400 mt-1">
-              Common lengths: 15 min (900s), 30 min (1800s), 45 min (2700s), 60 min (3600s)
-            </p>
           </div>
 
           {/* Game Modes */}

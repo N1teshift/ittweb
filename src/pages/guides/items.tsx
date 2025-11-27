@@ -1,10 +1,46 @@
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Link from 'next/link';
-import { useState, useMemo } from 'react';
-import { ITEMS_DATA, ITEMS_BY_CATEGORY, searchItems } from '@/features/modules/guides/data/items';
+import { useRouter } from 'next/router';
+import React, { useState, useMemo, useEffect } from 'react';
+import { ITEMS_DATA, ITEMS_BY_CATEGORY, searchItems, getItemById } from '@/features/modules/guides/data/items';
+import { ALL_UNITS } from '@/features/modules/guides/data/units/allUnits';
 import { ItemCategory, ItemData } from '@/types/items';
 import GuideCard from '@/features/modules/guides/components/GuideCard';
 import GuideIcon from '@/features/modules/guides/components/GuideIcon';
+
+function IconWithTooltip({ 
+  children, 
+  tooltipText 
+}: { 
+  children: React.ReactElement; 
+  tooltipText: string;
+}) {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  return (
+    <div className="relative inline-flex">
+      {React.cloneElement(children, {
+        ...children.props,
+        onMouseEnter: (e: React.MouseEvent) => {
+          setIsHovered(true);
+          children.props.onMouseEnter?.(e);
+        },
+        onMouseLeave: (e: React.MouseEvent) => {
+          setIsHovered(false);
+          children.props.onMouseLeave?.(e);
+        }
+      })}
+      {isHovered && (
+        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black/95 backdrop-blur-sm text-amber-200 text-xs rounded border border-amber-500/50 whitespace-nowrap pointer-events-none z-50 shadow-lg">
+          {tooltipText}
+          <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-px">
+            <div className="border-4 border-transparent border-t-amber-500/50"></div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
@@ -29,15 +65,67 @@ const categoryEmojis: Record<ItemCategory, string> = {
   'unknown': '❓',
 };
 
-function ItemCard({ item }: { item: ItemData }) {
-  const recipeBadges = (item.recipe || []).map((ingredient) => ({
-    label: ingredient.replace('-', ' '),
-    variant: 'amber' as const,
-  }));
+function ItemCard({ item, category }: { item: ItemData; category?: ItemCategory | 'all' }) {
+  const router = useRouter();
+  
+  // Helper function to normalize names for matching (same as in detail page)
+  const normalizeName = (name: string) => 
+    name.toLowerCase().replace(/'/g, '').replace(/\s+/g, ' ').trim();
+  
+  // Find building for craftedAt
+  const craftedAtBuilding = item.craftedAt ? (() => {
+    const craftedAtNormalized = normalizeName(item.craftedAt);
+    return ALL_UNITS.find(unit => {
+      const unitNameNormalized = normalizeName(unit.name);
+      return unitNameNormalized === craftedAtNormalized ||
+             unit.name.toLowerCase() === item.craftedAt!.toLowerCase();
+    });
+  })() : null;
 
-  const craftedAtBadges = item.craftedAt
-    ? [{ label: item.craftedAt, variant: 'blue' as const }]
-    : [];
+  const craftedAtIcon = craftedAtBuilding ? (
+    <IconWithTooltip tooltipText={craftedAtBuilding.name}>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          router.push(`/guides/units/${craftedAtBuilding.id}?from=item&itemId=${item.id}`);
+        }}
+        className="flex-shrink-0 hover:opacity-80 transition-opacity cursor-pointer"
+      >
+        <GuideIcon
+          category="units"
+          name={craftedAtBuilding.name}
+          size={32}
+          src={craftedAtBuilding.iconPath ? `/icons/itt/${craftedAtBuilding.iconPath}` : undefined}
+        />
+      </button>
+    </IconWithTooltip>
+  ) : null;
+  
+  const recipeIcons = (item.recipe || []).map((ingredientSlug, index) => {
+    const ingredientItem = getItemById(ingredientSlug);
+    if (!ingredientItem) return null;
+    
+    return (
+      <IconWithTooltip key={`${ingredientSlug}-${index}`} tooltipText={ingredientItem.name}>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            router.push(`/guides/items/${ingredientItem.id}`);
+          }}
+          className="flex-shrink-0 hover:opacity-80 transition-opacity cursor-pointer"
+        >
+          <GuideIcon
+            category={ingredientItem.category === 'buildings' ? 'buildings' : 'items'}
+            name={ingredientItem.name}
+            size={32}
+            src={ingredientItem.iconPath ? `/icons/itt/${ingredientItem.iconPath}` : undefined}
+          />
+        </button>
+      </IconWithTooltip>
+    );
+  }).filter(Boolean);
 
   const statBadges: { label: string; variant: 'red' | 'blue' | 'green' | 'purple' }[] = [];
   if (item.stats) {
@@ -60,22 +148,48 @@ function ItemCard({ item }: { item: ItemData }) {
     />
   );
 
+  const footer = (craftedAtIcon || recipeIcons.length > 0) ? (
+    <div className="mt-2 pt-2 border-t border-amber-500/20">
+      <div className="flex flex-wrap gap-x-4 gap-y-2">
+        {craftedAtIcon && (
+          <div className="flex-shrink-0">
+            <div className="text-amber-300 text-xs font-semibold mb-1">Crafted at:</div>
+            <div className="flex flex-wrap gap-2">
+              {craftedAtIcon}
+            </div>
+          </div>
+        )}
+        {recipeIcons.length > 0 && (
+          <div className="flex-shrink-0">
+            <div className="text-amber-300 text-xs font-semibold mb-1">Recipe:</div>
+            <div className="flex flex-wrap gap-2">
+              {recipeIcons}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  ) : null;
+
+  const itemHref = category && category !== 'all' 
+    ? `/guides/items/${item.id}?category=${category}`
+    : `/guides/items/${item.id}`;
+
   return (
     <GuideCard
-      href={`/guides/items/${item.id}`}
+      href={itemHref}
       title={item.name}
       icon={icon}
       description={item.description}
-      primaryTagGroup={recipeBadges.length ? { label: 'Recipe:', badges: recipeBadges } : undefined}
       secondaryTagGroup={{
-        label: craftedAtBadges.length ? 'Crafted at:' : undefined,
-        badges: [...craftedAtBadges, ...statBadges, ...otherEffects],
+        badges: [...statBadges, ...otherEffects],
       }}
+      footer={footer}
     />
   );
 }
 
-function CategorySection({ category, items }: { category: ItemCategory; items: ItemData[] }) {
+function CategorySection({ category, items, selectedCategory }: { category: ItemCategory; items: ItemData[]; selectedCategory: ItemCategory | 'all' }) {
   const [expanded, setExpanded] = useState(true);
 
   return (
@@ -99,7 +213,7 @@ function CategorySection({ category, items }: { category: ItemCategory; items: I
       {expanded && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((item) => (
-            <ItemCard key={item.id} item={item} />
+            <ItemCard key={item.id} item={item} category={selectedCategory} />
           ))}
         </div>
       )}
@@ -108,9 +222,54 @@ function CategorySection({ category, items }: { category: ItemCategory; items: I
 }
 
 export default function ItemsPage() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<ItemCategory | 'all'>('all');
+  
+  // Lazy initializer - reads from URL immediately on client, avoids flash
+  const [selectedCategory, setSelectedCategory] = useState<ItemCategory | 'all'>(() => {
+    if (typeof window === 'undefined') return 'all'; // SSR
+    
+    // Read directly from URL for instant initialization
+    const params = new URLSearchParams(window.location.search);
+    const categoryParam = params.get('category');
+    
+    if (categoryParam && (categoryParam === 'all' || Object.keys(categoryDisplayNames).includes(categoryParam))) {
+      return categoryParam as ItemCategory | 'all';
+    }
+    return 'all';
+  });
+  
   const hasItemData = ITEMS_DATA.length > 0;
+
+  // Sync state with URL query params (handles browser back/forward and router updates)
+  useEffect(() => {
+    if (!router.isReady) return;
+    
+    const categoryParam = router.query.category as string | undefined;
+    const newCategory = categoryParam && (categoryParam === 'all' || Object.keys(categoryDisplayNames).includes(categoryParam))
+      ? (categoryParam as ItemCategory | 'all')
+      : 'all';
+    
+    // Only update if different to avoid unnecessary re-renders
+    if (newCategory !== selectedCategory) {
+      setSelectedCategory(newCategory);
+    }
+  }, [router.query.category, router.isReady, selectedCategory]);
+
+  // Update URL when category changes
+  const handleCategoryChange = (category: ItemCategory | 'all') => {
+    setSelectedCategory(category);
+    const query = { ...router.query };
+    if (category === 'all') {
+      delete query.category;
+    } else {
+      query.category = category;
+    }
+    router.push({
+      pathname: router.pathname,
+      query,
+    }, undefined, { shallow: true });
+  };
 
   const filteredItems = useMemo(() => {
     let items = ITEMS_DATA;
@@ -204,7 +363,7 @@ export default function ItemsPage() {
 
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => setSelectedCategory('all')}
+              onClick={() => handleCategoryChange('all')}
               className={`px-4 py-2 rounded-lg text-sm transition-colors ${
                 selectedCategory === 'all'
                   ? 'bg-amber-500 text-black font-semibold'
@@ -216,7 +375,7 @@ export default function ItemsPage() {
             {(Object.keys(categoryDisplayNames) as ItemCategory[]).map((category) => (
               <button
                 key={category}
-                onClick={() => setSelectedCategory(category)}
+                onClick={() => handleCategoryChange(category)}
                 className={`px-4 py-2 rounded-lg text-sm transition-colors flex items-center gap-2 ${
                   selectedCategory === category
                     ? 'bg-amber-500 text-black font-semibold'
@@ -255,7 +414,8 @@ export default function ItemsPage() {
                 <CategorySection 
                   key={category} 
                   category={category} 
-                  items={categoryItems} 
+                  items={categoryItems}
+                  selectedCategory={selectedCategory}
                 />
               );
             })}
@@ -264,7 +424,7 @@ export default function ItemsPage() {
           // Show single category
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {itemsByCategory[selectedCategory].map((item) => (
-              <ItemCard key={item.id} item={item} />
+              <ItemCard key={item.id} item={item} category={selectedCategory} />
             ))}
           </div>
         )}

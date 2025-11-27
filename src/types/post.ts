@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 export interface Post {
   id: string;
   title: string;
@@ -5,11 +7,14 @@ export interface Post {
   date: string; // ISO date string
   slug: string;
   excerpt?: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Timestamp | string;
+  updatedAt: Timestamp | string;
+  creatorName: string;
   createdByDiscordId?: string | null;
-  createdByName?: string;
+  submittedAt?: Timestamp | string;
   published: boolean; // Allow draft posts
+  isDeleted?: boolean;
+  deletedAt?: Timestamp | string | null;
 }
 
 export interface CreatePost {
@@ -18,17 +23,13 @@ export interface CreatePost {
   date: string; // ISO date string
   slug: string;
   excerpt?: string;
+  creatorName: string;
   createdByDiscordId?: string | null;
-  createdByName?: string;
+  submittedAt?: Timestamp | string;
   published?: boolean;
 }
 
-export interface PostMeta {
-  title: string;
-  date: string; // ISO string preferred
-  slug: string;
-  excerpt?: string;
-}
+// PostMeta is defined in src/features/modules/blog/lib/posts.ts
 
 
 

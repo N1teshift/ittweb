@@ -2,6 +2,7 @@ import React, { useState, FormEvent, useEffect } from 'react';
 import { TeamSize, GameType, ScheduledGame } from '@/types/scheduledGame';
 import { getUserTimezone, convertLocalToUTC, getCommonTimezones, getTimezoneAbbreviation } from '../utils/timezoneUtils';
 import { formatDateTimeInTimezone } from '../utils/timezoneUtils';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 
 interface EditGameFormProps {
   game: ScheduledGame;
@@ -78,7 +79,7 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
     );
   };
 
-  const gameDate = formatDateTimeInTimezone(game.scheduledDateTime, game.timezone, {
+  const gameDate = formatDateTimeInTimezone(timestampToIso(game.scheduledDateTime), game.timezone, {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -96,7 +97,7 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
         <div className="mb-6 p-4 bg-gray-800/50 rounded border border-gray-700">
           <div className="text-sm text-gray-400 space-y-1">
             <div><span className="text-amber-500">Scheduled Time:</span> {gameDate}</div>
-            <div><span className="text-amber-500">Scheduled By:</span> {game.scheduledByName}</div>
+            <div><span className="text-amber-500">Scheduled By:</span> {game.creatorName}</div>
             <div><span className="text-amber-500">Participants:</span> {game.participants.length}</div>
           </div>
         </div>

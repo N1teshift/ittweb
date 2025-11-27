@@ -38,8 +38,8 @@ export default async function handler(
       // Add user info from session
       const postWithUser: CreatePost = {
         ...postData,
+        creatorName: postData.creatorName || session.user?.name || 'Unknown',
         createdByDiscordId: session.discordId || null,
-        createdByName: session.user?.name ?? undefined,
         published: postData.published ?? true,
       };
 

@@ -3,7 +3,7 @@ export type ITTIconCategory = 'abilities' | 'items' | 'buildings' | 'trolls' | '
 export type ITTIconState = 'enabled' | 'disabled';
 
 // Default fallback icon path - used when no explicit mapping exists
-const DEFAULT_FALLBACK_ICON = '/icons/itt/BTNYellowHerb.png';
+const DEFAULT_FALLBACK_ICON = '/icons/itt/btncancel.png';
 
 /**
  * Returns the default fallback icon path.
