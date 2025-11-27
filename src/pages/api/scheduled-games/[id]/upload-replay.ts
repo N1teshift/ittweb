@@ -3,9 +3,11 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../auth/[...nextauth]';
 import { getScheduledGameById, updateScheduledGame } from '@/features/modules/scheduled-games/lib/scheduledGameService';
 import { createGame } from '@/features/modules/games/lib/gameService';
+import { parseReplayFile } from '@/features/modules/games/lib/replayParser';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { getFirestoreAdmin, getAdminTimestamp, getStorageAdmin, getStorageBucketName } from '@/features/infrastructure/api/firebase/admin';
 import type { CreateGame } from '@/features/modules/games/types';
+import type { ScheduledGame } from '@/types/scheduledGame';
 import { IncomingForm, Fields, Files, File as FormidableFile } from 'formidable';
 import { promises as fs } from 'fs';
 import os from 'os';
@@ -133,13 +135,29 @@ export default async function handler(
       updatedAt: adminTimestamp.now(),
     });
 
-    // TODO: Parse replay file to extract game data
-    // For now, we'll require manual game data or use scheduled game data as fallback
-    const gameDataJson = Array.isArray(fields.gameData) ? fields.gameData[0] : fields.gameData;
+    const scheduledCategory = scheduledGame.teamSize === 'custom'
+      ? scheduledGame.customTeamSize || undefined
+      : scheduledGame.teamSize;
+
     let gameData: CreateGame | null = null;
+    try {
+      const parsed = await parseReplayFile(fileBuffer, {
+        scheduledGameId: scheduledGame.scheduledGameId,
+        fallbackDatetime: scheduledGame.scheduledDateTime,
+        fallbackCategory: scheduledCategory,
+      });
+      gameData = parsed.gameData;
+    } catch (parserError) {
+      const parseErr = parserError as Error;
+      logger.warn('Replay parsing failed, awaiting manual data', {
+        scheduledGameId,
+        error: parseErr.message,
+      });
+    }
+
+    const gameDataJson = Array.isArray(fields.gameData) ? fields.gameData[0] : fields.gameData;
 
     if (gameDataJson) {
-      // Use provided game data
       try {
         gameData = JSON.parse(gameDataJson as string) as CreateGame;
       } catch {
@@ -147,46 +165,27 @@ export default async function handler(
       }
     }
 
-    if (gameData) {
-      gameData.gameId = gameData.gameId || scheduledGame.scheduledGameId;
-      gameData.datetime = gameData.datetime || scheduledGame.scheduledDateTime;
-      gameData.duration = gameData.duration || scheduledGame.gameLength || 1800;
-      gameData.gamename = gameData.gamename || `Scheduled Game ${scheduledGame.scheduledGameId}`;
-      gameData.map = gameData.map || 'Unknown';
-      gameData.creatorname = gameData.creatorname || scheduledGame.scheduledByName || 'Unknown';
-      gameData.ownername = gameData.ownername || scheduledGame.scheduledByName || 'Unknown';
-      gameData.category = gameData.category || scheduledGame.teamSize;
-
-      if (!Array.isArray(gameData.players) || gameData.players.length < 2) {
-        const participants = scheduledGame.participants || [];
-        if (participants.length >= 2) {
-          gameData.players = participants.slice(0, 12).map((participant, index) => ({
-            name: participant.name,
-            pid: index,
-            flag: 'drawer',
-          }));
-        }
-      }
-
-      if (!Array.isArray(gameData.players) || gameData.players.length < 2) {
-        return res.status(400).json({
-          error: 'Game data must include at least 2 players. Provide detailed gameData JSON or ensure scheduled game has participants.',
-        });
-      }
+    const preparedGameData = withScheduledGameDefaults(gameData, scheduledGame);
+    if (!preparedGameData) {
+      await updateScheduledGame(scheduledGameId, {
+        status: 'awaiting_replay',
+        archiveId,
+      });
+      return res.status(422).json({
+        error: 'Replay uploaded, but parsing failed. Please supply gameData JSON or try again later.',
+      });
     }
 
-    // Add scheduled game link
-    let gameId: string | undefined;
-    if (gameData) {
-      // Create game record only when we have data
-      gameData.scheduledGameId = scheduledGame.scheduledGameId;
-      gameId = await createGame(gameData);
-    }
+    preparedGameData.replayUrl = replayUrl;
+    preparedGameData.replayFileName = originalName;
+    preparedGameData.scheduledGameId = scheduledGame.scheduledGameId;
+
+    const gameId = await createGame(preparedGameData);
 
     // Update scheduled game status to archived and link game/archive
     await updateScheduledGame(scheduledGameId, {
       status: 'archived',
-      ...(gameId ? { gameId } : {}),
+      gameId,
       archiveId,
     });
 
@@ -223,5 +222,54 @@ export default async function handler(
       })
     });
   }
+}
+
+function withScheduledGameDefaults(gameData: CreateGame | null, scheduledGame: ScheduledGame): CreateGame | null {
+  if (!gameData) {
+    return null;
+  }
+
+  const players = ensurePlayers(gameData.players, scheduledGame);
+  if (!players) {
+    return null;
+  }
+
+  const fallbackCategory = scheduledGame.teamSize === 'custom'
+    ? scheduledGame.customTeamSize
+    : scheduledGame.teamSize;
+
+  return {
+    ...gameData,
+    gameId: gameData.gameId || scheduledGame.scheduledGameId || Date.now(),
+    datetime: gameData.datetime || scheduledGame.scheduledDateTime,
+    duration: gameData.duration || scheduledGame.gameLength || 1800,
+    gamename: gameData.gamename || `Scheduled Game ${scheduledGame.scheduledGameId}`,
+    map: gameData.map || 'Unknown',
+    creatorname: gameData.creatorname || scheduledGame.scheduledByName || 'Unknown',
+    ownername: gameData.ownername || scheduledGame.scheduledByName || 'Unknown',
+    category: gameData.category || fallbackCategory,
+    players,
+  };
+}
+
+function ensurePlayers(players: CreateGame['players'] | undefined, scheduledGame: ScheduledGame): CreateGame['players'] | null {
+  if (Array.isArray(players) && players.length >= 2) {
+    return players.map((player, index) => ({
+      ...player,
+      pid: typeof player.pid === 'number' ? player.pid : index,
+      flag: player.flag || 'drawer',
+    }));
+  }
+
+  const participants = scheduledGame.participants || [];
+  if (participants.length >= 2) {
+    return participants.slice(0, 12).map((participant, index) => ({
+      name: participant.name,
+      pid: index,
+      flag: 'drawer',
+    }));
+  }
+
+  return null;
 }
 

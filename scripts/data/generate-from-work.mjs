@@ -28,25 +28,21 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { spawn } from 'child_process';
+import {
+  ROOT_DIR,
+  WORK_DIR,
+  DATA_TS_DIR,
+  ITEMS_TS_DIR,
+  ABILITIES_TS_DIR,
+  UNITS_TS_DIR,
+  TMP_ROOT,
+  ensureTmpDirs,
+} from './paths.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT_DIR = path.join(__dirname, '..', '..');
-
-// Directories
-const WORK_DIR = path.join(ROOT_DIR, 'external', 'Work');
-const DATA_DIR = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'data');
-const ITEMS_DIR = path.join(DATA_DIR, 'items');
-const ABILITIES_DIR = path.join(DATA_DIR, 'abilities');
-const UNITS_DIR = path.join(DATA_DIR, 'units');
 
 // Static category mappings file (manually curated, not regenerated)
 const CATEGORY_MAPPINGS_FILE = path.join(ROOT_DIR, 'scripts', 'data', 'category-mappings.json');
-
-// Optional metadata files (used if they exist)
-const RECIPES_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'recipes.json');
-const BUILDINGS_META_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'buildings.json');
-const UNITS_META_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'units.json');
-const ABILITIES_META_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'abilities.json');
 
 // ============================================================================
 // PIPELINE SCRIPTS - Called automatically by this master script
@@ -87,23 +83,29 @@ function cleanDirectory(dir) {
 function resetDataDirectories() {
   console.log('\n🧹 Resetting data directories...\n');
 
-  cleanDirectory(ITEMS_DIR);
-  cleanDirectory(ABILITIES_DIR);
-  cleanDirectory(UNITS_DIR);
+  cleanDirectory(ITEMS_TS_DIR);
+  cleanDirectory(ABILITIES_TS_DIR);
+  cleanDirectory(UNITS_TS_DIR);
 
   // Remove iconMap.ts from data directory
-  const iconMapPath = path.join(DATA_DIR, 'iconMap.ts');
+  const iconMapPath = path.join(DATA_TS_DIR, 'iconMap.ts');
   if (fs.existsSync(iconMapPath)) {
     fs.unlinkSync(iconMapPath);
     console.log(`🧹 Removed ${path.relative(ROOT_DIR, iconMapPath)}`);
   }
 
   // Remove data/index.ts (will be regenerated)
-  const dataIndexPath = path.join(DATA_DIR, 'index.ts');
+  const dataIndexPath = path.join(DATA_TS_DIR, 'index.ts');
   if (fs.existsSync(dataIndexPath)) {
     fs.unlinkSync(dataIndexPath);
     console.log(`🧹 Removed ${path.relative(ROOT_DIR, dataIndexPath)}`);
   }
+
+  // Ensure tmp workspace is clean for this run
+  if (fs.existsSync(TMP_ROOT)) {
+    fs.rmSync(TMP_ROOT, { recursive: true, force: true });
+  }
+  ensureTmpDirs();
 
   console.log('✅ Data directories reset\n');
 }
@@ -218,10 +220,10 @@ async function main() {
     console.log('✅ All data generation complete!');
     console.log('='.repeat(60));
     console.log('\nGenerated files:');
-    console.log(`  📦 Items: ${DATA_DIR}/items/`);
-    console.log(`  ✨ Abilities: ${DATA_DIR}/abilities/`);
-    console.log(`  👤 Units: ${DATA_DIR}/units/`);
-    console.log(`  🗺️  Icon Map: ${DATA_DIR}/iconMap.ts`);
+    console.log(`  📦 Items: ${ITEMS_TS_DIR}`);
+    console.log(`  ✨ Abilities: ${ABILITIES_TS_DIR}`);
+    console.log(`  👤 Units: ${UNITS_TS_DIR}`);
+    console.log(`  🗺️  Icon Map: ${path.join(DATA_TS_DIR, 'iconMap.ts')}`);
     console.log('\n');
 
   } catch (error) {

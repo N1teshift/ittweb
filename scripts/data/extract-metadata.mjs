@@ -9,12 +9,16 @@
  * Usage: node scripts/data/extract-metadata.mjs
  */
 
+import fs from 'fs';
 import path from 'path';
-import { getRootDir, loadJson, writeJson, slugify, getField } from './utils.mjs';
+import { loadJson, writeJson, slugify, getField } from './utils.mjs';
+import { TMP_RAW_DIR, TMP_METADATA_DIR, WORK_DIR, ensureTmpDirs } from './paths.mjs';
 
-const ROOT_DIR = getRootDir();
-const EXTRACTED_DIR = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'extracted_from_w3x');
-const OUTPUT_DIR = path.join(ROOT_DIR, 'data', 'island_troll_tribes');
+const EXTRACTED_DIR = TMP_RAW_DIR;
+const OUTPUT_DIR = TMP_METADATA_DIR;
+const WAR3MAP_FILE = path.join(WORK_DIR, 'war3map.j');
+
+ensureTmpDirs();
 
 /**
  * Extract units metadata from extracted units
@@ -198,7 +202,217 @@ function extractBuildingsMetadata(extractedBuildings) {
   return { buildings };
 }
 
-// Recipe extraction is not yet implemented - keeping existing recipes.json if available
+/**
+ * Decode Warcraft III object ID integer into its 4-character string
+ */
+function decodeObjectId(value) {
+  if (typeof value !== 'number' || Number.isNaN(value)) {
+    return null;
+  }
+  let result = '';
+  let remaining = value;
+  for (let i = 0; i < 4; i++) {
+    const charCode = remaining & 0xff;
+    result = String.fromCharCode(charCode) + result;
+    remaining = remaining >>> 8;
+  }
+  return result.trim() ? result : null;
+}
+
+/**
+ * Build lookup tables for LocalObjectIDs_* constants and alias chains
+ */
+function buildLocalObjectMetadata(lines) {
+  const receiverValues = new Map();
+  const receiverNames = new Map();
+  const objectMap = new Map(); // LocalObjectIDs_CONST -> { name, objectId }
+  const aliasMap = new Map(); // Alias -> target
+
+  for (const line of lines) {
+    let match = line.match(/^\s*set\s+receiver_(\d+)\s*=\s*(\d+)/);
+    if (match) {
+      receiverValues.set(match[1], Number(match[2]));
+      continue;
+    }
+
+    match = line.match(/^\s*call\s+int_registerObjectID\s*\(\s*receiver_(\d+)\s*,\s*"([^"]+)"/);
+    if (match) {
+      receiverNames.set(match[1], match[2]);
+      continue;
+    }
+
+    match = line.match(/^\s*set\s+(LocalObjectIDs_[A-Za-z0-9_]+)\s*=\s*receiver_(\d+)/);
+    if (match) {
+      const constName = match[1];
+      const receiverId = match[2];
+      const numericId = receiverValues.get(receiverId);
+      const objectName = receiverNames.get(receiverId) || null;
+      objectMap.set(constName, {
+        name: objectName,
+        objectId: decodeObjectId(numericId),
+      });
+      continue;
+    }
+
+    match = line.match(/^\s*set\s+([A-Za-z0-9_]+)\s*=\s*([A-Za-z0-9_]+)/);
+    if (match && !match[1].startsWith('receiver') && !match[2].startsWith('receiver')) {
+      aliasMap.set(match[1], match[2]);
+    }
+  }
+
+  return { objectMap, aliasMap };
+}
+
+/**
+ * Resolve alias chains until we either hit a LocalObjectIDs_* constant or no change
+ */
+function resolveAlias(name, aliasMap, depth = 0) {
+  let current = name;
+  const visited = new Set();
+  while (current && aliasMap.has(current) && !visited.has(current)) {
+    visited.add(current);
+    current = aliasMap.get(current);
+  }
+  return current;
+}
+
+/**
+ * Extract argument list from a dispatch call line (ignores trailing stack string)
+ */
+function extractCallArgs(line) {
+  const sanitizedLine = line.replace(/,\s*".*$/, ')');
+  const openIndex = sanitizedLine.indexOf('(');
+  if (openIndex === -1) return [];
+  let closeIndex = sanitizedLine.lastIndexOf(')');
+  if (closeIndex === -1) {
+    closeIndex = sanitizedLine.length;
+  }
+  const argsSection = sanitizedLine.slice(openIndex + 1, closeIndex).trim();
+  if (!argsSection) return [];
+  return argsSection
+    .split(',')
+    .map((arg) => arg.trim())
+    .filter((arg) => arg.length > 0);
+}
+
+/**
+ * Convert constant metadata entry to serializable payload
+ */
+function serializeObjectRef(constName, objectMap) {
+  if (!constName) return null;
+  const meta = objectMap.get(constName);
+  if (!meta) return null;
+  return {
+    const: constName,
+    name: meta.name || null,
+    objectId: meta.objectId || null,
+  };
+}
+
+/**
+ * Extract crafting recipes from war3map.j
+ */
+function extractRecipesMetadata() {
+  if (!fs.existsSync(WAR3MAP_FILE)) {
+    console.warn(`⚠️  war3map.j not found at ${WAR3MAP_FILE}. Recipes will be empty.`);
+    return { recipes: [], generatedAt: new Date().toISOString(), source: 'war3map.j' };
+  }
+
+  const warContent = fs.readFileSync(WAR3MAP_FILE, 'utf-8');
+  const lines = warContent.split(/\r?\n/);
+  const { objectMap, aliasMap } = buildLocalObjectMetadata(lines);
+  const recipesByItem = new Map();
+
+  const newItemRegex = /new_CustomItemType_\d+\(\s*(LocalObjectIDs_ITEM_[A-Za-z0-9_]+)/;
+
+  let currentItemConst = null;
+
+  for (const line of lines) {
+    const newItemMatch = line.match(newItemRegex);
+    if (newItemMatch) {
+      const resolved = resolveAlias(newItemMatch[1], aliasMap);
+      if (resolved && resolved.startsWith('LocalObjectIDs_ITEM_')) {
+        currentItemConst = resolved;
+        const itemRef = serializeObjectRef(currentItemConst, objectMap);
+        if (!recipesByItem.has(currentItemConst)) {
+          recipesByItem.set(currentItemConst, {
+            itemConst: currentItemConst,
+            item: itemRef,
+            itemObjectId: itemRef?.objectId || null,
+            ingredients: [],
+            craftedAt: null,
+            quickMakeAbility: null,
+            mixingPotManaRequirement: null,
+          });
+        }
+      } else {
+        currentItemConst = null;
+      }
+      continue;
+    }
+
+    if (!currentItemConst) {
+      continue;
+    }
+
+    if (!line.includes('call')) {
+      continue;
+    }
+
+    if (line.includes('setItemRecipe')) {
+      const args = extractCallArgs(line);
+      if (args.length <= 1) continue;
+      const ingredientConsts = args
+        .slice(1) // drop receiver argument
+        .map((arg) => resolveAlias(arg, aliasMap))
+        .filter((constName) => constName && constName.startsWith('LocalObjectIDs_ITEM_'));
+
+      const entry = recipesByItem.get(currentItemConst);
+      entry.ingredients = ingredientConsts.map((constName) => serializeObjectRef(constName, objectMap)).filter(Boolean);
+      continue;
+    }
+
+    if (line.includes('setUnitRequirement')) {
+      const args = extractCallArgs(line);
+      if (args.length <= 1) continue;
+      const unitConst = resolveAlias(args[1], aliasMap);
+      if (unitConst && unitConst.startsWith('LocalObjectIDs_UNIT_')) {
+        const entry = recipesByItem.get(currentItemConst);
+        entry.craftedAt = serializeObjectRef(unitConst, objectMap);
+      }
+      continue;
+    }
+
+    if (line.includes('setMixingPotManaRequirement')) {
+      const args = extractCallArgs(line);
+      if (args.length <= 1) continue;
+      const manaValue = Number(args[1]);
+      if (!Number.isNaN(manaValue)) {
+        const entry = recipesByItem.get(currentItemConst);
+        entry.mixingPotManaRequirement = manaValue;
+      }
+      continue;
+    }
+
+    if (line.includes('setQuickMakeAbility')) {
+      const args = extractCallArgs(line);
+      if (args.length <= 1) continue;
+      const abilityConst = resolveAlias(args[1], aliasMap);
+      if (abilityConst) {
+        const entry = recipesByItem.get(currentItemConst);
+        entry.quickMakeAbility = abilityConst;
+      }
+    }
+  }
+
+  const recipes = Array.from(recipesByItem.values()).filter((recipe) => recipe.ingredients.length > 0);
+
+  return {
+    generatedAt: new Date().toISOString(),
+    source: 'war3map.j',
+    recipes,
+  };
+}
 
 /**
  * Main function
@@ -209,7 +423,6 @@ function main() {
   // Load extracted data
   const extractedUnits = loadJson(path.join(EXTRACTED_DIR, 'units.json'));
   const extractedBuildings = loadJson(path.join(EXTRACTED_DIR, 'buildings.json'));
-  const extractedItems = loadJson(path.join(EXTRACTED_DIR, 'items.json'));
   
   // Extract units metadata
   console.log('👤 Extracting units metadata...');
@@ -223,15 +436,11 @@ function main() {
   writeJson(path.join(OUTPUT_DIR, 'buildings.json'), buildingsMetadata);
   console.log(`✅ Extracted ${buildingsMetadata.buildings.length} buildings metadata\n`);
   
-  // Recipes: Keep existing recipes.json if available, otherwise create empty
-  console.log('📝 Checking recipes...');
-  const existingRecipes = loadJson(path.join(OUTPUT_DIR, 'recipes.json'));
-  if (!existingRecipes) {
-    writeJson(path.join(OUTPUT_DIR, 'recipes.json'), { recipes: [] });
-    console.log('⚠️  Created empty recipes.json (recipe extraction not yet implemented)\n');
-  } else {
-    console.log('✅ Using existing recipes.json (recipe extraction not yet implemented)\n');
-  }
+  // Extract recipes metadata directly from war3map.j
+  console.log('🍲 Extracting recipes metadata...');
+  const recipesMetadata = extractRecipesMetadata();
+  writeJson(path.join(OUTPUT_DIR, 'recipes.json'), recipesMetadata);
+  console.log(`✅ Extracted ${recipesMetadata.recipes.length} recipes\n`);
   
   // Extract abilities metadata (if needed)
   const existingAbilities = loadJson(path.join(OUTPUT_DIR, 'abilities.json'));

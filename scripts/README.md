@@ -6,8 +6,8 @@ The `scripts/` folder hosts the end-to-end data regeneration pipeline for Island
 
 | Stage | Script | Purpose | Output |
 | --- | --- | --- | --- |
-| 1. Extract | `extract-from-w3x.mjs` | Parse `war3map.*` files from `external/Work/` | Raw JSON in `data/island_troll_tribes/extracted_from_w3x/` |
-| 2. Metadata | `extract-metadata.mjs` | Create curated units/buildings/recipes metadata | `data/island_troll_tribes/{units,buildings,recipes,abilities}.json` |
+| 1. Extract | `extract-from-w3x.mjs` | Parse `war3map.*` files from `external/Work/` | Raw JSON in `tmp/work-data/raw/` |
+| 2. Metadata | `extract-metadata.mjs` | Build derived metadata (units/buildings/recipes) straight from extracted data + `war3map.j` | JSON in `tmp/work-data/metadata/` |
 | 3. Convert | `convert-extracted-to-typescript.mjs` | Generate typed data consumed by the app | `src/features/modules/guides/data/**` |
 | 4. Icon map | `regenerate-iconmap.mjs` | Produce `iconMap.ts` from PNG assets + generated data | `src/features/modules/guides/data/iconMap.ts` |
 
@@ -38,13 +38,13 @@ When debugging, re-run the downstream stages only for the assets you changed to 
 
 ## Outputs & Verification
 
-- JSON snapshots land in `data/island_troll_tribes/`.
+- Intermediate JSON (raw + metadata) lives under `tmp/work-data/` and is regenerated every run.
 - TypeScript data is written to `src/features/modules/guides/data/`.
 - Icon mapping is regenerated at `src/features/modules/guides/data/iconMap.ts`.
 
 After running the pipeline, spot-check:
-1. `data/island_troll_tribes/units.json` – ensures metadata extraction worked.
-2. `src/features/modules/guides/data/items/*.ts` – ensures the converter rebuilt TypeScript modules.
+1. `tmp/work-data/metadata/recipes.json` – verifies the recipe extractor parsed `war3map.j`.
+2. `src/features/modules/guides/data/items/*.ts` – ensures the converter rebuilt TypeScript modules with fresh recipes/categories.
 3. `src/features/modules/guides/data/iconMap.ts` – ensures icons line up with the latest assets.
 
 ## Documentation & References

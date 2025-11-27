@@ -3,38 +3,21 @@
  */
 
 import path from 'path';
-import { getRootDir, loadJson, slugify, convertIconPath } from '../utils.mjs';
+import { loadJson, slugify, convertIconPath } from '../utils.mjs';
 import { mapItemCategory } from './category-mapper.mjs';
+import { TMP_METADATA_DIR } from '../paths.mjs';
 
-const ROOT_DIR = getRootDir();
-const RECIPES_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'recipes.json');
+const RECIPES_FILE = path.join(TMP_METADATA_DIR, 'recipes.json');
 
-/**
- * Load recipes to get crafting information
- */
-function loadRecipes() {
-  const recipesData = loadJson(RECIPES_FILE);
-  if (!recipesData || !recipesData.recipes) return new Map();
-  
-  const recipeMap = new Map();
-  for (const recipe of recipesData.recipes) {
-    const itemId = recipe.itemId || recipe.itemName;
-    if (itemId) {
-      recipeMap.set(itemId, {
-        ingredients: recipe.ingredients || recipe.ingredientNames || [],
-        craftedAt: recipe.unitRequirement || recipe.craftedAt,
-        mixingPotManaRequirement: recipe.mixingPotManaRequirement
-      });
-    }
-  }
-  
-  return recipeMap;
-}
+const normalizeRecipeObjectId = (id) => {
+  if (!id || typeof id !== 'string') return null;
+  return id.trim().toUpperCase();
+};
 
 /**
  * Convert extracted item to TypeScript ItemData
  */
-export function convertItem(extractedItem, recipes) {
+export function convertItem(extractedItem) {
   const name = (extractedItem.name || extractedItem.id || '').trim();
   
   const itemForMapping = {
@@ -48,8 +31,6 @@ export function convertItem(extractedItem, recipes) {
     return null;
   }
   
-  const recipe = recipes.get(extractedItem.id) || recipes.get(extractedItem.name) || recipes.get(name);
-  
   const description = (extractedItem.description || '').trim();
   const tooltip = extractedItem.tooltip ? extractedItem.tooltip.trim() : undefined;
   
@@ -61,9 +42,6 @@ export function convertItem(extractedItem, recipes) {
     description: description,
     tooltip: tooltip,
     iconPath: convertIconPath(extractedItem.icon),
-    recipe: recipe?.ingredients || undefined,
-    craftedAt: recipe?.craftedAt || undefined,
-    mixingPotManaRequirement: recipe?.mixingPotManaRequirement || undefined,
   };
 }
 
@@ -71,6 +49,34 @@ export function convertItem(extractedItem, recipes) {
  * Load recipes map
  */
 export function loadRecipesMap() {
-  return loadRecipes();
+  const recipesData = loadJson(RECIPES_FILE);
+  const recipeMap = new Map();
+
+  if (!recipesData || !Array.isArray(recipesData.recipes)) {
+    return recipeMap;
+  }
+
+  for (const recipe of recipesData.recipes) {
+    const objectId = normalizeRecipeObjectId(
+      recipe.item?.objectId || recipe.itemObjectId
+    );
+    if (!objectId) {
+      continue;
+    }
+
+    const ingredientCodes = (recipe.ingredients || [])
+      .map((ingredient) => normalizeRecipeObjectId(ingredient?.objectId))
+      .filter(Boolean);
+
+    recipeMap.set(objectId, {
+      ingredients: ingredientCodes,
+      craftedAtCode: normalizeRecipeObjectId(recipe.craftedAt?.objectId),
+      craftedAtConst: recipe.craftedAt?.const || null,
+      craftedAtName: recipe.craftedAt?.name || null,
+      mixingPotManaRequirement: recipe.mixingPotManaRequirement ?? null,
+    });
+  }
+
+  return recipeMap;
 }
 

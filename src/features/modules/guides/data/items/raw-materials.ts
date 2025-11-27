@@ -40,6 +40,8 @@ export const RAW_MATERIALS_ITEMS: ItemData[] = [
     description: 'This seed can grow a tree really fast when planted.',
     tooltip: 'This seed can grow a tree really fast when planted.',
     iconPath: 'BTNRoot.png',
+    recipe: ['stick', 'mana-crystal'],
+    craftedAt: 'Witch Doctors Hut',
   },
   {
     id: 'magic-palm-tree-seed',
@@ -128,6 +130,8 @@ export const RAW_MATERIALS_ITEMS: ItemData[] = [
     description: 'A glowing crystal of mana. Used to craft magic gear.',
     tooltip: 'A glowing crystal of mana. Used to craft magic gear.',
     iconPath: 'BTNManaStone.png',
+    recipe: ['spirit-of-wind', 'spirit-of-water'],
+    craftedAt: 'Workshop',
   },
   {
     id: 'magic',
@@ -136,6 +140,8 @@ export const RAW_MATERIALS_ITEMS: ItemData[] = [
     description: 'A very rare and unpredictable activated Mana Complex. Use with extreme caution. Who knows what it will do.',
     tooltip: 'A very rare and unpredictable activated Mana Complex. Use with extreme caution. Who knows what it will do.',
     iconPath: 'BTNMoonStone.png',
+    recipe: ['mana-crystal', 'mana-crystal'],
+    craftedAt: 'Workshop',
   },
   {
     id: 'hawk-egg',
@@ -160,6 +166,8 @@ export const RAW_MATERIALS_ITEMS: ItemData[] = [
     description: 'A Hard and shiny ingot of iron that could be used in production of powerful gear. Transmutes to steel ingot in armory.',
     tooltip: 'A Hard and shiny ingot of iron that could be used in production of powerful gear. Transmutes to steel ingot in armory.',
     iconPath: 'BTNIronIngot.png',
+    recipe: ['stone', 'flint'],
+    craftedAt: 'Forge',
   },
   {
     id: 'steel-ingot',
@@ -168,6 +176,8 @@ export const RAW_MATERIALS_ITEMS: ItemData[] = [
     description: 'A Hard and shiny ingot of steel that could be used in production of high quality gear.',
     tooltip: 'A Hard and shiny ingot of steel that could be used in production of high quality gear.',
     iconPath: 'BTNSteelIngot.png',
+    recipe: ['iron-ingot', 'iron-ingot', 'flint', 'flint'],
+    craftedAt: 'Forge',
   },
   {
     id: 'athelas-seed',

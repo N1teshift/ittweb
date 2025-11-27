@@ -1,21 +1,17 @@
 /**
  * Category mapping for items and abilities
- * 
- * Maps extracted items and abilities to their categories using:
- * 1. category-mappings.json (primary source)
- * 2. ts_data backup files (fallback)
- * 3. Metadata files (for abilities)
+ *
+ * Maps extracted items and abilities to their categories using the curated
+ * scripts/data/category-mappings.json file. When an entry is missing we fall
+ * back to the "unknown" bucket so the UI can still render the data.
  */
 
 import fs from 'fs';
 import path from 'path';
-import { getRootDir, loadJson, slugify } from '../utils.mjs';
+import { slugify } from '../utils.mjs';
+import { ROOT_DIR } from '../paths.mjs';
 
-const ROOT_DIR = getRootDir();
-const BACKUP_TS_DATA_DIR = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'ts_data');
 const CATEGORY_MAPPINGS_FILE = path.join(ROOT_DIR, 'scripts', 'data', 'category-mappings.json');
-const ABILITIES_META_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'abilities.json');
-const FORCE_UNKNOWN_ABILITY_CATEGORIES = false;
 
 /**
  * Build item category mapping from extracted category-mappings.json file
@@ -24,79 +20,23 @@ const FORCE_UNKNOWN_ABILITY_CATEGORIES = false;
 function buildItemCategoryMap() {
   const categoryMap = new Map();
   
-  // First, try to load from category-mappings.json
-  if (fs.existsSync(CATEGORY_MAPPINGS_FILE)) {
-    try {
-      const mappingsData = JSON.parse(fs.readFileSync(CATEGORY_MAPPINGS_FILE, 'utf-8'));
-      if (mappingsData.items) {
-        for (const [key, category] of Object.entries(mappingsData.items)) {
-          categoryMap.set(key, category);
-        }
-        console.log(`📚 Loaded ${categoryMap.size} item category mappings from category-mappings.json`);
-        return categoryMap;
-      }
-    } catch (error) {
-      console.warn(`⚠️  Error reading category-mappings.json: ${error.message}, falling back to ts_data`);
-    }
-  }
-  
-  // Fallback: parse from ts_data backup files (for backward compatibility)
-  const backupItemsDir = path.join(BACKUP_TS_DATA_DIR, 'items');
-  
-  if (!fs.existsSync(backupItemsDir)) {
-    console.warn('⚠️  Backup items directory not found, item categorization will default to unknown');
+  if (!fs.existsSync(CATEGORY_MAPPINGS_FILE)) {
+    console.warn('⚠️  category-mappings.json not found, item categorization will default to unknown');
     return categoryMap;
   }
   
-  const categoryFiles = {
-    'weapons': 'weapons.ts',
-    'armor': 'armor.ts',
-    'potions': 'potions.ts',
-    'scrolls': 'scrolls.ts',
-    'raw-materials': 'raw-materials.ts',
-    'buildings': 'buildings.ts',
-  };
-  
-  for (const [category, fileName] of Object.entries(categoryFiles)) {
-    const filePath = path.join(backupItemsDir, fileName);
-    if (!fs.existsSync(filePath)) continue;
-    
-    try {
-      const content = fs.readFileSync(filePath, 'utf-8');
-      const lines = content.split('\n');
-      
-      let currentId = null;
-      let currentName = null;
-      
-      for (const line of lines) {
-        const idMatch = line.match(/id:\s*['"]([^'"]+)['"]/);
-        if (idMatch) {
-          currentId = idMatch[1];
-        }
-        
-        const nameMatch = line.match(/name:\s*['"]([^'"]+)['"]/);
-        if (nameMatch) {
-          currentName = nameMatch[1].trim();
-        }
-        
-        if (currentId && currentName) {
-          categoryMap.set(currentId, category);
-          categoryMap.set(currentName.toLowerCase().trim(), category);
-          categoryMap.set(slugify(currentName), category);
-          const slugifiedId = slugify(currentId);
-          if (slugifiedId !== slugify(currentName)) {
-            categoryMap.set(slugifiedId, category);
-          }
-          currentId = null;
-          currentName = null;
-        }
+  try {
+    const mappingsData = JSON.parse(fs.readFileSync(CATEGORY_MAPPINGS_FILE, 'utf-8'));
+    if (mappingsData.items) {
+      for (const [key, category] of Object.entries(mappingsData.items)) {
+        categoryMap.set(key, category);
       }
-    } catch (error) {
-      console.warn(`⚠️  Error reading ${fileName}: ${error.message}`);
     }
+    console.log(`📚 Loaded ${categoryMap.size} item category mappings from category-mappings.json`);
+  } catch (error) {
+    console.warn(`⚠️  Error reading category-mappings.json: ${error.message}`);
   }
   
-  console.log(`📚 Loaded ${categoryMap.size} item category mappings from backup data`);
   return categoryMap;
 }
 
@@ -156,84 +96,28 @@ function normalizeAbilityCategory(rawCategory) {
 function buildAbilityCategoryMap() {
   const categoryMap = new Map();
   
-  if (fs.existsSync(CATEGORY_MAPPINGS_FILE)) {
-    try {
-      const mappingsData = JSON.parse(fs.readFileSync(CATEGORY_MAPPINGS_FILE, 'utf-8'));
-      if (mappingsData.abilities) {
-        for (const [key, category] of Object.entries(mappingsData.abilities)) {
-          categoryMap.set(key, category);
-        }
-        console.log(`📚 Loaded ${categoryMap.size} ability category mappings from category-mappings.json`);
-        return categoryMap;
-      }
-    } catch (error) {
-      console.warn(`⚠️  Error reading category-mappings.json: ${error.message}, falling back to ts_data`);
-    }
-  }
-  
-  // Fallback: parse from ts_data backup files
-  const backupAbilitiesDir = path.join(BACKUP_TS_DATA_DIR, 'abilities');
-  
-  if (!fs.existsSync(backupAbilitiesDir)) {
-    console.warn('⚠️  Backup abilities directory not found, ability categorization will use metadata or default to unknown');
+  if (!fs.existsSync(CATEGORY_MAPPINGS_FILE)) {
+    console.warn('⚠️  category-mappings.json not found, ability categorization will default to unknown');
     return categoryMap;
   }
   
-  const categoryFiles = {
-    'basic': 'basic.ts',
-    'hunter': 'hunter.ts',
-    'beastmaster': 'beastmaster.ts',
-    'mage': 'mage.ts',
-    'priest': 'priest.ts',
-    'thief': 'thief.ts',
-    'scout': 'scout.ts',
-    'gatherer': 'gatherer.ts',
-    'building': 'building.ts',
-  };
-  
-  for (const [category, fileName] of Object.entries(categoryFiles)) {
-    const filePath = path.join(backupAbilitiesDir, fileName);
-    if (!fs.existsSync(filePath)) continue;
-    
-    try {
-      const content = fs.readFileSync(filePath, 'utf-8');
-      const lines = content.split('\n');
-      
-      for (const line of lines) {
-        const idMatch = line.match(/id:\s*['"]([^'"]+)['"]/);
-        if (idMatch) {
-          const currentId = idMatch[1];
-          if (currentId) {
-            categoryMap.set(currentId, category);
-            const slugifiedId = slugify(currentId);
-            if (slugifiedId !== currentId) {
-              categoryMap.set(slugifiedId, category);
-            }
-          }
-        }
+  try {
+    const mappingsData = JSON.parse(fs.readFileSync(CATEGORY_MAPPINGS_FILE, 'utf-8'));
+    if (mappingsData.abilities) {
+      for (const [key, category] of Object.entries(mappingsData.abilities)) {
+        categoryMap.set(key, category);
       }
-    } catch (error) {
-      console.warn(`⚠️  Error reading ${fileName}: ${error.message}`);
     }
+    console.log(`📚 Loaded ${categoryMap.size} ability category mappings from category-mappings.json`);
+  } catch (error) {
+    console.warn(`⚠️  Error reading category-mappings.json: ${error.message}`);
   }
   
-  console.log(`📚 Loaded ${categoryMap.size} ability category mappings from backup data`);
   return categoryMap;
 }
 
 // Build ability category map from backup
 const ABILITY_CATEGORY_MAP = buildAbilityCategoryMap();
-
-// Load metadata as fallback
-const abilityMetadata = FORCE_UNKNOWN_ABILITY_CATEGORIES ? null : loadJson(ABILITIES_META_FILE);
-const ABILITY_METADATA_MAP = new Map();
-if (abilityMetadata?.abilities) {
-  for (const abilityMeta of abilityMetadata.abilities) {
-    const slug = abilityMeta.id || slugify(abilityMeta.name || '');
-    if (!slug) continue;
-    ABILITY_METADATA_MAP.set(slug, abilityMeta);
-  }
-}
 
 const missingAbilityCategorySlugs = new Set();
 
@@ -241,23 +125,12 @@ const missingAbilityCategorySlugs = new Set();
  * Look up ability category - prioritize backup reference, then metadata
  */
 export function mapAbilityCategory(slug) {
-  const backupCategory = ABILITY_CATEGORY_MAP.get(slug);
-  if (backupCategory) {
+  const mappedCategory = ABILITY_CATEGORY_MAP.get(slug);
+  if (mappedCategory) {
     return {
-      category: normalizeAbilityCategory(backupCategory),
-      classRequirement: undefined
+      category: normalizeAbilityCategory(mappedCategory),
+      classRequirement: undefined,
     };
-  }
-  
-  const meta = ABILITY_METADATA_MAP.get(slug);
-  if (meta) {
-    const metaCategory = normalizeAbilityCategory(meta.category);
-    if (metaCategory !== 'item') {
-      return {
-        category: metaCategory,
-        classRequirement: meta.classRequirement
-      };
-    }
   }
   
   missingAbilityCategorySlugs.add(slug);

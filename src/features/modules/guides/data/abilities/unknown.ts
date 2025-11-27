@@ -214,6 +214,27 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     tooltip: 'Might of Dire Bear allows him to fell a tree instanteniously.\nAlso gives you an ability to fell trees with your attacks.\nHas |cff7DBEF17.0|r seconds cooldown.',
   },
   {
+    id: 'sleep-outside',
+    name: 'Sleep Outside',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Troll can sleep outside to restore |cff00EAFF80|r mana but lose |cffFF020220|r health point and |cffFE890D15|r heat. This can kill you if any of your stats reach 0. Has |cff6495ED<AMd5,Cool1>|r seconds cooldown.',
+  },
+  {
+    id: 'sleep-inside-tent',
+    name: 'Sleep Inside Tent',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Troll can sleep inside the tent to restore |cff00EAFF80|r mana. Has |cff6495ED<AMdc,Cool1>|r seconds cooldown.',
+  },
+  {
+    id: 'sleep-inside-hut',
+    name: 'Sleep Inside Hut',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Troll can sleep inside the hut to restore |cff00EAFF200|r mana. Has |cff6495ED<AMdd,Cool1>|r seconds cooldown.',
+  },
+  {
     id: 'stupefy-field',
     name: 'Stupefy Field',
     category: 'unknown',
@@ -247,6 +268,14 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'AMh{:Abrf',
     category: 'unknown',
     description: '',
+  },
+  {
+    id: 'friend-of-the-hive',
+    name: 'Friend of the Hive',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Dire Bear visits bee hives so often, he is considered part of the hive.\nGain a permanent bee protecting you per unique hidden stash scavenged.\nBees inflict |cffFF02021|r magic damage per second.|cFFFFCC00\n\nLevel 1: |rMaximum bees: |cFFFFCC003|r|cFFFFCC00\nLevel 4: |rMaximum bees: |cFFFFCC005|r',
+    iconPath: 'bTNFriendOfTheHive.png',
   },
   {
     id: 'release-pet',
@@ -451,6 +480,14 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     iconPath: 'BTNHungryBear.png',
   },
   {
+    id: 'hibernate',
+    name: 'Hibernate',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Dire Bear can hibernate, restoring |cff7DBEF180.0|r mana and |cff1FBF002.0|rx|cffFE890DStrength|r life based on missing life.Healing reaches maximum effect at |cff94959625%|r\nDuring hibernation Dire Bear has |cffFE890D35.0|r% damage reduction and lowers healing reduction by |cff1FBF0050|r per second.\nConsuming any food will reduce Hibernate cooldown by |cff7DBEF11|r second.\nHibernation can only be interrupted if bear\'s life drops below what it was at the beginning of Hibernation. Has |cff6495ED<AM4z,Cool1>|r seconds cooldown.',
+    iconPath: 'BTNAbility_Hibernation.png',
+  },
+  {
     id: 'bone-tistle',
     name: 'Bone Tistle',
     category: 'unknown',
@@ -481,6 +518,13 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Blow Gun Ability',
     category: 'unknown',
     description: '',
+  },
+  {
+    id: 'scavenged-mushroom',
+    name: 'Scavenged Mushroom',
+    category: 'unknown',
+    description: '',
+    tooltip: 'dummy spell',
   },
   {
     id: 'scavenge-for-food',
@@ -979,6 +1023,14 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     iconPath: 'BTNTome.png',
   },
   {
+    id: 'track',
+    name: 'Track',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Gives vision of the tracked unit and reduces armor by |cffFF02021|r Lasts |cff7DBEF115|r seconds, has |cff7DBEF145|r seconds cooldown.',
+    iconPath: 'ATCTrack.png',
+  },
+  {
     id: 'sniff',
     name: 'Sniff',
     category: 'unknown',
@@ -1168,6 +1220,14 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: '',
     tooltip: 'Dire Wolf unleashes a Howl of Terror, which causes an eclipse that blocks out the sun and creates an artificial night. \nLasts |cff7DBEF130|r seconds\nGrants Night Stalker to your allies for the duration.\nHas |cff7DBEF160.0|r seconds cooldown.',
     iconPath: 'BTNLoneWolf.png',
+  },
+  {
+    id: 'night-stalker',
+    name: 'Night Stalker.',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Dire Wolf is as effective at stalking prey at night as during the day.\nYour night vision is equal to your day vision.',
+    iconPath: 'PASUNITWolf.png',
   },
   {
     id: 'hidden-spellbook',
@@ -1582,6 +1642,22 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     iconPath: 'BTNMonsterLure.png',
   },
   {
+    id: 'cook-meat',
+    name: 'Cook Meat',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Cooks all the corpses around the fire into Cooked Meat',
+    iconPath: 'BTNMonsterLure.png',
+  },
+  {
+    id: 'cook-and-collect-meat',
+    name: 'Cook and collect Meat',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Cooks all the corpses around the fire and collects all meat within |cff7DBEF1800|r range and stores it in the building\'s inventory.|cFFFFCC00\nMeat cannot be collected if there is an enemy in range.|r',
+    iconPath: 'BTNMonsterLure.png',
+  },
+  {
     id: 'quick-drop-items',
     name: 'Quick Drop Items',
     category: 'unknown',
@@ -1778,6 +1854,14 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: '',
     tooltip: 'Pings all nearby mana crystals in the minimap and reveals them for a short duration. Ignores items near enemies.',
     iconPath: 'BTNManaStone.png',
+  },
+  {
+    id: 'item-warp',
+    name: 'Item Warp',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Teleports items in the area around the gatherer right to him. Has |cffFE890D900|r range and |cff7DBEF1120|r seconds cooldown. |cffFFD700Note : Items near an ally campfire won\'t be warped, you don\'t want to mess up your base, do you?|r',
+    iconPath: 'BTNNeutralManaShield.png',
   },
   {
     id: 'tele-gather-person-buff',
@@ -2062,6 +2146,12 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
   {
     id: 'burn',
     name: 'Burn',
+    category: 'unknown',
+    description: '',
+  },
+  {
+    id: 'firebolt',
+    name: 'Firebolt',
     category: 'unknown',
     description: '',
   },
@@ -2444,6 +2534,13 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     iconPath: 'BTNFire.png',
   },
   {
+    id: 'metronome-impale',
+    name: 'Metronome Impale',
+    category: 'unknown',
+    description: '',
+    duration: 0.5,
+  },
+  {
     id: 'metronome-nova',
     name: 'Metronome Nova',
     category: 'unknown',
@@ -2468,6 +2565,14 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: '',
     tooltip: 'Barrages enemies with random, chaining effects. Has |cff7DBEF145|r seconds cooldown.',
     iconPath: 'BTNWandOfManaSteal.png',
+  },
+  {
+    id: 'negative-blast',
+    name: 'Negative Blast',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Blasts a target with negative energy dealing |cffFF020240|r damage and slowing for a short duration. Has |cff7DBEF120|r seconds cooldown.',
+    iconPath: 'BTNWandOfShadowSight.png',
   },
   {
     id: 'reduce-food',
@@ -2518,6 +2623,14 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: '',
     tooltip: 'Packs the building back into a kit.',
     iconPath: 'BTNPackBeast.png',
+  },
+  {
+    id: 'pass-meat',
+    name: 'Pass Meat',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Use this ability to pass meat to an ally.\n|cff7DBEF110|r seconds charge recovery.',
+    iconPath: 'BTNPassMeat6.png',
   },
   {
     id: 'a-thief-s-pocket',
@@ -2734,6 +2847,14 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Reveals an large area around you, detects invisible units. Lasts |cff7DBEF110|r seconds, has |cff7DBEF120|r seconds cooldown.',
+    iconPath: 'BTNReveal.png',
+  },
+  {
+    id: 'chain-reveal',
+    name: 'Chain Reveal',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Cast multiple reveal around you and on your living clays, detects invisible units. Lasts |cff7DBEF110|r seconds, has |cff7DBEF150|r seconds cooldown.',
     iconPath: 'BTNReveal.png',
   },
   {
@@ -2979,6 +3100,13 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: '',
     tooltip: 'Steal an item from a target. Different targets are allowed depending on the lvl of the Rogue:|cFFFFCC00\n\nLvl 2|r - Can be used on thief\'s bush to find a hidden item.|cFFFFCC00\n\nLvl 3|r - Can be used on enemy trolls to steal a stone/hide/mana crystal/flint.|cFFFFCC00\n\nLvl 4|r - Can be used on a trading ship to steal a random item. You can only steal a single item from a ship.\n|cff6495ED60 |rseconds cooldown',
     iconPath: 'BTNPickUpItem.png',
+  },
+  {
+    id: 'blink',
+    name: 'Blink',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The thief teleports a short distance. Has |cff7DBEF130|r seconds cooldown.',
   },
   {
     id: 'telethief-uses-his-dimentional-magic-to-reach-into-a-random-thief-s-bush-on-the-map-and-steal-a-consumable-item',
@@ -3361,6 +3489,13 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: 'Agility + 8',
     category: 'unknown',
     description: '',
+  },
+  {
+    id: 'bears-tenacity',
+    name: 'Bears Tenacity',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Causes your troll to go into a panic, making him move |cffFE890D30%|r faster, but take |cffFF020210%|r extra damage.|n Lasts |cff7DBEF12|r seconds, has |cff7DBEF115|r seconds cooldown.|cFFFFFFC9Tip: Use this as often as possible to maximize efficiency.|r',
   },
   {
     id: 'movement-speed-bonus-60',

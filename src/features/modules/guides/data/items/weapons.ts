@@ -16,6 +16,8 @@ export const WEAPONS_ITEMS: ItemData[] = [
     description: 'Increases the attack damage of the wielder by |c00FF02028|r and allows them to fell trees.',
     tooltip: 'Increases the attack damage of the wielder by |c00FF02028|r and allows them to fell trees.',
     iconPath: 'BTNOrcMeleeUpTwo.png',
+    recipe: ['stick', 'iron-ingot', 'iron-ingot'],
+    craftedAt: 'Forge',
   },
   {
     id: 'steel-axe',
@@ -24,6 +26,8 @@ export const WEAPONS_ITEMS: ItemData[] = [
     description: 'Increases the attack damage of the wielder by |c00FF020212|r and allows them to fell trees.',
     tooltip: 'Increases the attack damage of the wielder by |c00FF020212|r and allows them to fell trees.',
     iconPath: 'BTNSpiritWalkerAdeptTraining.png',
+    recipe: ['stick', 'steel-ingot', 'steel-ingot'],
+    craftedAt: 'Forge',
   },
   {
     id: 'battle-axe',
@@ -32,6 +36,8 @@ export const WEAPONS_ITEMS: ItemData[] = [
     description: 'A two handed axe. Increases the attack damage of the wielder by |c00FF020214|r and allows them to fell trees. Increased attack speed by |cff6495ED20%.|r',
     tooltip: 'A two handed axe. Increases the attack damage of the wielder by |c00FF020214|r and allows them to fell trees. Increased attack speed by |cff6495ED20%.|r',
     iconPath: 'BTNOrcMeleeUpThree.png',
+    recipe: ['greater-essence', 'steel-axe', 'spirit-of-wind', 'spirit-of-water', 'mana-crystal'],
+    craftedAt: 'Armory',
   },
   {
     id: 'mage-masher',
@@ -40,6 +46,8 @@ export const WEAPONS_ITEMS: ItemData[] = [
     description: 'Increases the attack damage of the wielder by |c00FF02027|r and allows them to fell trees.\nCan cast silence which has a |cff7DBEF1225|r area of effect, a duration of |cff7DBEF14|r seconds, and a cooldown of |cff7DBEF145|r seconds. \nEach hit burns |cff7DBEF15%|r mana (minimum |cff7DBEF17|r) against Mages, Priests, and their subclasses.',
     tooltip: 'Increases the attack damage of the wielder by |c00FF02027|r and allows them to fell trees.\nCan cast silence which has a |cff7DBEF1225|r area of effect, a duration of |cff7DBEF14|r seconds, and a cooldown of |cff7DBEF145|r seconds. \nEach hit burns |cff7DBEF15%|r mana (minimum |cff7DBEF17|r) against Mages, Priests, and their subclasses.',
     iconPath: 'BTNSpiritWalkerMasterTraining.png',
+    recipe: ['stick', 'spirit-of-wind', 'spirit-of-water', 'mana-crystal'],
+    craftedAt: 'Forge',
   },
   {
     id: 'tidebringer',
@@ -56,6 +64,8 @@ export const WEAPONS_ITEMS: ItemData[] = [
     description: 'Crafted by the most skilled sorcerers of Azeroth, Magefist radiates with an ethereal glow, resonating with the potent energies of magic.\nGrants |cff00EAFFArcane Might|r: \n+|cff1FBF001|r Strength per |cff00EAFF3 Intelligence|r\n+|cffFE890D<AM3b,DataA1,%>%|r Attack speed\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AM6p,DataB1>|r Intelligence',
     tooltip: 'Crafted by the most skilled sorcerers of Azeroth, Magefist radiates with an ethereal glow, resonating with the potent energies of magic.\nGrants |cff00EAFFArcane Might|r: \n+|cff1FBF001|r Strength per |cff00EAFF3 Intelligence|r\n+|cffFE890D<AM3b,DataA1,%>%|r Attack speed\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AM6p,DataB1>|r Intelligence',
     iconPath: 'BTNSpellSteal.png',
+    recipe: ['bone-gloves', 'steel-ingot', 'lesser-essence', 'spirit-of-wind', 'spirit-of-water', 'mana-crystal'],
+    craftedAt: 'Armory',
   },
   {
     id: 'stone-spear',
@@ -64,6 +74,8 @@ export const WEAPONS_ITEMS: ItemData[] = [
     description: 'A spear that can be thrown at a target.\nDeals |cffFF020240|r damage.\nRecovers if it kills the target immediately.\n Has |cff7DBEF12|r seconds cooldown.',
     tooltip: 'A spear that can be thrown at a target.\nDeals |cffFF020240|r damage.\nRecovers if it kills the target immediately.\n Has |cff7DBEF12|r seconds cooldown.',
     iconPath: 'BTNSteelRanged.png',
+    recipe: ['stick', 'stone'],
+    craftedAt: 'Forge',
   },
   {
     id: 'iron-spear',
@@ -72,6 +84,8 @@ export const WEAPONS_ITEMS: ItemData[] = [
     description: 'A spear that can be thrown at a target.\nDeals |cffFF020270|r damage.\nRecovers if it kills the target immediately.\n Has |cff7DBEF15|r seconds cooldown.',
     tooltip: 'A spear that can be thrown at a target.\nDeals |cffFF020270|r damage.\nRecovers if it kills the target immediately.\n Has |cff7DBEF15|r seconds cooldown.',
     iconPath: 'BTNStrengthOfTheMoon.png',
+    recipe: ['stick', 'iron-ingot'],
+    craftedAt: 'Forge',
   },
   {
     id: 'steel-spear',
@@ -80,6 +94,8 @@ export const WEAPONS_ITEMS: ItemData[] = [
     description: 'A spear that can be thrown at a target.\nDeals |cffFF0202100|r damage.\nRecovers if it kills the target immediately.\n Has |cff7DBEF18|r seconds cooldown.',
     tooltip: 'A spear that can be thrown at a target.\nDeals |cffFF0202100|r damage.\nRecovers if it kills the target immediately.\n Has |cff7DBEF18|r seconds cooldown.',
     iconPath: 'BTNThoriumRanged.png',
+    recipe: ['stick', 'steel-ingot'],
+    craftedAt: 'Forge',
   },
   {
     id: 'dark-spear',
@@ -88,6 +104,8 @@ export const WEAPONS_ITEMS: ItemData[] = [
     description: 'A spear that can be thrown at a target.\n Deals |cffFF020240|r damage and zaps |cff7DBEF110|r plus |cff7DBEF140%|r of current energy. \nRecovers if it kills the target immediately.\n Has |cff7DBEF15|r seconds cooldown.',
     tooltip: 'A spear that can be thrown at a target.\n Deals |cffFF020240|r damage and zaps |cff7DBEF110|r plus |cff7DBEF140%|r of current energy. \nRecovers if it kills the target immediately.\n Has |cff7DBEF15|r seconds cooldown.',
     iconPath: 'BTNArcaniteRanged.png',
+    recipe: ['stick', 'spirit-of-darkness'],
+    craftedAt: 'Forge',
   },
   {
     id: 'poison-spear',
@@ -96,6 +114,8 @@ export const WEAPONS_ITEMS: ItemData[] = [
     description: 'A spear that can be thrown at a target.\nApplies a poison that deals |cffFF020215|r initial damage and |cffFF020215|r damage every |cff7DBEF13|r seconds, as well as a |cffFE890D30%|r attack speed and |cffFE890D30%|r movement decrease. \nRecovers if it kills the target immediately.\n Lasts |cff7DBEF130|r seconds, has |cff7DBEF15|r seconds cooldown.',
     tooltip: 'A spear that can be thrown at a target.\nApplies a poison that deals |cffFF020215|r initial damage and |cffFF020215|r damage every |cff7DBEF13|r seconds, as well as a |cffFE890D30%|r attack speed and |cffFE890D30%|r movement decrease. \nRecovers if it kills the target immediately.\n Lasts |cff7DBEF130|r seconds, has |cff7DBEF15|r seconds cooldown.',
     iconPath: 'BTNEnvenomedSpear.png',
+    recipe: ['poison', 'bone', 'stone'],
+    craftedAt: 'Workshop',
   },
   {
     id: 'ultra-poison-spear',
@@ -112,6 +132,8 @@ export const WEAPONS_ITEMS: ItemData[] = [
     description: 'A magic staff reinforced with iron.\n+|cff1FBF008|r Attack damage\n+|cff1FBF002|r Armor\n+|cff1FBF008|r Intelligence',
     tooltip: 'A magic staff reinforced with iron.\n+|cff1FBF008|r Attack damage\n+|cff1FBF002|r Armor\n+|cff1FBF008|r Intelligence',
     iconPath: 'BTNWand.png',
+    recipe: ['stick', 'iron-ingot', 'iron-ingot', 'mana-crystal'],
+    craftedAt: 'Forge',
   },
   {
     id: 'battle-staff',
@@ -120,6 +142,8 @@ export const WEAPONS_ITEMS: ItemData[] = [
     description: 'Wood and steel unite in this fearsome weapon. Each end adorned with menacing skulls, it provides both defensive and spellcasting benefits.\n+|cff1FBF0014|r Attack damage\n+|cff1FBF004|r Armor\n+|cff1FBF0012|r Intelligence',
     tooltip: 'Wood and steel unite in this fearsome weapon. Each end adorned with menacing skulls, it provides both defensive and spellcasting benefits.\n+|cff1FBF0014|r Attack damage\n+|cff1FBF004|r Armor\n+|cff1FBF0012|r Intelligence',
     iconPath: 'BTNBattleStaff.png',
+    recipe: ['iron-staff', 'steel-ingot', 'spirit-of-wind', 'spirit-of-water', 'bone', 'bone'],
+    craftedAt: 'Armory',
   },
   {
     id: 'staff-of-wisdom',

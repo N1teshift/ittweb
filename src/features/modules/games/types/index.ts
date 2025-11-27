@@ -76,12 +76,15 @@ export interface CreateGame {
   creatorname: string;
   ownername: string;
   category?: GameCategory;
+  replayUrl?: string;
+  replayFileName?: string;
   scheduledGameId?: number; // Link to ScheduledGame if created from scheduled game
   players: Array<{
     name: string;
     pid: number;
     flag: GamePlayerFlag;
     class?: string;
+    randomClass?: boolean;
     kills?: number;
     deaths?: number;
     assists?: number;

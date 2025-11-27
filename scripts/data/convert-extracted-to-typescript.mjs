@@ -9,25 +9,47 @@
 
 import fs from 'fs';
 import path from 'path';
-import { getRootDir, loadJson } from './utils.mjs';
+import { loadJson } from './utils.mjs';
 import { mapAbilityCategory, isGarbageAbilityName, getMissingAbilityCategorySlugs } from './converters/category-mapper.mjs';
 import { convertItem, loadRecipesMap } from './converters/item-converter.mjs';
 import { convertAbility } from './converters/ability-converter.mjs';
 import { convertUnit, convertBaseClass, convertDerivedClass } from './converters/unit-converter.mjs';
 import { writeItemsFile, writeAbilitiesFile, writeClassesFile, writeDerivedClassesFile, writeAllUnitsFile } from './generators/file-writer.mjs';
 import { generateItemsIndex, generateAbilitiesIndex, generateUnitsIndex, generateAbilitiesTypes, generateItemsIconUtils } from './generators/index-generator.mjs';
+import { TMP_RAW_DIR, TMP_METADATA_DIR, ITEMS_TS_DIR, ABILITIES_TS_DIR, UNITS_TS_DIR } from './paths.mjs';
 
-const ROOT_DIR = getRootDir();
-const EXTRACTED_DIR = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'extracted_from_w3x');
-const RECIPES_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'recipes.json');
-const BUILDINGS_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'buildings.json');
-const UNITS_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'units.json');
+const EXTRACTED_DIR = TMP_RAW_DIR;
+const RECIPES_FILE = path.join(TMP_METADATA_DIR, 'recipes.json');
+const BUILDINGS_FILE = path.join(TMP_METADATA_DIR, 'buildings.json');
+const UNITS_FILE = path.join(TMP_METADATA_DIR, 'units.json');
 const EXTRACTED_UNITS_FILE = path.join(EXTRACTED_DIR, 'units.json');
 
 // TypeScript output directories
-const ITEMS_DIR = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'data', 'items');
-const ABILITIES_DIR = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'data', 'abilities');
-const UNITS_DIR = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'data', 'units');
+const ITEMS_DIR = ITEMS_TS_DIR;
+const ABILITIES_DIR = ABILITIES_TS_DIR;
+const UNITS_DIR = UNITS_TS_DIR;
+
+function normalizeObjectId(rawId) {
+  if (!rawId || typeof rawId !== 'string') return null;
+  const base = rawId.split(':')[0];
+  return base ? base.toUpperCase() : null;
+}
+
+function formatConstName(constName) {
+  if (!constName) return null;
+  const cleaned = constName
+    .replace(/^LocalObjectIDs_/, '')
+    .replace(/^UNIT_/, '')
+    .replace(/^ITEM_/, '')
+    .replace(/^ABILITY_/, '')
+    .toLowerCase();
+  if (!cleaned) return constName;
+  return cleaned
+    .split('_')
+    .filter(Boolean)
+    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+    .join(' ');
+}
 
 /**
  * Main conversion function
@@ -67,12 +89,62 @@ function main() {
   console.log();
 
   // Convert items (deduplicate by name)
-  const itemMap = new Map();
+  const nameSet = new Set();
+  const convertedItems = [];
+  const objectIdToItem = new Map();
+
   for (const item of itemsData.items) {
-    if (!item.name || itemMap.has(item.name)) continue;
-    itemMap.set(item.name, convertItem(item, recipes));
+    if (!item.name || nameSet.has(item.name)) {
+      continue;
+    }
+    const converted = convertItem(item);
+    if (!converted) continue;
+
+    convertedItems.push(converted);
+    nameSet.add(item.name);
+
+    const baseObjectId = normalizeObjectId(item.id);
+    if (baseObjectId && !objectIdToItem.has(baseObjectId)) {
+      objectIdToItem.set(baseObjectId, converted);
+    }
   }
-  const convertedItems = Array.from(itemMap.values()).filter(item => item !== null);
+
+  // Attach recipe metadata (after conversion so all items/slugs are known)
+  const buildingSlugByUnitId = new Map();
+  if (buildingsData?.buildings) {
+    for (const building of buildingsData.buildings) {
+      const unitCode = normalizeObjectId(building.unitId);
+      if (!unitCode) continue;
+      const label = building.name || building.id || building.unitId;
+      buildingSlugByUnitId.set(unitCode, label);
+    }
+  }
+
+  for (const [objectId, item] of objectIdToItem.entries()) {
+    const recipe = recipes.get(objectId);
+    if (!recipe) continue;
+
+    const ingredientSlugs = (recipe.ingredients || [])
+      .map((code) => objectIdToItem.get(code)?.id)
+      .filter(Boolean);
+
+    if (ingredientSlugs.length > 0) {
+      item.recipe = ingredientSlugs;
+    }
+
+    if (recipe.mixingPotManaRequirement !== null && recipe.mixingPotManaRequirement !== undefined) {
+      item.mixingPotManaRequirement = recipe.mixingPotManaRequirement;
+    }
+
+    const craftedAtLabel =
+      buildingSlugByUnitId.get(recipe.craftedAtCode) ||
+      formatConstName(recipe.craftedAtName) ||
+      formatConstName(recipe.craftedAtConst);
+
+    if (craftedAtLabel) {
+      item.craftedAt = craftedAtLabel;
+    }
+  }
 
   // Group items by category
   const itemsByCategory = {};

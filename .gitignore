@@ -56,5 +56,7 @@ external/
 @temp-icons/
 public/icons/@unused/
 
+tmp/
+
 
 Island.Troll.Tribes.v3.28.w3x

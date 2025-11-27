@@ -8,6 +8,8 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     description: 'Creates a defensive Ensnare Trap at target location.',
     tooltip: 'Creates a defensive Ensnare Trap at target location.',
     iconPath: 'BTNCOP.png',
+    recipe: ['stick', 'clay-ball'],
+    craftedAt: 'Workshop',
   },
   {
     id: 'camp-fire-kit',
@@ -16,6 +18,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     description: 'Creates a Camp Fire at a target location.',
     tooltip: 'Creates a Camp Fire at a target location.',
     iconPath: 'BTNFire.png',
+    recipe: ['tinder', 'flint', 'stick'],
   },
   {
     id: 'mage-fire-kit',
@@ -24,6 +27,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     description: 'Creates a Mage Fire at a target location.',
     tooltip: 'Creates a Mage Fire at a target location.',
     iconPath: 'BTNFire.png',
+    recipe: ['camp-fire-kit', 'magic'],
   },
   {
     id: 'tent-kit',
@@ -32,6 +36,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     description: 'Creates a Tent at target location. Can use it to sleep.',
     tooltip: 'Creates a Tent at target location. Can use it to sleep.',
     iconPath: 'BTNTent.png',
+    recipe: ['stick', 'elk-hide', 'stick'],
   },
   {
     id: 'troll-hut-kit',
@@ -40,6 +45,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     description: 'Creates a Troll Hut at target location. Can use it to sleep.',
     tooltip: 'Creates a Troll Hut at target location. Can use it to sleep.',
     iconPath: 'BTNSpiritLodge.png',
+    recipe: ['tent-kit', 'elk-hide', 'clay-ball'],
   },
   {
     id: 'smoke-house-kit',
@@ -64,6 +70,8 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     description: 'Creates an active Spirit Ward when placed. A spirit ward can revive dead heroes. Place this like a building.',
     tooltip: 'Creates an active Spirit Ward when placed. A spirit ward can revive dead heroes. Place this like a building.',
     iconPath: 'BTNAbsorbMagic.png',
+    recipe: ['mana-crystal', 'mana-crystal', 'mana-crystal', 'stick'],
+    craftedAt: 'Witch Doctors Hut',
   },
   {
     id: 'mud-hut-kit',
@@ -72,6 +80,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     description: 'Creates a Mud Hut at target location. Mud huts provide a place to sleep and store items.',
     tooltip: 'Creates a Mud Hut at target location. Mud huts provide a place to sleep and store items.',
     iconPath: 'BTNGoldmine.png',
+    recipe: ['clay-ball', 'clay-ball', 'clay-ball', 'clay-ball'],
   },
   {
     id: 'omnitower-kit',
@@ -80,6 +89,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     description: 'Creates an Omnidefender Kit at target location. Omnidefenders are a highly customizeable defensive structure.',
     tooltip: 'Creates an Omnidefender Kit at target location. Omnidefenders are a highly customizeable defensive structure.',
     iconPath: 'BTNOrcTower.png',
+    recipe: ['stick', 'stone', 'stone', 'stone'],
   },
   {
     id: 'mixing-pot-kit',
@@ -88,6 +98,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     description: 'Creates a Mixing Pot at target location. Can mix herbs to creates various potions.',
     tooltip: 'Creates a Mixing Pot at target location. Can mix herbs to creates various potions.',
     iconPath: 'BTNSacrificialPit.png',
+    recipe: ['stick', 'clay-ball', 'clay-ball', 'clay-ball'],
   },
   {
     id: 'tannery-kit',
@@ -96,6 +107,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     description: 'Creates a Tannery at target location. A Tannery can make armor from skin.',
     tooltip: 'Creates a Tannery at target location. A Tannery can make armor from skin.',
     iconPath: 'BTNPigFarm.png',
+    recipe: ['stick', 'stick', 'stone', 'stone', 'clay-ball'],
   },
   {
     id: 'workshop-kit',
@@ -104,6 +116,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     description: 'Creates a Workshop at target location.',
     tooltip: 'Creates a Workshop at target location.',
     iconPath: 'BTNOrcLumberMill.png',
+    recipe: ['stick', 'stick', 'tinder', 'clay-ball'],
   },
   {
     id: 'teleport-beacon-kit',
@@ -112,6 +125,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     description: 'Creates a Teleport Beacon at target location. Teleport beacons can teleport friendly units short distances around it.',
     tooltip: 'Creates a Teleport Beacon at target location. Teleport beacons can teleport friendly units short distances around it.',
     iconPath: 'BTNEnergyTower.png',
+    recipe: ['stone', 'stone', 'mana-crystal', 'stick'],
   },
   {
     id: 'witch-doctors-hut-kit',
@@ -120,6 +134,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     description: 'Creates a Witch Doctor\'s Hut at target location.',
     tooltip: 'Creates a Witch Doctor\'s Hut at target location.',
     iconPath: 'BTNVoodooLounge.png',
+    recipe: ['stick', 'stick', 'stick', 'mana-crystal', 'mana-crystal'],
   },
   {
     id: 'hatchery-kit',
@@ -136,6 +151,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     description: 'Create a Forge at target location, the Forge is used to create ingots',
     tooltip: 'Create a Forge at target location, the Forge is used to create ingots',
     iconPath: 'BTNForge.png',
+    recipe: ['flint', 'stone', 'stone', 'stone'],
   },
   {
     id: 'transport-ship-kit',
@@ -144,6 +160,8 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     description: 'Creates a ship somewhere in the water.',
     tooltip: 'Creates a ship somewhere in the water.',
     iconPath: 'BTNNightElfTransport.png',
+    recipe: ['stick', 'stick', 'clay-ball', 'clay-ball', 'elk-hide', 'elk-hide'],
+    craftedAt: 'Workshop',
   },
   {
     id: 'disc0-duck-s-pinion-of-fire',

@@ -133,7 +133,7 @@ export async function createGame(gameData: CreateGame): Promise<string> {
       const gameDatetime = adminTimestamp.fromDate(new Date(gameData.datetime));
       
       // Create game document
-      const gameDocRef = await adminDb.collection(GAMES_COLLECTION).add({
+      const baseGameDoc = {
         gameId: gameData.gameId,
         datetime: gameDatetime,
         duration: gameData.duration,
@@ -142,10 +142,13 @@ export async function createGame(gameData: CreateGame): Promise<string> {
         creatorname: gameData.creatorname,
         ownername: gameData.ownername,
         category: gameData.category,
+        ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
+        ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
         verified: false,
         createdAt: adminTimestamp.now(),
         updatedAt: adminTimestamp.now(),
-      });
+      };
+      const gameDocRef = await adminDb.collection(GAMES_COLLECTION).add(baseGameDoc);
 
       // Create player documents in subcollection
       const playersCollection = gameDocRef.collection('players');
@@ -157,6 +160,7 @@ export async function createGame(gameData: CreateGame): Promise<string> {
           flag: player.flag,
           category: gameData.category,
           class: player.class,
+          randomClass: player.randomClass,
           kills: player.kills,
           deaths: player.deaths,
           assists: player.assists,
@@ -179,7 +183,7 @@ export async function createGame(gameData: CreateGame): Promise<string> {
       const gameDatetime = Timestamp.fromDate(new Date(gameData.datetime));
       
       // Create game document
-      const gameDocRef = await addDoc(collection(db, GAMES_COLLECTION), {
+      const baseGameDoc = {
         gameId: gameData.gameId,
         datetime: gameDatetime,
         duration: gameData.duration,
@@ -188,10 +192,13 @@ export async function createGame(gameData: CreateGame): Promise<string> {
         creatorname: gameData.creatorname,
         ownername: gameData.ownername,
         category: gameData.category,
+        ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
+        ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
         verified: false,
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
-      });
+      };
+      const gameDocRef = await addDoc(collection(db, GAMES_COLLECTION), baseGameDoc);
 
       // Create player documents in subcollection
       const playersCollection = collection(db, GAMES_COLLECTION, gameDocRef.id, 'players');
@@ -203,6 +210,7 @@ export async function createGame(gameData: CreateGame): Promise<string> {
           flag: player.flag,
           category: gameData.category,
           class: player.class,
+          randomClass: player.randomClass,
           kills: player.kills,
           deaths: player.deaths,
           assists: player.assists,

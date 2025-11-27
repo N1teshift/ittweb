@@ -10,7 +10,7 @@
  *   - Or use: node scripts/extract-mpq-files.mjs (if we create it)
  * 
  * After extraction, place the object files in:
- *   data/island_troll_tribes/extracted_from_w3x/raw/
+ *   external/Work/
  *     - war3map.w3t (items)
  *     - war3map.w3a (abilities)
  *     - war3map.w3u (units)
@@ -24,22 +24,18 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { ObjectsTranslator } from 'wc3maptranslator';
 import { Buffer } from 'buffer';
+import { WORK_DIR, TMP_RAW_DIR, ensureTmpDirs } from './paths.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.join(__dirname, '..', '..');
-const EXTRACTED_DIR = path.join(ROOT_DIR, 'external', 'Work');
-const OUTPUT_DIR = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'extracted_from_w3x');
 
-// Ensure output directory exists
-if (!fs.existsSync(OUTPUT_DIR)) {
-  fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-}
+ensureTmpDirs();
 
 /**
  * Read a file from the extracted directory
  */
 function readExtractedFile(filename) {
-  const filePath = path.join(EXTRACTED_DIR, filename);
+  const filePath = path.join(WORK_DIR, filename);
   if (!fs.existsSync(filePath)) {
     console.warn(`  File not found: ${filePath}`);
     return null;
@@ -326,11 +322,11 @@ function extractBuildings() {
  */
 function main() {
   console.log('🗺️  Extracting data from .w3x map file object data...');
-  console.log(`\nLooking for extracted files in: ${EXTRACTED_DIR}`);
+  console.log(`\nLooking for extracted files in: ${WORK_DIR}`);
   
   // Check if extracted directory exists
-  if (!fs.existsSync(EXTRACTED_DIR)) {
-    console.error(`\n❌ Extracted files directory not found: ${EXTRACTED_DIR}`);
+  if (!fs.existsSync(WORK_DIR)) {
+    console.error(`\n❌ Extracted files directory not found: ${WORK_DIR}`);
     console.error('\n📋 INSTRUCTIONS:');
     console.error('  1. Extract the .w3x file using an MPQ editor (e.g., MPQ Editor)');
     console.error('  2. Extract these files from the archive:');
@@ -338,7 +334,7 @@ function main() {
     console.error('     - war3map.w3a (abilities)');
     console.error('     - war3map.w3u (units)');
     console.error('     - war3map.w3b (buildings/destructables)');
-    console.error(`  3. Place them in: ${EXTRACTED_DIR}`);
+    console.error(`  3. Place them in: ${WORK_DIR}`);
     console.error('\n  Or use: node scripts/extract-mpq-files.mjs (if available)');
     process.exit(1);
   }
@@ -367,32 +363,32 @@ function main() {
     };
     
     // Write combined output
-    const outputFile = path.join(OUTPUT_DIR, 'all_objects.json');
+    const outputFile = path.join(TMP_RAW_DIR, 'all_objects.json');
     fs.writeFileSync(outputFile, JSON.stringify(output, null, 2));
     console.log(`\n✅ Saved combined data to: ${outputFile}`);
     
     // Write individual files
     if (items) {
       fs.writeFileSync(
-        path.join(OUTPUT_DIR, 'items.json'),
+        path.join(TMP_RAW_DIR, 'items.json'),
         JSON.stringify({ items, generatedAt: new Date().toISOString() }, null, 2)
       );
     }
     if (abilities) {
       fs.writeFileSync(
-        path.join(OUTPUT_DIR, 'abilities.json'),
+        path.join(TMP_RAW_DIR, 'abilities.json'),
         JSON.stringify({ abilities, generatedAt: new Date().toISOString() }, null, 2)
       );
     }
     if (units) {
       fs.writeFileSync(
-        path.join(OUTPUT_DIR, 'units.json'),
+        path.join(TMP_RAW_DIR, 'units.json'),
         JSON.stringify({ units, generatedAt: new Date().toISOString() }, null, 2)
       );
     }
     if (buildings) {
       fs.writeFileSync(
-        path.join(OUTPUT_DIR, 'buildings.json'),
+        path.join(TMP_RAW_DIR, 'buildings.json'),
         JSON.stringify({ buildings, generatedAt: new Date().toISOString() }, null, 2)
       );
     }

@@ -88,6 +88,8 @@ export const POTIONS_ITEMS: ItemData[] = [
     description: 'A lesser essence made from native herbs. Used in crafting.',
     tooltip: 'A lesser essence made from native herbs. Used in crafting.',
     iconPath: 'BTNOrangeEssence.png',
+    recipe: ['leaf-of-native-herb', 'leaf-of-native-herb'],
+    craftedAt: 'Mixing Pot',
   },
   {
     id: 'greater-essence',
@@ -96,6 +98,8 @@ export const POTIONS_ITEMS: ItemData[] = [
     description: 'A greater essence made from exotic herbs from neighbouring islands. Used in crafting.',
     tooltip: 'A greater essence made from exotic herbs from neighbouring islands. Used in crafting.',
     iconPath: 'BTNPurpleEssence.png',
+    recipe: ['leaf-of-exotic-herb', 'leaf-of-exotic-herb'],
+    craftedAt: 'Mixing Pot',
   },
   {
     id: 'fervor-potion',
@@ -112,6 +116,8 @@ export const POTIONS_ITEMS: ItemData[] = [
     description: 'A Healing Salve made from Athelas Seed. Restores |cff1FBF00120|r Health points over |cff7DBEF18|r seconds to a target ally. \nEffect is canceled on being attacked.',
     tooltip: 'A Healing Salve made from Athelas Seed. Restores |cff1FBF00120|r Health points over |cff7DBEF18|r seconds to a target ally. \nEffect is canceled on being attacked.',
     iconPath: 'BTNBronzeBowlFullGreen.png',
+    recipe: ['mana-crystal', 'mana-crystal', 'spirit-of-water', 'spirit-of-wind'],
+    craftedAt: 'Workshop',
   },
   {
     id: 'omnicure-potion',

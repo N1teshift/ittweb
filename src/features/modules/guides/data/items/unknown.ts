@@ -167,6 +167,8 @@ export const UNKNOWN_ITEMS: ItemData[] = [
     description: 'Hatchet becomes an extension of the wielder\'s will, changing in response to their needs. \nWhen wielded by a warrior, it pulses with the vigor of strength, cleaving through enemies with brute force. In the hands of a rogue, it becomes a weapon of speed and precision, dancing with agility. \nAnd when embraced by a sorcerer, it channels the wielderâs arcane powers, enhancing their intellect and focus.\n+|cff1FBF008|r to Attack Damage\n+|cff1FBF008|r to Strength|cff949596\n+8 to Agility|r|cff949596\n+8 to Intelligence|r\n|cFFFFCC00Activate this item to switch attribute.|r',
     tooltip: 'Hatchet becomes an extension of the wielder\'s will, changing in response to their needs. \nWhen wielded by a warrior, it pulses with the vigor of strength, cleaving through enemies with brute force. In the hands of a rogue, it becomes a weapon of speed and precision, dancing with agility. \nAnd when embraced by a sorcerer, it channels the wielderâs arcane powers, enhancing their intellect and focus.\n+|cff1FBF008|r to Attack Damage\n+|cff1FBF008|r to Strength|cff949596\n+8 to Agility|r|cff949596\n+8 to Intelligence|r\n|cFFFFCC00Activate this item to switch attribute.|r',
     iconPath: 'BTNChameleonHatchetStr.png',
+    recipe: ['iron-axe', 'iron-ingot', 'spirit-of-wind', 'spirit-of-water', 'mana-crystal'],
+    craftedAt: 'Forge',
   },
   {
     id: 'emp',
@@ -183,6 +185,8 @@ export const UNKNOWN_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s attack speed by |cffFE890D<AM3b,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2w,DataA1>|r and agility by |cff1FBF00<AMel,DataA1>|r. |nFills wearer with insatiable bloodlust, granting permanent bloodlust buff.',
     tooltip: 'Increases wearer\'s attack speed by |cffFE890D<AM3b,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2w,DataA1>|r and agility by |cff1FBF00<AMel,DataA1>|r. |nFills wearer with insatiable bloodlust, granting permanent bloodlust buff.',
     iconPath: 'BTNWolfSBloodlustClaws.png',
+    recipe: ['wolf-skin-gloves', 'steel-ingot', 'greater-essence', 'spirit-of-wind', 'spirit-of-water', 'mana-crystal'],
+    craftedAt: 'Armory',
   },
   {
     id: 'paws-of-bear-s-greed',
@@ -191,6 +195,8 @@ export const UNKNOWN_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and strength by |cff1FBF00<AMep,DataC1>|r. |nBears greed for honey is so strong it allows you to find it where there\'s none.\nUse this item on a hidden stash to find a honeycomb.',
     tooltip: 'Increases wearer\'s attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and strength by |cff1FBF00<AMep,DataC1>|r. |nBears greed for honey is so strong it allows you to find it where there\'s none.\nUse this item on a hidden stash to find a honeycomb.',
     iconPath: 'BTNBearGlovesOfGreed.png',
+    recipe: ['bear-skin-gloves', 'iron-ingot', 'lesser-essence', 'spirit-of-wind', 'spirit-of-water', 'mana-crystal'],
+    craftedAt: 'Armory',
   },
   {
     id: 'hydra-claws',
@@ -231,6 +237,8 @@ export const UNKNOWN_ITEMS: ItemData[] = [
     description: 'An Iron shield enhanced with magic, reduce damage taken by |cffFE890D7|r. |cff1FBF00\nTroll Protector Aura|r:\nProvides |cff1FBF002.5|r bonus armor and |cff1FBF0015%|r magic resistance to allied trolls around you.',
     tooltip: 'An Iron shield enhanced with magic, reduce damage taken by |cffFE890D7|r. |cff1FBF00\nTroll Protector Aura|r:\nProvides |cff1FBF002.5|r bonus armor and |cff1FBF0015%|r magic resistance to allied trolls around you.',
     iconPath: 'BTNTrollProtector.png',
+    recipe: ['iron-shield', 'elk-hide', 'mana-crystal'],
+    craftedAt: 'Armory',
   },
   {
     id: 'makrura-claw',
@@ -279,6 +287,8 @@ export const UNKNOWN_ITEMS: ItemData[] = [
     description: 'Inflicts mushroom poison on the enemy unit dealing damage and slowing.',
     tooltip: 'Inflicts mushroom poison on the enemy unit dealing damage and slowing.',
     iconPath: 'BTNPoisonQuill.png',
+    recipe: ['thistles', 'poison'],
+    craftedAt: 'Workshop',
   },
   {
     id: 'spirit-of-wind',
@@ -287,6 +297,8 @@ export const UNKNOWN_ITEMS: ItemData[] = [
     description: 'Represents the pure essence of wind. Used in crafting certain stuff.',
     tooltip: 'Represents the pure essence of wind. Used in crafting certain stuff.',
     iconPath: 'BTNOrbOfLightning.png',
+    recipe: ['river-stem', 'river-stem'],
+    craftedAt: 'Mixing Pot',
   },
   {
     id: 'spirit-of-water',
@@ -295,6 +307,8 @@ export const UNKNOWN_ITEMS: ItemData[] = [
     description: 'Represents the pure essence of water. Used in crafting certain stuff.',
     tooltip: 'Represents the pure essence of water. Used in crafting certain stuff.',
     iconPath: 'BTNOrbOfFrost.png',
+    recipe: ['river-root', 'river-root'],
+    craftedAt: 'Mixing Pot',
   },
   {
     id: 'spirit-of-darkness',
@@ -303,6 +317,8 @@ export const UNKNOWN_ITEMS: ItemData[] = [
     description: 'An ominous dark artifact, this essence is somewhat hidden. What does it do?',
     tooltip: 'An ominous dark artifact, this essence is somewhat hidden. What does it do?',
     iconPath: 'BTNOrbOfDarkness.png',
+    recipe: ['river-stem', 'river-root', 'athelas-seed', 'athelas-seed'],
+    craftedAt: 'Mixing Pot',
   },
   {
     id: 'poison',
@@ -311,6 +327,8 @@ export const UNKNOWN_ITEMS: ItemData[] = [
     description: 'A jar of poison, can be used to embed a spear in poison.',
     tooltip: 'A jar of poison, can be used to embed a spear in poison.',
     iconPath: 'BTNHealingSalve.png',
+    recipe: ['mushroom', 'mushroom', 'mushroom'],
+    craftedAt: 'Witch Doctors Hut',
   },
   {
     id: 'ultra-poison',
@@ -351,6 +369,8 @@ export const UNKNOWN_ITEMS: ItemData[] = [
     description: 'Reusable net as long as target dies while ensnared',
     tooltip: 'A net primarily used for hunting. If the animal dies while ensnared the net will be retrievable. Last |cff7DBEF12.5|r/|cff7DBEF113|r seconds on heroes/animals. Has |cff7DBEF112|r seconds cooldown.',
     iconPath: 'BTNHuntingNet.png',
+    recipe: ['net', 'stone'],
+    craftedAt: 'Workshop',
   },
   {
     id: 'net',
@@ -359,6 +379,8 @@ export const UNKNOWN_ITEMS: ItemData[] = [
     description: 'Can net opponents',
     tooltip: 'A twine net that can be used to net enemies. Last |cff7DBEF12.5|r/|cff7DBEF110|r seconds on heroes/animals. Has |cff7DBEF115|r seconds cooldown.',
     iconPath: 'BTNEnsnare.png',
+    recipe: ['tinder', 'tinder'],
+    craftedAt: 'Workshop',
   },
   {
     id: 'disc0-duck-s-pinion-of-pain',

@@ -8,6 +8,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AMef,DataC1>|r, Intelligence by |cff1FBF00<AM6l,DataB1>|r, Armor by |cff1FBF00<AM2t,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r',
     tooltip: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AMef,DataC1>|r, Intelligence by |cff1FBF00<AM6l,DataB1>|r, Armor by |cff1FBF00<AM2t,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r',
     iconPath: 'BTNElkHideCoat.png',
+    recipe: ['elk-hide', 'elk-hide', 'elk-hide'],
+    craftedAt: 'Tannery',
   },
   {
     id: 'wolf-skin-coat',
@@ -16,6 +18,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AM6m,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r',
     tooltip: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AM6m,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r',
     iconPath: 'BTNWolfHideCoat.png',
+    recipe: ['wolf-hide', 'elk-hide', 'elk-hide'],
+    craftedAt: 'Tannery',
   },
   {
     id: 'coat-of-wolf-s-voracity',
@@ -24,6 +28,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'A coat imbued with voracity of a Dire Wolf. Allows wearer to consume raw meat, and to consume corpses instantly.  |cFFFFCC00\nUse this item to consume raw meat instantly restoring|r|cff1FBF0050.0|r|cFFFFCC00 health.|r\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AIs6,DataC1>|r Strength\n+|cff1FBF00<AMem,DataA1>|r Agility',
     tooltip: 'A coat imbued with voracity of a Dire Wolf. Allows wearer to consume raw meat, and to consume corpses instantly.  |cFFFFCC00\nUse this item to consume raw meat instantly restoring|r|cff1FBF0050.0|r|cFFFFCC00 health.|r\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AIs6,DataC1>|r Strength\n+|cff1FBF00<AMem,DataA1>|r Agility',
     iconPath: 'BTNChestOfWolfVoracity.png',
+    recipe: ['wolf-skin-coat', 'spirit-of-darkness', 'mana-crystal'],
+    craftedAt: 'Armory',
   },
   {
     id: 'bear-skin-coat',
@@ -32,6 +38,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs6,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r',
     tooltip: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs6,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFE890D\n\nBasic Coat|r|r|cffFFFC00\n\nAll basic Coat transmute into the same Bone/Iron/Steel Coat.|r',
     iconPath: 'BTNBearHideCoat.png',
+    recipe: ['bear-hide', 'elk-hide', 'elk-hide'],
+    craftedAt: 'Tannery',
   },
   {
     id: 'coat-of-bear-s-terrifying-presence',
@@ -40,6 +48,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'A coat made out of a hide of ancient bear.|nAnimals will freeze in your terrifying presence.|nEnemies shaken with fear suffer 20% damage penalty.|n+|cff1FBF00<AMer,DataC1>|r Strength.|n+|cff1FBF00<AM2x,DataA1>|r Armor.',
     tooltip: 'A coat made out of a hide of ancient bear.|nAnimals will freeze in your terrifying presence.|nEnemies shaken with fear suffer 20% damage penalty.|n+|cff1FBF00<AMer,DataC1>|r Strength.|n+|cff1FBF00<AM2x,DataA1>|r Armor.',
     iconPath: 'BTNCoatOfBearPresence.png',
+    recipe: ['bear-skin-coat', 'steel-ingot', 'spirit-of-darkness', 'spirit-of-wind', 'spirit-of-water', 'mana-crystal'],
+    craftedAt: 'Armory',
   },
   {
     id: 'bone-coat',
@@ -48,6 +58,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.',
     tooltip: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs3,DataC1>|r, Intelligence by |cff1FBF00<AIi4,DataB1>|r, Armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.',
     iconPath: 'BTNBoneCoat.png',
+    recipe: ['elk-skin-coat', 'bone', 'bone', 'bone', 'bone', 'bone'],
+    craftedAt: 'Forge',
   },
   {
     id: 'iron-coat',
@@ -56,6 +68,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs4,DataC1>|r, Intelligence by |cff1FBF00<AIi6,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.',
     tooltip: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AIs4,DataC1>|r, Intelligence by |cff1FBF00<AIi6,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.',
     iconPath: 'BTNImprovedMoonArmor.png',
+    recipe: ['elk-skin-coat', 'iron-ingot', 'iron-ingot'],
+    craftedAt: 'Forge',
   },
   {
     id: 'steel-coat',
@@ -64,6 +78,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AMep,DataC1>|r, Intelligence by |cff1FBF00<AM6o,DataB1>|r, Armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown.',
     tooltip: 'A coat made from animals pelt. Increases Strength by |cff1FBF00<AMep,DataC1>|r, Intelligence by |cff1FBF00<AM6o,DataB1>|r, Armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown.',
     iconPath: 'BTNAdvancedMoonArmor.png',
+    recipe: ['elk-skin-coat', 'steel-ingot', 'steel-ingot'],
+    craftedAt: 'Forge',
   },
   {
     id: 'makruru-cuirass',
@@ -80,6 +96,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'A coat embedded with a protective mana layer. Increase all stats by |cff1FBF004|r, Armor by |cff1FBF00<AM2{,DataA1>|r and provides |cff00EAFF30%|r magic resistance. Can cast Anti-Magic on nearby allied heroes. Has |cff7DBEF175|r seconds cooldown.',
     tooltip: 'A coat embedded with a protective mana layer. Increase all stats by |cff1FBF004|r, Armor by |cff1FBF00<AM2{,DataA1>|r and provides |cff00EAFF30%|r magic resistance. Can cast Anti-Magic on nearby allied heroes. Has |cff7DBEF175|r seconds cooldown.',
     iconPath: 'BTNNagaArmorUp2.png',
+    recipe: ['bone-coat', 'spirit-of-wind', 'spirit-of-water', 'mana-crystal'],
+    craftedAt: 'Armory',
   },
   {
     id: 'robe-of-the-magi',
@@ -88,6 +106,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'A robe belonging to a great magi of old\n\nIntelligence +|cff1FBF0010|r\nArmor +|cff1FBF003|r',
     tooltip: 'A robe belonging to a great magi of old\n\nIntelligence +|cff1FBF0010|r\nArmor +|cff1FBF003|r',
     iconPath: 'BTNRobeOfTheMagi.png',
+    recipe: ['bone-coat', 'spirit-of-wind', 'spirit-of-water', 'mana-crystal'],
+    craftedAt: 'Armory',
   },
   {
     id: 'hydra-scale-coat',
@@ -104,6 +124,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s movement speed by |cffFE890D<AMds,DataA1>|r, intelligence by |cff00EAFF<AM6m,DataB1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r',
     tooltip: 'Increases wearer\'s movement speed by |cffFE890D<AMds,DataA1>|r, intelligence by |cff00EAFF<AM6m,DataB1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r',
     iconPath: 'BTNElkHideBoots.png',
+    recipe: ['elk-hide', 'elk-hide'],
+    craftedAt: 'Tannery',
   },
   {
     id: 'wolf-skin-boots',
@@ -112,6 +134,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi4,DataB1>|r, agility by |cff1FBF00<AMel,DataA1>|r armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r',
     tooltip: 'Increases wearer\'s movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi4,DataB1>|r, agility by |cff1FBF00<AMel,DataA1>|r armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r',
     iconPath: 'BTNWolfHideBoots.png',
+    recipe: ['wolf-hide', 'elk-hide'],
+    craftedAt: 'Tannery',
   },
   {
     id: 'boots-of-wolfs-stamina',
@@ -120,6 +144,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s movement speed by |cffFE890D<AMdv,DataA1>|r intelligence by |cff00EAFF<AM6p,DataB1>|r, agility by |cff1FBF00<AMem,DataA1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|nRemoves mana cost and extra damage taken penalty from panic.',
     tooltip: 'Increases wearer\'s movement speed by |cffFE890D<AMdv,DataA1>|r intelligence by |cff00EAFF<AM6p,DataB1>|r, agility by |cff1FBF00<AMem,DataA1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|nRemoves mana cost and extra damage taken penalty from panic.',
     iconPath: 'BTNBootsOfWolfStamina.png',
+    recipe: ['wolf-skin-boots', 'lesser-essence', 'spirit-of-wind', 'spirit-of-water', 'mana-crystal'],
+    craftedAt: 'Armory',
   },
   {
     id: 'bear-skin-boots',
@@ -128,6 +154,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AM6n,DataB1>|r, strength by |cffFE890D<AIs6,DataC1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r',
     tooltip: 'Increases wearer\'s movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AM6n,DataB1>|r, strength by |cffFE890D<AIs6,DataC1>|r armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r',
     iconPath: 'BTNBearHideBoots.png',
+    recipe: ['bear-hide', 'elk-hide'],
+    craftedAt: 'Tannery',
   },
   {
     id: 'boots-of-bear-s-tenacity',
@@ -136,6 +164,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi6,DataB1>|r, strength by |cffFE890D<AMep,DataC1>|r armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.\nGrants wearer tenacity of a bear, no snare will be able to stop you. \nWhenever you are ensnared you gain |cffFFFC002.5|rs decaying movement speed debuff instead of being immobilized',
     tooltip: 'Increases wearer\'s movement speed by |cffFE890D<AMds,DataA1>|r intelligence by |cff00EAFF<AIi6,DataB1>|r, strength by |cffFE890D<AMep,DataC1>|r armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.\nGrants wearer tenacity of a bear, no snare will be able to stop you. \nWhenever you are ensnared you gain |cffFFFC002.5|rs decaying movement speed debuff instead of being immobilized',
     iconPath: 'BTNBootsOfBearTenacity.png',
+    recipe: ['bear-skin-boots', 'lesser-essence', 'spirit-of-wind', 'spirit-of-water', 'mana-crystal'],
+    craftedAt: 'Armory',
   },
   {
     id: 'bone-boots',
@@ -144,6 +174,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s movement speed by |cffFE890D<AMdt,DataA1>|r, intelligence by |cff00EAFF<AIi3,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r',
     tooltip: 'Increases wearer\'s movement speed by |cffFE890D<AMdt,DataA1>|r, intelligence by |cff00EAFF<AIi3,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r',
     iconPath: 'BTNBoneBoots.png',
+    recipe: ['elk-skin-boots', 'bone', 'bone', 'bone', 'bone', 'bone'],
+    craftedAt: 'Forge',
   },
   {
     id: 'iron-boots',
@@ -152,6 +184,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s movement speed by |cffFE890D<AMdu,DataA1>|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r',
     tooltip: 'Increases wearer\'s movement speed by |cffFE890D<AMdu,DataA1>|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r',
     iconPath: 'BTNBoots.png',
+    recipe: ['elk-skin-boots', 'iron-ingot', 'iron-ingot'],
+    craftedAt: 'Forge',
   },
   {
     id: 'steel-boots',
@@ -160,6 +194,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s movement speed by |cffFE890D<AMdv,DataA1>|r, intelligence by |cff00EAFF<AM6p,DataB1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r',
     tooltip: 'Increases wearer\'s movement speed by |cffFE890D<AMdv,DataA1>|r, intelligence by |cff00EAFF<AM6p,DataB1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r',
     iconPath: 'BTNSteelBoots.png',
+    recipe: ['elk-skin-boots', 'steel-ingot', 'steel-ingot'],
+    craftedAt: 'Forge',
   },
   {
     id: 'anabolic-boots',
@@ -168,6 +204,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s movement speed by |cffFE890D<AMdw,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack.',
     tooltip: 'Increases wearer\'s movement speed by |cffFE890D<AMdw,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack.',
     iconPath: 'BTNWirtsOtherLeg.png',
+    recipe: ['bone-boots', 'spirit-of-wind', 'spirit-of-water', 'mana-crystal', 'lesser-essence'],
+    craftedAt: 'Armory',
   },
   {
     id: 'cloak-of-flames',
@@ -176,6 +214,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and burns nearby enemies within melee range for |cffFF0202<AM3|,DataA1>|r damage per second.',
     tooltip: 'Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and burns nearby enemies within melee range for |cffFF0202<AM3|,DataA1>|r damage per second.',
     iconPath: 'BTNCloakOfInferno.png',
+    recipe: ['magic', 'bone-coat', 'flint'],
+    craftedAt: 'Witch Doctors Hut',
   },
   {
     id: 'cloak-of-healing',
@@ -184,6 +224,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore all |cff1FBF00150|r health points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.',
     tooltip: 'Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore all |cff1FBF00150|r health points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.',
     iconPath: 'BTNCloakOfHealing.png',
+    recipe: ['magic', 'bone-coat', 'healing-potion'],
+    craftedAt: 'Witch Doctors Hut',
   },
   {
     id: 'cloak-of-mana',
@@ -192,6 +234,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore |cff00EAFF100|r mana points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.',
     tooltip: 'Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to restore |cff00EAFF100|r mana points to nearby allies over |cff7DBEF115|r seconds. Has |cff7DBEF160|r seconds cooldown.',
     iconPath: 'BTNCloakOfMana.png',
+    recipe: ['magic', 'bone-coat', 'mana-potion'],
+    craftedAt: 'Witch Doctors Hut',
   },
   {
     id: 'cloak-of-frost',
@@ -200,6 +244,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to emit |cff00EAFF5|r ice waves, each wave freezes nearby enemy units dealing |cffFF020216|r damage, and slowing their movement and attack speeds by |cffFE890D35%|r for |cff7DBEF12|r seconds. Each wave refresh the slow duration, the slow amount does not stack. Has |cff7DBEF135|r seconds cooldown.',
     tooltip: 'Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and can be cast to emit |cff00EAFF5|r ice waves, each wave freezes nearby enemy units dealing |cffFF020216|r damage, and slowing their movement and attack speeds by |cffFE890D35%|r for |cff7DBEF12|r seconds. Each wave refresh the slow duration, the slow amount does not stack. Has |cff7DBEF135|r seconds cooldown.',
     iconPath: 'BTNCloakOfFrost.png',
+    recipe: ['magic', 'bone-coat', 'spirit-of-water'],
+    craftedAt: 'Witch Doctors Hut',
   },
   {
     id: 'necromancer-s-cloak',
@@ -208,6 +254,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two skeletal warriors. Cloak can be used to recall your minions. |cffFFFC00\n\nSkeletal bodyguards can be empowered by collecting 10 bones.|r',
     tooltip: 'Provides +|cff1FBF00<AM2v,DataA1>|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two skeletal warriors. Cloak can be used to recall your minions. |cffFFFC00\n\nSkeletal bodyguards can be empowered by collecting 10 bones.|r',
     iconPath: 'BTNSkullShroudGlowIncreased.png',
+    recipe: ['magic', 'bone-coat', 'scroll-of-living-dead'],
+    craftedAt: 'Witch Doctors Hut',
   },
   {
     id: 'empowered-necromancer-s-cloak',
@@ -216,6 +264,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Provides +|cff1FBF00<AM2z,DataA1>|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two greater skeletal warriors. Cloak can be used to recall your minions. |cff1BE5B8\n\nSkeletal minions have been empowered with bones collected, greatly increasing their damage and reducing attack speed.|r',
     tooltip: 'Provides +|cff1FBF00<AM2z,DataA1>|r armor, +|cff1FBF003|r all stats and grants the power to command living dead, permanently raising two greater skeletal warriors. Cloak can be used to recall your minions. |cff1BE5B8\n\nSkeletal minions have been empowered with bones collected, greatly increasing their damage and reducing attack speed.|r',
     iconPath: 'BTNSavageGladiatorChain.png',
+    recipe: ['panther-fang', 'poison', 'poison', 'spirit-of-wind', 'spirit-of-water', 'magic'],
+    craftedAt: 'Witch Doctors Hut',
   },
   {
     id: 'elk-skin-gloves',
@@ -224,6 +274,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s attack speed by |cffFE890D<AM37,DataA1,%>%|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
     tooltip: 'Increases wearer\'s attack speed by |cffFE890D<AM37,DataA1,%>%|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
     iconPath: 'BTNElkHideGloves.png',
+    recipe: ['elk-hide', 'elk-hide'],
+    craftedAt: 'Tannery',
   },
   {
     id: 'wolf-skin-gloves',
@@ -232,6 +284,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s attack speed by |cffFE890D<AM38,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
     tooltip: 'Increases wearer\'s attack speed by |cffFE890D<AM38,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
     iconPath: 'BTNWolfHideGloves.png',
+    recipe: ['wolf-hide', 'elk-hide'],
+    craftedAt: 'Tannery',
   },
   {
     id: 'bear-skin-gloves',
@@ -240,6 +294,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIat,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
     tooltip: 'Increases wearer\'s attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AIat,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
     iconPath: 'BTNBearHideGloves.png',
+    recipe: ['bear-hide', 'elk-hide'],
+    craftedAt: 'Tannery',
   },
   {
     id: 'bone-gloves',
@@ -248,6 +304,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AItg,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
     tooltip: 'Increases wearer\'s attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AItg,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
     iconPath: 'BTNGauntletsOfOgrePower.png',
+    recipe: ['elk-skin-gloves', 'bone', 'bone', 'bone', 'bone', 'bone'],
+    craftedAt: 'Forge',
   },
   {
     id: 'iron-gloves',
@@ -256,6 +314,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s attack speed by |cffFE890D<AM3a,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
     tooltip: 'Increases wearer\'s attack speed by |cffFE890D<AM3a,DataA1,%>%|r, damage by |cffFF0202<AIth,DataA1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
     iconPath: 'BTNIronGloves.png',
+    recipe: ['elk-skin-gloves', 'iron-ingot', 'iron-ingot'],
+    craftedAt: 'Forge',
   },
   {
     id: 'steel-gloves',
@@ -264,6 +324,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s attack speed by |cffFE890D<AM3c,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
     tooltip: 'Increases wearer\'s attack speed by |cffFE890D<AM3c,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r',
     iconPath: 'BTNAdvancedUnholyStrength.png',
+    recipe: ['elk-skin-gloves', 'steel-ingot', 'steel-ingot'],
+    craftedAt: 'Forge',
   },
   {
     id: 'battle-gloves',
@@ -272,6 +334,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Increases wearer\'s attack speed by |cffFE890D<AM3b,DataA1,%>%|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second.',
     tooltip: 'Increases wearer\'s attack speed by |cffFE890D<AM3b,DataA1,%>%|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second.',
     iconPath: 'BTNImprovedUnholyStrength.png',
+    recipe: ['steel-gloves', 'spirit-of-wind', 'spirit-of-water', 'mana-crystal'],
+    craftedAt: 'Armory',
   },
   {
     id: 'basic-shield',
@@ -280,6 +344,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'A Basic Shield, reduce damage taken by |cffFE890D3|r, gives |cff7DBEF110%|r magic resistance.',
     tooltip: 'A Basic Shield, reduce damage taken by |cffFE890D3|r, gives |cff7DBEF110%|r magic resistance.',
     iconPath: 'BTNSteelArmor.png',
+    recipe: ['elk-hide', 'stick', 'stick'],
+    craftedAt: 'Forge',
   },
   {
     id: 'bone-shield',
@@ -288,6 +354,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'A Bone Shield, reduce damage taken by |cffFE890D5|r, gives |cff1FBF001|r armor and |cff7DBEF110%|r magic resistance.',
     tooltip: 'A Bone Shield, reduce damage taken by |cffFE890D5|r, gives |cff1FBF001|r armor and |cff7DBEF110%|r magic resistance.',
     iconPath: 'BTNImprovedUnholyArmor.png',
+    recipe: ['basic-shield', 'bone', 'bone', 'bone', 'bone', 'bone'],
+    craftedAt: 'Forge',
   },
   {
     id: 'iron-shield',
@@ -296,6 +364,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'An Iron Shield, reduce damage taken by |cffFE890D7|r, gives |cff1FBF002|r armor and |cff7DBEF110%|r magic resistance.',
     tooltip: 'An Iron Shield, reduce damage taken by |cffFE890D7|r, gives |cff1FBF002|r armor and |cff7DBEF110%|r magic resistance.',
     iconPath: 'BTNHumanArmorUpOne.png',
+    recipe: ['basic-shield', 'iron-ingot', 'iron-ingot'],
+    craftedAt: 'Forge',
   },
   {
     id: 'steel-shield',
@@ -304,6 +374,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'A Steel Shield, reduce damage taken by |cffFE890D10|r, gives |cff1FBF004|r armor and |cff7DBEF110%|r magic resistance. Has a bash ability, silences and disarms the target. Lasts |cff7DBEF12|r seconds, has |cff7DBEF115|r seconds cooldown.',
     tooltip: 'A Steel Shield, reduce damage taken by |cffFE890D10|r, gives |cff1FBF004|r armor and |cff7DBEF110%|r magic resistance. Has a bash ability, silences and disarms the target. Lasts |cff7DBEF12|r seconds, has |cff7DBEF115|r seconds cooldown.',
     iconPath: 'BTNThoriumArmor.png',
+    recipe: ['basic-shield', 'steel-ingot', 'steel-ingot'],
+    craftedAt: 'Forge',
   },
   {
     id: 'battle-shield',
@@ -312,6 +384,8 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'A Battle Shield, reduce damage taken by |cffFE890D10|r, gives |cff1FBF007|r armor. Has a bash ability, silences and disarms the target. Lasts |cff7DBEF12|r seconds, has |cff7DBEF115|r seconds cooldown.',
     tooltip: 'A Battle Shield, reduce damage taken by |cffFE890D10|r, gives |cff1FBF007|r armor. Has a bash ability, silences and disarms the target. Lasts |cff7DBEF12|r seconds, has |cff7DBEF115|r seconds cooldown.',
     iconPath: 'BTNArcaniteArmor.png',
+    recipe: ['bone-shield', 'elk-hide', 'steel-ingot', 'spirit-of-wind', 'spirit-of-water', 'mana-crystal'],
+    craftedAt: 'Armory',
   },
   {
     id: 'armory-kit',
@@ -320,6 +394,7 @@ export const ARMOR_ITEMS: ItemData[] = [
     description: 'Creates a Armory at target location. Armory can craft advanced weapons and armors.',
     tooltip: 'Creates a Armory at target location. Armory can craft advanced weapons and armors.',
     iconPath: 'BTNArmory.png',
+    recipe: ['stick', 'iron-ingot', 'iron-ingot'],
   },
   {
     id: 'mammoth-boots',
