@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSession, signIn } from 'next-auth/react';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import BlogPost from '@/features/modules/blog/components/BlogPost';
 import { MDXRemote } from 'next-mdx-remote';
-import { getAllEntriesServer } from '@/features/modules/entries/lib/entryService.server';
 import EntryFormModal from '@/features/modules/entries/components/EntryFormModal';
 import ScheduleGameForm from '@/features/modules/scheduled-games/components/ScheduleGameForm';
 import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
@@ -55,7 +55,7 @@ export default function Home({ latestEntry, mdxSource, recentActivity }: HomePro
         if (isMounted) {
           setUserIsAdmin(isAdmin(userData?.role));
         }
-      } catch (error) {
+      } catch {
         if (isMounted) {
           setUserIsAdmin(false);
         }
@@ -228,8 +228,15 @@ export default function Home({ latestEntry, mdxSource, recentActivity }: HomePro
           >
             <div className="prose prose-invert max-w-none">
               {latestEntry.contentType === 'memory' && latestEntry.images && latestEntry.images.length > 0 && (
-                <div className="mb-4">
-                  <img src={latestEntry.images[0]} alt={latestEntry.title} className="w-full rounded-lg" />
+                <div className="mb-4 relative w-full aspect-video rounded-lg overflow-hidden">
+                  <Image 
+                    src={latestEntry.images[0]} 
+                    alt={latestEntry.title} 
+                    fill
+                    className="object-cover rounded-lg"
+                    sizes="100vw"
+                    unoptimized={latestEntry.images[0].includes('firebasestorage.googleapis.com')}
+                  />
                 </div>
               )}
               <MDXRemote {...mdxSource} />

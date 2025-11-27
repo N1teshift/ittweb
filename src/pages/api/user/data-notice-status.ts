@@ -2,9 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
 import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-
-const logger = createComponentLogger('api/user/data-notice-status');
+import { logError } from '@/features/infrastructure/logging';
 
 export default async function handler(
   req: NextApiRequest,

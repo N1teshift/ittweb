@@ -12,6 +12,7 @@ import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import { Button } from '@/features/infrastructure/shared/components/ui';
 import { getEntryById } from '@/features/modules/entries/lib/entryService';
 import { Entry } from '@/types/entry';
@@ -127,12 +128,16 @@ export default function EntryPage({ entry, content, canEdit, canDelete }: EntryP
                 {entry.images && entry.images.length > 0 && (
                   <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                     {entry.images.map((imageUrl, index) => (
-                      <img 
-                        key={index} 
-                        src={imageUrl} 
-                        alt={`${entry.title} - Image ${index + 1}`}
-                        className="w-full rounded-lg"
-                      />
+                      <div key={index} className="relative w-full aspect-video rounded-lg overflow-hidden">
+                        <Image 
+                          src={imageUrl} 
+                          alt={`${entry.title} - Image ${index + 1}`}
+                          fill
+                          className="object-cover rounded-lg"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          unoptimized={imageUrl.includes('firebasestorage.googleapis.com')}
+                        />
+                      </div>
                     ))}
                   </div>
                 )}
@@ -247,11 +252,25 @@ export const getServerSideProps: GetServerSideProps<EntryPageProps> = async (con
       parseFrontmatter: false,
     });
 
+    // Convert undefined values to null for JSON serialization in getServerSideProps
+    // Next.js cannot serialize undefined, so we convert to null
+    const serializableEntry = {
+      ...entry,
+      submittedAt: entry.submittedAt ?? null,
+      createdByDiscordId: entry.createdByDiscordId ?? null,
+      deletedAt: entry.deletedAt ?? null,
+      images: entry.images ?? null,
+      videoUrl: entry.videoUrl ?? null,
+      twitchClipUrl: entry.twitchClipUrl ?? null,
+      sectionOrder: entry.sectionOrder ?? null,
+      isDeleted: entry.isDeleted ?? false,
+    } as Entry;
+
     return {
       props: {
         ...(i18nResult.props || {}),
         translationNamespaces: pageNamespaces,
-        entry,
+        entry: serializableEntry,
         content: mdxSource,
         canEdit,
         canDelete,

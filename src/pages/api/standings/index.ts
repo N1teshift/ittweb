@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
 import { getStandings } from '@/features/modules/standings/lib/standingsService';
 import type { StandingsFilters } from '@/features/modules/standings/types';

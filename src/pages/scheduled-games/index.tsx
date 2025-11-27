@@ -2,7 +2,6 @@ import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticP
 import { Logger } from '@/features/infrastructure/logging';
 import { useSession, signIn } from 'next-auth/react';
 import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/router';
 import type { GetStaticProps } from 'next';
 import ScheduledGamesList from '@/features/modules/scheduled-games/components/ScheduledGamesList';
 import ScheduleGameForm from '@/features/modules/scheduled-games/components/ScheduleGameForm';
@@ -28,7 +27,6 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 };
 
 export default function ScheduledGames() {
-  const router = useRouter();
   const { data: session, status } = useSession();
   const [games, setGames] = useState<ScheduledGame[]>([]);
   const [loading, setLoading] = useState(true);

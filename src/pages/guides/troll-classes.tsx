@@ -1,5 +1,4 @@
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
-import { useFallbackTranslation } from '@/features/shared/hooks/useFallbackTranslation';
 import Link from 'next/link';
 import { BASE_TROLL_CLASSES } from '@/features/modules/guides/data/units/classes';
 import GuideCard from '@/features/modules/guides/components/GuideCard';
@@ -9,7 +8,6 @@ const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
 
 export default function TrollClassesGuide() {
-  const { t } = useFallbackTranslation(pageNamespaces);
 
   return (
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-5xl mx-auto">

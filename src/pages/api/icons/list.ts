@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { readdir, stat } from 'fs/promises';
-import { join, relative } from 'path';
+import { readdir } from 'fs/promises';
+import { join } from 'path';
 
 type IconFile = {
   filename: string;

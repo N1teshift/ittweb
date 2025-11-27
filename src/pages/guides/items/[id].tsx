@@ -2,11 +2,11 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ITEMS_DATA, getItemById, getItemIconPathFromRecord } from '@/features/modules/guides/data/items';
+import { ITEMS_DATA, getItemById } from '@/features/modules/guides/data/items';
 import { ABILITIES, getAbilityById } from '@/features/modules/guides/data/abilities';
 import { getAbilitySlugFromRawId, findAbilitySlugByRawId } from '@/features/modules/guides/data/items/abilityIdMapper';
-import { ALL_UNITS, getUnitById } from '@/features/modules/guides/data/units/allUnits';
-import { ItemData, ItemCategory } from '@/types/items';
+import { ALL_UNITS } from '@/features/modules/guides/data/units/allUnits';
+import { ItemData } from '@/types/items';
 import { ColoredText } from '@/features/modules/guides/components/ColoredText';
 import GuideIcon from '@/features/modules/guides/components/GuideIcon';
 
