@@ -425,3 +425,4 @@ function scanDirectory(dir, category, icons, allFilenames) {
 - Keep legacy scripts for backward compatibility
 - Gradually migrate as needed
 
+

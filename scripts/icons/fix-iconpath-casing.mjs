@@ -74,3 +74,4 @@ for (const dir of dataDirs) {
 
 console.log(`\nTotal fixed: ${totalFixed} iconPath entries`);
 
+

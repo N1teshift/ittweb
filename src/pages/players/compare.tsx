@@ -8,3 +8,4 @@ export default function ComparePlayers() {
   return <PlayerComparison pageNamespaces={pageNamespaces} />;
 }
 
+

@@ -6,3 +6,4 @@ export default function Classes() {
   return <ClassesPage pageNamespaces={pageNamespaces} />;
 }
 
+

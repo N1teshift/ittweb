@@ -75,3 +75,4 @@ if (trollDuplicateNames.length === 0 && trollDuplicateIds.length === 0) {
   console.log('No duplicate trolls found!');
 }
 
+

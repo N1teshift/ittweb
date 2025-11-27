@@ -352,14 +352,16 @@ export default function ScheduledGames() {
               onClick={handleScheduleClick}
               className="px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-lg font-medium transition-colors"
             >
-              Schedule Game
+              Join to schedule a game
             </button>
-            <button
-              onClick={handleCreateGameClick}
-              className="px-6 py-3 bg-black/40 border border-amber-500/40 hover:bg-black/60 text-amber-300 rounded-lg font-medium flex items-center gap-2 transition-colors"
-            >
-              <span>Create Game</span>
-            </button>
+            {userIsAdmin && (
+              <button
+                onClick={handleCreateGameClick}
+                className="px-6 py-3 bg-black/40 border border-amber-500/40 hover:bg-black/60 text-amber-300 rounded-lg font-medium flex items-center gap-2 transition-colors"
+              >
+                <span>Create Game</span>
+              </button>
+            )}
           </div>
         </div>
 
@@ -431,4 +433,5 @@ export default function ScheduledGames() {
     </div>
   );
 }
+
 
