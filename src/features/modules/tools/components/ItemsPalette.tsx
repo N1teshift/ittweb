@@ -1,13 +1,15 @@
 import React from 'react';
-import { ITEMS_DATA, getItemIconPathFromRecord } from '@/features/modules/guides/data/items';
 import GuideIcon from '@/features/modules/guides/components/GuideIcon';
+import { getItemIconPathFromRecord } from '@/features/modules/guides/data/items/iconUtils';
 import type { ItemCategory } from '@/types/items';
+import { useItemsData } from '@/features/modules/guides/hooks/useItemsData';
 
 export default function ItemsPalette() {
   const [query, setQuery] = React.useState('');
   const [category, setCategory] = React.useState<ItemCategory | 'all'>('all');
   const [collapsed, setCollapsed] = React.useState(false);
   const contentId = React.useId();
+  const { items, isLoading, error } = useItemsData();
 
   const categories: { key: ItemCategory | 'all'; label: string }[] = [
     { key: 'all', label: 'All' },
@@ -21,14 +23,14 @@ export default function ItemsPalette() {
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
-    return ITEMS_DATA.filter((it) => {
+    return items.filter((it) => {
       const inCategory = category === 'all' ? true : it.category === category;
       if (!inCategory) return false;
       if (!q) return true;
       const hay = `${it.name} ${it.description} ${(it.recipe || []).join(' ')}`.toLowerCase();
       return hay.includes(q);
     });
-  }, [query, category]);
+  }, [query, category, items]);
 
   return (
     <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-3 md:p-4 w-full">
@@ -74,32 +76,47 @@ export default function ItemsPalette() {
               />
             </div>
           </div>
-          <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 gap-0.5 max-h-[500px] overflow-y-auto pr-1">
-            {filtered.map((it) => (
-              <div
-                key={it.id}
-                className="cursor-move text-center border border-transparent hover:border-amber-400/50 rounded p-0.5 text-gray-200 inline-flex flex-col items-center transition-colors"
-                draggable
-                onDragStart={(e) => {
-                  e.dataTransfer.effectAllowed = 'copyMove';
-                  e.dataTransfer.setData(
-                    'text/plain',
-                    JSON.stringify({ kind: 'paletteItem', itemId: it.id })
-                  );
-                }}
-                title={it.name}
-              >
-                <GuideIcon category={it.category === 'buildings' ? 'buildings' : 'items'} name={it.name} size={64} src={getItemIconPathFromRecord(it)} />
-                <div className="text-xs font-semibold text-amber-200 break-words text-center mt-0.5 leading-tight">{it.name}</div>
-                {(it.stats?.damage || it.stats?.armor) && (
-                  <div className="text-[8px] text-amber-300/80 leading-tight">
-                    {it.stats?.damage && <span>+{it.stats.damage}</span>}
-                    {it.stats?.damage && it.stats?.armor && <span> </span>}
-                    {it.stats?.armor && <span>+{it.stats.armor}</span>}
-                  </div>
-                )}
+          <div className="min-h-[120px]">
+            {error && (
+              <div className="text-red-300 text-sm border border-red-500/40 rounded-md p-3 bg-red-500/10">
+                Failed to load items. {error.message}
               </div>
-            ))}
+            )}
+            {!error && isLoading && (
+              <div className="text-gray-400 text-sm">Loading items...</div>
+            )}
+            {!error && !isLoading && filtered.length === 0 && (
+              <div className="text-gray-400 text-sm">No items match your filters.</div>
+            )}
+            {!error && filtered.length > 0 && (
+              <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 gap-0.5 max-h-[500px] overflow-y-auto pr-1">
+                {filtered.map((it) => (
+                  <div
+                    key={it.id}
+                    className="cursor-move text-center border border-transparent hover:border-amber-400/50 rounded p-0.5 text-gray-200 inline-flex flex-col items-center transition-colors"
+                    draggable
+                    onDragStart={(e) => {
+                      e.dataTransfer.effectAllowed = 'copyMove';
+                      e.dataTransfer.setData(
+                        'text/plain',
+                        JSON.stringify({ kind: 'paletteItem', itemId: it.id })
+                      );
+                    }}
+                    title={it.name}
+                  >
+                    <GuideIcon category={it.category === 'buildings' ? 'buildings' : 'items'} name={it.name} size={64} src={getItemIconPathFromRecord(it)} />
+                    <div className="text-xs font-semibold text-amber-200 break-words text-center mt-0.5 leading-tight">{it.name}</div>
+                    {(it.stats?.damage || it.stats?.armor) && (
+                      <div className="text-[8px] text-amber-300/80 leading-tight">
+                        {it.stats?.damage && <span>+{it.stats.damage}</span>}
+                        {it.stats?.damage && it.stats?.armor && <span> </span>}
+                        {it.stats?.armor && <span>+{it.stats.armor}</span>}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}

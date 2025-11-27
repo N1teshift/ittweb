@@ -1,7 +1,7 @@
 import React from 'react';
 import type { DragPayload, TrollSide } from '@/features/modules/tools/types';
 import type { ItemData } from '@/types/items';
-import { getItemIconPathFromRecord } from '@/features/modules/guides/data/items';
+import { getItemIconPathFromRecord } from '@/features/modules/guides/data/items/iconUtils';
 
 export default function InventoryGrid({
   side,

@@ -5,7 +5,6 @@ import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticP
 import BlogPost from '@/features/modules/blog/components/BlogPost';
 import PostDeleteDialog from '@/features/modules/blog/components/PostDeleteDialog';
 import { MDXRemote } from 'next-mdx-remote';
-import { loadPostBySlug, listPostSlugs } from '@/features/modules/blog/lib/posts';
 import { serialize } from 'next-mdx-remote/serialize';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
@@ -23,13 +22,12 @@ type PostPageProps = {
   date: string;
   author?: string;
   postId?: string;
-  createdByDiscordId?: string | null;
   content: MDXRemoteSerializeResult;
   canEdit: boolean;
   canDelete: boolean;
 };
 
-export default function PostPage({ title, date, author, postId, createdByDiscordId, content, canEdit, canDelete }: PostPageProps) {
+export default function PostPage({ title, date, author, postId, content, canEdit, canDelete }: PostPageProps) {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -148,6 +146,7 @@ export const getServerSideProps: GetServerSideProps<PostPageProps> = async (cont
   const slug = String(context.params?.slug || '');
   const withI18n = getStaticPropsWithTranslations(pageNamespaces);
   const i18nResult = await withI18n({ locale: context.locale as string });
+  const { loadPostBySlug } = await import('@/features/modules/blog/lib/posts');
 
   try {
     const post = await loadPostBySlug(slug);
@@ -195,7 +194,6 @@ export const getServerSideProps: GetServerSideProps<PostPageProps> = async (cont
         date: post.meta.date,
         author: post.meta.author,
         postId: post.meta.id,
-        createdByDiscordId: post.meta.createdByDiscordId,
         content: mdxSource,
         canEdit,
         canDelete,

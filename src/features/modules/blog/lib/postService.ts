@@ -15,8 +15,6 @@ import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
 import { Post, CreatePost } from '@/types/post';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import type { Firestore as AdminFirestore } from 'firebase-admin/firestore';
-import type { Firestore as ClientFirestore } from 'firebase/firestore';
 
 const POSTS_COLLECTION = 'posts';
 const logger = createComponentLogger('postService');

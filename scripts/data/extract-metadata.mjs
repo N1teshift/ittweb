@@ -9,42 +9,12 @@
  * Usage: node scripts/data/extract-metadata.mjs
  */
 
-import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { getRootDir, loadJson, writeJson, slugify, getField } from './utils.mjs';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT_DIR = path.join(__dirname, '..', '..');
+const ROOT_DIR = getRootDir();
 const EXTRACTED_DIR = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'extracted_from_w3x');
 const OUTPUT_DIR = path.join(ROOT_DIR, 'data', 'island_troll_tribes');
-const WORK_DIR = path.join(ROOT_DIR, 'external', 'Work');
-
-/**
- * Load JSON file
- */
-function loadJson(filePath) {
-  if (!fs.existsSync(filePath)) {
-    return null;
-  }
-  return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-}
-
-/**
- * Write JSON file
- */
-function writeJson(filePath, data) {
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
-}
-
-/**
- * Generate slug from name
- */
-function slugify(name) {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
 
 /**
  * Extract units metadata from extracted units
@@ -132,16 +102,13 @@ function extractUnitsMetadata(extractedUnits) {
     
     // Extract stats from raw modifications
     const raw = unit.raw || [];
-    const getField = (fieldId) => {
-      const field = raw.find(r => r.id === fieldId && r.level === 0);
-      return field ? field.value : undefined;
-    };
+    const getUnitField = (fieldId) => getField(raw, fieldId, 0);
     
     // Only include units that are base/subclass/superclass, or have meaningful stats
-    const str = getField('ustr');
-    const agi = getField('uagi');
-    const int = getField('uint');
-    const hp = getField('uhpm') || getField('uhpr');
+    const str = getUnitField('ustr');
+    const agi = getUnitField('uagi');
+    const int = getUnitField('uint');
+    const hp = getUnitField('uhpm') || getUnitField('uhpr');
     
     // Skip units with default/placeholder stats unless they're identified as classes
     if (type === 'unknown' && (!str || str === 1) && (!agi || agi === 1) && (!int || int === 1) && (!hp || hp === 192)) {
@@ -167,8 +134,8 @@ function extractUnitsMetadata(extractedUnits) {
             intelligence: int || 1.0,
           },
           baseHp: hp || 192,
-          baseMana: getField('umpm') || getField('umpr') || 192,
-          baseMoveSpeed: getField('umvs') || 290,
+          baseMana: getUnitField('umpm') || getUnitField('umpr') || 192,
+          baseMoveSpeed: getUnitField('umvs') || 290,
         };
       }
       continue;
@@ -187,8 +154,8 @@ function extractUnitsMetadata(extractedUnits) {
         intelligence: int || 1.0,
       },
       baseHp: hp || 192,
-      baseMana: getField('umpm') || getField('umpr') || 192,
-      baseMoveSpeed: getField('umvs') || 290,
+      baseMana: getUnitField('umpm') || getUnitField('umpr') || 192,
+      baseMoveSpeed: getUnitField('umvs') || 290,
     };
     
     units.push(unitData);
@@ -213,18 +180,15 @@ function extractBuildingsMetadata(extractedBuildings) {
     
     // Extract stats from raw modifications
     const raw = building.raw || [];
-    const getField = (fieldId) => {
-      const field = raw.find(r => r.id === fieldId && r.level === 0);
-      return field ? field.value : undefined;
-    };
+    const getBuildingField = (fieldId) => getField(raw, fieldId, 0);
     
     const buildingData = {
       id: slugify(name || id),
       unitId: building.id || id.toUpperCase(),
       name: name,
       description: building.description || '',
-      hp: getField('bhpm') || getField('uhpm') || null,
-      armor: getField('bdef') || getField('udef') || null,
+      hp: getBuildingField('bhpm') || getBuildingField('uhpm') || null,
+      armor: getBuildingField('bdef') || getBuildingField('udef') || null,
       craftableItems: [], // Will be populated from recipes if available
     };
     
@@ -234,58 +198,7 @@ function extractBuildingsMetadata(extractedBuildings) {
   return { buildings };
 }
 
-/**
- * Extract recipes from JASS file (war3map.j)
- * Looks for recipe patterns in the compiled JASS code
- */
-function extractRecipesFromJASS() {
-  const jassFile = path.join(WORK_DIR, 'war3map.j');
-  if (!fs.existsSync(jassFile)) {
-    console.warn('⚠️  war3map.j not found, skipping recipe extraction from JASS');
-    return [];
-  }
-  
-  try {
-    const content = fs.readFileSync(jassFile, 'utf-8');
-    const recipes = [];
-    
-    // Look for patterns like: call AddRecipe(ITEM_ID, ITEM_INGREDIENT1, ITEM_INGREDIENT2, ...)
-    // Or: Recipe.create(ITEM_ID, [INGREDIENTS])
-    const recipePatterns = [
-      // Pattern 1: AddRecipe calls
-      /(?:call\s+)?AddRecipe\s*\(\s*([A-Z0-9_]+)\s*,\s*([^)]+)\s*\)/gi,
-      // Pattern 2: Recipe.create or similar
-      /Recipe\.(?:create|add)\s*\(\s*([A-Z0-9_]+)\s*,\s*\[([^\]]+)\]/gi,
-    ];
-    
-    // For now, return empty array - recipe extraction from JASS is complex
-    // This is a placeholder for future implementation
-    console.log('📝 Recipe extraction from JASS not yet implemented');
-    return recipes;
-    
-  } catch (error) {
-    console.warn(`⚠️  Error reading war3map.j: ${error.message}`);
-    return [];
-  }
-}
-
-/**
- * Extract recipes from items (if items have recipe data in their modifications)
- */
-function extractRecipesFromItems(extractedItems) {
-  if (!extractedItems || !extractedItems.items) {
-    return [];
-  }
-  
-  const recipes = [];
-  
-  // Items might have recipe data in their raw modifications
-  // This is a placeholder - actual recipe extraction would need to parse
-  // the item modifications for recipe-related fields
-  
-  console.log('📝 Recipe extraction from items not yet implemented');
-  return recipes;
-}
+// Recipe extraction is not yet implemented - keeping existing recipes.json if available
 
 /**
  * Main function
@@ -310,12 +223,8 @@ function main() {
   writeJson(path.join(OUTPUT_DIR, 'buildings.json'), buildingsMetadata);
   console.log(`✅ Extracted ${buildingsMetadata.buildings.length} buildings metadata\n`);
   
-  // Extract recipes (placeholder - complex, needs more work)
-  console.log('📝 Extracting recipes...');
-  const recipesFromJASS = extractRecipesFromJASS();
-  const recipesFromItems = extractRecipesFromItems(extractedItems);
-  
-  // For now, if recipes.json exists, keep it; otherwise create empty
+  // Recipes: Keep existing recipes.json if available, otherwise create empty
+  console.log('📝 Checking recipes...');
   const existingRecipes = loadJson(path.join(OUTPUT_DIR, 'recipes.json'));
   if (!existingRecipes) {
     writeJson(path.join(OUTPUT_DIR, 'recipes.json'), { recipes: [] });

@@ -23,14 +23,15 @@ export default function IconMapper() {
     mappings,
     icons,
     isLoading,
+    itemsLoading,
     entityStats,
     markedForDeletion,
     updateMapping,
     removeMapping,
-    getExistingMapping,
     getAllMappingsForIcon,
     toggleMarkForDeletion,
     isMarkedForDeletion,
+    gameNameOptions,
   } = useIconMapperData();
 
   // Filter icons by category and search
@@ -168,20 +169,18 @@ export default function IconMapper() {
 
       {/* Icon Grid */}
       <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
-        {isLoading ? (
+        {isLoading || itemsLoading ? (
           <p className="text-gray-400 text-center py-8">Loading icons...</p>
         ) : filteredIcons.length === 0 ? (
           <p className="text-gray-400 text-center py-8">No icons found matching your filters.</p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {filteredIcons.map((icon) => {
-              const existingMapping = getExistingMapping(icon.category as ITTIconCategory, icon.filename);
               const allMappingsForIcon = getAllMappingsForIcon(icon.filename);
               return (
                 <IconItem
                   key={icon.path}
                   icon={icon}
-                  existingMapping={existingMapping}
                   allMappingsForIcon={allMappingsForIcon}
                   onUpdate={(category, filename, gameName) => {
                     updateMapping(category, filename, gameName);
@@ -192,6 +191,7 @@ export default function IconMapper() {
                   allMappings={mappings}
                   isMarkedForDeletion={isMarkedForDeletion(icon.path)}
                   onToggleMarkForDeletion={toggleMarkForDeletion}
+                  gameNameOptions={gameNameOptions}
                 />
               );
             })}

@@ -1,14 +1,13 @@
 import React from 'react';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import { Logger } from '@/features/infrastructure/logging';
-import { useFallbackTranslation } from '@/features/shared/hooks/useFallbackTranslation';
 import TrollPanel from '@/features/modules/tools/components/TrollPanel';
 import ItemsPalette from '@/features/modules/tools/components/ItemsPalette';
 import SimulationPanel from '@/features/modules/tools/components/SimulationPanel';
 import type { TrollLoadout, TrollSide, DragPayload } from '@/features/modules/tools/types';
 import { BASE_TROLL_CLASS_SLUGS } from '@/features/modules/guides/data/units/classes';
-import { ITEMS_DATA } from '@/features/modules/guides/data/items';
 import type { ItemData } from '@/types/items';
+import { useItemsData } from '@/features/modules/guides/hooks/useItemsData';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
@@ -17,7 +16,7 @@ const DEFAULT_LEVEL = 1;
 const MAX_LEVEL = 60;
 
 export default function DuelSimulator() {
-  const { t } = useFallbackTranslation(pageNamespaces);
+  const { items: allItems, isLoading: itemsLoading, error: itemsError } = useItemsData();
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -79,7 +78,7 @@ export default function DuelSimulator() {
 
   const handleDropToSlot = (targetSide: TrollSide, targetIndex: number, payload: DragPayload) => {
     if (payload.kind === 'paletteItem') {
-      const item = ITEMS_DATA.find((it) => it.id === payload.itemId) || null;
+      const item = allItems.find((it) => it.id === payload.itemId) || null;
       placeItem(targetSide, targetIndex, item);
       return;
     }
@@ -125,6 +124,10 @@ export default function DuelSimulator() {
 
           {/* Items Palette */}
           <div className="order-4 xl:order-2">
+            <div className="mb-2 text-center text-xs text-gray-400 min-h-[20px]">
+              {itemsError && <span className="text-red-300">Failed to load items: {itemsError.message}</span>}
+              {!itemsError && itemsLoading && <span>Loading items...</span>}
+            </div>
             <ItemsPalette />
           </div>
 

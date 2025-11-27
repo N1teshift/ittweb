@@ -1,11 +1,25 @@
 /**
  * Master script to generate TypeScript data files directly from external/Work/ decompiled map files
  * 
- * This script:
- * 1. Extracts category mappings from ts_data backup (if needed)
- * 2. Parses war3map files from external/Work/
- * 3. Generates TypeScript data files (items, abilities, units)
- * 4. Generates icon mapping (iconMap.ts)
+ * ============================================================================
+ * DATA GENERATION PIPELINE ORCHESTRATOR
+ * ============================================================================
+ * 
+ * This script orchestrates the complete data generation pipeline:
+ * 1. Uses static category mappings from category-mappings.json (manually curated)
+ * 2. Extracts raw data from war3map files in external/Work/
+ * 3. Extracts metadata (units, buildings, recipes)
+ * 4. Converts extracted data to TypeScript format (items, abilities, units)
+ * 5. Generates icon mapping (iconMap.ts)
+ * 
+ * PIPELINE SCRIPTS (automatically called in order):
+ * ============================================================================
+ * 1. extract-from-w3x.mjs           - Extracts raw game data from war3map files
+ * 2. extract-metadata.mjs           - Extracts units, buildings, and recipe metadata
+ * 3. convert-extracted-to-typescript.mjs - Converts JSON to TypeScript data files
+ * 4. regenerate-iconmap.mjs         - Generates icon mapping from icon files
+ * 
+ * See scripts/data/README.md for detailed documentation.
  * 
  * Usage: node scripts/data/generate-from-work.mjs
  */
@@ -34,11 +48,13 @@ const BUILDINGS_META_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', '
 const UNITS_META_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'units.json');
 const ABILITIES_META_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'abilities.json');
 
-// Scripts
+// ============================================================================
+// PIPELINE SCRIPTS - Called automatically by this master script
+// ============================================================================
 const EXTRACT_FROM_W3X_SCRIPT = path.join(__dirname, 'extract-from-w3x.mjs');
 const EXTRACT_METADATA_SCRIPT = path.join(__dirname, 'extract-metadata.mjs');
 const CONVERT_SCRIPT = path.join(__dirname, 'convert-extracted-to-typescript.mjs');
-const REGENERATE_ICONMAP_SCRIPT = path.join(ROOT_DIR, 'scripts', 'icons', 'regenerate-iconmap.mjs');
+const REGENERATE_ICONMAP_SCRIPT = path.join(__dirname, 'regenerate-iconmap.mjs');
 
 /**
  * Clean a directory by removing all .ts files
@@ -168,10 +184,10 @@ async function main() {
   console.log('🚀 Master Data Generation from Work Directory');
   console.log('='.repeat(60));
   console.log('\nThis script will:');
-  console.log('  1. Use static category mappings file');
-  console.log('  2. Parse war3map files from external/Work/');
-  console.log('  3. Extract metadata (units, buildings)');
-  console.log('  4. Generate TypeScript data files (items, abilities, units)');
+  console.log('  1. Use static category mappings file (category-mappings.json)');
+  console.log('  2. Extract raw data from war3map files in external/Work/');
+  console.log('  3. Extract metadata (units, buildings, recipes)');
+  console.log('  4. Convert to TypeScript data files (items, abilities, units)');
   console.log('  5. Generate icon mapping (iconMap.ts)');
   console.log('\n' + '='.repeat(60) + '\n');
   
@@ -192,7 +208,7 @@ async function main() {
     await runScript(EXTRACT_METADATA_SCRIPT, 'extract-metadata.mjs');
     
     // Step 5: Generate TypeScript data files
-    // Uses static category-mappings.json file (not regenerated)
+    // Uses static category-mappings.json file for categorization
     await runScript(CONVERT_SCRIPT, 'convert-extracted-to-typescript.mjs');
     
     // Step 6: Generate icon mapping

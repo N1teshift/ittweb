@@ -3,9 +3,9 @@ import { ICON_MAP } from '@/features/modules/guides/utils/iconMap';
 import { ITTIconCategory } from '@/features/modules/guides/utils/iconUtils';
 import type { IconFile, IconMapping, EntityStat, IconMappingEntry, MarkedForDeletion } from './icon-mapper.types';
 import { ABILITIES } from '@/features/modules/guides/data/abilities';
-import { ITEMS_DATA } from '@/features/modules/guides/data/items';
 import { BASE_TROLL_CLASSES, DERIVED_CLASSES } from '@/features/modules/guides/data/units';
 import { createComponentLogger } from '@/features/shared/utils/loggerUtils';
+import { useItemsData } from '@/features/modules/guides/hooks/useItemsData';
 
 const logger = createComponentLogger('useIconMapperData');
 
@@ -20,6 +20,7 @@ export function useIconMapperData() {
   const [icons, setIcons] = useState<IconFile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [markedForDeletion, setMarkedForDeletion] = useState<MarkedForDeletion>(new Set());
+  const { items: itemDataset, isLoading: itemsLoading } = useItemsData();
 
   // Initialize with existing mappings
   useEffect(() => {
@@ -136,7 +137,7 @@ export function useIconMapperData() {
       });
 
       // Items
-      const itemsTotal = ITEMS_DATA?.length || 0;
+      const itemsTotal = itemDataset?.length || 0;
       const itemsMapped = Object.keys(mappings.items || {}).length;
       stats.push({
         category: 'items',
@@ -147,7 +148,7 @@ export function useIconMapperData() {
       });
 
       // Buildings
-      const buildingsTotal = ITEMS_DATA?.filter(item => item.category === 'buildings').length || 0;
+      const buildingsTotal = itemDataset?.filter(item => item.category === 'buildings').length || 0;
       const buildingsMapped = Object.keys(mappings.buildings || {}).length;
       stats.push({
         category: 'buildings',
@@ -161,14 +162,36 @@ export function useIconMapperData() {
     }
 
     return stats;
-  }, [mappings]);
+  }, [mappings, itemDataset]);
+
+  const gameNameOptions = useMemo(() => {
+    const abilityNames = ABILITIES?.map((ability) => ability.name) || [];
+    const trollNames = [
+      ...(BASE_TROLL_CLASSES?.map((cls) => cls.name) || []),
+      ...(DERIVED_CLASSES?.map((cls) => cls.name) || []),
+    ];
+    const itemNames = itemDataset?.map((item) => item.name) || [];
+    const buildingNames = itemDataset
+      ?.filter((item) => item.category === 'buildings')
+      .map((item) => item.name) || [];
+
+    return {
+      abilities: abilityNames,
+      trolls: trollNames,
+      items: itemNames,
+      buildings: buildingNames,
+      units: trollNames,
+    };
+  }, [itemDataset]);
 
   return {
     mappings,
     icons,
     isLoading,
+    itemsLoading,
     entityStats,
     markedForDeletion,
+    gameNameOptions,
     updateMapping,
     removeMapping,
     getExistingMapping,

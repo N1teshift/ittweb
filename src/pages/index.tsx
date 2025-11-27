@@ -4,9 +4,7 @@ import { useSession } from 'next-auth/react';
 import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
 import BlogPost from '@/features/modules/blog/components/BlogPost';
 import { MDXRemote } from 'next-mdx-remote';
-import { loadLatestPostSerialized, loadAllPosts } from '@/features/modules/blog/lib/posts';
 import { getAllArchiveEntries } from '@/features/shared/lib/archiveService.server';
-import { getAllScheduledGames } from '@/features/modules/scheduled-games/lib/scheduledGameService';
 import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import type { GetStaticProps } from 'next';
 import type { PostMeta } from '@/features/modules/blog/lib/posts';
@@ -247,6 +245,10 @@ function removeUndefined<T>(obj: T): T {
 export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
   const withI18n = getStaticPropsWithTranslations(pageNamespaces);
   const i18nResult = await withI18n({ locale: locale as string });
+  const [{ loadLatestPostSerialized, loadAllPosts }, { getAllScheduledGames }] = await Promise.all([
+    import('@/features/modules/blog/lib/posts'),
+    import('@/features/modules/scheduled-games/lib/scheduledGameService'),
+  ]);
   
   try {
     const [latest, allPostsData, archiveEntries, scheduledGames] = await Promise.all([

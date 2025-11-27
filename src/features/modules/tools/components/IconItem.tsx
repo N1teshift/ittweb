@@ -3,21 +3,20 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import { ITTIconCategory } from '@/features/modules/guides/utils/iconUtils';
-import { getSuggestions, getGameNamesForCategory } from '@/features/modules/tools/icon-mapper.utils';
 import type { IconFile, IconMapping, IconMappingEntry } from '@/features/modules/tools/icon-mapper.types';
 
 type IconItemProps = {
   icon: IconFile;
-  existingMapping: string | undefined;
   allMappingsForIcon: IconMappingEntry[];
   onUpdate: (category: ITTIconCategory, filename: string, gameName: string) => void;
   onRemove: (category: ITTIconCategory, gameName: string) => void;
   allMappings: IconMapping;
   isMarkedForDeletion: boolean;
   onToggleMarkForDeletion: (iconPath: string) => void;
+  gameNameOptions: Record<ITTIconCategory, string[]>;
 };
 
-export default function IconItem({ icon, existingMapping, allMappingsForIcon, onUpdate, onRemove, allMappings, isMarkedForDeletion, onToggleMarkForDeletion }: IconItemProps) {
+export default function IconItem({ icon, allMappingsForIcon, onUpdate, onRemove, allMappings, isMarkedForDeletion, onToggleMarkForDeletion, gameNameOptions }: IconItemProps) {
   const [selectedCategory, setSelectedCategory] = useState<ITTIconCategory>('items');
   const [gameName, setGameName] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -35,15 +34,21 @@ export default function IconItem({ icon, existingMapping, allMappingsForIcon, on
   // Check if current input is a valid game name
   const isValidGameName = useMemo(() => {
     if (!gameName.trim()) return true; // Empty is valid (not yet entered)
-    const validNames = getGameNamesForCategory(selectedCategory);
-    // If no data available, allow any name (user can enter manually)
+    const validNames = gameNameOptions[selectedCategory] ?? [];
     if (validNames.length === 0) return true;
     return validNames.some(name => name.toLowerCase() === gameName.trim().toLowerCase());
-  }, [gameName, selectedCategory]);
+  }, [gameName, selectedCategory, gameNameOptions]);
 
   useEffect(() => {
     if (gameName.length > 0) {
-      const newSuggestions = getSuggestions(selectedCategory, gameName, allMappings);
+      const validNames = gameNameOptions[selectedCategory] ?? [];
+      const existingNames = Object.keys(allMappings[selectedCategory] ?? {});
+      const combined = Array.from(new Set([...existingNames, ...validNames]));
+      const query = gameName.toLowerCase();
+      const newSuggestions = combined
+        .filter((name) => name.toLowerCase().startsWith(query) && name.toLowerCase() !== query)
+        .sort()
+        .slice(0, 5);
       setSuggestions(newSuggestions);
       setShowSuggestions(newSuggestions.length > 0);
       setSelectedSuggestionIndex(-1);
@@ -51,7 +56,7 @@ export default function IconItem({ icon, existingMapping, allMappingsForIcon, on
       setSuggestions([]);
       setShowSuggestions(false);
     }
-  }, [gameName, selectedCategory, allMappings]);
+  }, [gameName, selectedCategory, allMappings, gameNameOptions]);
 
   const handleChange = (value: string) => {
     setGameName(value);
@@ -65,7 +70,7 @@ export default function IconItem({ icon, existingMapping, allMappingsForIcon, on
       const newName = gameName.trim();
       if (newName) {
         // Get valid game names for this category
-        const validNames = getGameNamesForCategory(selectedCategory);
+        const validNames = gameNameOptions[selectedCategory] ?? [];
         // If no data available, allow any name (user can enter manually)
         const isValidName = validNames.length === 0 || validNames.some(name => name.toLowerCase() === newName.toLowerCase());
         
@@ -112,8 +117,8 @@ export default function IconItem({ icon, existingMapping, allMappingsForIcon, on
         // Validate before submitting
         const newName = gameName.trim();
         if (newName) {
-          const validNames = getGameNamesForCategory(selectedCategory);
-          const isValidName = validNames.some(name => name.toLowerCase() === newName.toLowerCase());
+        const validNames = gameNameOptions[selectedCategory] ?? [];
+        const isValidName = validNames.length === 0 || validNames.some(name => name.toLowerCase() === newName.toLowerCase());
           
           if (!isValidName) {
             setIsInvalid(true);
@@ -173,21 +178,25 @@ export default function IconItem({ icon, existingMapping, allMappingsForIcon, on
       )}
       <div className="flex flex-col items-center gap-2">
         {hasSpecialChars ? (
-          <img
-            src={icon.path}
-            alt={icon.filename}
-            width={64}
-            height={64}
-            className="border border-amber-500/30 rounded"
-            onError={(e) => {
-              const img = e.target as HTMLImageElement;
-              // Prevent infinite loop: only set fallback once and check if already using fallback
-              if (!imageErrorHandledRef.current && !img.src.includes('BTNYellowHerb.png')) {
-                imageErrorHandledRef.current = true;
-                img.src = '/icons/itt/BTNYellowHerb.png';
-              }
-            }}
-          />
+          <>
+            {/* Next/Image cannot handle filenames with certain special characters, so fall back to <img>. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={icon.path}
+              alt={icon.filename}
+              width={64}
+              height={64}
+              className="border border-amber-500/30 rounded"
+              onError={(e) => {
+                const img = e.target as HTMLImageElement;
+                // Prevent infinite loop: only set fallback once and check if already using fallback
+                if (!imageErrorHandledRef.current && !img.src.includes('BTNYellowHerb.png')) {
+                  imageErrorHandledRef.current = true;
+                  img.src = '/icons/itt/BTNYellowHerb.png';
+                }
+              }}
+            />
+          </>
         ) : (
           <Image
             src={icon.path}

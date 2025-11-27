@@ -27,7 +27,6 @@ import { Buffer } from 'buffer';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.join(__dirname, '..', '..');
-const MAP_FILE = path.join(ROOT_DIR, 'Island.Troll.Tribes.v3.28.w3x');
 const EXTRACTED_DIR = path.join(ROOT_DIR, 'external', 'Work');
 const OUTPUT_DIR = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'extracted_from_w3x');
 
