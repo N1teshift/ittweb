@@ -4,7 +4,7 @@
 
 ## Overview
 
-All scripts-related documentation has been reorganized and consolidated into the `docs/scripts/` folder for better organization and maintainability.
+All scripts-related documentation was (at the time) reorganized and consolidated into the `docs/scripts/` folder for better organization and maintainability. That collection now lives at `docs/systems/scripts/`, but the migration details below remain useful as historical context.
 
 ## What Was Done
 
@@ -31,22 +31,22 @@ All scripts-related documentation has been reorganized and consolidated into the
 **After:** 1 file
 - ✅ `REFACTORING.md` - Consolidated proposal and comparison
 
-### 2. Moved Files to `docs/scripts/`
+### 2. Moved Files to `docs/scripts/` (now `docs/systems/scripts/`)
 
 **From root:**
-- `ICON_EXTRACTION_LIST.md` → `docs/scripts/ICON_EXTRACTION_LIST.md`
+- `ICON_EXTRACTION_LIST.md` → `docs/scripts/ICON_EXTRACTION_LIST.md` (now `docs/systems/scripts/icon-extraction-list.md`)
 
 **From scripts folder:**
-- `scripts/EXTRACT_W3X_README.md` → `docs/scripts/EXTRACT_W3X.md`
-- `scripts/FIELD_REFERENCES_README.md` → `docs/scripts/FIELD_REFERENCES.md`
-- `scripts/SCRIPT_ANALYSIS.md` → `docs/scripts/SCRIPT_ANALYSIS.md`
-- `scripts/REORGANIZATION_SUMMARY.md` → `docs/scripts/REORGANIZATION_SUMMARY.md` (historical)
+- `scripts/EXTRACT_W3X_README.md` → `docs/scripts/EXTRACT_W3X.md` (now `docs/systems/scripts/extract-w3x.md`)
+- `scripts/FIELD_REFERENCES_README.md` → `docs/scripts/FIELD_REFERENCES.md` (now `docs/systems/scripts/field-references.md`)
+- `scripts/SCRIPT_ANALYSIS.md` → `docs/scripts/SCRIPT_ANALYSIS.md` (now `docs/systems/scripts/archive/script-analysis.md`)
+- `scripts/REORGANIZATION_SUMMARY.md` → `docs/scripts/REORGANIZATION_SUMMARY.md` (now `docs/systems/scripts/archive/reorganization-summary.md`)
 
 ### 3. Created New Documentation
 
-- ✅ `docs/scripts/README.md` - Documentation index and navigation
-- ✅ `docs/scripts/ICON_MAPPING.md` - Comprehensive icon mapping guide
-- ✅ `docs/scripts/REFACTORING.md` - Consolidated refactoring guide
+- ✅ `docs/scripts/README.md` - Documentation index and navigation (now `docs/systems/scripts/overview.md`)
+- ✅ `docs/scripts/ICON_MAPPING.md` - Comprehensive icon mapping guide (now `docs/systems/scripts/icon-mapping.md`)
+- ✅ `docs/scripts/REFACTORING.md` - Consolidated refactoring guide (now `docs/systems/scripts/archive/refactoring-proposal.md`)
 
 ### 4. Deleted Redundant Files
 
@@ -60,22 +60,22 @@ All scripts-related documentation has been reorganized and consolidated into the
 
 ### 5. Updated References
 
-- ✅ Updated `scripts/README.md` to reference `docs/scripts/` documentation
+- ✅ Updated `scripts/README.md` to reference `docs/scripts/` documentation (now references `docs/systems/scripts/`)
 - ✅ Added cross-references between documentation files
 - ✅ Created navigation in `docs/scripts/README.md`
 
 ## Final Structure
 
 ```
-docs/scripts/
-├── README.md                    # Documentation index
-├── ICON_MAPPING.md             # Comprehensive icon mapping guide
-├── EXTRACT_W3X.md              # Data extraction guide
-├── FIELD_REFERENCES.md         # Field references explanation
-├── REFACTORING.md              # Refactoring proposal
-├── SCRIPT_ANALYSIS.md          # Scripts analysis
-├── REORGANIZATION_SUMMARY.md   # Historical summary
-└── ICON_EXTRACTION_LIST.md     # Generated extraction list
+docs/scripts/            (now docs/systems/scripts/)
+├── README.md            (now overview.md)
+├── ICON_MAPPING.md      (now icon-mapping.md)
+├── EXTRACT_W3X.md       (now extract-w3x.md)
+├── FIELD_REFERENCES.md  (now field-references.md)
+├── REFACTORING.md       (now archive/refactoring-proposal.md)
+├── SCRIPT_ANALYSIS.md   (now archive/script-analysis.md)
+├── REORGANIZATION_SUMMARY.md (now archive/reorganization-summary.md)
+└── ICON_EXTRACTION_LIST.md   (now icon-extraction-list.md)
 ```
 
 ## Benefits

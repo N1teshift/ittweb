@@ -13,7 +13,7 @@ import { getRootDir, loadJson, slugify } from '../utils.mjs';
 
 const ROOT_DIR = getRootDir();
 const BACKUP_TS_DATA_DIR = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'ts_data');
-const CATEGORY_MAPPINGS_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'category-mappings.json');
+const CATEGORY_MAPPINGS_FILE = path.join(ROOT_DIR, 'scripts', 'data', 'category-mappings.json');
 const ABILITIES_META_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'abilities.json');
 const FORCE_UNKNOWN_ABILITY_CATEGORIES = false;
 

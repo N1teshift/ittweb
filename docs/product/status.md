@@ -3,6 +3,12 @@
 **Last Updated:** 2025-01-XX  
 **Overall Progress:** ~70% Complete
 
+## 🔄 Data Pipeline Dependency
+
+- The player/unit/item data that feeds this system comes from `scripts/data/`.
+- Before validating new UI phases, refresh the dataset via `node scripts/data/generate-from-work.mjs` (see [`scripts/README.md`](../scripts/README.md)).
+- Script maintenance/backlog is tracked in [`scripts/data/REFACTORING_PLAN.md`](../scripts/data/REFACTORING_PLAN.md).
+
 ## ✅ Completed Phases
 
 ### Phase 0: Foundation & Setup ✅

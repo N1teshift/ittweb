@@ -40,7 +40,7 @@ const ABILITIES_DIR = path.join(DATA_DIR, 'abilities');
 const UNITS_DIR = path.join(DATA_DIR, 'units');
 
 // Static category mappings file (manually curated, not regenerated)
-const CATEGORY_MAPPINGS_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'category-mappings.json');
+const CATEGORY_MAPPINGS_FILE = path.join(ROOT_DIR, 'scripts', 'data', 'category-mappings.json');
 
 // Optional metadata files (used if they exist)
 const RECIPES_FILE = path.join(ROOT_DIR, 'data', 'island_troll_tribes', 'recipes.json');

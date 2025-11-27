@@ -1,4 +1,4 @@
-/** @type {import('jest').Config} */
+﻿/** @type {import('jest').Config} */
 const nextJest = require("next/jest");
 
 const createJestConfig = nextJest({
@@ -17,7 +17,7 @@ const config = {
     "^@/config/(.*)$": "<rootDir>/src/config/$1",
     "\\.(css|less|scss|sass)$": "identity-obj-proxy",
   },
-  setupFilesAfterEnv: ["<rootDir>/@config/jest.setup.cjs"],
+  setupFilesAfterEnv: ["<rootDir>/config/jest.setup.cjs"],
   testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
   testPathIgnorePatterns: ["/node_modules/", "/.next/", "/build/", "/out/", "/external/"],
   collectCoverageFrom: [
@@ -39,6 +39,7 @@ const config = {
 };
 
 module.exports = createJestConfig(config);
+
 
 
 

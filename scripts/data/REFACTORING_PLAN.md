@@ -1,64 +1,62 @@
-# Data Generation Scripts - Refactoring Plan
+# Data Generation Scripts – Refactoring Status
 
-## Summary of Optimizations Needed
+_Last updated: 2025-11-27_
 
-### 1. Code Duplication ✅ FIXED
-- **Issue**: Multiple scripts duplicate utility functions (`slugify`, `loadJson`, `writeJson`, etc.)
-- **Solution**: Created `utils.mjs` shared utilities file
-- **Status**: ✅ Created - needs to be integrated into scripts
+This document now combines the original refactoring plan with the optimization summary so there is a single source of truth for what has been completed and what remains.
 
-### 2. Unused Code
-- **Issue**: 
-  - `MAP_FILE` constant in `extract-from-w3x.mjs` (line 30) is never used
-  - Placeholder functions that return empty arrays (`extractRecipesFromJASS`, `extractRecipesFromItems`)
-- **Solution**: Remove unused constants, either implement or remove placeholder functions
+## Snapshot
 
-### 3. Inconsistent Error Handling
-- **Issue**: Some scripts use try/catch, others use null checks, inconsistent error messages
-- **Solution**: Standardize error handling patterns
+- Goal: keep the four-step pipeline easy to maintain, consistent, and fast to run.
+- Scope: files under `scripts/data/` plus the shared `utils.mjs`.
+- Approach: finish the high-priority cleanup already mapped out, then tackle deeper structural work only if it becomes a bottleneck.
 
-### 4. Performance Optimizations
-- **Issue**: 
-  - Multiple file reads could be batched
-  - Some regex operations could be cached
-  - Large string operations in `convert-extracted-to-typescript.mjs`
-- **Solution**: Optimize hot paths
+## ✅ Completed Improvements
 
-### 5. Code Organization
-- **Issue**: `convert-extracted-to-typescript.mjs` is 1656 lines - very long
-- **Solution**: Consider splitting into smaller modules if beneficial
+### Shared Utilities (utils.mjs)
+- Consolidated `slugify`, `loadJson`, `writeJson`, `stripColorCodes`, `escapeString`, `convertIconPath`, `getField`, `getFieldFlexible`, `getRootDir`.
+- Eliminated ~150 lines of duplication across the pipeline.
+- Result: common behavior lives in one place; fixes propagate everywhere instantly.
 
-### 6. Type Safety
-- **Issue**: No input validation on parsed JSON structures
-- **Solution**: Add basic validation for expected data shapes
+### `extract-metadata.mjs`
+- Imports all helpers from `utils.mjs`.
+- Removed placeholder functions (`extractRecipesFromJASS`, `extractRecipesFromItems`) and unused logic.
+- Simplified field extraction and error handling; file reduced to ~250 lines.
 
-## Priority Refactoring Tasks
+### `extract-from-w3x.mjs`
+- Removed unused `MAP_FILE` constant and cleaned imports/order.
+- Prepares the file for the next round of validations without altering behavior.
 
-### High Priority ✅
-1. **Integrate shared utilities** - Replace duplicate functions with imports from `utils.mjs`
-2. **Remove unused code** - Clean up `MAP_FILE` and placeholder functions
+## 🎯 Active Priorities
 
-### Medium Priority
-3. **Improve error handling** - Add consistent error handling across scripts
-4. **Add input validation** - Validate JSON structures after loading
+| Priority | Item | Notes |
+| --- | --- | --- |
+| High | Finish integrating shared utilities | `regenerate-iconmap.mjs`, `convert-extracted-to-typescript.mjs`, and orchestrator helpers still re-declare simple functions. |
+| High | Remove unused/placeholder code | Audit remaining TODOs (especially in converters) and drop dead branches. |
+| Medium | Standardize error handling | Adopt a single pattern (throw with context + fail-fast logging) across all scripts. |
+| Medium | Input validation | After each JSON load, validate the expected shape (arrays with ids, etc.) to catch corrupt data early. |
+| Low | Performance optimizations | Batch file reads and cache heavy regex only if generation time becomes an issue. |
+| Low | Split massive files | `convert-extracted-to-typescript.mjs` is still long; consider extracting domain-specific modules if edits remain painful. |
 
-### Low Priority
-5. **Performance optimizations** - Only if generation time becomes an issue
-6. **Split large files** - Only if maintainability becomes a problem
+## File-by-File Checklist
 
-## Files to Refactor
+- `utils.mjs` – ✅ baseline in place; add helpers only when multiple scripts need them.
+- `extract-metadata.mjs` – ✅ refactored (keep regression tests handy).
+- `extract-from-w3x.mjs` – ✅ unused code removed; next step is validation/error pass.
+- `regenerate-iconmap.mjs` – ⏳ move string helpers + path handling to utils; add validation for missing icons.
+- `convert-extracted-to-typescript.mjs` – ⏳ biggest refactor target; start by importing helpers, then evaluate splitting.
+- `generate-from-work.mjs` – ⏳ ensure consistent error bubbling/logging once downstream scripts are updated.
 
-1. ✅ `utils.mjs` - Created
-2. `extract-metadata.mjs` - Small, good candidate for refactoring first
-3. `extract-from-w3x.mjs` - Medium complexity
-4. `regenerate-iconmap.mjs` - Medium complexity
-5. `convert-extracted-to-typescript.mjs` - Large, complex
-6. `generate-from-work.mjs` - Simple orchestrator, minimal changes needed
+## Implementation Guidelines
 
-## Implementation Notes
+- Stick to ES modules; no CommonJS.
+- Keep scripts runnable in isolation (imports must resolve relative to project root via `getRootDir()`).
+- Maintain backwards-compatible output formats; downstream TypeScript modules should not need to change.
+- After each refactor, re-run `node scripts/data/generate-from-work.mjs` and sanity-check the outputs listed in `scripts/README.md`.
 
-- All scripts use ES modules - maintain compatibility
-- Scripts must remain standalone (can import from utils.mjs)
-- Keep backward compatibility with existing data structures
-- Test after each refactoring step
+## Related Docs
 
+- Operational guide: `scripts/README.md`.
+- Historical analysis + deep-dive notes: `docs/systems/scripts/`.
+- Testing references that depend on this pipeline: `docs/operations/quick-start-testing.md`, `docs/operations/testing-guide.md`.
+
+Need to link someone to status? Point them here—this file now replaces the old `OPTIMIZATION_SUMMARY.md`, which is kept only as a pointer.

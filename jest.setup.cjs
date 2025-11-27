@@ -1,2 +1,2 @@
-require("./@config/jest.setup.cjs");
+require("./config/jest.setup.cjs");
 

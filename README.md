@@ -32,7 +32,7 @@ ittweb/
 │   └── types/          # TypeScript type definitions
 ├── public/
 │   └── locales/        # Translation files
-├── @config/            # Centralized Next/Tailwind/Jest/PostCSS configs
+├── config/             # Centralized Next/Tailwind/Jest/PostCSS configs
 ```
 
 ## Getting Started
