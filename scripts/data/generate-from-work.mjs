@@ -86,25 +86,25 @@ function cleanDirectory(dir) {
  */
 function resetDataDirectories() {
   console.log('\n🧹 Resetting data directories...\n');
-  
+
   cleanDirectory(ITEMS_DIR);
   cleanDirectory(ABILITIES_DIR);
   cleanDirectory(UNITS_DIR);
-  
+
   // Remove iconMap.ts from data directory
   const iconMapPath = path.join(DATA_DIR, 'iconMap.ts');
   if (fs.existsSync(iconMapPath)) {
     fs.unlinkSync(iconMapPath);
     console.log(`🧹 Removed ${path.relative(ROOT_DIR, iconMapPath)}`);
   }
-  
+
   // Remove data/index.ts (will be regenerated)
   const dataIndexPath = path.join(DATA_DIR, 'index.ts');
   if (fs.existsSync(dataIndexPath)) {
     fs.unlinkSync(dataIndexPath);
     console.log(`🧹 Removed ${path.relative(ROOT_DIR, dataIndexPath)}`);
   }
-  
+
   console.log('✅ Data directories reset\n');
 }
 
@@ -119,7 +119,7 @@ function checkCategoryMappings() {
     console.log(`📚 Using static category mappings: ${itemCount} items, ${abilityCount} abilities\n`);
     return true;
   }
-  
+
   console.warn('⚠️  Category mappings file not found:');
   console.warn(`   ${path.relative(ROOT_DIR, CATEGORY_MAPPINGS_FILE)}`);
   console.warn('   Items and abilities will default to "unknown" category\n');
@@ -134,13 +134,13 @@ function runScript(scriptPath, scriptName) {
     console.log(`\n${'='.repeat(60)}`);
     console.log(`🔄 Running: ${scriptName}`);
     console.log('='.repeat(60) + '\n');
-    
+
     const script = spawn('node', [scriptPath], {
       cwd: ROOT_DIR,
       stdio: 'inherit',
       shell: true
     });
-    
+
     script.on('close', (code) => {
       if (code === 0) {
         console.log(`\n✅ ${scriptName} completed successfully\n`);
@@ -150,7 +150,7 @@ function runScript(scriptPath, scriptName) {
         reject(new Error(`${scriptName} failed with exit code ${code}`));
       }
     });
-    
+
     script.on('error', (error) => {
       console.error(`\n❌ Error running ${scriptName}:`, error);
       reject(error);
@@ -165,14 +165,14 @@ function checkWorkDirectory() {
   if (!fs.existsSync(WORK_DIR)) {
     throw new Error(`Work directory not found: ${WORK_DIR}`);
   }
-  
+
   const requiredFiles = ['war3map.w3t', 'war3map.w3a', 'war3map.w3u', 'war3map.w3b'];
   const missingFiles = requiredFiles.filter(file => !fs.existsSync(path.join(WORK_DIR, file)));
-  
+
   if (missingFiles.length > 0) {
     throw new Error(`Missing required files in Work directory: ${missingFiles.join(', ')}`);
   }
-  
+
   console.log('✅ Work directory check passed\n');
 }
 
@@ -190,30 +190,30 @@ async function main() {
   console.log('  4. Convert to TypeScript data files (items, abilities, units)');
   console.log('  5. Generate icon mapping (iconMap.ts)');
   console.log('\n' + '='.repeat(60) + '\n');
-  
+
   try {
     // Step 0: Check Work directory
     checkWorkDirectory();
-    
+
     // Step 1: Check category mappings file exists
     checkCategoryMappings();
-    
+
     // Step 2: Reset data directories
     resetDataDirectories();
-    
+
     // Step 3: Extract from Work files (this will create extracted_from_w3x/ JSON files)
     await runScript(EXTRACT_FROM_W3X_SCRIPT, 'extract-from-w3x.mjs');
-    
+
     // Step 4: Extract metadata (recipes, buildings, units)
     await runScript(EXTRACT_METADATA_SCRIPT, 'extract-metadata.mjs');
-    
+
     // Step 5: Generate TypeScript data files
     // Uses static category-mappings.json file for categorization
     await runScript(CONVERT_SCRIPT, 'convert-extracted-to-typescript.mjs');
-    
+
     // Step 6: Generate icon mapping
     await runScript(REGENERATE_ICONMAP_SCRIPT, 'regenerate-iconmap.mjs');
-    
+
     console.log('='.repeat(60));
     console.log('✅ All data generation complete!');
     console.log('='.repeat(60));
@@ -223,7 +223,7 @@ async function main() {
     console.log(`  👤 Units: ${DATA_DIR}/units/`);
     console.log(`  🗺️  Icon Map: ${DATA_DIR}/iconMap.ts`);
     console.log('\n');
-    
+
   } catch (error) {
     console.error('\n❌ Error during data generation:', error.message);
     process.exit(1);

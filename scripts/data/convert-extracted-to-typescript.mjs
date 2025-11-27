@@ -34,7 +34,7 @@ const UNITS_DIR = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'd
  */
 function main() {
   console.log('🔄 Converting extracted .w3x data to TypeScript format...\n');
-  
+
   // Load extracted data
   const itemsData = loadJson(path.join(EXTRACTED_DIR, 'items.json'));
   const abilitiesData = loadJson(path.join(EXTRACTED_DIR, 'abilities.json'));
@@ -42,17 +42,17 @@ function main() {
   const unitsData = loadJson(UNITS_FILE);
   const extractedUnitsData = loadJson(EXTRACTED_UNITS_FILE);
   const recipes = loadRecipesMap();
-  
+
   if (!itemsData || !itemsData.items) {
     console.error('❌ No items data found');
     return;
   }
-  
+
   if (!abilitiesData || !abilitiesData.abilities) {
     console.error('❌ No abilities data found');
     return;
   }
-  
+
   console.log(`📦 Processing ${itemsData.items.length} items...`);
   console.log(`✨ Processing ${abilitiesData.abilities.length} abilities...`);
   if (buildingsData && buildingsData.buildings) {
@@ -65,7 +65,7 @@ function main() {
     console.log(`👤 Processing ${unitsData.units.length} units (${baseCount} base, ${subCount} subclass, ${superCount} superclass)...`);
   }
   console.log();
-  
+
   // Convert items (deduplicate by name)
   const itemMap = new Map();
   for (const item of itemsData.items) {
@@ -73,7 +73,7 @@ function main() {
     itemMap.set(item.name, convertItem(item, recipes));
   }
   const convertedItems = Array.from(itemMap.values()).filter(item => item !== null);
-  
+
   // Group items by category
   const itemsByCategory = {};
   for (const item of convertedItems) {
@@ -82,7 +82,7 @@ function main() {
     }
     itemsByCategory[item.category].push(item);
   }
-  
+
   // Write item files
   const categoryFileMap = {
     'scrolls': 'scrolls.ts',
@@ -93,14 +93,14 @@ function main() {
     'buildings': 'buildings.ts',
     'unknown': 'unknown.ts',
   };
-  
+
   for (const [category, items] of Object.entries(itemsByCategory)) {
     const fileName = categoryFileMap[category] || `${category}.ts`;
     const filePath = path.join(ITEMS_DIR, fileName);
     writeItemsFile(filePath, items, category);
     console.log(`✅ Wrote ${items.length} items to ${fileName}`);
   }
-  
+
   // Convert abilities (deduplicate by name, filter garbage)
   const abilityMap = new Map();
   let filteredCount = 0;
@@ -110,23 +110,23 @@ function main() {
       filteredCount++;
       continue;
     }
-    
+
     // Filter out garbage/internal ability names
     if (isGarbageAbilityName(converted.name)) {
       filteredCount++;
       continue;
     }
-    
+
     if (!abilityMap.has(converted.id)) {
       abilityMap.set(converted.id, converted);
     }
   }
   const convertedAbilities = Array.from(abilityMap.values());
-  
+
   if (filteredCount > 0) {
     console.log(`⚠️  Filtered out ${filteredCount} garbage/internal abilities`);
   }
-  
+
   // Group abilities by category
   const abilitiesByCategory = {};
   for (const ability of convertedAbilities) {
@@ -135,7 +135,7 @@ function main() {
     }
     abilitiesByCategory[ability.category].push(ability);
   }
-  
+
   // Write ability files
   const abilityFileMap = {
     'basic': 'basic.ts',
@@ -150,22 +150,22 @@ function main() {
     'building': 'building.ts',
     'unknown': 'unknown.ts',
   };
-  
+
   for (const [categoryKey, fileName] of Object.entries(abilityFileMap)) {
     const abilities = abilitiesByCategory[categoryKey] || [];
     const filePath = path.join(ABILITIES_DIR, fileName);
     writeAbilitiesFile(filePath, abilities, categoryKey);
     console.log(`✅ Wrote ${abilities.length} abilities to ${fileName}`);
   }
-  
+
   console.log('\n✅ Conversion complete!');
-  
+
   const missingAbilityCategorySlugs = getMissingAbilityCategorySlugs();
   if (missingAbilityCategorySlugs.length > 0) {
     const sampleMissing = missingAbilityCategorySlugs.slice(0, 10);
     console.warn(`⚠️  ${missingAbilityCategorySlugs.length} abilities missing category metadata. Assigned 'unknown'. Sample: ${sampleMissing.join(', ')}`);
   }
-  
+
   // Create buildings map for merging craftableItems into units
   const buildingsMap = new Map();
   if (buildingsData && buildingsData.buildings) {
@@ -182,55 +182,55 @@ function main() {
     }
     console.log(`\n🏠 Loaded ${buildingsData.buildings.length} buildings for merging into units`);
   }
-  
+
   // Convert units/classes
   if (unitsData && unitsData.units) {
     console.log('\n👤 Converting units/classes...');
     const allUnits = unitsData.units;
-    
+
     // Filter and convert base classes
     const baseUnits = allUnits.filter(u => u.type === 'base' && !u.id?.endsWith('-1'));
     const convertedBaseClasses = baseUnits.map(u => convertBaseClass(u, allUnits));
-    
+
     const classesFilePath = path.join(UNITS_DIR, 'classes.ts');
     writeClassesFile(classesFilePath, convertedBaseClasses);
     console.log(`✅ Wrote ${convertedBaseClasses.length} base classes to classes.ts`);
-    
+
     // Filter and convert derived classes (subclass/superclass)
-    const derivedUnits = allUnits.filter(u => 
-      (u.type === 'subclass' || u.type === 'superclass') && 
+    const derivedUnits = allUnits.filter(u =>
+      (u.type === 'subclass' || u.type === 'superclass') &&
       !u.id?.endsWith('-1')
     );
     const convertedDerivedClasses = derivedUnits.map(u => convertDerivedClass(u, allUnits));
-    
+
     const derivedClassesFilePath = path.join(UNITS_DIR, 'derivedClasses.ts');
     writeDerivedClassesFile(derivedClassesFilePath, convertedDerivedClasses);
     console.log(`✅ Wrote ${convertedDerivedClasses.length} derived classes to derivedClasses.ts`);
   } else {
     console.log('\n⚠️  No units data found, skipping class conversion');
   }
-  
+
   // Convert all extracted units (trolls, animals, bosses, etc.)
   if (extractedUnitsData && extractedUnitsData.units) {
     console.log('\n👥 Converting all units...');
     // Filter out indicator/holder units and other non-gameplay units
-    const gameplayUnits = extractedUnitsData.units.filter(u => 
-      u.name && 
+    const gameplayUnits = extractedUnitsData.units.filter(u =>
+      u.name &&
       !u.name.toLowerCase().includes('indicator') &&
       !u.name.toLowerCase().includes('holder') &&
       !u.name.toLowerCase().includes('recipe')
     );
-    
+
     // Track UDIR counter for renaming Unit Dummy Item Reward units
     const udirCounter = new Map();
-    
+
     const convertedUnits = gameplayUnits.map(u => convertUnit(u, udirCounter, buildingsMap));
-    
+
     // Deduplicate units by name and type (keep first occurrence)
     const seenUnits = new Map();
     const deduplicatedUnits = [];
     const duplicatesRemoved = [];
-    
+
     for (const unit of convertedUnits) {
       const key = `${unit.name}|${unit.type}`;
       if (seenUnits.has(key)) {
@@ -240,7 +240,7 @@ function main() {
         deduplicatedUnits.push(unit);
       }
     }
-    
+
     if (duplicatesRemoved.length > 0) {
       console.log(`\n⚠️  Removed ${duplicatesRemoved.length} duplicate units:`);
       // Group duplicates by name for cleaner output
@@ -257,13 +257,13 @@ function main() {
         console.log(`   ... and ${duplicatesRemoved.length - 10} more duplicates`);
       }
     }
-    
+
     // Group by type for summary
     const unitsByType = {};
     deduplicatedUnits.forEach(u => {
       unitsByType[u.type] = (unitsByType[u.type] || 0) + 1;
     });
-    
+
     const allUnitsFilePath = path.join(UNITS_DIR, 'allUnits.ts');
     writeAllUnitsFile(allUnitsFilePath, deduplicatedUnits);
     console.log(`✅ Wrote ${deduplicatedUnits.length} units to allUnits.ts (${convertedUnits.length - deduplicatedUnits.length} duplicates removed)`);
@@ -271,7 +271,7 @@ function main() {
   } else {
     console.log('\n⚠️  No extracted units data found, skipping all units conversion');
   }
-  
+
   // Generate index files and utility files
   console.log('\n📝 Generating index and utility files...');
   generateItemsIndex(ITEMS_DIR, itemsByCategory);
@@ -279,7 +279,7 @@ function main() {
   generateUnitsIndex(UNITS_DIR);
   generateAbilitiesTypes(ABILITIES_DIR);
   generateItemsIconUtils(ITEMS_DIR);
-  
+
   console.log(`\n📊 Summary:`);
   console.log(`  Items: ${convertedItems.length}`);
   console.log(`  Abilities: ${convertedAbilities.length}`);
@@ -288,15 +288,15 @@ function main() {
   }
   if (unitsData && unitsData.units) {
     const baseCount = unitsData.units.filter(u => u.type === 'base' && !u.id?.endsWith('-1')).length;
-    const derivedCount = unitsData.units.filter(u => 
+    const derivedCount = unitsData.units.filter(u =>
       (u.type === 'subclass' || u.type === 'superclass') && !u.id?.endsWith('-1')
     ).length;
     console.log(`  Base Classes: ${baseCount}`);
     console.log(`  Derived Classes: ${derivedCount}`);
   }
   if (extractedUnitsData && extractedUnitsData.units) {
-    const gameplayUnits = extractedUnitsData.units.filter(u => 
-      u.name && 
+    const gameplayUnits = extractedUnitsData.units.filter(u =>
+      u.name &&
       !u.name.toLowerCase().includes('indicator') &&
       !u.name.toLowerCase().includes('holder') &&
       !u.name.toLowerCase().includes('recipe')

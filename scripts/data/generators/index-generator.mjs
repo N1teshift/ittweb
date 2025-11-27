@@ -214,3 +214,5 @@ export function getItemIconPathFromRecord(item: ItemData): string {
   console.log('✅ Generated items/iconUtils.ts');
 }
 
+
+

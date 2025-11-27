@@ -7,3 +7,5 @@ Material in this folder is preserved for historical context only. Nothing here s
 
 When a document becomes obsolete (or risks confusing AI agents), move it here and add a single sentence at the top explaining why it was archived.
 
+
+
