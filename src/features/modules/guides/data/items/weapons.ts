@@ -7,7 +7,7 @@ export const WEAPONS_ITEMS: ItemData[] = [
     category: 'weapons',
     description: 'Increases the attack damage of the wielder by |c00FF02026|r and allows them to fell trees.',
     tooltip: 'Increases the attack damage of the wielder by |c00FF02026|r and allows them to fell trees.',
-    iconPath: 'btnorcmeleeupone.png',
+    iconPath: 'BTNOrcMeleeUpOne.png',
   },
   {
     id: 'iron-axe',
@@ -15,7 +15,7 @@ export const WEAPONS_ITEMS: ItemData[] = [
     category: 'weapons',
     description: 'Increases the attack damage of the wielder by |c00FF02028|r and allows them to fell trees.',
     tooltip: 'Increases the attack damage of the wielder by |c00FF02028|r and allows them to fell trees.',
-    iconPath: 'btnorcmeleeuptwo.png',
+    iconPath: 'BTNOrcMeleeUpTwo.png',
   },
   {
     id: 'steel-axe',
@@ -23,7 +23,7 @@ export const WEAPONS_ITEMS: ItemData[] = [
     category: 'weapons',
     description: 'Increases the attack damage of the wielder by |c00FF020212|r and allows them to fell trees.',
     tooltip: 'Increases the attack damage of the wielder by |c00FF020212|r and allows them to fell trees.',
-    iconPath: 'btnspiritwalkeradepttraining.png',
+    iconPath: 'BTNSpiritWalkerAdeptTraining.png',
   },
   {
     id: 'battle-axe',
@@ -31,7 +31,7 @@ export const WEAPONS_ITEMS: ItemData[] = [
     category: 'weapons',
     description: 'A two handed axe. Increases the attack damage of the wielder by |c00FF020214|r and allows them to fell trees. Increased attack speed by |cff6495ED20%.|r',
     tooltip: 'A two handed axe. Increases the attack damage of the wielder by |c00FF020214|r and allows them to fell trees. Increased attack speed by |cff6495ED20%.|r',
-    iconPath: 'btnorcmeleeupthree.png',
+    iconPath: 'BTNOrcMeleeUpThree.png',
   },
   {
     id: 'mage-masher',
@@ -39,7 +39,7 @@ export const WEAPONS_ITEMS: ItemData[] = [
     category: 'weapons',
     description: 'Increases the attack damage of the wielder by |c00FF02027|r and allows them to fell trees.\nCan cast silence which has a |cff7DBEF1225|r area of effect, a duration of |cff7DBEF14|r seconds, and a cooldown of |cff7DBEF145|r seconds. \nEach hit burns |cff7DBEF15%|r mana (minimum |cff7DBEF17|r) against Mages, Priests, and their subclasses.',
     tooltip: 'Increases the attack damage of the wielder by |c00FF02027|r and allows them to fell trees.\nCan cast silence which has a |cff7DBEF1225|r area of effect, a duration of |cff7DBEF14|r seconds, and a cooldown of |cff7DBEF145|r seconds. \nEach hit burns |cff7DBEF15%|r mana (minimum |cff7DBEF17|r) against Mages, Priests, and their subclasses.',
-    iconPath: 'btnspiritwalkermastertraining.png',
+    iconPath: 'BTNSpiritWalkerMasterTraining.png',
   },
   {
     id: 'tidebringer',
@@ -63,7 +63,7 @@ export const WEAPONS_ITEMS: ItemData[] = [
     category: 'weapons',
     description: 'A spear that can be thrown at a target.\nDeals |cffFF020240|r damage.\nRecovers if it kills the target immediately.\n Has |cff7DBEF12|r seconds cooldown.',
     tooltip: 'A spear that can be thrown at a target.\nDeals |cffFF020240|r damage.\nRecovers if it kills the target immediately.\n Has |cff7DBEF12|r seconds cooldown.',
-    iconPath: 'btnsteelranged.png',
+    iconPath: 'BTNSteelRanged.png',
   },
   {
     id: 'iron-spear',
@@ -71,7 +71,7 @@ export const WEAPONS_ITEMS: ItemData[] = [
     category: 'weapons',
     description: 'A spear that can be thrown at a target.\nDeals |cffFF020270|r damage.\nRecovers if it kills the target immediately.\n Has |cff7DBEF15|r seconds cooldown.',
     tooltip: 'A spear that can be thrown at a target.\nDeals |cffFF020270|r damage.\nRecovers if it kills the target immediately.\n Has |cff7DBEF15|r seconds cooldown.',
-    iconPath: 'btnstrengthofthemoon.png',
+    iconPath: 'BTNStrengthOfTheMoon.png',
   },
   {
     id: 'steel-spear',
@@ -79,7 +79,7 @@ export const WEAPONS_ITEMS: ItemData[] = [
     category: 'weapons',
     description: 'A spear that can be thrown at a target.\nDeals |cffFF0202100|r damage.\nRecovers if it kills the target immediately.\n Has |cff7DBEF18|r seconds cooldown.',
     tooltip: 'A spear that can be thrown at a target.\nDeals |cffFF0202100|r damage.\nRecovers if it kills the target immediately.\n Has |cff7DBEF18|r seconds cooldown.',
-    iconPath: 'btnthoriumranged.png',
+    iconPath: 'BTNThoriumRanged.png',
   },
   {
     id: 'dark-spear',
@@ -87,7 +87,7 @@ export const WEAPONS_ITEMS: ItemData[] = [
     category: 'weapons',
     description: 'A spear that can be thrown at a target.\n Deals |cffFF020240|r damage and zaps |cff7DBEF110|r plus |cff7DBEF140%|r of current energy. \nRecovers if it kills the target immediately.\n Has |cff7DBEF15|r seconds cooldown.',
     tooltip: 'A spear that can be thrown at a target.\n Deals |cffFF020240|r damage and zaps |cff7DBEF110|r plus |cff7DBEF140%|r of current energy. \nRecovers if it kills the target immediately.\n Has |cff7DBEF15|r seconds cooldown.',
-    iconPath: 'btnarcaniteranged.png',
+    iconPath: 'BTNArcaniteRanged.png',
   },
   {
     id: 'poison-spear',
@@ -95,7 +95,7 @@ export const WEAPONS_ITEMS: ItemData[] = [
     category: 'weapons',
     description: 'A spear that can be thrown at a target.\nApplies a poison that deals |cffFF020215|r initial damage and |cffFF020215|r damage every |cff7DBEF13|r seconds, as well as a |cffFE890D30%|r attack speed and |cffFE890D30%|r movement decrease. \nRecovers if it kills the target immediately.\n Lasts |cff7DBEF130|r seconds, has |cff7DBEF15|r seconds cooldown.',
     tooltip: 'A spear that can be thrown at a target.\nApplies a poison that deals |cffFF020215|r initial damage and |cffFF020215|r damage every |cff7DBEF13|r seconds, as well as a |cffFE890D30%|r attack speed and |cffFE890D30%|r movement decrease. \nRecovers if it kills the target immediately.\n Lasts |cff7DBEF130|r seconds, has |cff7DBEF15|r seconds cooldown.',
-    iconPath: 'btnenvenomedspear.png',
+    iconPath: 'BTNEnvenomedSpear.png',
   },
   {
     id: 'ultra-poison-spear',
@@ -111,7 +111,7 @@ export const WEAPONS_ITEMS: ItemData[] = [
     category: 'weapons',
     description: 'A magic staff reinforced with iron.\n+|cff1FBF008|r Attack damage\n+|cff1FBF002|r Armor\n+|cff1FBF008|r Intelligence',
     tooltip: 'A magic staff reinforced with iron.\n+|cff1FBF008|r Attack damage\n+|cff1FBF002|r Armor\n+|cff1FBF008|r Intelligence',
-    iconPath: 'btnwand.png',
+    iconPath: 'BTNWand.png',
   },
   {
     id: 'battle-staff',
@@ -127,6 +127,6 @@ export const WEAPONS_ITEMS: ItemData[] = [
     category: 'weapons',
     description: 'Increases the attack damage of the wielder by |c00FF0202{0}|r and allows them to fell trees.',
     tooltip: 'Increases the attack damage of the wielder by |c00FF0202{0}|r and allows them to fell trees.',
-    iconPath: 'btnspiritwalkeradepttraining.png',
+    iconPath: 'BTNSpiritWalkerAdeptTraining.png',
   }
 ];

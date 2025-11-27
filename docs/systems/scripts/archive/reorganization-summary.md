@@ -1,5 +1,7 @@
 # Scripts Reorganization Summary
 
+_Legacy references below mention `scripts/icons/*`; the active tooling now lives in `scripts/data/`. Follow `scripts/README.md` for current commands._
+
 ## ✅ Completed Tasks
 
 ### 1. Folder Structure Created

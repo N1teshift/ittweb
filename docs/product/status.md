@@ -63,6 +63,7 @@
 - ✅ PlayerProfile component
 - ✅ usePlayerStats hook
 - ✅ `/players/[name]` page
+- ✅ `/players` index/search page (PlayersPage component)
 
 ### Phase 4: Leaderboards ✅
 - ✅ Leaderboard component
@@ -70,34 +71,33 @@
 - ✅ useStandings hook
 - ✅ `/standings` page
 
-## 🚧 Remaining Work
-
 ### Phase 5: Advanced Filtering (Partial)
-- ⏳ DateRangeFilter component
+- ✅ DateRangeFilter component
 - ⏳ PlayerFilter component
 - ⏳ TeamFormatFilter component
 - ⏳ GameFilters component (combined)
 - ⏳ useGameFilters hook
 - ⏳ Filter integration into pages
 
-### Phase 6: Analytics & Charts (Not Started)
-- ⏳ ActivityChart component
-- ⏳ EloChart component
-- ⏳ WinRateChart component
-- ⏳ ClassStatsChart component
-- ⏳ Analytics service functions
-- ⏳ Chart integration into player profiles
+### Phase 6: Analytics & Charts ✅ (Meta dashboard live)
+- ✅ ActivityChart component
+- ✅ EloChart component
+- ✅ WinRateChart component
+- ✅ PlayerActivityChart & GameLengthChart
+- ✅ MetaPage (`/meta`) rendering analytics data
+- ⏳ Embed charts inside player/game detail pages
 
-### Phase 7: Player Comparison (Partial)
+### Phase 7: Player Comparison ✅
 - ✅ comparePlayers service function
 - ✅ `/api/players/compare` API route
-- ⏳ PlayerComparison component
-- ⏳ `/players/compare` page
+- ✅ PlayerComparison component
+- ✅ `/players/compare` page
 
-### Phase 8: Class Statistics (Not Started)
+### Phase 8: Class Statistics (Partial)
+- ✅ ClassSelectionChart & ClassWinRateChart components
 - ⏳ Class overview page
 - ⏳ Class detail page
-- ⏳ Class service functions
+- ⏳ Class service functions (current aggregation runs via analyticsService but needs dedicated endpoints)
 - ⏳ Class API routes
 
 ### Phase 9: Polish & Optimization (Not Started)
@@ -107,6 +107,12 @@
 - ⏳ Loading skeletons
 - ⏳ Empty states
 - ⏳ Documentation
+
+## 🚧 Remaining Work
+- Integrate advanced filtering UI into `/games` / `/standings`.
+- Wire analytics charts into player detail pages (beyond `/meta`).
+- Build dedicated class statistics pages + endpoints.
+- Continue polish/optimization tasks above.
 
 ## Current Status
 
@@ -118,19 +124,16 @@
 - ✅ Basic UI pages are functional
 
 **What's missing:**
-- Advanced filtering UI
-- Charts and analytics
-- Player comparison UI
-- Class statistics
+- Advanced filtering UI integration
+- Charts embedded in player detail pages (Meta dashboard exists)
+- Class statistics pages & APIs
 - Polish and optimization
 
 ## Next Steps
-
-1. Complete advanced filtering components
-2. Implement chart components with recharts
-3. Create player comparison page
-4. Add class statistics features
-5. Polish UI and optimize performance
+1. Integrate the existing filters into the games/standings pages.
+2. Surface analytics charts (Activity/ELO/etc.) on player detail screens in addition to `/meta`.
+3. Finish class statistics endpoints + pages leveraging the new chart components.
+4. Polish UI and optimize performance.
 
 ---
 

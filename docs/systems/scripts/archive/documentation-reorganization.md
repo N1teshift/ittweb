@@ -1,6 +1,7 @@
 # Documentation Reorganization Summary
 
-**Date:** 2025-01-27
+**Date:** 2025-01-27  
+_Note: References to `scripts/icons/*` reflect a previous repo snapshot; the active scripts now live in `scripts/data/`._
 
 ## Overview
 

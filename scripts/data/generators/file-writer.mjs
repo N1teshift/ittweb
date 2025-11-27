@@ -203,6 +203,14 @@ ${classes.map(cls => {
 }).join(',\n')}
 ];
 
+export const SUBCLASS_SLUGS = DERIVED_CLASSES
+  .filter(cls => cls.type === 'sub')
+  .map(cls => cls.slug);
+
+export const SUPERCLASS_SLUGS = DERIVED_CLASSES
+  .filter(cls => cls.type === 'super')
+  .map(cls => cls.slug);
+
 export function getDerivedClassBySlug(slug: string): DerivedClassData | undefined {
   return DERIVED_CLASSES.find(c => c.slug === slug);
 }

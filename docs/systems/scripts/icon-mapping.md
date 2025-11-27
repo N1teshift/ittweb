@@ -133,9 +133,11 @@ Maps entity names → icon filenames (without path). Uses `resolveExplicitIcon()
 
 ### Analysis
 
-**Analyze current icon mapping status:**
+**Analyze current icon mapping status (legacy command shown for context):**
 ```bash
-node scripts/icons/analyze-icon-mapping-comprehensive.mjs
+# Legacy: node scripts/icons/analyze-icon-mapping-comprehensive.mjs
+# Current: node scripts/data/regenerate-iconmap.mjs (see scripts/README.md)
+node scripts/data/regenerate-iconmap.mjs
 ```
 
 What it does:
@@ -162,9 +164,11 @@ What it does:
 
 ### Icon Mapping Management
 
-**Manage icon mappings (consolidated):**
+**Manage icon mappings (follow the helpers in `scripts/data/`; legacy command retained for context):**
 ```bash
-node scripts/icons/manage-icon-mapping.mjs [--map] [--find-missing] [--fuzzy] [--generate-list] [--update-map]
+# Legacy: node scripts/icons/manage-icon-mapping.mjs [--map] [...]
+# Current: node scripts/data/regenerate-iconmap.mjs
+node scripts/data/regenerate-iconmap.mjs
 ```
 
 Features:
@@ -175,9 +179,11 @@ Features:
 
 ### Icon Map Maintenance
 
-**Maintain icon map (consolidated):**
+**Maintain icon map (use the modern pipeline helpers; legacy name shown for reference):**
 ```bash
-node scripts/icons/maintain-iconmap.mjs [--fix-duplicates] [--fix-escaping] [--regenerate]
+# Legacy: node scripts/icons/maintain-iconmap.mjs [--fix-duplicates] [...]
+# Current: node scripts/data/regenerate-iconmap.mjs
+node scripts/data/regenerate-iconmap.mjs
 ```
 
 Features:
@@ -188,13 +194,11 @@ Features:
 
 ### Icon Cleanup
 
-**Cleanup icons (consolidated):**
+**Cleanup icons (follow the helpers documented in `scripts/README.md`; legacy CLI shown for posterity):**
 ```bash
-# Dry run (safe)
-node scripts/icons/cleanup-icons.mjs --remove-duplicates --normalize
-
-# Actually execute
-node scripts/icons/cleanup-icons.mjs --remove-duplicates --normalize --execute
+# Legacy: node scripts/icons/cleanup-icons.mjs --remove-duplicates --normalize [--execute]
+# Current: node scripts/data/regenerate-iconmap.mjs (plus targeted utilities in scripts/data/)
+node scripts/data/regenerate-iconmap.mjs
 ```
 
 Features:
@@ -207,9 +211,9 @@ Features:
 
 1. **Run analysis first:**
    ```bash
-   node scripts/icons/analyze-icon-mapping-comprehensive.mjs
+   node scripts/data/regenerate-iconmap.mjs
    ```
-   This gives you the current state.
+   (Legacy command: `node scripts/icons/analyze-icon-mapping-comprehensive.mjs`) This gives you the current state.
 
 2. **Migrate existing iconPaths:**
    ```bash
@@ -219,7 +223,7 @@ Features:
 
 3. **Generate extraction list:**
    ```bash
-   node scripts/icons/manage-icon-mapping.mjs --generate-list
+   node scripts/data/regenerate-iconmap.mjs
    ```
    This shows what icons need to be extracted (see `ICON_EXTRACTION_LIST.md`).
 
@@ -231,14 +235,14 @@ Features:
 
 5. **Map newly extracted icons:**
    ```bash
-   node scripts/icons/manage-icon-mapping.mjs --map --update-map
+   node scripts/data/regenerate-iconmap.mjs
    ```
 
 6. **Re-run analysis:**
    ```bash
-   node scripts/icons/analyze-icon-mapping-comprehensive.mjs
+   node scripts/data/regenerate-iconmap.mjs
    ```
-   Verify improved coverage.
+   (Legacy command: `node scripts/icons/analyze-icon-mapping-comprehensive.mjs`) Verify improved coverage.
 
 ## Known Issues
 

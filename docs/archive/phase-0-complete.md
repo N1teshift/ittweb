@@ -1,7 +1,8 @@
 # Phase 0: Foundation & Setup - COMPLETE ✅
 
 **Completed:** 2025-01-XX  
-**Status:** ✅ All tasks completed
+**Status:** ✅ All tasks completed  
+_Note: Paths below referenced the former `src/features/ittweb` layout; the code now lives under `src/features/modules`._
 
 ## Summary
 

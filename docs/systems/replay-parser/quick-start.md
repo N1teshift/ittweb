@@ -2,7 +2,7 @@
 
 ## Summary
 
-You're right! The Archives feature already has replay upload infrastructure. Here's what we found and what needs to be done:
+You're right! The Archives feature already has replay upload infrastructure (see `src/features/shared/lib/archiveService.ts::uploadReplay`). Here's what we found and what needs to be done (code now lives under `src/features/modules/**`, replacing the older `src/features/ittweb/**` paths referenced in early drafts):
 
 ---
 

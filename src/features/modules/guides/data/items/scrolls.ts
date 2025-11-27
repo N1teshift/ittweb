@@ -7,7 +7,7 @@ export const SCROLLS_ITEMS: ItemData[] = [
     category: 'scrolls',
     description: 'Grants the unit the ability to cast Entangling Roots, locking the enemy in place for |cffFE890D2|r/|cffFE890D8|r seconds and dealing |cffFF02025|r damage per second. Has |cff7DBEF120|r seconds cooldown.|cffFFD700|nNote: Troll do not take damage and can still attack when affected by this spell.|r',
     tooltip: 'Grants the unit the ability to cast Entangling Roots, locking the enemy in place for |cffFE890D2|r/|cffFE890D8|r seconds and dealing |cffFF02025|r damage per second. Has |cff7DBEF120|r seconds cooldown.|cffFFD700|nNote: Troll do not take damage and can still attack when affected by this spell.|r',
-    iconPath: 'btnscrollofregenerationgreen.png',
+    iconPath: 'BTNScrollOfRegenerationGreen.png',
   },
   {
     id: 'scroll-of-fire-ball',
@@ -15,7 +15,7 @@ export const SCROLLS_ITEMS: ItemData[] = [
     category: 'scrolls',
     description: 'Grants the unit the ability to cast Fire Ball dealing |cffFF020260|r damage and stunning the target for |cffFE890D0.1|r/|cffFE890D1|r seconds. Has |cff7DBEF122|r seconds cooldown.',
     tooltip: 'Grants the unit the ability to cast Fire Ball dealing |cffFF020260|r damage and stunning the target for |cffFE890D0.1|r/|cffFE890D1|r seconds. Has |cff7DBEF122|r seconds cooldown.',
-    iconPath: 'btnscrollofhealing.png',
+    iconPath: 'BTNScrollOfHealing.png',
   },
   {
     id: 'scroll-of-living-dead',
@@ -23,7 +23,7 @@ export const SCROLLS_ITEMS: ItemData[] = [
     category: 'scrolls',
     description: 'Grants the unit the ability to cast Living Dead which summons two skeletal bodyguard, each sketelon deal |cffFF02027|r magic damage per hit. Lasts |cff7DBEF115|r seconds, has |cff7DBEF135|r seconds cooldown.',
     tooltip: 'Grants the unit the ability to cast Living Dead which summons two skeletal bodyguard, each sketelon deal |cffFF02027|r magic damage per hit. Lasts |cff7DBEF115|r seconds, has |cff7DBEF135|r seconds cooldown.',
-    iconPath: 'btnsnazzyscroll.png',
+    iconPath: 'BTNSnazzyScroll.png',
   },
   {
     id: 'scroll-of-stone-shield',
@@ -31,7 +31,7 @@ export const SCROLLS_ITEMS: ItemData[] = [
     category: 'scrolls',
     description: 'Grants the unit the ability to Cast Stone armor which increases the target ally armor by |cff1FBF005|r and slows the attack speed of melee attackers by |cffFE890D15%|r for |cffFE890D2|r seconds. Lasts |cff7DBEF115|r seconds, has |cff7DBEF140|r seconds cooldown.',
     tooltip: 'Grants the unit the ability to Cast Stone armor which increases the target ally armor by |cff1FBF005|r and slows the attack speed of melee attackers by |cffFE890D15%|r for |cffFE890D2|r seconds. Lasts |cff7DBEF115|r seconds, has |cff7DBEF140|r seconds cooldown.',
-    iconPath: 'btnscrolluber.png',
+    iconPath: 'BTNScrollUber.png',
   },
   {
     id: 'scroll-of-haste',
@@ -39,7 +39,7 @@ export const SCROLLS_ITEMS: ItemData[] = [
     category: 'scrolls',
     description: 'Grant the unit the ability to boost its allies movement speed to the maximum. Lasts |cff7DBEF17|r seconds, has |cff7DBEF135|r seconds cooldown.',
     tooltip: 'Grant the unit the ability to boost its allies movement speed to the maximum. Lasts |cff7DBEF17|r seconds, has |cff7DBEF135|r seconds cooldown.',
-    iconPath: 'btnscrollofhaste.png',
+    iconPath: 'BTNScrollOfHaste.png',
   },
   {
     id: 'scroll-of-tsunami',
@@ -47,7 +47,7 @@ export const SCROLLS_ITEMS: ItemData[] = [
     category: 'scrolls',
     description: 'Grants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown.',
     tooltip: 'Grants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown.',
-    iconPath: 'btnsnazzyscrollpurple.png',
+    iconPath: 'BTNSnazzyScrollPurple.png',
   },
   {
     id: 'scroll-of-cyclone',
@@ -55,7 +55,7 @@ export const SCROLLS_ITEMS: ItemData[] = [
     category: 'scrolls',
     description: 'Grants the unit the ability to cast Cyclone which tosses an enemy unit in the air for |cffFE890D5|r/|cffFE890D10|r seconds. Has |cff7DBEF135|r seconds cooldown.',
     tooltip: 'Grants the unit the ability to cast Cyclone which tosses an enemy unit in the air for |cffFE890D5|r/|cffFE890D10|r seconds. Has |cff7DBEF135|r seconds cooldown.',
-    iconPath: 'btnbansheemaster.png',
+    iconPath: 'BTNBansheeMaster.png',
   },
   {
     id: 'scroll-slot',
@@ -63,6 +63,6 @@ export const SCROLLS_ITEMS: ItemData[] = [
     category: 'scrolls',
     description: '',
     tooltip: 'A special slot you can carry a scroll in.',
-    iconPath: 'PASBTNScrollSlot.png',
+    iconPath: 'pASBTNScrollSlot.png',
   }
 ];

@@ -5,10 +5,9 @@ export type DerivedClassType = 'sub' | 'super';
 export type DerivedClassData = {
   slug: string;
   name: string;
-  parentSlug: string; // base class slug
+  parentSlug: string;
   type: DerivedClassType;
   summary: string;
-  // Optional explicit icon path, e.g. "/icons/itt/trolls/btnorcwarlock.png"
   iconSrc?: string;
   tips?: string[];
   growth: { strength: number; agility: number; intelligence: number };
@@ -261,62 +260,44 @@ export const DERIVED_CLASSES: DerivedClassData[] = [
   }
 ];
 
+export const SUBCLASS_SLUGS = DERIVED_CLASSES
+  .filter(cls => cls.type === 'sub')
+  .map(cls => cls.slug);
+
+export const SUPERCLASS_SLUGS = DERIVED_CLASSES
+  .filter(cls => cls.type === 'super')
+  .map(cls => cls.slug);
+
 export function getDerivedClassBySlug(slug: string): DerivedClassData | undefined {
   return DERIVED_CLASSES.find(c => c.slug === slug);
 }
 
-/**
- * Get all subclasses for a given parent class slug.
- */
 export function getSubclassesByParentSlug(parentSlug: string): DerivedClassData[] {
-  // First try to find by parentSlug in derived classes
   const byParentSlug = DERIVED_CLASSES.filter(c => c.parentSlug === parentSlug && c.type === 'sub');
-  
-  // Also check the base class's subclasses array
   const baseClass = BASE_TROLL_CLASSES.find(c => c.slug === parentSlug);
   if (baseClass && baseClass.subclasses && baseClass.subclasses.length > 0) {
     const fromBaseClass = baseClass.subclasses
       .map(slug => DERIVED_CLASSES.find(c => c.slug === slug && c.type === 'sub'))
-      .filter((c): c is DerivedClassData => c !== undefined);
-    
-    // Merge and deduplicate by slug
+      .filter((c) => c !== undefined);
     const all = [...byParentSlug, ...fromBaseClass];
     return all.filter((c, index, self) => 
       index === self.findIndex(d => d.slug === c.slug)
     );
   }
-  
   return byParentSlug;
 }
 
-/**
- * Get all superclasses for a given parent class slug.
- */
 export function getSupersByParentSlug(parentSlug: string): DerivedClassData[] {
-  // First try to find by parentSlug in derived classes
   const byParentSlug = DERIVED_CLASSES.filter(c => c.parentSlug === parentSlug && c.type === 'super');
-  
-  // Also check the base class's superclasses array
   const baseClass = BASE_TROLL_CLASSES.find(c => c.slug === parentSlug);
   if (baseClass && baseClass.superclasses && baseClass.superclasses.length > 0) {
     const fromBaseClass = baseClass.superclasses
       .map(slug => DERIVED_CLASSES.find(c => c.slug === slug && c.type === 'super'))
-      .filter((c): c is DerivedClassData => c !== undefined);
-    
-    // Merge and deduplicate by slug
+      .filter((c) => c !== undefined);
     const all = [...byParentSlug, ...fromBaseClass];
     return all.filter((c, index, self) => 
       index === self.findIndex(d => d.slug === c.slug)
     );
   }
-  
   return byParentSlug;
 }
-
-export const SUBCLASS_SLUGS: string[] = DERIVED_CLASSES
-  .filter(c => c.type === 'sub')
-  .map(c => c.slug);
-
-export const SUPERCLASS_SLUGS: string[] = DERIVED_CLASSES
-  .filter(c => c.type === 'super')
-  .map(c => c.slug);

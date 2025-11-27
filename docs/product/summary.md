@@ -36,8 +36,11 @@
 5. **User Interface**
    - Game list page (`/games`)
    - Game detail page (`/games/[id]`)
+   - Player index + search page (`/players`)
+   - Player comparison (`/players/compare`)
    - Player profile page (`/players/[name]`)
    - Leaderboard page (`/standings`)
+   - Live analytics dashboard (`/meta`)
    - Responsive design with medieval theme
 
 6. **Analytics & Charts**
@@ -61,14 +64,14 @@
 ## 📁 File Structure Created
 
 ```
-src/features/ittweb/
+src/features/modules/
 ├── games/
 │   ├── components/ (GameCard, GameList, GameDetail)
 │   ├── hooks/ (useGames, useGame)
 │   ├── lib/ (gameService, eloCalculator)
 │   └── types/
 ├── players/
-│   ├── components/ (PlayerProfile)
+│   ├── components/ (PlayersPage, PlayerProfile, PlayerComparison)
 │   ├── hooks/ (usePlayerStats)
 │   ├── lib/ (playerService)
 │   └── types/
@@ -78,7 +81,7 @@ src/features/ittweb/
 │   ├── lib/ (standingsService)
 │   └── types/
 ├── analytics/
-│   ├── components/ (ActivityChart, EloChart, WinRateChart)
+│   ├── components/ (ActivityChart, GameLengthChart, PlayerActivityChart, Class* charts)
 │   ├── lib/ (analyticsService)
 │   └── types/
 └── shared/
@@ -87,18 +90,15 @@ src/features/ittweb/
     └── types/
 
 src/pages/
-├── games/
-│   ├── index.tsx
-│   └── [id].tsx
-├── players/
-│   └── [name].tsx
-├── standings/
-│   └── index.tsx
+├── games/ (index.tsx, [id].tsx)
+├── players/ (index.tsx, [name].tsx, compare.tsx)
+├── standings/index.tsx
+├── meta.tsx
 └── api/
     ├── games/ (index, [id])
-    ├── players/ ([name], search, compare)
+    ├── players/ ([name], index, search, compare)
     ├── standings/ (index)
-    └── analytics/ (activity, elo-history, win-rate)
+    └── analytics/ (activity, elo-history, win-rate, meta helpers)
 ```
 
 ## 🔧 Technical Implementation

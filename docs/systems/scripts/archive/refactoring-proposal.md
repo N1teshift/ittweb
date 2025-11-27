@@ -1,6 +1,6 @@
 # Scripts Refactoring Guide
 
-This document covers the refactoring proposal and comparison for the scripts directory, analyzing code duplication and proposing a modular approach with shared utilities.
+This document covers the refactoring proposal and comparison for the scripts directory, analyzing code duplication and proposing a modular approach with shared utilities. _Legacy references to `scripts/icons/*` reflect an earlier layout; the current code lives in `scripts/data/`.*
 
 ## Table of Contents
 

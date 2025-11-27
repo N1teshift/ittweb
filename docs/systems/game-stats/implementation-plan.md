@@ -1,6 +1,6 @@
 # Comprehensive Implementation Plan: Game Statistics System
 
-**Status:** Planning Phase  
+**Status:** Planning Phase _(updated: code now lives under `src/features/modules/**`; this document references the earlier `src/features/ittweb` layout)_  
 **Last Updated:** 2025-01-XX  
 **Version:** 1.0
 

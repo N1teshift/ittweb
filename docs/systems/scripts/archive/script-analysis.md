@@ -1,5 +1,7 @@
 # Scripts Folder Analysis & Recommendations
 
+_Historical document: references to `scripts/icons/*` describe a prior repo layout. Current scripts live in `scripts/data/`, so treat path references below as legacy context._
+
 ## Executive Summary
 
 **Total Scripts:** 39 files

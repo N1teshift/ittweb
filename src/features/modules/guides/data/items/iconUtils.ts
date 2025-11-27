@@ -7,7 +7,7 @@ function toIconCategory(item: ItemData): ITTIconCategory {
 }
 
 export function getItemIconPathFromRecord(item: ItemData): string {
-  if (item.iconPath) return `/icons/itt/${item.iconPath}`;
+  if (item.iconPath) return item.iconPath;
   const category = toIconCategory(item);
   const explicit = resolveExplicitIcon(category, item.name);
   if (explicit) return explicit;

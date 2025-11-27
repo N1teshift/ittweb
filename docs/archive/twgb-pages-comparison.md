@@ -11,7 +11,7 @@
 
 2. **`/players/[name]`** - Player profile page
    - ✅ Individual player profiles with stats
-   - **Status:** Implemented (but missing index/search page)
+   - ✅ `/players` index/search page with compare mode toggle
 
 3. **`/standings`** - Leaderboard page
    - ✅ `/standings` - Shows leaderboard with category filter
@@ -23,25 +23,22 @@
 
 ### 1. **`/players`** (Index/Search Page)
 **twgb-website:** Had a players index page with search functionality  
-**Current:** Only has `/players/[name]` - no index page  
-**API:** ✅ `/api/players/search` exists, but no UI page
+**Current:** ✅ `/players` index ships with search + selectable rows tied to comparison  
+**API:** ✅ `/api/players`, `/api/players/search`
 
-**What's needed:**
-- Player search page
-- Autocomplete search
-- List of recent/active players
+**Future improvements:**
+- Autocomplete/live suggestions
+- Surfacing recent/active players automatically
 
 ---
 
 ### 2. **`/players/compare`** (Player Comparison Page)
 **twgb-website:** `/compare?names=player1,player2`  
-**Current:** ✅ API route exists (`/api/players/compare`), but no UI page
+**Current:** ✅ `/players/compare` renders head-to-head + ELO chart (powered by `/api/players/compare`)
 
-**What's needed:**
-- Comparison page component
-- Side-by-side stats display
-- Head-to-head record
-- ELO comparison chart
+**Future improvements:**
+- Additional filters/date ranges
+- Deep links from `/games` or `/standings`
 
 ---
 
@@ -118,14 +115,13 @@
 
 ### Core Pages: ✅ 3/3 Implemented
 - ✅ Games (list + detail)
-- ✅ Players (profile, but missing index)
+- ✅ Players (profile + index/search)
 - ✅ Standings
 
-### Additional Pages: ❌ 0/5 Implemented
-- ❌ Players index/search
-- ❌ Player comparison
+### Additional Pages: ❌ 3/5 Implemented
+- ✅ Player comparison
 - ❌ Class statistics
-- ❌ Meta page
+- ❌ Meta page (now `/meta`, but still lacks TWGB-style content)
 - ❌ Other informational pages
 
 ### API Routes: ✅ 11/13 Implemented
@@ -137,34 +133,24 @@
 ## Priority Recommendations
 
 ### High Priority (P0)
-1. **`/players`** (Index/Search Page)
-   - Needed for discoverability
-   - API already exists
-   - Quick to implement
-
-2. **`/players/compare`** (Comparison Page)
-   - API already exists
-   - Useful feature
-   - Mentioned in implementation plan
-
-### Medium Priority (P1)
-3. **`/classes`** (Class Statistics)
+1. **`/classes`** (Class Statistics)
    - Part of original plan (Phase 8)
    - Useful for meta analysis
    - Requires new API routes
 
+### Medium Priority (P1)
+2. **`/meta`** (TWGB-style write-up) + other informational pages
+3. **`/competitions`** / **`/changelog`** (community storytelling)
+
 ### Low Priority (P2)
-4. **`/meta`**, **`/changelog`**, **`/competitions`**
-   - Informational pages
-   - Can be added later if needed
+4. Optional alternative `/games_list` view / `/player_activity` standalone page (current `/players` already shows last played, but a dedicated UI could help)
 
 ---
 
 ## Quick Wins
 
-1. **Player Search Page** - API exists, just need UI
-2. **Player Comparison Page** - API exists, just need UI
-3. **Class Statistics** - Requires new API but follows existing patterns
+1. **Class Statistics** - Requires new API but follows existing patterns
+2. **Meta/Competitions pages** - Mostly content + light data plumbing
 
 ---
 

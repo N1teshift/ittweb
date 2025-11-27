@@ -1,6 +1,6 @@
 # TWGB Website Analysis - Borrowable Features
 
-This document analyzes the `twgb-website` (Ruby on Rails) project and identifies features that could be implemented in the modern `ittweb` (Next.js/TypeScript) project.
+This document analyzes the `twgb-website` (Ruby on Rails) project and identifies features that could be implemented in the modern `ittweb` (Next.js/TypeScript) project. _The code references below used the former `src/features/ittweb` directory; all feature code now lives under `src/features/modules`. Where the plan called for `/players` or `/players/compare`, those pages already exist today._
 
 ## Overview
 

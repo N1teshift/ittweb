@@ -7,6 +7,6 @@ export const SCOUT_ABILITIES: AbilityData[] = [
     category: 'scout',
     description: '',
     tooltip: 'Cast multiple reveal around you and on your living clays, detects invisible units. Lasts |cff7DBEF110|r seconds, has |cff7DBEF150|r seconds cooldown.',
-    iconPath: 'btnreveal.png',
+    iconPath: 'BTNReveal.png',
   }
 ];

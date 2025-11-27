@@ -7,7 +7,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     category: 'buildings',
     description: 'Creates a defensive Ensnare Trap at target location.',
     tooltip: 'Creates a defensive Ensnare Trap at target location.',
-    iconPath: 'btncop.png',
+    iconPath: 'BTNCOP.png',
   },
   {
     id: 'camp-fire-kit',
@@ -15,7 +15,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     category: 'buildings',
     description: 'Creates a Camp Fire at a target location.',
     tooltip: 'Creates a Camp Fire at a target location.',
-    iconPath: 'btnfire.png',
+    iconPath: 'BTNFire.png',
   },
   {
     id: 'mage-fire-kit',
@@ -23,7 +23,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     category: 'buildings',
     description: 'Creates a Mage Fire at a target location.',
     tooltip: 'Creates a Mage Fire at a target location.',
-    iconPath: 'btnfire.png',
+    iconPath: 'BTNFire.png',
   },
   {
     id: 'tent-kit',
@@ -39,7 +39,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     category: 'buildings',
     description: 'Creates a Troll Hut at target location. Can use it to sleep.',
     tooltip: 'Creates a Troll Hut at target location. Can use it to sleep.',
-    iconPath: 'btnspiritlodge.png',
+    iconPath: 'BTNSpiritLodge.png',
   },
   {
     id: 'smoke-house-kit',
@@ -63,7 +63,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     category: 'buildings',
     description: 'Creates an active Spirit Ward when placed. A spirit ward can revive dead heroes. Place this like a building.',
     tooltip: 'Creates an active Spirit Ward when placed. A spirit ward can revive dead heroes. Place this like a building.',
-    iconPath: 'btnabsorbmagic.png',
+    iconPath: 'BTNAbsorbMagic.png',
   },
   {
     id: 'mud-hut-kit',
@@ -79,7 +79,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     category: 'buildings',
     description: 'Creates an Omnidefender Kit at target location. Omnidefenders are a highly customizeable defensive structure.',
     tooltip: 'Creates an Omnidefender Kit at target location. Omnidefenders are a highly customizeable defensive structure.',
-    iconPath: 'btnorctower.png',
+    iconPath: 'BTNOrcTower.png',
   },
   {
     id: 'mixing-pot-kit',
@@ -95,7 +95,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     category: 'buildings',
     description: 'Creates a Tannery at target location. A Tannery can make armor from skin.',
     tooltip: 'Creates a Tannery at target location. A Tannery can make armor from skin.',
-    iconPath: 'btnpigfarm.png',
+    iconPath: 'BTNPigFarm.png',
   },
   {
     id: 'workshop-kit',
@@ -111,7 +111,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     category: 'buildings',
     description: 'Creates a Teleport Beacon at target location. Teleport beacons can teleport friendly units short distances around it.',
     tooltip: 'Creates a Teleport Beacon at target location. Teleport beacons can teleport friendly units short distances around it.',
-    iconPath: 'btnenergytower.png',
+    iconPath: 'BTNEnergyTower.png',
   },
   {
     id: 'witch-doctors-hut-kit',
@@ -119,7 +119,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     category: 'buildings',
     description: 'Creates a Witch Doctor\'s Hut at target location.',
     tooltip: 'Creates a Witch Doctor\'s Hut at target location.',
-    iconPath: 'btnvoodoolounge.png',
+    iconPath: 'BTNVoodooLounge.png',
   },
   {
     id: 'hatchery-kit',
@@ -127,7 +127,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     category: 'buildings',
     description: 'Creates a Hatchery at target location.',
     tooltip: 'Creates a Hatchery at target location.',
-    iconPath: 'btnsnowowl.png',
+    iconPath: 'BTNSnowOwl.png',
   },
   {
     id: 'forge-kit',
@@ -135,7 +135,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     category: 'buildings',
     description: 'Create a Forge at target location, the Forge is used to create ingots',
     tooltip: 'Create a Forge at target location, the Forge is used to create ingots',
-    iconPath: 'btnforge.png',
+    iconPath: 'BTNForge.png',
   },
   {
     id: 'transport-ship-kit',
@@ -143,7 +143,7 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     category: 'buildings',
     description: 'Creates a ship somewhere in the water.',
     tooltip: 'Creates a ship somewhere in the water.',
-    iconPath: 'btnnightelftransport.png',
+    iconPath: 'BTNNightElfTransport.png',
   },
   {
     id: 'disc0-duck-s-pinion-of-fire',
@@ -151,6 +151,6 @@ export const BUILDINGS_ITEMS: ItemData[] = [
     category: 'buildings',
     description: 'A very rare legendary item.',
     tooltip: '|cffBE00FEUnique\n|rOne of Disc0-Duck\'s legendary quills. This one provides the user with Disc0-Ducks extreme heat, increasing the owners speed to maximum and giving him a damaging heat aura dealing |cffFF02029|r damage per seconds. Additionally cast phoenix fire every |cff7DBEF11.5|r seconds on nearest enemy, dealing |cffFF02024|r damage.',
-    iconPath: 'btnheartofaszune.png',
+    iconPath: 'BTNHeartOfAszune.png',
   }
 ];

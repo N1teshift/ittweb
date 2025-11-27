@@ -20,14 +20,6 @@ export const MAGE_ABILITIES: AbilityData[] = [
     category: 'mage',
     description: '',
     tooltip: 'Blasts a target with negative energy dealing |cffFF020240|r damage and slowing for a short duration. Has |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'btnwandofshadowsight.png',
-  },
-  {
-    id: 'cyclone',
-    name: 'Cyclone',
-    category: 'mage',
-    description: '',
-    tooltip: 'Greater Hawk circles around an ally creating a cyclone, protecting him for the duration.\nTarget becomes invulnerable for |cff7DBEF13|r seconds and causes |cffFF020240|r damage to enemies upon landing.\nHas |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'btntornado.png',
+    iconPath: 'BTNWandOfShadowSight.png',
   }
 ];

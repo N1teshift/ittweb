@@ -14,7 +14,6 @@ import { THIEF_ABILITIES } from './thief';
 import { BUILDING_ABILITIES } from './building';
 import { UNKNOWN_ABILITIES } from './unknown';
 
-// Combine all abilities
 export const ABILITIES: AbilityData[] = [
   ...BASIC_ABILITIES,
   ...BEASTMASTER_ABILITIES,

@@ -36,10 +36,10 @@ Keep the references visible so users know what data is missing. They can be manu
 
 ## Current Status
 
-The resolver script (`scripts/resolve-field-references.mjs`) attempts to resolve references by:
+The historical resolver script (`scripts/resolve-field-references.mjs`) attempted to resolve references by:
 1. Looking in the same object's raw modifications
 2. Looking in a global lookup of all extracted fields
 3. If not found, leaving the placeholder as-is
 
-Most references remain unresolved because they point to base game data not in the modifications.
+_That script is not present in the current repository snapshot; follow `scripts/README.md` if a new resolver is added. For now most references remain unresolved because they point to base game data not in the modifications._
 

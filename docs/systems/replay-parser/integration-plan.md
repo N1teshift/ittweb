@@ -1,6 +1,6 @@
 # Replay Parser & Scheduled Games Integration Plan
 
-**Status:** Planning Phase  
+**Status:** Planning Phase _(references former `src/features/ittweb` paths; current code lives in `src/features/modules`)_  
 **Last Updated:** 2025-01-XX  
 **Version:** 1.0
 
@@ -9,7 +9,7 @@
 This plan outlines the integration of:
 1. **Scheduled Games** with **Game Statistics** system
 2. **Warcraft 3 Replay Parser** for automatic game data extraction
-3. **Replay Upload** functionality (reusing Archives infrastructure)
+3. **Replay Upload** functionality (reusing Archives infrastructure – see `src/features/shared/lib/archiveService.ts::uploadReplay`)
 
 ---
 

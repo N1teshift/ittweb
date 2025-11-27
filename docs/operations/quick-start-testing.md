@@ -15,16 +15,15 @@ Wait for: `Ready on http://localhost:3000`
 
 ## 📍 Step 2: Access the Test Form
 
-Open in your browser:
-**http://localhost:3000/test/create-game**
+Open **http://localhost:3000/scheduled-games**.
 
-This page lets you create test games easily!
+Use the **Create Game** button inside the Scheduled Games page (the legacy `/test/create-game` URL now redirects here).
 
 ## 🎮 Step 3: Create Your First Game
 
-1. Fill in the form (default values are pre-filled)
+1. Fill in the modal form (default values are pre-filled)
 2. Click "Create Game"
-3. You should see a success message with the game ID
+3. You should see a success toast and the entry will appear in both Scheduled Games and `/games`
 
 ## 👀 Step 4: View Your Game
 
@@ -34,8 +33,8 @@ After creating a game, click:
 
 ## 📊 Step 5: Check Player Stats
 
-1. Click on a player name in the game detail page
-2. Or go to: **http://localhost:3000/players/Player1**
+1. Click on a player name in the game detail page **or** visit the player index: **http://localhost:3000/players**
+2. Search for your player and open their profile (`/players/[name]`)
 3. You should see:
    - ELO rating (should be > 1000 for winners)
    - Win/loss record
@@ -58,11 +57,14 @@ You should see players ranked by ELO!
 
 | Page | URL |
 |------|-----|
-| **Test Form** | http://localhost:3000/test/create-game |
+| **Create Game (Scheduled Games)** | http://localhost:3000/scheduled-games |
 | **Games List** | http://localhost:3000/games |
 | **Game Detail** | http://localhost:3000/games/[id] |
+| **Players Index** | http://localhost:3000/players |
 | **Player Profile** | http://localhost:3000/players/[name] |
+| **Player Comparison** | http://localhost:3000/players/compare |
 | **Leaderboard** | http://localhost:3000/standings |
+| **Meta Analytics** | http://localhost:3000/meta |
 
 ## 🧪 Test Scenarios
 

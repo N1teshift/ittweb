@@ -23,7 +23,9 @@ Once the server is running, you can access:
 #### **Main Pages:**
 - **Games List:** http://localhost:3000/games
 - **Game Detail:** http://localhost:3000/games/[id] (replace [id] with actual game ID)
+- **Players Index:** http://localhost:3000/players (search + browse profiles)
 - **Player Profile:** http://localhost:3000/players/[name] (replace [name] with player name)
+- **Player Comparison:** http://localhost:3000/players/compare
 - **Leaderboard:** http://localhost:3000/standings
 
 #### **API Endpoints:**
@@ -78,11 +80,13 @@ curl -X POST http://localhost:3000/api/games \
 
 ### Step 3: Check Player Stats
 
-1. Go to http://localhost:3000/players/Player1
-2. You should see Player1's statistics
-3. Check that ELO was calculated (should be > 1000 for winner)
-4. Go to http://localhost:3000/players/Player2
-5. Check that Player2's ELO decreased (should be < 1000 for loser)
+1. Go to http://localhost:3000/players and search/select your player
+2. Open http://localhost:3000/players/Player1 directly if you already know the slug
+3. You should see Player1's statistics
+4. Check that ELO was calculated (should be > 1000 for winner)
+5. Go to http://localhost:3000/players/Player2
+6. Check that Player2's ELO decreased (should be < 1000 for loser)
+7. (Optional) Compare players via http://localhost:3000/players/compare?names=Player1,Player2 to ensure the comparison UI/API works
 
 ### Step 4: View Leaderboard
 

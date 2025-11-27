@@ -7,18 +7,18 @@ This document summarizes all the improvements applied to the ittweb project base
 ### 1. Barrel Exports (index.ts) ✅
 - Added `index.ts` files to all feature modules for clean imports
 - **Locations:**
-  - `src/features/ittweb/guides/components/index.ts`
-  - `src/features/ittweb/guides/utils/index.ts`
-  - `src/features/ittweb/guides/index.ts`
-  - `src/features/ittweb/map-analyzer/components/index.ts`
-  - `src/features/ittweb/map-analyzer/utils/index.ts`
-  - `src/features/ittweb/map-analyzer/types/index.ts`
-  - `src/features/ittweb/map-analyzer/index.ts`
-  - `src/features/ittweb/tools/components/index.ts`
-  - `src/features/ittweb/tools/index.ts`
-  - `src/features/ittweb/blog/components/index.ts`
-  - `src/features/ittweb/blog/lib/index.ts`
-  - `src/features/ittweb/blog/index.ts`
+  - `src/features/modules/guides/components/index.ts`
+  - `src/features/modules/guides/utils/index.ts`
+  - `src/features/modules/guides/index.ts`
+  - `src/features/modules/map-analyzer/components/index.ts`
+  - `src/features/modules/map-analyzer/utils/index.ts`
+  - `src/features/modules/map-analyzer/types/index.ts`
+  - `src/features/modules/map-analyzer/index.ts`
+  - `src/features/modules/tools/components/index.ts`
+  - `src/features/modules/tools/index.ts`
+  - `src/features/modules/blog/components/index.ts`
+  - `src/features/modules/blog/lib/index.ts`
+  - `src/features/modules/blog/index.ts`
 
 ### 2. Modular CSS Architecture ✅
 - Split `globals.css` into organized modules:
@@ -118,7 +118,7 @@ src/
 │   │   │   │       └── index.ts
 │   │   │   └── index.ts
 │   │   └── index.ts
-│   └── ittweb/
+│   └── modules/
 │       ├── guides/
 │       │   ├── components/
 │       │   │   └── index.ts

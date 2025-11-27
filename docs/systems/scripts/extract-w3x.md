@@ -44,7 +44,7 @@ mpq-extract Island.Troll.Tribes.v3.28.w3x war3map.w3b external/island_troll_trib
 Once you have the extracted files in place:
 
 ```bash
-node scripts/extract-from-w3x.mjs
+node scripts/data/extract-from-w3x.mjs
 ```
 
 This will:

@@ -36,7 +36,7 @@ export const BASIC_ABILITIES: AbilityData[] = [
     category: 'basic',
     description: '',
     tooltip: 'Cooks all the corpses around the fire into Cooked Meat',
-    iconPath: 'btnmonsterlure.png',
+    iconPath: 'BTNMonsterLure.png',
   },
   {
     id: 'cook-and-collect-meat',
@@ -44,7 +44,7 @@ export const BASIC_ABILITIES: AbilityData[] = [
     category: 'basic',
     description: '',
     tooltip: 'Cooks all the corpses around the fire and collects all meat within |cff7DBEF1800|r range and stores it in the building\'s inventory.|cFFFFCC00\nMeat cannot be collected if there is an enemy in range.|r',
-    iconPath: 'btnmonsterlure.png',
+    iconPath: 'BTNMonsterLure.png',
   },
   {
     id: 'pass-meat',
