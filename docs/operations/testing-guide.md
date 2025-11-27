@@ -13,8 +13,8 @@ The server will start on **http://localhost:3000**
 ## 🔁 Refreshing Data Before Testing
 
 - Gameplay fixtures (units/items/abilities) come from the scripts pipeline in `scripts/data/`.
-- Run `node scripts/data/generate-from-work.mjs` first if you need fresh data; see [`scripts/README.md`](../scripts/README.md) for details.
-- Need to understand current script refactors? Check [`scripts/data/REFACTORING_PLAN.md`](../scripts/data/REFACTORING_PLAN.md).
+- Run `node scripts/data/generate-from-work.mjs` first if you need fresh data; see [`scripts/README.md`](../../scripts/README.md) for details.
+- Need to understand current script refactors? Check [`scripts/data/REFACTORING_PLAN.md`](../../scripts/data/REFACTORING_PLAN.md).
 
 ### 2. Access the Pages
 

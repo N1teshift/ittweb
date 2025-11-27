@@ -55,8 +55,8 @@
 ## 🧱 Data Pipeline Source
 
 - All static item/unit/ability data originates from the four-stage pipeline in `scripts/data/`.
-- Run `node scripts/data/generate-from-work.mjs` (see [`scripts/README.md`](../scripts/README.md)) whenever you need to refresh the dataset before validating features described here.
-- Refactoring status for those scripts lives in [`scripts/data/REFACTORING_PLAN.md`](../scripts/data/REFACTORING_PLAN.md) if you need to understand in-flight maintenance work.
+- Run `node scripts/data/generate-from-work.mjs` (see [`scripts/README.md`](../../scripts/README.md)) whenever you need to refresh the dataset before validating features described here.
+- Refactoring status for those scripts lives in [`scripts/data/REFACTORING_PLAN.md`](../../scripts/data/REFACTORING_PLAN.md) if you need to understand in-flight maintenance work.
 
 ## 📁 File Structure Created
 

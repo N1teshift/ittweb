@@ -4,8 +4,8 @@ This folder now focuses on deep dives and historical background for the pipeline
 
 ## Current References
 
-- **Pipeline operations:** [`../../scripts/README.md`](../../scripts/README.md) – canonical quick start + stage-by-stage guide.
-- **Refactoring status & backlog:** [`../../scripts/data/REFACTORING_PLAN.md`](../../scripts/data/REFACTORING_PLAN.md).
+- **Pipeline operations:** [`../../../scripts/README.md`](../../../scripts/README.md) – canonical quick start + stage-by-stage guide.
+- **Refactoring status & backlog:** [`../../../scripts/data/REFACTORING_PLAN.md`](../../../scripts/data/REFACTORING_PLAN.md).
 - **Global documentation index:** [`../README.md`](../README.md).
 
 ## Active Guides
@@ -40,4 +40,4 @@ docs/systems/scripts/
     └── script-analysis.md
 ```
 
-_Need to regenerate data? Start at `../../scripts/README.md`. Need to understand why something was built the way it was? The guides and archival docs here have your back._
+_Need to regenerate data? Start at `../../../scripts/README.md`. Need to understand why something was built the way it was? The guides and archival docs here have your back._

@@ -3,7 +3,7 @@
 ## 🔁 Before You Start
 
 - If you need the latest in-game data (items, abilities, icon map), regenerate it with `node scripts/data/generate-from-work.mjs`.
-- Full instructions live in [`scripts/README.md`](../scripts/README.md); script refactoring status lives in [`scripts/data/REFACTORING_PLAN.md`](../scripts/data/REFACTORING_PLAN.md).
+- Full instructions live in [`scripts/README.md`](../../scripts/README.md); script refactoring status lives in [`scripts/data/REFACTORING_PLAN.md`](../../scripts/data/REFACTORING_PLAN.md).
 
 ## 🚀 Step 1: Start the Server
 
