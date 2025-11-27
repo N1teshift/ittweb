@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
+import bundleAnalyzer from "@next/bundle-analyzer";
 
-const nextConfig: NextConfig = {
+const withBundleAnalyzer = bundleAnalyzer({
+    enabled: process.env.ANALYZE === "true",
+});
+
+const baseConfig: NextConfig = {
     reactStrictMode: false,
     i18n: {
         locales: ["en"],
@@ -46,6 +51,8 @@ const nextConfig: NextConfig = {
         ];
     }
 };
+
+const nextConfig = withBundleAnalyzer(baseConfig);
 
 export default nextConfig;
 

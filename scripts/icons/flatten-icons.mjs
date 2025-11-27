@@ -73,3 +73,4 @@ if (conflicts.length > 0) {
 console.log('\n✨ Done! All icons are now in the flat directory structure.');
 
 
+
