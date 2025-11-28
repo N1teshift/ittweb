@@ -35,6 +35,36 @@ jest.mock("next-i18next", () => ({
   Trans: ({ children }) => children,
 }));
 
+jest.mock("@/features/infrastructure/api/firebase", () => ({
+  __esModule: true,
+  getFirestoreInstance: jest.fn(() => ({})),
+  getStorageInstance: jest.fn(() => ({})),
+}));
+
+jest.mock("@/features/infrastructure/api/firebase/firebaseClient", () => ({
+  __esModule: true,
+  initializeFirebaseApp: jest.fn(),
+  getFirestoreInstance: jest.fn(() => ({})),
+  getStorageInstance: jest.fn(() => ({})),
+  getAnalyticsInstance: jest.fn(() => ({})),
+}));
+
+jest.mock("@/features/infrastructure/api/firebase/admin", () => ({
+  __esModule: true,
+  getFirestoreAdmin: jest.fn(() => ({ collection: jest.fn(() => ({ doc: jest.fn(() => ({ get: jest.fn(), collection: jest.fn(() => ({ get: jest.fn() })) })) })) })),
+  isServerSide: jest.fn(() => false),
+  getAdminTimestamp: jest.fn(() => ({
+    now: jest.fn(() => ({ toDate: () => new Date("2020-01-01T00:00:00Z") })),
+    fromDate: jest.fn((date) => ({ toDate: () => date })),
+  })),
+}));
+
+jest.mock("@/features/infrastructure/logging", () => ({
+  __esModule: true,
+  createComponentLogger: jest.fn(() => ({ info: jest.fn(), warn: jest.fn(), error: jest.fn() })),
+  logError: jest.fn(),
+}));
+
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: jest.fn().mockImplementation((query) => ({
