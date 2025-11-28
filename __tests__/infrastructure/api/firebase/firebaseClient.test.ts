@@ -28,8 +28,8 @@ describe('firebase client', () => {
   const originalWindow = global.window;
 
   beforeEach(() => {
-    jest.resetModules();
     jest.clearAllMocks();
+    jest.resetModules();
     process.env = {
       ...originalEnv,
       NEXT_PUBLIC_FIREBASE_API_KEY: 'key',
@@ -84,6 +84,7 @@ describe('firebase client', () => {
   });
 
   it('throws when configuration is missing required fields', async () => {
+    jest.resetModules();
     process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID = '';
     mockGetApps.mockReturnValue([]);
 
@@ -125,8 +126,9 @@ describe('firebase client', () => {
   });
 
   it('returns null analytics instance on server', async () => {
+    jest.resetModules();
     // @ts-expect-error simulate server environment
-    (global as any).window = undefined;
+    delete (global as any).window;
     const { getAnalyticsInstance } = await importModule();
     const analytics = await getAnalyticsInstance();
 
@@ -134,6 +136,7 @@ describe('firebase client', () => {
   });
 
   it('initializes analytics only when supported', async () => {
+    jest.resetModules();
     (global as any).window = {} as Window;
     mockGetApps.mockReturnValue([]);
     mockInitializeApp.mockReturnValue({});
@@ -150,6 +153,7 @@ describe('firebase client', () => {
   });
 
   it('swallows analytics initialization errors and returns null', async () => {
+    jest.resetModules();
     (global as any).window = {} as Window;
     mockIsSupported.mockRejectedValue(new Error('unsupported'));
 
@@ -157,5 +161,44 @@ describe('firebase client', () => {
     const analytics = await getAnalyticsInstance();
 
     expect(analytics).toBeNull();
+  });
+
+  it('handles network unavailable during initialization', async () => {
+    jest.resetModules();
+    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID = '';
+    mockGetApps.mockReturnValue([]);
+
+    const { initializeFirebaseApp } = await importModule();
+
+    expect(() => initializeFirebaseApp()).toThrow('Firebase configuration error: Firebase config missing');
+  });
+
+  it('handles concurrent initialization attempts', async () => {
+    mockGetApps.mockReturnValue([]);
+    const createdApp = { name: 'app' } as unknown;
+    mockInitializeApp.mockReturnValue(createdApp);
+
+    const { initializeFirebaseApp } = await importModule();
+
+    // Simulate concurrent initialization
+    const [first, second] = await Promise.all([
+      Promise.resolve(initializeFirebaseApp()),
+      Promise.resolve(initializeFirebaseApp())
+    ]);
+
+    // Should return same instance
+    expect(first).toBe(second);
+    expect(first).toBe(createdApp);
+  });
+
+  it('handles browser refresh scenario by reusing existing app', async () => {
+    const existingApp = { name: 'existing' } as unknown;
+    mockGetApps.mockReturnValue([existingApp]);
+
+    const { initializeFirebaseApp } = await importModule();
+    const app = initializeFirebaseApp();
+
+    expect(app).toBe(existingApp);
+    expect(mockInitializeApp).not.toHaveBeenCalled();
   });
 });

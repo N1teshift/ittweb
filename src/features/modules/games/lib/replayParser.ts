@@ -104,7 +104,6 @@ export async function parseReplayFile(
       creatorName: parsed.creator || 'Unknown',
       ownername: parsed.creator || 'Unknown', // Legacy field: same as creatorName from replay
       category: options.fallbackCategory || deriveCategory(players),
-      scheduledGameId: options.scheduledGameId,
       players: players.map((player) => {
         const stats = derivedStats.get(player.id) || {};
         const flag = deriveFlag(player.teamid, winningTeamId, player, w3mmdData.lookup);

@@ -1,6 +1,8 @@
 # Scheduled Games Tests
 
-This document outlines all tests needed for the scheduled games module including services, API routes, components, hooks, and pages.
+This document outlines all tests needed for the scheduled games module including services and components.
+
+**Note**: The scheduled games collection and dedicated pages have been removed. Scheduled games are now managed through the main `games` collection with `gameState: 'scheduled'`. API routes for scheduled games no longer exist - functionality has been moved to `/api/games`. The components listed below are still used in other parts of the application (e.g., `ScheduleGameForm` on the homepage, `EditGameForm` and `GameDeleteDialog` on game detail pages).
 
 ## Scheduled Game Service
 
@@ -106,186 +108,12 @@ This document outlines all tests needed for the scheduled games module including
   - **Expected**: Returns success even if user already left or doesn't exist
   - **Edge cases**: Never joined, already left, invalid discordId
 
-## Scheduled Games API Routes
-
-### `src/pages/api/scheduled-games/index.ts`
-
-- [ ] Test GET returns upcoming games by default and honors includePast/includeArchived flags
-  - **What**: Verify GET endpoint filtering works
-  - **Expected**: Returns upcoming games by default, respects query flags
-  - **Edge cases**: All flags, no games match, invalid flags
-
-- [ ] Test POST requires authentication and validates required fields
-  - **What**: Verify authentication and validation
-  - **Expected**: Returns 401 without auth, 400 with invalid data
-  - **Edge cases**: Expired tokens, missing fields, invalid field types
-
-- [ ] Test POST rejects past dates for non-admin users and allows admins/manual entries
-  - **What**: Verify date validation and admin override
-  - **Expected**: Non-admins can't create past games, admins can, manual entries allowed
-  - **Edge cases**: Exactly current time, timezone issues, admin detection
-
-- [ ] Test POST adds creator as participant when addCreatorToParticipants is true/undefined
-  - **What**: Verify creator auto-join behavior
-  - **Expected**: Creator added as participant when flag is true or undefined
-  - **Edge cases**: Flag false, missing flag, creator already in participants
-
-- [ ] Test POST preserves provided participants when addCreatorToParticipants is false
-  - **What**: Verify participants are preserved when flag is false
-  - **Expected**: Provided participants used, creator not auto-added
-  - **Edge cases**: Empty participants, many participants, invalid participants
-
-- [ ] Test POST returns 201 with scheduled game ID on success
-  - **What**: Verify success response format
-  - **Expected**: Returns 201 with game ID in response
-  - **Edge cases**: Response format, ID generation, concurrent creation
-
-- [ ] Test POST handles archived status flow: creates scheduled game and attempts game/archive linking
-  - **What**: Verify archived game creation and linking
-  - **Expected**: Game created, archive/game linking attempted
-  - **Edge cases**: Linking failures, missing archive, concurrent operations
-
-- [ ] Test POST surfaces internal errors as 500 with redacted production message
-  - **What**: Verify error handling and message redaction
-  - **Expected**: Returns 500, error message redacted in production
-  - **Edge cases**: Different error types, environment detection, sensitive data
-
-- [ ] Test method not allowed returns 405 for unsupported verbs
-  - **What**: Verify unsupported methods return 405
-  - **Expected**: Returns 405 Method Not Allowed for unsupported methods
-  - **Edge cases**: Case variations, custom methods, OPTIONS requests
-
-### `src/pages/api/scheduled-games/[id]/index.ts`
-
-- [ ] Test GET returns single game or 404 when missing
-  - **What**: Verify GET by ID works
-  - **Expected**: Returns game or 404
-  - **Edge cases**: Invalid ID, deleted game, permission errors
-
-- [ ] Test PUT/PATCH require authentication and creator ownership
-  - **What**: Verify authentication and ownership checks
-  - **Expected**: Returns 401 without auth, 403 if not creator
-  - **Edge cases**: Expired tokens, admin override, ownership edge cases
-
-- [ ] Test PUT/PATCH validate required update fields (teamSize, gameType)
-  - **What**: Verify required fields validation
-  - **Expected**: Returns 400 if required fields missing
-  - **Edge cases**: Partial updates, invalid values, field dependencies
-
-- [ ] Test PUT/PATCH support custom team size and optional version/length/modes
-  - **What**: Verify optional fields are accepted
-  - **Expected**: Custom team size and optional fields updated correctly
-  - **Edge cases**: Invalid custom size, missing optional fields, field validation
-
-- [ ] Test method not allowed for DELETE/POST/etc.
-  - **What**: Verify unsupported methods return 405
-  - **Expected**: Returns 405 for DELETE, POST, etc.
-  - **Edge cases**: Different methods, case variations
-
-- [ ] Test server error path returns 500 with environment-specific messaging
-  - **What**: Verify error handling
-  - **Expected**: Returns 500, message varies by environment
-  - **Edge cases**: Different error types, environment detection
-
-### `src/pages/api/scheduled-games/[id]/join.ts`
-
-- [ ] Test POST requires authentication and discordId
-  - **What**: Verify authentication and required fields
-  - **Expected**: Returns 401 without auth, 400 without discordId
-  - **Edge cases**: Expired tokens, invalid discordId format
-
-- [ ] Test joining adds participant and prevents duplicates
-  - **What**: Verify join functionality
-  - **Expected**: Participant added, duplicates prevented
-  - **Edge cases**: Concurrent joins, already joined, duplicate discordId
-
-- [ ] Test join rejects missing game or cancelled/archived game
-  - **What**: Verify join restrictions
-  - **Expected**: Returns 404 for missing game, 400 for cancelled/archived
-  - **Edge cases**: Recently cancelled, archived status, game transitions
-
-- [ ] Test method not allowed for non-POST verbs
-  - **What**: Verify only POST allowed
-  - **Expected**: Returns 405 for other methods
-  - **Edge cases**: GET, PUT, DELETE requests
-
-### `src/pages/api/scheduled-games/[id]/leave.ts`
-
-- [ ] Test POST requires authentication and discordId
-  - **What**: Verify authentication and required fields
-  - **Expected**: Returns 401 without auth, 400 without discordId
-  - **Edge cases**: Expired tokens, invalid discordId
-
-- [ ] Test leaving removes participant and is idempotent when user absent
-  - **What**: Verify leave functionality and idempotency
-  - **Expected**: Participant removed, success even if not in game
-  - **Edge cases**: Never joined, already left, concurrent leaves
-
-- [ ] Test leave rejects missing game
-  - **What**: Verify missing game handling
-  - **Expected**: Returns 404 for missing game
-  - **Edge cases**: Invalid ID, deleted game
-
-- [ ] Test method not allowed for non-POST verbs
-  - **What**: Verify only POST allowed
-  - **Expected**: Returns 405 for other methods
-  - **Edge cases**: GET, PUT, DELETE requests
-
-### `src/pages/api/scheduled-games/[id]/upload-replay.ts`
-
-- [ ] Test POST requires authentication and creator ownership
-  - **What**: Verify authentication and ownership
-  - **Expected**: Returns 401 without auth, 403 if not creator
-  - **Edge cases**: Expired tokens, admin override
-
-- [ ] Test replay upload rejects oversized files and invalid MIME types
-  - **What**: Verify file validation
-  - **Expected**: Returns 400 for oversized or invalid MIME types
-  - **Edge cases**: Exactly at size limit, invalid extensions, missing MIME type
-
-- [ ] Test replay upload stores metadata and links to archive/game IDs
-  - **What**: Verify upload processing
-  - **Expected**: File uploaded, metadata stored, archive/game linked
-  - **Edge cases**: Upload failures, missing archive, linking errors
-
-- [ ] Test replay upload updates scheduled game status to archived
-  - **What**: Verify status update after upload
-  - **Expected**: Game status updated to archived after successful upload
-  - **Edge cases**: Upload success but status update fails, concurrent updates
-
-- [ ] Test upload rejects missing game or missing file payload
-  - **What**: Verify validation
-  - **Expected**: Returns 404 for missing game, 400 for missing file
-  - **Edge cases**: Invalid game ID, empty file, malformed request
-
-- [ ] Test method not allowed for non-POST verbs
-  - **What**: Verify only POST allowed
-  - **Expected**: Returns 405 for other methods
-  - **Edge cases**: GET, PUT, DELETE requests
-
-### `src/pages/api/scheduled-games/[id]/delete.ts`
-
-- [ ] Test POST requires authentication and creator ownership
-  - **What**: Verify authentication and ownership
-  - **Expected**: Returns 401 without auth, 403 if not creator
-  - **Edge cases**: Expired tokens, admin override
-
-- [ ] Test deletion removes scheduled game and returns success payload
-  - **What**: Verify deletion works
-  - **Expected**: Game deleted, success response returned
-  - **Edge cases**: Already deleted, permission errors, cascading deletes
-
-- [ ] Test deletion handles missing game with 404
-  - **What**: Verify missing game handling
-  - **Expected**: Returns 404 for missing game
-  - **Edge cases**: Invalid ID, already deleted
-
-- [ ] Test method not allowed for non-POST verbs
-  - **What**: Verify only POST allowed
-  - **Expected**: Returns 405 for other methods
-  - **Edge cases**: GET, PUT, DELETE requests
-
 ## Scheduled Games Components
+
+**Note**: These components are still used in the application but in different contexts:
+- `ScheduleGameForm` is used on the homepage (`src/pages/index.tsx`)
+- `EditGameForm` and `GameDeleteDialog` are used on game detail pages (`src/pages/games/[id].tsx`)
+- Other components may be used elsewhere or are legacy
 
 ### `src/features/modules/scheduled-games/components/ScheduleGameForm.tsx`
 
@@ -309,9 +137,9 @@ This document outlines all tests needed for the scheduled games module including
   - **Expected**: Participants can be added/removed, winner/loser mix validated
   - **Edge cases**: All winners, all losers, empty participants, many participants
 
-- [ ] Test submission calls `/api/scheduled-games` with assembled payload
+- [ ] Test submission calls `/api/games` with assembled payload (gameState: 'scheduled')
   - **What**: Verify form submission
-  - **Expected**: Correct payload sent to API endpoint
+  - **Expected**: Correct payload sent to games API endpoint with gameState: 'scheduled'
   - **Edge cases**: Missing fields, invalid data, payload structure
 
 - [ ] Test success and error alert rendering
@@ -392,9 +220,9 @@ This document outlines all tests needed for the scheduled games module including
   - **Expected**: File selected, size validation shown
   - **Edge cases**: Oversized files, invalid types, no file selected
 
-- [ ] Test upload button triggers `/api/scheduled-games/{id}/upload-replay`
+- [ ] Test upload button triggers appropriate games API endpoint for replay upload
   - **What**: Verify upload functionality
-  - **Expected**: Upload API called with correct data
+  - **Expected**: Upload API called with correct data (likely `/api/games/{id}/upload-replay` or similar)
   - **Edge cases**: Missing file, invalid file, network errors
 
 - [ ] Test progress/disabled states during upload
@@ -438,50 +266,4 @@ This document outlines all tests needed for the scheduled games module including
   - **What**: Verify submit behavior
   - **Expected**: Game created/archived, modal closes on success
   - **Edge cases**: Creation errors, archive errors, modal state
-
-## Scheduled Games Pages
-
-### `src/pages/scheduled-games/index.tsx`
-
-- [ ] Test initial fetch calls includePast=true to populate list
-  - **What**: Verify initial data fetch
-  - **Expected**: Games fetched with includePast=true
-  - **Edge cases**: No games, fetch errors, slow network
-
-- [ ] Test Create Game modal toggles visibility and passes callbacks
-  - **What**: Verify modal functionality
-  - **Expected**: Modal opens/closes, callbacks work correctly
-  - **Edge cases**: Multiple opens, callback errors, modal state
-
-- [ ] Test join/leave/edit/delete/upload flows update list after completion
-  - **What**: Verify list updates after actions
-  - **Expected**: List refreshed after each action completes
-  - **Edge cases**: Action failures, concurrent actions, list state
-
-- [ ] Test error states render when API requests fail
-  - **What**: Verify error handling
-  - **Expected**: Error states displayed when requests fail
-  - **Edge cases**: Multiple errors, network errors, timeout
-
-- [ ] Test loading skeleton/placeholder while fetching
-  - **What**: Verify loading state
-  - **Expected**: Loading skeleton shown during fetch
-  - **Edge cases**: Slow network, timeout, rapid fetches
-
-### `src/pages/scheduled-games/[id]/upload-replay.tsx`
-
-- [ ] Test page fetches scheduled game details and handles 404 redirects
-  - **What**: Verify page data loading
-  - **Expected**: Game details fetched, 404 redirects appropriately
-  - **Edge cases**: Missing game, invalid ID, fetch errors
-
-- [ ] Test form submission uploads replay and navigates back on success
-  - **What**: Verify upload and navigation
-  - **Expected**: Replay uploaded, navigation occurs on success
-  - **Edge cases**: Upload failures, navigation errors, success state
-
-- [ ] Test validation errors surface when no file chosen or upload fails
-  - **What**: Verify validation and error handling
-  - **Expected**: Validation errors shown, upload errors displayed
-  - **Edge cases**: Missing file, invalid file, network errors
 

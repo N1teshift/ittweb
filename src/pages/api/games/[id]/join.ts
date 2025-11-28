@@ -37,6 +37,7 @@ export default async function handler(
     const err = error as Error;
     logError(err, 'Failed to join game', {
       component: 'api/games/[id]/join',
+      operation: 'join-game',
       gameId: req.query.id,
     });
 

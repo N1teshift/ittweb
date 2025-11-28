@@ -13,7 +13,7 @@ This directory contains comprehensive test plans organized by feature/module. Ea
 - **players-tests.md** - Player service, API routes, components, hooks, player system logic
 - **blog-tests.md** - Blog service, API routes, components, hooks, post loading/serialization
 - **archives-tests.md** - Archive service, API routes, components, hooks, validation, media handling
-- **scheduled-games-tests.md** - Scheduled games service, API routes, components, hooks, pages
+- **scheduled-games-tests.md** - Scheduled games service and components (note: API routes and pages removed - functionality moved to main games collection)
 - **standings-tests.md** - Standings service, API routes, hooks, components
 - **analytics-tests.md** - Analytics service, API routes, components
 - **guides-tests.md** - Guides data loading, utilities, components, hooks
@@ -29,7 +29,7 @@ This directory contains comprehensive test plans organized by feature/module. Ea
 ### Quality & Performance
 - **performance-tests.md** - Database query performance, component rendering, API response times
 - **edge-cases-tests.md** - Invalid input handling, network errors, database errors, boundary conditions
-- **security-tests.md** - Authentication, authorization, data validation, XSS/CSRF prevention
+- ~~**security-tests.md**~~ - ✅ Complete (All security tests implemented in `__tests__/security/`)
 - **accessibility-tests.md** - Keyboard navigation, screen readers, ARIA labels, color contrast
 - **snapshot-tests.md** - Component snapshots, variations, error/loading states
 - **migration-tests.md** - Data migrations, backward compatibility, browser compatibility

@@ -9,21 +9,10 @@ export type AbilityCategory =
   | 'gatherer' 
   | 'item'
   | 'building'
-  | 'auradummy'
   | 'bonushandler'
   | 'buff'
+  | 'auradummy'
   | 'unknown';
-
-export type AbilityLevelData = {
-  manaCost?: number;
-  cooldown?: number;
-  range?: number;
-  duration?: number;
-  damage?: string | number;
-  areaOfEffect?: number;
-  maxTargets?: number;
-  castTime?: number;
-};
 
 export type AbilityData = {
   id: string;
@@ -39,16 +28,26 @@ export type AbilityData = {
   duration?: number;
   damage?: string;
   effects?: string[];
+  // Additional properties
   hotkey?: string;
-  levels?: Record<string, AbilityLevelData>;
   areaOfEffect?: number;
   maxTargets?: number;
+  castTime?: number | string;
   targetsAllowed?: string;
   availableToClasses?: string[];
-  spellbook?: 'hero' | 'normal';
-  castTime?: number;
-  visualEffects?: {
-    attachmentPoints?: Array<string | number>;
-    attachmentTarget?: string;
+  spellbook?: 'hero' | 'normal' | string;
+  visualEffects?: unknown;
+  levels?: {
+    [level: string]: {
+      damage?: number | string;
+      manaCost?: number;
+      cooldown?: number;
+      range?: number;
+      areaOfEffect?: number;
+      duration?: number;
+      [key: string]: unknown;
+    };
   };
+  // Allow additional properties
+  [key: string]: unknown;
 };

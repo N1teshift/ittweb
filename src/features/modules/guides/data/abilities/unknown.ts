@@ -290,6 +290,26 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
+    id: 'sleep-outside',
+    name: 'Sleep Outside',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Troll can sleep outside to restore |cff00EAFF80|r mana but lose |cffFF020220|r health point and |cffFE890D15|r heat. This can kill you if any of your stats reach 0. Has |cff6495ED<AMd5,Cool1>|r seconds cooldown.',
+    cooldown: 10,
+    range: 300,
+    duration: 6,
+    hotkey: 'F',
+    targetsAllowed: 'friend,ground,hero,self',
+    levels: {
+            "1": {
+                  "manaCost": 0,
+                  "cooldown": 10,
+                  "duration": 5,
+                  "range": 300
+            }
+      },
+  },
+  {
     id: 'sleep-inside-tent',
     name: 'Sleep Inside Tent',
     category: 'unknown',
@@ -339,6 +359,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     manaCost: 10,
     cooldown: 60,
     hotkey: 'F',
+    castTime: 'Abilities\\Spells\\Orc\\Voodoo\\VoodooAuraTarget.mdx,Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeTarget.mdx',
     levels: {
             "1": {
                   "manaCost": 10,
@@ -556,7 +577,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-minutes-current-capacity-0-8',
+    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-min-3b8247bf',
     name: 'Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes. Current Capacity: 0 / 8',
     category: 'unknown',
     description: '',
@@ -575,7 +596,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-minutes-current-capacity-1-8',
+    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-min-53924ddb',
     name: 'Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes. Current Capacity: 1 / 8',
     category: 'unknown',
     description: '',
@@ -594,7 +615,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-minutes-current-capacity-2-8',
+    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-min-c98cf91d',
     name: 'Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes. Current Capacity: 2 / 8',
     category: 'unknown',
     description: '',
@@ -613,7 +634,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-minutes-current-capacity-3-8',
+    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-min-26621400',
     name: 'Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes. Current Capacity: 3 / 8',
     category: 'unknown',
     description: '',
@@ -632,7 +653,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-minutes-current-capacity-4-8',
+    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-min-d84c5bd4',
     name: 'Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes. Current Capacity: 4 / 8',
     category: 'unknown',
     description: '',
@@ -651,7 +672,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-minutes-current-capacity-5-8',
+    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-min-d86d7f9b',
     name: 'Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes. Current Capacity: 5 / 8',
     category: 'unknown',
     description: '',
@@ -670,7 +691,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-minutes-current-capacity-6-8',
+    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-min-1d713c17',
     name: 'Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes. Current Capacity: 6 / 8',
     category: 'unknown',
     description: '',
@@ -689,7 +710,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-minutes-current-capacity-7-8',
+    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-min-2dcb6cbb',
     name: 'Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes. Current Capacity: 7 / 8',
     category: 'unknown',
     description: '',
@@ -708,7 +729,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-minutes-current-capacity-8-8',
+    id: 'grabs-a-nearby-corpse-and-stores-it-for-later-use-unattended-corpses-will-rot-after-two-min-ec57b4f8',
     name: 'Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes. Current Capacity: 8 / 8',
     category: 'unknown',
     description: '',
@@ -736,6 +757,24 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     levels: {
             "1": {
                   "manaCost": 0
+            }
+      },
+  },
+  {
+    id: 'panic',
+    name: 'Panic',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Causes your troll to go into a panic, making him move |cffFE890D30%|r faster and attack |cffFE890D20%|r faster, but take |cffFF020210%|r extra damage.|n Lasts |cff7DBEF115|r seconds, has |cff7DBEF115|r seconds cooldown.|cFFFFFFC9Tip: Use this as often as possible to maximize efficiency.|r',
+    manaCost: 20,
+    cooldown: 15,
+    duration: 15,
+    hotkey: 'N',
+    levels: {
+            "1": {
+                  "manaCost": 0,
+                  "cooldown": 15,
+                  "duration": 15
             }
       },
   },
@@ -890,12 +929,52 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
+    id: 'way-of-the-tracker',
+    name: 'Way of the Tracker',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Tracker Knowledge, contains various spells to track a target.',
+    iconPath: 'btnnecromanceradept.png',
+    hotkey: 'E',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            },
+            "2": {
+                  "cooldown": 0
+            },
+            "3": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
     id: 'way-of-the-hawk',
     name: 'Way of the Hawk',
     category: 'unknown',
     description: '',
     tooltip: 'The Tracker Knowledge, contains various spells to track a target.',
     iconPath: 'btnnecromanceradept.png',
+    hotkey: 'E',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            },
+            "2": {
+                  "cooldown": 0
+            },
+            "3": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
+    id: 'warrior-skills',
+    name: 'Warrior Skills',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Warrior Skills, contains description of the warrior abilities.',
+    iconPath: 'BTNTrollPredator.png',
     hotkey: 'E',
     levels: {
             "1": {
@@ -930,11 +1009,51 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
+    id: 'elementalist-spells',
+    name: 'Elementalist Spells',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Elementalist Masteries, contains various damage dealing spells.',
+    iconPath: 'btnmanual.png',
+    hotkey: 'E',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            },
+            "2": {
+                  "cooldown": 0
+            },
+            "3": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
     id: 'hypnotist-spells',
     name: 'Hypnotist Spells',
     category: 'unknown',
     description: '',
     tooltip: 'The Hypnotist Voodoo magic, contains various crowd control and energy zapping spells.',
+    iconPath: 'btnbookofthedead.png',
+    hotkey: 'E',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            },
+            "2": {
+                  "cooldown": 0
+            },
+            "3": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
+    id: 'dreamwalker-abilities',
+    name: 'Dreamwalker Abilities',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Dreamwalker Abilities.',
     iconPath: 'btnbookofthedead.png',
     hotkey: 'E',
     levels: {
@@ -990,12 +1109,121 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
+    id: 'booster-spells',
+    name: 'Booster Spells',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Booster Spells, contains various buffing spells.',
+    iconPath: 'btnsorceressmaster.png',
+    hotkey: 'E',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            },
+            "2": {
+                  "cooldown": 0
+            },
+            "3": {
+                  "cooldown": 0
+            },
+            "4": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
+    id: 'master-healer-spells',
+    name: 'Master Healer Spells',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Master Healer Healing Prowess, contains various healing spells.',
+    iconPath: 'btnsorceressmaster.png',
+    hotkey: 'E',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            },
+            "2": {
+                  "cooldown": 0
+            },
+            "3": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
+    id: 'sage-spells',
+    name: 'Sage Spells',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Sage Shamanic Art, contains the most powerfull buff a troll can cast .',
+    iconPath: 'btnsorceressmaster.png',
+    hotkey: 'E',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            },
+            "2": {
+                  "cooldown": 0
+            },
+            "3": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
+    id: 'shapeshifter-forms',
+    name: 'Shapeshifter Forms',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Shapeshift into an animal form. Unlock following transformation :\n|cffFFD700Level 1 - Wolf\nLevel 2 - Bear\nLevel 3 - Panther\nLevel 4 - Tiger|r',
+    iconPath: 'btnbearform.png',
+    hotkey: 'R',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            },
+            "2": {
+                  "cooldown": 0
+            },
+            "3": {
+                  "cooldown": 0
+            },
+            "4": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
     id: 'direwolf-abilities',
     name: 'Direwolf Abilities',
     category: 'unknown',
     description: '',
     tooltip: 'Dire Wolf Abilities.',
     iconPath: 'btndirewolf.png',
+    hotkey: 'R',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            },
+            "2": {
+                  "cooldown": 0
+            },
+            "3": {
+                  "cooldown": 0
+            },
+            "4": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
+    id: 'dire-bear-abilities',
+    name: 'Dire Bear Abilities',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Dire Bear Abilities.',
+    iconPath: 'btnbearform.png',
     hotkey: 'R',
     levels: {
             "1": {
@@ -1056,6 +1284,46 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
+    id: 'rogue-abilities',
+    name: 'Rogue abilities',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Rogue Abilities, contains Thief and Rogue combat abilities',
+    iconPath: 'btnspellbookbls.png',
+    hotkey: 'E',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            },
+            "2": {
+                  "cooldown": 0
+            },
+            "3": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
+    id: 'telethief-abilities',
+    name: 'Telethief Abilities',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Contains dimentional magic of Telethief',
+    iconPath: 'btnspellbookbls.png',
+    hotkey: 'E',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            },
+            "2": {
+                  "cooldown": 0
+            },
+            "3": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
     id: 'physical-evasion-spells',
     name: 'Physical Evasion Spells',
     category: 'unknown',
@@ -1091,6 +1359,20 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
                   "cooldown": 0
             },
             "3": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
+    id: 'assassin-spells',
+    name: 'Assassin Spells',
+    category: 'unknown',
+    description: '',
+    tooltip: 'All the evasion skills you\'ll ever need.',
+    iconPath: 'btntome.png',
+    hotkey: 'E',
+    levels: {
+            "1": {
                   "cooldown": 0
             }
       },
@@ -1156,6 +1438,46 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
+    id: 'item-radar',
+    name: 'Item Radar',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Contains spells allowing the gatherer to locate the items nearby using minimap ping.',
+    iconPath: 'btnspy.png',
+    hotkey: 'R',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            },
+            "2": {
+                  "cooldown": 0
+            },
+            "3": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
+    id: 'druidic-spells',
+    name: 'Druidic Spells',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Spells that connect the Druid and his team with the ebb and flow of life.',
+    iconPath: 'btncancel.png',
+    hotkey: 'E',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            },
+            "2": {
+                  "cooldown": 0
+            },
+            "3": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
     id: 'philosopher-s-stone-conjuration-powers',
     name: 'Philosopher\'s Stone conjuration powers',
     category: 'unknown',
@@ -1174,6 +1496,20 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
                   "cooldown": 0
             },
             "4": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
+    id: 'juggernaut-inherited-spells',
+    name: 'Juggernaut Inherited Spells',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Juggernaut Skill set, can use spells from tracker & warrior too.',
+    iconPath: 'BTNTrollPredator.png',
+    hotkey: 'E',
+    levels: {
+            "1": {
                   "cooldown": 0
             }
       },
@@ -1207,6 +1543,48 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
+    id: 'sage-inherited-spells',
+    name: 'Sage Inherited Spells',
+    category: 'unknown',
+    description: '',
+    tooltip: 'A bunch of assorted booster & master healer spells.',
+    iconPath: 'btnmanual.png',
+    hotkey: 'R',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
+    id: 'pet-spells',
+    name: 'Pet Spells',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Use these to control your pet.',
+    iconPath: 'BTNBeastCall.png',
+    hotkey: 'R',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
+    id: 'spy-inherited-spells',
+    name: 'Spy Inherited Spells',
+    category: 'unknown',
+    description: '',
+    tooltip: 'All the scouting skills you\'ll ever need.',
+    iconPath: 'btntome.png',
+    hotkey: 'T',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
     id: 'hawk-inherited-spells',
     name: 'Hawk Inherited Spells',
     category: 'unknown',
@@ -1217,6 +1595,84 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     levels: {
             "1": {
                   "cooldown": 0
+            }
+      },
+  },
+  {
+    id: 'advanced-item-radar',
+    name: 'Advanced Item Radar',
+    category: 'unknown',
+    description: '',
+    tooltip: 'An improved item radar, can cast multiple spell at same time.',
+    iconPath: 'btnspy.png',
+    hotkey: 'R',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
+    id: 'omnigatherer-inherited-spells',
+    name: 'Omnigatherer Inherited Spells',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Contains all spells from the gatherer class.',
+    iconPath: 'btntome.png',
+    hotkey: 'T',
+    levels: {
+            "1": {
+                  "cooldown": 0
+            }
+      },
+  },
+  {
+    id: 'track',
+    name: 'Track',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Gives vision of the tracked unit and reduces armor by |cffFF02021|r Lasts |cff7DBEF115|r seconds, has |cff7DBEF145|r seconds cooldown.',
+    iconPath: 'ATCTrack.png',
+    cooldown: 45,
+    range: 700,
+    duration: 15,
+    hotkey: 'E',
+    targetsAllowed: 'air,ground,enemies,neutral',
+    levels: {
+            "1": {
+                  "manaCost": 0,
+                  "cooldown": 35,
+                  "duration": 15,
+                  "range": 700
+            },
+            "2": {
+                  "cooldown": 35,
+                  "duration": 25,
+                  "range": 700
+            },
+            "3": {
+                  "cooldown": 35,
+                  "duration": 25,
+                  "range": 700
+            }
+      },
+  },
+  {
+    id: 'devour',
+    name: 'Devour',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Completely devour an elk, restoring 3 raw meat.\nDire wolf swallows up and digests every part of the animal, therefore, no hides , bones nor corpses are dropped upon the animal death.\nDevouring a hostile animal will unlock a corresponding passive, you can freely switch between them but only one can be active at a time.\nHas |cff7DBEF160.0|r seconds cooldown.',
+    iconPath: 'BTNLycanWolfBite.png',
+    cooldown: 60,
+    range: 128,
+    hotkey: 'R',
+    targetsAllowed: 'enemies,nonhero,organic,nonancient',
+    levels: {
+            "1": {
+                  "manaCost": 0,
+                  "cooldown": 25,
+                  "range": 128
             }
       },
   },
@@ -1269,6 +1725,12 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: '',
     tooltip: 'Gives a |cff7DBEF110%|r chance to avoind an attack.',
     iconPath: 'BTNWindSerpentPassive.png',
+  },
+  {
+    id: 'wolf-voracity',
+    name: 'Wolf Voracity',
+    category: 'unknown',
+    description: '',
   },
   {
     id: 'hit-points-regeneration-3per-second',
@@ -1446,6 +1908,40 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
             "1": {
                   "cooldown": 60,
                   "range": 150
+            }
+      },
+  },
+  {
+    id: 'the-druid-takes-great-care-of-the-spirit-of-those-around-him-granting-allies-0-33-health-re-18e8d89f',
+    name: 'The Druid takes great care of the spirit of those around him, granting allies 0.33 health regeneration.',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Druid takes great care of the spirit of those around him, granting allies |cffD67A7A0.33|r health regeneration.\n\nAdditionally pets affected by |cffC2E8EBSpiritual Guidance|r are able to transcend into their spirit form, gaining |cffD67A7A2|r points for every stats (armor & attack damage).',
+    iconPath: 'PASBTNSpiritualGuidance.png',
+    areaOfEffect: 800,
+    levels: {
+            "1": {
+                  "areaOfEffect": 800
+            }
+      },
+  },
+  {
+    id: 'the-druid-and-his-pet-unleash-a-mighty-roar-inspiring-allies-and-striking-fear-into-the-hea-544dbdb6',
+    name: 'The Druid and his pet unleash a mighty roar, inspiring allies and striking fear into the hearts of enemies. Has 45 seconds cooldown.',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Druid and his pet unleash a mighty roar, inspiring allies and striking fear into the hearts of enemies. Has |cff7DBEF145|r seconds cooldown.|cffFF6347\n\nDruid\n|rIncreases nearby allies\' damage by |cffFF020230%|r.|cffFF6347\n\nElk\n|rIncreases nearby allies movement speed by |cffFE890D50|r.|cffFF6347\n\nWolf\n|rDecreases nearby enemies\' movement speed by |cffFE890D10%|r and attack speed by |cffFFFC0020%|r.|cffFF6347\n\nBear\n|rDecreases nearby enemies\' damage by |cffFF020230%|r.',
+    iconPath: 'BTNVerdantSong.png',
+    manaCost: 20,
+    cooldown: 45,
+    duration: 7,
+    hotkey: 'W',
+    targetsAllowed: 'air,ground,friend,self,vulnerable,invulnerable,nonsapper',
+    levels: {
+            "1": {
+                  "manaCost": 20,
+                  "cooldown": 45,
+                  "duration": 7
             }
       },
   },
@@ -1703,6 +2199,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     tooltip: 'Reveal invisible unit',
     range: 900,
     duration: 20,
+    castTime: 'Abilities\\Spells\\Human\\MagicSentry\\MagicSentryCaster.mdx',
     levels: {
             "1": {
                   "duration": 20,
@@ -2157,6 +2654,24 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
+    id: 'hero-glow',
+    name: 'Hero Glow',
+    category: 'unknown',
+    description: '',
+    areaOfEffect: 1,
+    levels: {
+            "1": {
+                  "areaOfEffect": 1
+            }
+      },
+    visualEffects: {
+            "attachmentPoints": [
+                  "origin"
+            ],
+            "attachmentTarget": "Models\\Abilities\\GeneralHeroGlow.mdx"
+      },
+  },
+  {
     id: 'bear-block',
     name: 'Bear Block',
     category: 'unknown',
@@ -2230,6 +2745,33 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
+    id: 'warrior-throws-two-axes-that-spiral-around-him-dealing-0-2x-attack-damage-on-impact',
+    name: 'Warrior throws two axes that spiral around him, dealing 0.2x attack damage on impact.',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Warrior throws two axes that spiral around him, dealing |cffFF02020.2|rx attack damage on impact.\nRemoves immobilizing effects on use.\nHas |cff7DBEF125|r seconds cooldown.',
+    iconPath: 'BTNWhirlingAxes.png',
+    cooldown: 25,
+    duration: 0.01,
+    hotkey: 'R',
+    targetsAllowed: 'ground,enemies,neutral,vulnerable,alive,organic',
+    levels: {
+            "1": {
+                  "manaCost": 0,
+                  "cooldown": 25,
+                  "duration": 0.01
+            }
+      },
+  },
+  {
+    id: 'weapons-of-choice',
+    name: 'Weapons of Choice',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Gurubashi Warrior gains different abilitites depending on weapons he has equipped:\n\n|cFFFFCC00One-handed weapon|r - Axe Throw\n|cFFFFCC00Two-handed weapon|r - Whirlwind\n|cFFFFCC00Shield|r - Shield Charge, replaces Spiked Net\n|cFFFFCC00Two weapons|r - Whirling Axes; replaces Spiked Net',
+    iconPath: 'PASBTNWeaponsOfChoice.png',
+  },
+  {
     id: 'deal-0-8x-attack-damage-per-second-to-enemies-in-350-radius-lasts-for-3-seconds',
     name: 'Deal 0.8x attack damage per second to enemies in 350 radius. Lasts for 3 seconds',
     category: 'unknown',
@@ -2251,7 +2793,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'binds-an-enemy-target-for-2-5-8-0-seconds-on-heroes-normal-units-air-units-and-fish-will-be-moved-next-to-the-caster-has-10-seconds-cooldown',
+    id: 'binds-an-enemy-target-for-2-5-8-0-seconds-on-heroes-normal-units-air-units-and-fish-will-be-5a680253',
     name: 'Binds an enemy target for 2.5/8.0 seconds on heroes/normal units. Air units and fish will be moved next to the caster. Has 10 seconds cooldown.',
     category: 'unknown',
     description: '',
@@ -2271,6 +2813,74 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
+    id: 'rage',
+    name: 'Rage',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Permanently increase attack speed by |cffFF020210%|r.',
+    iconPath: 'btnheadhunterberserker.png',
+    areaOfEffect: 1,
+    levels: {
+            "1": {
+                  "areaOfEffect": 1
+            }
+      },
+  },
+  {
+    id: 'hide-tracking-beacon',
+    name: 'Hide Tracking Beacon',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Allows the tracker to put a tracking beacon on a unit. Tracking beacons remain inplace for |cff7DBEF1300|r seconds or until you place another one. Once placed, the location of the unit can be found with the Query Tracking Beacon skill. Has |cff7DBEF140|r seconds cooldown.',
+    iconPath: 'btnspy.png',
+    cooldown: 40,
+    hotkey: 'R',
+    targetsAllowed: 'enemies,ground,hero',
+    levels: {
+            "1": {
+                  "manaCost": 0,
+                  "cooldown": 40
+            }
+      },
+  },
+  {
+    id: 'query-tracking-beacon',
+    name: 'Query Tracking Beacon',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Pings the location of the tracking beacon. Has |cff7DBEF140|r seconds cooldown.',
+    iconPath: 'btnspy.png',
+    cooldown: 40,
+    hotkey: 'A',
+    levels: {
+            "1": {
+                  "manaCost": 0,
+                  "cooldown": 40
+            }
+      },
+  },
+  {
+    id: 'dysentery-track-aka-charlie-brown',
+    name: 'Dysentery Track AKA "Charlie Brown',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Throws a bottle filled with dirty stuff, causing the target to get dysentery-like symptoms and poop hot, steaming diarrhea uncontrollably. Tracks a lot longer than normal track and is good for tracking long range. Lasts |cff7DBEF145|r seconds, has |cff7DBEF140|r seconds cooldown.',
+    iconPath: 'BTNTracking.png',
+    cooldown: 40,
+    range: 500,
+    duration: 45,
+    hotkey: 'Q',
+    targetsAllowed: 'organic,enemies,ground',
+    levels: {
+            "1": {
+                  "manaCost": 0,
+                  "cooldown": 40,
+                  "duration": 45,
+                  "range": 500
+            }
+      },
+  },
+  {
     id: 'endurance',
     name: 'Endurance',
     category: 'unknown',
@@ -2279,7 +2889,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     iconPath: 'btnheadhunterberserker.png',
   },
   {
-    id: 'binds-an-enemy-target-for-2-5-8-0-seconds-on-heroes-normal-units-air-units-and-fish-will-be-moved-next-to-the-caster-deals-24-0-damage-over-time-has-10-seconds-cooldown',
+    id: 'binds-an-enemy-target-for-2-5-8-0-seconds-on-heroes-normal-units-air-units-and-fish-will-be-2dd5271e',
     name: 'Binds an enemy target for 2.5/8.0 seconds on heroes/normal units. Air units and fish will be moved next to the caster. Deals 24.0 damage over time. Has 10 seconds cooldown.',
     category: 'unknown',
     description: '',
@@ -2620,7 +3230,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     manaCost: 12,
     cooldown: 35,
     range: 1650,
-    hotkey: 'false',
+    hotkey: 'E',
     levels: {
             "1": {
                   "manaCost": 12,
@@ -2655,6 +3265,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     manaCost: 24,
     cooldown: 28,
     range: 800,
+    areaOfEffect: 240,
     hotkey: 'R',
     levels: {
             "1": {
@@ -2892,6 +3503,25 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
+    id: 'negative-blast',
+    name: 'Negative Blast',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Blasts a target with negative energy dealing |cffFF020240|r damage and slowing for a short duration. Has |cff7DBEF120|r seconds cooldown.',
+    iconPath: 'btnwandofshadowsight.png',
+    manaCost: 10,
+    cooldown: 20,
+    duration: 5,
+    hotkey: 'E',
+    levels: {
+            "1": {
+                  "manaCost": 10,
+                  "cooldown": 20,
+                  "duration": 5
+            }
+      },
+  },
+  {
     id: 'spirit-prison-cage-dummy',
     name: 'Spirit Prison Cage Dummy',
     category: 'unknown',
@@ -2940,6 +3570,23 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
                   "manaCost": 0,
                   "duration": 4,
                   "areaOfEffect": 900
+            }
+      },
+  },
+  {
+    id: 'mix-herb',
+    name: 'Mix Herb',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Takes all the herbs in the pot and mixes them into a potion if a potion can be made. All items in the pot are used except for non-herbs. If you add to many herbs of one type, you lose the extra. Many powerful items can be made here so experiment and have fun.|nItems with the |c00408000Herb|r tag are considered herbs.',
+    iconPath: 'btnunstableconcoction.png',
+    duration: 0.01,
+    hotkey: 'R',
+    levels: {
+            "1": {
+                  "manaCost": 0,
+                  "cooldown": 0,
+                  "duration": 0.01
             }
       },
   },
@@ -3008,7 +3655,9 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     manaCost: 20,
     cooldown: 60,
     duration: 20,
+    areaOfEffect: 2000,
     hotkey: 'R',
+    castTime: 'Abilities\\Spells\\NightElf\\Taunt\\TauntCaster.mdx',
     levels: {
             "1": {
                   "manaCost": 20,
@@ -3054,6 +3703,19 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
+    id: 'the-glow',
+    name: 'The Glow',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Troll Priest generates a friendly warming aura that spreads enveloping friendly units and envigorating them, adding |cffFE890D10%|r move speed, |cffFE890D5%|r attack speed, and heat.',
+    areaOfEffect: 400,
+    levels: {
+            "1": {
+                  "areaOfEffect": 400
+            }
+      },
+  },
+  {
     id: 'am4-acen',
     name: 'AM4|:ACen',
     category: 'unknown',
@@ -3071,6 +3733,14 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
+    id: 'swoop',
+    name: 'Swoop',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Hawk swoops down onto a target, attempting to claw their eyes out, blinding them.\nDeals |cffFF020210|r damage per second.\nLasts for |cff7DBEF14|r(|cff7DBEF12|r) seconds.\nHas |cff7DBEF120|r seconds cooldown.',
+    iconPath: 'PASBTNSWoopEnemy.png',
+  },
+  {
     id: 'fetch',
     name: 'Fetch',
     category: 'unknown',
@@ -3079,7 +3749,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     iconPath: 'PASBTNFetchItem.png',
   },
   {
-    id: 'command-your-hawk-to-swoop-at-a-target-can-be-used-on-various-targets-for-different-effects-see-tooltips-in-spellbook-to-learn-more',
+    id: 'command-your-hawk-to-swoop-at-a-target-can-be-used-on-various-targets-for-different-effects-a1114446',
     name: 'Command your Hawk to swoop at a target. Can be used on various targets for different effects. See tooltips in spellbook to learn more.',
     category: 'unknown',
     description: '',
@@ -3168,6 +3838,27 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
                   "cooldown": 0,
                   "duration": 5,
                   "range": 99999
+            }
+      },
+  },
+  {
+    id: 'tracking-trap',
+    name: 'Tracking Trap',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Troll walking through this trap will get tracked, having their position revealed and armor reduced by |cffFF02024|r for |cff7DBEF130|r seconds. Track Trap last |cff7DBEF1240|r seconds, has |cff7DBEF160|r seconds cooldown.',
+    iconPath: 'btnstasistrap.png',
+    manaCost: 10,
+    cooldown: 60,
+    range: 100,
+    areaOfEffect: 200,
+    hotkey: 'Q',
+    levels: {
+            "1": {
+                  "manaCost": 10,
+                  "cooldown": 60,
+                  "range": 100,
+                  "areaOfEffect": 200
             }
       },
   },
@@ -3291,6 +3982,40 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
+    id: 'cloak',
+    name: 'Cloak',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The thief goes invisible and move |cffFE890D20%|r faster. Cloak can be used to reveal cliff. Lasts |cff7DBEF14|r seconds, has |cff7DBEF165|r seconds cooldown.',
+    iconPath: 'BTNDarkTrollTrapperCloak.png',
+    manaCost: 20,
+    cooldown: 65,
+    duration: 4,
+    hotkey: 'E',
+    levels: {
+            "1": {
+                  "manaCost": 20,
+                  "cooldown": 65,
+                  "duration": 8
+            },
+            "2": {
+                  "manaCost": 20,
+                  "cooldown": 65,
+                  "duration": 8
+            },
+            "3": {
+                  "manaCost": 20,
+                  "cooldown": 65,
+                  "duration": 8
+            },
+            "4": {
+                  "manaCost": 20,
+                  "cooldown": 65,
+                  "duration": 8
+            }
+      },
+  },
+  {
     id: 'nether-fade',
     name: 'Nether Fade',
     category: 'unknown',
@@ -3333,6 +4058,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     manaCost: 10,
     cooldown: 20,
     hotkey: 'R',
+    castTime: 'Abilities\\Spells\\Undead\\RegenerationAura\\ObsidianRegenAura.mdx',
     levels: {
             "1": {
                   "manaCost": 10,
@@ -3430,7 +4156,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'steal-a-piece-of-food-from-a-closest-enemy-in-500-0-range-if-your-inventory-is-full-it-is-gonna-be-automatically-consumed',
+    id: 'steal-a-piece-of-food-from-a-closest-enemy-in-500-0-range-if-your-inventory-is-full-it-is-g-c7e9a644',
     name: 'Steal a piece of food from a closest enemy in 500.0 range. If your inventory is full, it is gonna be automatically consumed.',
     category: 'unknown',
     description: '',
@@ -3467,6 +4193,42 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
             "2": {
                   "cooldown": 60,
                   "range": 200
+            }
+      },
+  },
+  {
+    id: 'blink',
+    name: 'Blink',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The thief teleports a short distance. Has |cff7DBEF130|r seconds cooldown.',
+    cooldown: 30,
+    hotkey: 'R',
+    levels: {
+            "1": {
+                  "manaCost": 0,
+                  "cooldown": 30
+            }
+      },
+  },
+  {
+    id: 'telethief-uses-his-dimentional-magic-to-reach-into-a-random-thief-s-bush-on-the-map-and-ste-8311478b',
+    name: 'Telethief uses his dimentional magic to reach into a random thief\'s bush on the map and steal a consumable item.',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Telethief uses his dimentional magic to reach into a random thief\'s bush on the map and steal a consumable item.\nItems stolen this way can only be held in thief\'s pocket. Casting this ability will replace an item currently held in thief\'s pocket.\nAt |cFFFFCC00lvl 4|r Telethief acquires mastery of this ability, reducing cooldown to |cff6495ED30|r seconds.\n|cff6495ED60.0|r seconds cooldown.',
+    iconPath: 'btncancel.png',
+    manaCost: 40,
+    cooldown: 60,
+    hotkey: 'S',
+    levels: {
+            "1": {
+                  "manaCost": 40,
+                  "cooldown": 60
+            },
+            "2": {
+                  "manaCost": 40,
+                  "cooldown": 30
             }
       },
   },
@@ -3550,7 +4312,106 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: '',
   },
   {
-    id: 'when-a-thief-decides-that-the-best-way-to-steal-is-by-using-magic-he-becomes-a-contortionist-the-contortionist-is-adept-at-evading-enemies-through-magic-spells-can-only-choose-1-subclass',
+    id: 'the-warrior-is-adept-at-tanking-and-smashing-enemies-he-gets-damage-reduction-and-his-attac-9d2014cf',
+    name: 'The Warrior is adept at tanking and smashing enemies. He gets damage reduction and his attack can hit enemies around him,however he can\'t use track anymore. A pretty straight forward class. Can only choose 1 subClass!',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Warrior is adept at tanking and smashing enemies. He gets damage reduction and his attack can hit enemies around him,however he can\'t use track anymore. A pretty straight forward class. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cff1FBF00Easy|r',
+    iconPath: 'BTNTrollPredator.png',
+    hotkey: 'Q',
+  },
+  {
+    id: 'the-tracker-is-adept-at-chasing-and-tracking-enemies-he-got-a-nice-spell-kit-allowing-him-t-aaf2c11c',
+    name: 'The Tracker is adept at chasing and tracking enemies. He got a nice spell kit allowing him to track down enemy troll. Can only choose 1 subClass!',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Tracker is adept at chasing and tracking enemies. He got a nice spell kit allowing him to track down enemy troll. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
+    iconPath: 'btnicetroll.png',
+    hotkey: 'W',
+  },
+  {
+    id: 'the-juggernaut-is-the-best-fighting-class-in-the-game-he-is-big-he-is-fast-and-he-hit-really-hard',
+    name: 'The Juggernaut is the best fighting class in the game, he is big, he is fast and he hit really hard.',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Juggernaut is the best fighting class in the game, he is big, he is fast and he hit really hard.|cff7DBEF1\n\nDifficulty: |r|cff1FBF00Easy|r',
+    iconPath: 'BTNTrollPredator.png',
+    hotkey: 'E',
+  },
+  {
+    id: 'the-elementalist-is-adept-at-controlling-the-elements-allowing-him-to-cast-powerful-damage-8b4682ea',
+    name: 'The Elementalist is adept at controlling the elements,allowing him to cast powerful damage dealing spells. Can only choose 1 subClass!',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Elementalist is adept at controlling the elements,allowing him to cast powerful damage dealing spells. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
+    iconPath: 'btnicetrollshaman.png',
+    hotkey: 'Q',
+  },
+  {
+    id: 'dreamwalker-has-control-over-dreams-both-his-and-his-enemies-he-can-consume-dreams-of-his-e-9fe58232',
+    name: 'Dreamwalker has control over dreams, both his and his enemies. He can consume dreams of his enemiesstealing their health and energy.Can only choose 1 subClass!',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Dreamwalker has control over dreams, both his and his enemies. He can consume dreams of his enemiesstealing their health and energy.|cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFF0202Hard|r',
+    iconPath: 'BTNHypnotist.png',
+    hotkey: 'W',
+  },
+  {
+    id: 'the-dementia-master-spent-too-much-time-studying-dark-magic-and-trying-to-talk-with-being-f-bc39ffdf',
+    name: 'The Dementia Master spent too much time studying dark magic and trying to talk with being from another world, he got alot of damage dealing spells.',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Dementia Master spent too much time studying dark magic and trying to talk with being from another world, he got alot of damage dealing spells.|cff7DBEF1\n\nDifficulty: |r|cffFF0202Hard|r',
+    iconPath: 'btndarktrollshadowpriest.png',
+    hotkey: 'E',
+  },
+  {
+    id: 'the-booster-is-adept-at-buffing-up-allies-with-magic-spells-he-doesn-t-have-any-healing-spe-cf4fbcdc',
+    name: 'The Booster is adept at buffing up allies with magic spells. He doesn\'t have any healing spells,but he gets more offensive buffs. Can only choose 1 subClass!',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Booster is adept at buffing up allies with magic spells. He doesn\'t have any healing spells,but he gets more offensive buffs. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
+    iconPath: 'btnforesttrollshadowpriest.png',
+    hotkey: 'Q',
+  },
+  {
+    id: 'the-master-healer-is-adept-at-healing-allies-with-magic-spells-he-also-has-spells-allowing-feaca320',
+    name: 'The Master Healer is adept at healing allies with magic spells. He also has spells allowing him to mix/restore his mana and heat. Can only choose 1 subClass!',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Master Healer is adept at healing allies with magic spells. He also has spells allowing him to mix/restore his mana and heat. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
+    iconPath: 'BTNMasterHealer.png',
+    hotkey: 'W',
+  },
+  {
+    id: 'the-sage-has-reached-the-pinnacle-of-the-troll-shamanic-art-he-can-use-alot-of-different-bu-c8396f58',
+    name: 'The Sage has reached the pinnacle of the Troll Shamanic Art, he can use ALOT of different buffs and healing spells.',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Sage has reached the pinnacle of the Troll Shamanic Art, he can use ALOT of different buffs and healing spells.|cff7DBEF1\n\nDifficulty: |r|cffFF0202Hard|r',
+    iconPath: 'btnforesttrollshadowpriest.png',
+    hotkey: 'E',
+  },
+  {
+    id: 'the-druid-is-focused-on-using-nature-and-his-pet-s-to-support-his-team-and-turn-the-battle-172893d3',
+    name: 'The Druid is focused on using nature and his pet\'s to support his team and turn the battle in his favor.Can only choose 1 subClass!',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Druid is focused on using nature and his pet\'s to support his team and turn the battle in his favor.|cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
+    iconPath: 'BTNDruidoftheClawForestTrollIconV1.png',
+    hotkey: 'W',
+  },
+  {
+    id: 'rogue-has-developed-formidable-combat-skills-as-well-as-adapted-his-thief-s-skills-to-help-e313ff1a',
+    name: 'Rogue has developed formidable combat skills as well as adapted his thief\'s skills to help him in combat. Rogue is adept at physical combat and maneuvering.Can only choose 1 subClass!',
+    category: 'unknown',
+    description: '',
+    tooltip: 'Rogue has developed formidable combat skills as well as adapted his thief\'s skills to help him in combat. Rogue is adept at physical combat and maneuvering.|cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cff1FBF00Easy|r',
+    iconPath: 'btndarktroll.png',
+    hotkey: 'Q',
+  },
+  {
+    id: 'when-a-thief-decides-that-the-best-way-to-steal-is-by-using-magic-he-becomes-a-contortionis-4b4e3a23',
     name: 'When a thief decides that the best way to steal is by using magic, he becomes a Contortionist. The Contortionist is adept at evading enemies through magic spells. Can only choose 1 subClass!',
     category: 'unknown',
     description: '',
@@ -3559,7 +4420,43 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     hotkey: 'W',
   },
   {
-    id: 'the-omni-gatherer-got-all-the-gatherer-abilities-possible-he-can-also-warp-items-around-him-when-he-gets-lazy',
+    id: 'when-a-thief-decides-that-the-best-way-to-steal-is-by-using-magic-he-becomes-a-telethief-te-8ed148aa',
+    name: 'When a thief decides that the best way to steal is by using magic, he becomes a TeleThief. TeleThief has dimentional magic, providing combat utility to his thief abilities  Can only choose 1 subClass!',
+    category: 'unknown',
+    description: '',
+    tooltip: 'When a thief decides that the best way to steal is by using magic, he becomes a TeleThief. TeleThief has dimentional magic, providing combat utility to his thief abilities  |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
+    iconPath: 'BTNContortionist.png',
+    hotkey: 'W',
+  },
+  {
+    id: 'the-herb-master-tele-gatherers-can-mix-herbs-wherever-they-go-he-can-learn-tele-gathering-a-483733e0',
+    name: 'The Herb Master Tele-Gatherers can mix herbs wherever they go. He can learn Tele-Gathering,a spell allowing him to teleport items picked up to a fire. Can tele-gather herbs. Can only choose 1 subClass!',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Herb Master Tele-Gatherers can mix herbs wherever they go. He can learn Tele-Gathering,a spell allowing him to teleport items picked up to a fire. Can tele-gather herbs. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
+    iconPath: 'btnicetrollshadowpriest.png',
+    hotkey: 'Q',
+  },
+  {
+    id: 'the-radar-is-adept-at-locating-and-gathering-items-he-got-an-improved-item-radar-and-he-can-bb1bba51',
+    name: 'The Radar is adept at locating and gathering items, he got an improved Item Radar and he can learn Tele-Gathering,a spell allowing him to teleport items picked up to a fire. Cannot tele-gather herbs. Can only choose 1 subClass!',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Radar is adept at locating and gathering items, he got an improved Item Radar and he can learn Tele-Gathering,a spell allowing him to teleport items picked up to a fire. Cannot tele-gather herbs. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
+    iconPath: 'BTNTerrorTroll.png',
+    hotkey: 'W',
+  },
+  {
+    id: 'the-alchemist-has-discovered-the-secret-of-the-philosopher-s-stone-which-allows-him-to-conj-f7447318',
+    name: 'The Alchemist has discovered the secret of the Philosopher\'s Stone which allows him to conjure potion effects. Can only choose 1 subClass!',
+    category: 'unknown',
+    description: '',
+    tooltip: 'The Alchemist has discovered the secret of the Philosopher\'s Stone which allows him to conjure potion effects. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
+    iconPath: 'BTNAlchemist.png',
+    hotkey: 'R',
+  },
+  {
+    id: 'the-omni-gatherer-got-all-the-gatherer-abilities-possible-he-can-also-warp-items-around-him-17674261',
     name: 'The Omni Gatherer got all the gatherer abilities possible, he can also warp items around him when he gets lazy.',
     category: 'unknown',
     description: '',

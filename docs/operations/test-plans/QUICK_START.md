@@ -35,7 +35,7 @@ After pasting the main prompt, add one of these lines:
 **Quality & Performance:**
 - `Create tests from performance-tests.md`
 - `Create tests from edge-cases-tests.md`
-- `Create tests from security-tests.md`
+- ~~`Create tests from security-tests.md`~~ - ✅ Complete
 - `Create tests from accessibility-tests.md`
 - `Create tests from snapshot-tests.md`
 - `Create tests from migration-tests.md`

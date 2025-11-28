@@ -1,3 +1,4 @@
+
 export type IconMap = {
   abilities: Record<string, string>;
   items: Record<string, string>;
@@ -352,7 +353,6 @@ export const ICON_MAP: IconMap = {
     'Teleport Mirror': 'btnwispsplode.png',
     'Telethief Abilities': 'btnspellbookbls.png',
     'The Alchemist has discovered the secret of the Philosopher\\': 'BTNAlchemist.png',
-    'The Assassin has combined the physical strength with the evasion magic, he has alot of escaping spells,but also the ability to backstab enemy for a big burst of damage.': 'btndarktrolltrapper.png',
     'The Booster is adept at buffing up allies with magic spells. He doesn\\': 'btnforesttrollshadowpriest.png',
     'The Dementia Master spent too much time studying dark magic and trying to talk with being from another world, he got alot of damage dealing spells.': 'btndarktrollshadowpriest.png',
     'The Druid and his pet unleash a mighty roar, inspiring allies and striking fear into the hearts of enemies. Has 45 seconds cooldown.': 'BTNVerdantSong.png',

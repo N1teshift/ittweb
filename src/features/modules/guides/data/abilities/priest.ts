@@ -2,93 +2,12 @@ import type { AbilityData } from './types';
 
 export const PRIEST_ABILITIES: AbilityData[] = [
   {
-    id: 'booster-spells',
-    name: 'Booster Spells',
-    category: 'priest',
-    classRequirement: 'priest',
-    description: '',
-    tooltip: 'The Booster Spells, contains various buffing spells.',
-    iconPath: 'btnsorceressmaster.png',
-    hotkey: 'E',
-    levels: {
-            "1": {
-                  "cooldown": 0
-            },
-            "2": {
-                  "cooldown": 0
-            },
-            "3": {
-                  "cooldown": 0
-            },
-            "4": {
-                  "cooldown": 0
-            }
-      },
-  },
-  {
-    id: 'master-healer-spells',
-    name: 'Master Healer Spells',
-    category: 'priest',
-    classRequirement: 'priest',
-    description: '',
-    tooltip: 'The Master Healer Healing Prowess, contains various healing spells.',
-    iconPath: 'btnsorceressmaster.png',
-    hotkey: 'E',
-    levels: {
-            "1": {
-                  "cooldown": 0
-            },
-            "2": {
-                  "cooldown": 0
-            },
-            "3": {
-                  "cooldown": 0
-            }
-      },
-  },
-  {
-    id: 'sage-spells',
-    name: 'Sage Spells',
-    category: 'priest',
-    classRequirement: 'priest',
-    description: '',
-    tooltip: 'The Sage Shamanic Art, contains the most powerfull buff a troll can cast .',
-    iconPath: 'btnsorceressmaster.png',
-    hotkey: 'E',
-    levels: {
-            "1": {
-                  "cooldown": 0
-            },
-            "2": {
-                  "cooldown": 0
-            },
-            "3": {
-                  "cooldown": 0
-            }
-      },
-  },
-  {
     id: 'priest-inherited-spells',
     name: 'Priest Inherited Spells',
     category: 'priest',
     classRequirement: 'priest',
     description: '',
     tooltip: 'Inherited Spells from the Priest.',
-    iconPath: 'btnmanual.png',
-    hotkey: 'R',
-    levels: {
-            "1": {
-                  "cooldown": 0
-            }
-      },
-  },
-  {
-    id: 'sage-inherited-spells',
-    name: 'Sage Inherited Spells',
-    category: 'priest',
-    classRequirement: 'priest',
-    description: '',
-    tooltip: 'A bunch of assorted booster & master healer spells.',
     iconPath: 'btnmanual.png',
     hotkey: 'R',
     levels: {
@@ -167,6 +86,7 @@ export const PRIEST_ABILITIES: AbilityData[] = [
     manaCost: 40,
     cooldown: 40,
     duration: 20,
+    areaOfEffect: 2000,
     hotkey: 'A',
     levels: {
             "1": {
@@ -240,6 +160,7 @@ export const PRIEST_ABILITIES: AbilityData[] = [
     iconPath: 'btnregenerate.png',
     cooldown: 60,
     hotkey: 'S',
+    castTime: 'Models\\Abilities\\SelfPreservation.mdx',
     levels: {
             "1": {
                   "manaCost": 0,
@@ -280,7 +201,6 @@ export const PRIEST_ABILITIES: AbilityData[] = [
     iconPath: 'btnberserk.png',
     manaCost: 30,
     cooldown: 60,
-    areaOfEffect: 1,
     hotkey: 'W',
     levels: {
             "1": {
@@ -819,6 +739,7 @@ export const PRIEST_ABILITIES: AbilityData[] = [
     cooldown: 35,
     range: 400,
     duration: 0.01,
+    areaOfEffect: 400,
     hotkey: 'A',
     targetsAllowed: 'debris',
     levels: {
@@ -914,22 +835,6 @@ export const PRIEST_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'the-glow',
-    name: 'The Glow',
-    category: 'priest',
-    classRequirement: 'priest',
-    description: '',
-    tooltip: 'The Troll Priest generates a friendly warming aura that spreads enveloping friendly units and envigorating them, adding |cffFE890D10%|r move speed, |cffFE890D5%|r attack speed, and heat.',
-    areaOfEffect: 400,
-    levels: {
-            "1": {
-                  "areaOfEffect": 400
-            }
-      },
-    availableToClasses: ['priest'],
-    spellbook: 'normal',
-  },
-  {
     id: 'pump-up',
     name: 'Pump Up',
     category: 'priest',
@@ -949,35 +854,5 @@ export const PRIEST_ABILITIES: AbilityData[] = [
                   "range": 1000
             }
       },
-  },
-  {
-    id: 'the-booster-is-adept-at-buffing-up-allies-with-magic-spells-he-doesn-t-have-any-healing-spells-but-he-gets-more-offensive-buffs-can-only-choose-1-subclass',
-    name: 'The Booster is adept at buffing up allies with magic spells. He doesn\'t have any healing spells,but he gets more offensive buffs. Can only choose 1 subClass!',
-    category: 'priest',
-    classRequirement: 'priest',
-    description: '',
-    tooltip: 'The Booster is adept at buffing up allies with magic spells. He doesn\'t have any healing spells,but he gets more offensive buffs. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'btnforesttrollshadowpriest.png',
-    hotkey: 'Q',
-  },
-  {
-    id: 'the-master-healer-is-adept-at-healing-allies-with-magic-spells-he-also-has-spells-allowing-him-to-mix-restore-his-mana-and-heat-can-only-choose-1-subclass',
-    name: 'The Master Healer is adept at healing allies with magic spells. He also has spells allowing him to mix/restore his mana and heat. Can only choose 1 subClass!',
-    category: 'priest',
-    classRequirement: 'priest',
-    description: '',
-    tooltip: 'The Master Healer is adept at healing allies with magic spells. He also has spells allowing him to mix/restore his mana and heat. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'BTNMasterHealer.png',
-    hotkey: 'W',
-  },
-  {
-    id: 'the-sage-has-reached-the-pinnacle-of-the-troll-shamanic-art-he-can-use-alot-of-different-buffs-and-healing-spells',
-    name: 'The Sage has reached the pinnacle of the Troll Shamanic Art, he can use ALOT of different buffs and healing spells.',
-    category: 'priest',
-    classRequirement: 'priest',
-    description: '',
-    tooltip: 'The Sage has reached the pinnacle of the Troll Shamanic Art, he can use ALOT of different buffs and healing spells.|cff7DBEF1\n\nDifficulty: |r|cffFF0202Hard|r',
-    iconPath: 'btnforesttrollshadowpriest.png',
-    hotkey: 'E',
   }
 ];

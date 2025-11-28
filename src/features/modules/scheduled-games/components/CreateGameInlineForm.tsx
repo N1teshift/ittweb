@@ -132,7 +132,6 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
       gameLength,
       modes: selectedModes,
       participants: preparedParticipants,
-      status: 'archived', // Immediately archived for testing - games are considered concluded
     };
 
     setSubmitting(true);

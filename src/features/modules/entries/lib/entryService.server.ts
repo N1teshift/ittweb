@@ -82,33 +82,19 @@ export async function getAllEntriesServer(contentType?: 'post' | 'memory'): Prom
         });
         
         // Log error safely (avoid logging the full error object which can cause issues)
-        console.log('Firestore query error - code:', firestoreError?.code, 'message:', firestoreError?.message);
-        
         // Always fall back to fetching all entries if the query fails
         const querySnapshot = await adminDb.collection(ENTRIES_COLLECTION).get();
-        console.log('Fallback: Total documents in collection:', querySnapshot.size);
 
         querySnapshot.forEach((docSnap) => {
           const data = docSnap.data();
           
-          console.log('Fallback: Processing document:', {
-            id: docSnap.id,
-            title: data.title,
-            contentType: data.contentType,
-            isDeleted: data.isDeleted,
-            hasDate: !!data.date,
-            hasDateString: !!data.dateString
-          });
-          
           // Filter deleted entries
           if (data.isDeleted === true) {
-            console.log('Fallback: Skipping deleted entry:', docSnap.id);
             return;
           }
           
           // Filter by contentType if provided
           if (contentType && data.contentType !== contentType) {
-            console.log('Fallback: Skipping entry (contentType mismatch):', docSnap.id, data.contentType);
             return;
           }
           
@@ -151,7 +137,6 @@ export async function getAllEntriesServer(contentType?: 'post' | 'memory'): Prom
         });
         
         logger.info('Entries fetched from fallback', { count: entries.length });
-        console.log('Fallback: Final entries count:', entries.length);
       }
     }
 

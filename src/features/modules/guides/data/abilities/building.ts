@@ -12,6 +12,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     areaOfEffect: 0,
     hotkey: 'P',
     targetsAllowed: 'self',
+    castTime: 'Abilities\\Spells\\Human\\MassTeleport\\MassTeleportTarget.mdx',
     levels: {
             "1": {
                   "manaCost": 0,

@@ -6,6 +6,7 @@ import { GameDetail } from '@/features/modules/games/components/GameDetail';
 import { Card } from '@/features/infrastructure/shared/components/ui/Card';
 import EditGameForm from '@/features/modules/scheduled-games/components/EditGameForm';
 import GameDeleteDialog from '@/features/modules/scheduled-games/components/GameDeleteDialog';
+import UploadReplayModal from '@/features/modules/scheduled-games/components/UploadReplayModal';
 import { Logger } from '@/features/infrastructure/logging';
 import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
 import { isAdmin } from '@/features/shared/utils/userRoleUtils';
@@ -23,6 +24,7 @@ export default function GameDetailPage() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
+  const [uploadingReplayGame, setUploadingReplayGame] = useState<GameWithPlayers | null>(null);
 
   // Fetch user role to check if admin
   useEffect(() => {
@@ -200,6 +202,27 @@ export default function GameDetailPage() {
     }
   }, [status, refetch]);
 
+  const handleUploadReplay = (game: GameWithPlayers) => {
+    if (status !== 'authenticated') {
+      signIn('discord');
+      return;
+    }
+    setUploadingReplayGame(game);
+  };
+
+  const handleUploadReplaySuccess = async () => {
+    setUploadingReplayGame(null);
+    await refetch?.();
+    // Navigate to the updated game page (it will now be completed)
+    if (game) {
+      router.push(`/games/${game.id}`);
+    }
+  };
+
+  const handleUploadReplayClose = () => {
+    setUploadingReplayGame(null);
+  };
+
   // Early returns must come after all hooks
   if (loading) {
     return (
@@ -239,6 +262,7 @@ export default function GameDetailPage() {
         onEdit={game.gameState === 'scheduled' ? handleEdit : undefined}
         onDelete={game.gameState === 'scheduled' ? handleDelete : undefined}
         onLeave={game.gameState === 'scheduled' ? handleLeave : undefined}
+        onUploadReplay={game.gameState === 'scheduled' ? handleUploadReplay : undefined}
         isLeaving={isLeaving}
         userIsCreator={userIsCreator}
         userIsParticipant={userIsParticipant}
@@ -249,7 +273,8 @@ export default function GameDetailPage() {
         <EditGameForm
           game={{
             id: editingGame.id,
-            scheduledGameId: editingGame.gameId,
+            gameId: editingGame.gameId,
+            gameState: editingGame.gameState,
             creatorName: editingGame.creatorName,
             createdByDiscordId: editingGame.createdByDiscordId || '',
             scheduledDateTime: editingGame.scheduledDateTime || '',
@@ -263,7 +288,6 @@ export default function GameDetailPage() {
             participants: editingGame.participants || [],
             createdAt: typeof editingGame.createdAt === 'string' ? editingGame.createdAt : '',
             updatedAt: typeof editingGame.updatedAt === 'string' ? editingGame.updatedAt : '',
-            status: editingGame.status || 'scheduled',
           }}
           onSubmit={handleEditSubmit}
           onCancel={handleEditCancel}
@@ -278,6 +302,14 @@ export default function GameDetailPage() {
           isLoading={isDeleting}
           onConfirm={handleDeleteConfirm}
           onCancel={handleDeleteCancel}
+        />
+      )}
+      
+      {uploadingReplayGame && (
+        <UploadReplayModal
+          game={uploadingReplayGame}
+          onClose={handleUploadReplayClose}
+          onSuccess={handleUploadReplaySuccess}
         />
       )}
     </div>

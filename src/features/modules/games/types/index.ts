@@ -108,6 +108,8 @@ export interface Game {
   gameLength?: number; // Game length in seconds
   modes?: GameMode[];
   participants?: GameParticipant[]; // Discord/website users who joined
+  status?: 'scheduled' | 'ongoing' | 'awaiting_replay' | 'archived' | 'cancelled'; // Status for scheduled games
+  scheduledGameId?: number; // Unique numeric ID for scheduled games (when gameState === 'scheduled')
   
   // Completed game fields (only when gameState === 'completed')
   datetime?: Timestamp | string; // When the game was played

@@ -14,6 +14,7 @@
  * 6. Converts extracted data to TypeScript format (items, abilities, units)
  * 7. Generates icon mapping (iconMap.ts)
  * 8. Fixes icon paths in generated TypeScript files
+ * 9. Resolves field references in tooltips (replaces placeholders with actual values)
  * 
  * PIPELINE SCRIPTS (automatically called in order):
  * ============================================================================
@@ -24,6 +25,7 @@
  * 5. convert-extracted-to-typescript.mjs      - Converts JSON to TypeScript data files
  * 6. regenerate-iconmap.mjs                   - Generates icon mapping from icon files
  * 7. fix-icon-paths.mjs                       - Validates and fixes icon paths in generated files
+ * 8. resolve-field-references.mjs             - Resolves field references in tooltips (e.g., <AMd5,Cool1>)
  * 
  * See scripts/data/README.md for detailed documentation.
  * 
@@ -63,6 +65,7 @@ const EXTRACT_ABILITY_CODES_SCRIPT = path.join(__dirname, 'extract-ability-codes
 const CONVERT_SCRIPT = path.join(__dirname, 'convert-extracted-to-typescript.mjs');
 const REGENERATE_ICONMAP_SCRIPT = path.join(__dirname, 'regenerate-iconmap.mjs');
 const FIX_ICON_PATHS_SCRIPT = path.join(__dirname, 'fix-icon-paths.mjs');
+const RESOLVE_FIELD_REFERENCES_SCRIPT = path.join(ROOT_DIR, 'scripts', 'resolve-field-references.mjs');
 
 /**
  * Clean a directory by removing all .ts files
@@ -208,6 +211,7 @@ async function main() {
     console.log('  6. Convert to TypeScript data files (items, abilities, units)');
   console.log('  7. Generate icon mapping (iconMap.ts)');
   console.log('  8. Fix icon paths in generated files');
+  console.log('  9. Resolve field references in tooltips (replace placeholders with values)');
   console.log('\n' + '='.repeat(60) + '\n');
 
   try {
@@ -251,6 +255,9 @@ async function main() {
 
     // Step 9: Fix icon paths
     await runScript(FIX_ICON_PATHS_SCRIPT, 'fix-icon-paths.mjs');
+
+    // Step 10: Resolve field references in tooltips (e.g., <AMd5,Cool1> -> 10)
+    await runScript(RESOLVE_FIELD_REFERENCES_SCRIPT, 'resolve-field-references.mjs');
 
     console.log('='.repeat(60));
     console.log('✅ All data generation complete!');

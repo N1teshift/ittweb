@@ -44,14 +44,14 @@ This document now combines the original refactoring plan with the optimization s
 - `extract-from-w3x.mjs` – ✅ unused code removed; next step is validation/error pass.
 - `regenerate-iconmap.mjs` – ⏳ move string helpers + path handling to utils; add validation for missing icons.
 - `convert-extracted-to-typescript.mjs` – ⏳ biggest refactor target; start by importing helpers, then evaluate splitting.
-- `generate-from-work.mjs` – ⏳ ensure consistent error bubbling/logging once downstream scripts are updated.
+- `main.mjs` – ⏳ ensure consistent error bubbling/logging once downstream scripts are updated.
 
 ## Implementation Guidelines
 
 - Stick to ES modules; no CommonJS.
 - Keep scripts runnable in isolation (imports must resolve relative to project root via `getRootDir()`).
 - Maintain backwards-compatible output formats; downstream TypeScript modules should not need to change.
-- After each refactor, re-run `node scripts/data/generate-from-work.mjs` and sanity-check the outputs listed in `scripts/README.md`.
+- After each refactor, re-run `node scripts/data/main.mjs` and sanity-check the outputs listed in `scripts/README.md`.
 
 ## Related Docs
 

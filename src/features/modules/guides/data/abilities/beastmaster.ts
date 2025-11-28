@@ -108,155 +108,6 @@ export const BEASTMASTER_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'shapeshifter-forms',
-    name: 'Shapeshifter Forms',
-    category: 'beastmaster',
-    classRequirement: 'beastmaster',
-    description: '',
-    tooltip: 'Shapeshift into an animal form. Unlock following transformation :\n|cffFFD700Level 1 - Wolf\nLevel 2 - Bear\nLevel 3 - Panther\nLevel 4 - Tiger|r',
-    iconPath: 'btnbearform.png',
-    hotkey: 'R',
-    levels: {
-            "1": {
-                  "cooldown": 0
-            },
-            "2": {
-                  "cooldown": 0
-            },
-            "3": {
-                  "cooldown": 0
-            },
-            "4": {
-                  "cooldown": 0
-            }
-      },
-  },
-  {
-    id: 'dire-bear-abilities',
-    name: 'Dire Bear Abilities',
-    category: 'beastmaster',
-    classRequirement: 'beastmaster',
-    description: '',
-    tooltip: 'Dire Bear Abilities.',
-    iconPath: 'btnbearform.png',
-    hotkey: 'R',
-    levels: {
-            "1": {
-                  "cooldown": 0
-            },
-            "2": {
-                  "cooldown": 0
-            },
-            "3": {
-                  "cooldown": 0
-            },
-            "4": {
-                  "cooldown": 0
-            }
-      },
-  },
-  {
-    id: 'druidic-spells',
-    name: 'Druidic Spells',
-    category: 'beastmaster',
-    classRequirement: 'beastmaster',
-    description: '',
-    tooltip: 'Spells that connect the Druid and his team with the ebb and flow of life.',
-    iconPath: 'btncancel.png',
-    hotkey: 'E',
-    levels: {
-            "1": {
-                  "cooldown": 0
-            },
-            "2": {
-                  "cooldown": 0
-            },
-            "3": {
-                  "cooldown": 0
-            }
-      },
-  },
-  {
-    id: 'pet-spells',
-    name: 'Pet Spells',
-    category: 'beastmaster',
-    classRequirement: 'beastmaster',
-    description: '',
-    tooltip: 'Use these to control your pet.',
-    iconPath: 'BTNBeastCall.png',
-    hotkey: 'R',
-    levels: {
-            "1": {
-                  "cooldown": 0
-            }
-      },
-    availableToClasses: ['beastmaster', 'druid', 'jungle-tyrant'],
-    spellbook: 'normal',
-  },
-  {
-    id: 'devour',
-    name: 'Devour',
-    category: 'beastmaster',
-    classRequirement: 'beastmaster',
-    description: '',
-    tooltip: 'Completely devour an elk, restoring 3 raw meat.\nDire wolf swallows up and digests every part of the animal, therefore, no hides , bones nor corpses are dropped upon the animal death.\nDevouring a hostile animal will unlock a corresponding passive, you can freely switch between them but only one can be active at a time.\nHas |cff7DBEF160.0|r seconds cooldown.',
-    iconPath: 'BTNLycanWolfBite.png',
-    cooldown: 60,
-    range: 128,
-    hotkey: 'R',
-    targetsAllowed: 'enemies,nonhero,organic,nonancient',
-    levels: {
-            "1": {
-                  "manaCost": 0,
-                  "cooldown": 25,
-                  "range": 128
-            }
-      },
-  },
-  {
-    id: 'wolf-voracity',
-    name: 'Wolf Voracity',
-    category: 'beastmaster',
-    classRequirement: 'beastmaster',
-    description: '',
-  },
-  {
-    id: 'the-druid-takes-great-care-of-the-spirit-of-those-around-him-granting-allies-0-33-health-regeneration',
-    name: 'The Druid takes great care of the spirit of those around him, granting allies 0.33 health regeneration.',
-    category: 'beastmaster',
-    classRequirement: 'beastmaster',
-    description: '',
-    tooltip: 'The Druid takes great care of the spirit of those around him, granting allies |cffD67A7A0.33|r health regeneration.\n\nAdditionally pets affected by |cffC2E8EBSpiritual Guidance|r are able to transcend into their spirit form, gaining |cffD67A7A2|r points for every stats (armor & attack damage).',
-    iconPath: 'PASBTNSpiritualGuidance.png',
-    areaOfEffect: 800,
-    levels: {
-            "1": {
-                  "areaOfEffect": 800
-            }
-      },
-  },
-  {
-    id: 'the-druid-and-his-pet-unleash-a-mighty-roar-inspiring-allies-and-striking-fear-into-the-hearts-of-enemies-has-45-seconds-cooldown',
-    name: 'The Druid and his pet unleash a mighty roar, inspiring allies and striking fear into the hearts of enemies. Has 45 seconds cooldown.',
-    category: 'beastmaster',
-    classRequirement: 'beastmaster',
-    description: '',
-    tooltip: 'The Druid and his pet unleash a mighty roar, inspiring allies and striking fear into the hearts of enemies. Has |cff7DBEF145|r seconds cooldown.|cffFF6347\n\nDruid\n|rIncreases nearby allies\' damage by |cffFF020230%|r.|cffFF6347\n\nElk\n|rIncreases nearby allies movement speed by |cffFE890D50|r.|cffFF6347\n\nWolf\n|rDecreases nearby enemies\' movement speed by |cffFE890D10%|r and attack speed by |cffFFFC0020%|r.|cffFF6347\n\nBear\n|rDecreases nearby enemies\' damage by |cffFF020230%|r.',
-    iconPath: 'BTNVerdantSong.png',
-    manaCost: 20,
-    cooldown: 45,
-    duration: 7,
-    hotkey: 'W',
-    targetsAllowed: 'air,ground,friend,self,vulnerable,invulnerable,nonsapper',
-    levels: {
-            "1": {
-                  "manaCost": 20,
-                  "cooldown": 45,
-                  "duration": 7
-            }
-      },
-  },
-  {
     id: 'grow-pet',
     name: 'Grow Pet',
     category: 'beastmaster',
@@ -360,7 +211,7 @@ export const BEASTMASTER_ABILITIES: AbilityData[] = [
     iconPath: 'btndirewolf.png',
   },
   {
-    id: 'shapeshifter-subclass-selection',
+    id: 'the-shapeshifter-is-strong-in-battle-and-versatile-he-can-transform-himself-into-a-wolf-a-b-edd38a49',
     name: 'The Shapeshifter is strong in battle and versatile, he can transform himself into a wolf,a bear,a panther or a tiger. Each form got a unique ability allowing the shapeshifter to either,get lifesteal,buff his allies armor and health regeneration,escape or cripple the enemy. Can only choose 1 subClass!',
     category: 'beastmaster',
     classRequirement: 'beastmaster',
@@ -378,16 +229,6 @@ export const BEASTMASTER_ABILITIES: AbilityData[] = [
     tooltip: 'Permanently transform into a Dire Wolf.\nDire Wolf can only consume raw meat and has various abilities related to generating and consuming raw meat.|cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
     iconPath: 'btndirewolf.png',
     hotkey: 'E',
-  },
-  {
-    id: 'the-druid-is-focused-on-using-nature-and-his-pet-s-to-support-his-team-and-turn-the-battle-in-his-favor-can-only-choose-1-subclass',
-    name: 'The Druid is focused on using nature and his pet\'s to support his team and turn the battle in his favor.Can only choose 1 subClass!',
-    category: 'beastmaster',
-    classRequirement: 'beastmaster',
-    description: '',
-    tooltip: 'The Druid is focused on using nature and his pet\'s to support his team and turn the battle in his favor.|cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'BTNDruidoftheClawForestTrollIconV1.png',
-    hotkey: 'W',
   },
   {
     id: 'permanently-transform-into-a-dire-bear',

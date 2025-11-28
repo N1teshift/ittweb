@@ -420,7 +420,7 @@ const filteredAbilities = useMemo(() => {
 1. **Update types** (already done ✅)
 2. **Run data extraction** to get the new fields:
    ```bash
-   node scripts/data/generate-from-work.mjs
+   node scripts/data/main.mjs
    ```
 3. **Start with badges** - easiest and most visible improvement
 4. **Add level scaling** - high value for players

@@ -459,42 +459,16 @@ export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
     
     // Combine completed and scheduled games
     const allGamesCombined = [...completedGamesResult.games, ...scheduledGamesResult.games];
-    
-    console.log('Fetched entries:', allEntries.length);
-    console.log('Fetched completed games:', completedGamesResult.games.length);
-    console.log('Fetched scheduled games:', scheduledGamesResult.games.length);
-    console.log('Total games:', allGamesCombined.length);
-    
-    // Debug: Log entry details
-    if (allEntries.length > 0) {
-      console.log('Entry details:', allEntries.map(e => ({
-        id: e.id,
-        title: e.title,
-        contentType: e.contentType,
-        date: e.date,
-        isDeleted: e.isDeleted
-      })));
-    } else {
-      console.log('No entries found - checking if query failed silently');
-    }
 
     // Sanitize entries and games to remove undefined values
     const sanitizedEntries = allEntries.map(removeUndefined) as Entry[];
     const sanitizedGames = allGamesCombined.map(removeUndefined) as Game[];
-    
-    console.log('Sanitized entries:', sanitizedEntries.length);
-    console.log('Sanitized games:', sanitizedGames.length);
-    console.log('Scheduled games in sanitized:', sanitizedGames.filter(g => g.gameState === 'scheduled').length);
 
     // Combine all activity items
     const activityItems: RecentActivityItem[] = [
       ...sanitizedEntries.map((entry): RecentActivityItem => ({ type: 'entry', data: entry })),
       ...sanitizedGames.map((game): RecentActivityItem => ({ type: 'game', data: game })),
     ];
-    
-    console.log('Total activity items before sort:', activityItems.length);
-    console.log('Games in activity:', activityItems.filter(a => a.type === 'game').length);
-    console.log('Scheduled games in activity:', activityItems.filter(a => a.type === 'game' && a.data.gameState === 'scheduled').length);
 
     // Sort by date (most recent first)
     // Import timestampToIso for server-side conversion
@@ -519,31 +493,10 @@ export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
     const sortedActivity = activityItems
       .sort((a, b) => getItemDate(b).getTime() - getItemDate(a).getTime());
     
-    console.log('Total activity items:', sortedActivity.length);
-    console.log('Activity breakdown:', {
-      entries: sortedActivity.filter(a => a.type === 'entry').length,
-      games: sortedActivity.filter(a => a.type === 'game').length,
-      scheduledGames: sortedActivity.filter(a => a.type === 'game' && a.data.gameState === 'scheduled').length,
-      completedGames: sortedActivity.filter(a => a.type === 'game' && a.data.gameState === 'completed').length,
-    });
-    if (sortedActivity.filter(a => a.type === 'game' && a.data.gameState === 'scheduled').length > 0) {
-      const firstScheduled = sortedActivity.find(a => a.type === 'game' && a.data.gameState === 'scheduled');
-      if (firstScheduled && firstScheduled.type === 'game') {
-        const gameData = firstScheduled.data as Game;
-        console.log('First scheduled game in activity:', {
-          id: gameData.id,
-          gameId: gameData.gameId,
-          scheduledDateTime: gameData.scheduledDateTime,
-        });
-      }
-    }
-    
     // Get latest entry (post) for display
     const latestEntry = sanitizedEntries
       .filter(e => e.contentType === 'post')
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0] || null;
-    
-    console.log('Latest entry:', latestEntry ? { id: latestEntry.id, title: latestEntry.title } : 'none');
     
     // Serialize latest entry content if exists
     let mdxSource: MDXRemoteSerializeResult | null = null;

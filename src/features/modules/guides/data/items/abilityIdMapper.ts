@@ -4,10 +4,8 @@
  * This mapping is automatically generated from extracted ability data.
  * The raw IDs are the first 4 characters of full ability IDs stored in items.
  * 
- * Generated: 2025-11-27T23:11:21.555Z
- * Total mappings: 963
- * 
- * Note: Some mappings were discovered by parsing ability codes from item descriptions.
+ * Generated: 2025-11-28T15:33:54.024Z
+ * Total mappings: 953
  */
 
 // Map of raw ability ID (first 4 chars) -> ability slug
@@ -226,16 +224,7 @@ export const RAW_ABILITY_ID_TO_SLUG: Record<string, string> = {
   'A0FO': '100-gold',
   'A0JN': 'advanced-scout-radar',
   'ACTR': 'activates-runes',
-  'AIat': 'attack-speed-increase-20',
-  'AIi3': 'intelligence-3',
-  'AIi4': 'intelligence-4',
-  'AIi6': 'intelligence-6',
-  'AIs3': 'strength-3',
   'AIs4': 'strenght-4',
-  'AIs6': 'strength-6',
-  'AItg': 'stone-axe-damage-bonus',
-  'AIth': 'attack-damage-bonus-10',
-  'AIti': 'attack-damage-bonus-10',
   'AM0|': 'titan-s-grip',
   'AM01': 'leave-detect',
   'AM0f': 'collect-meat',
@@ -418,7 +407,6 @@ export const RAW_ABILITY_ID_TO_SLUG: Record<string, string> = {
   'AM6y': 'summon-cff00eafflez-r-rune',
   'AM6j': 'find-tinders',
   'AM6k': 'increase-metabolism',
-  'AM6l': 'intelligence-1',
   'AM6m': 'intelligence-2',
   'AM6n': 'intelligence-5',
   'AM6o': 'intelligence-8',

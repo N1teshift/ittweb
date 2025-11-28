@@ -20,7 +20,7 @@ The `scripts/` folder hosts the end-to-end data regeneration pipeline for Island
 All stages can be orchestrated with one command:
 
 ```bash
-node scripts/data/generate-from-work.mjs
+node scripts/data/main.mjs
 ```
 
 ## Running Individual Stages

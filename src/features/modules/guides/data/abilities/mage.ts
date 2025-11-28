@@ -2,48 +2,6 @@ import type { AbilityData } from './types';
 
 export const MAGE_ABILITIES: AbilityData[] = [
   {
-    id: 'elementalist-spells',
-    name: 'Elementalist Spells',
-    category: 'mage',
-    classRequirement: 'mage',
-    description: '',
-    tooltip: 'The Elementalist Masteries, contains various damage dealing spells.',
-    iconPath: 'btnmanual.png',
-    hotkey: 'E',
-    levels: {
-            "1": {
-                  "cooldown": 0
-            },
-            "2": {
-                  "cooldown": 0
-            },
-            "3": {
-                  "cooldown": 0
-            }
-      },
-  },
-  {
-    id: 'dreamwalker-abilities',
-    name: 'Dreamwalker Abilities',
-    category: 'mage',
-    classRequirement: 'mage',
-    description: '',
-    tooltip: 'Dreamwalker Abilities.',
-    iconPath: 'btnbookofthedead.png',
-    hotkey: 'E',
-    levels: {
-            "1": {
-                  "cooldown": 0
-            },
-            "2": {
-                  "cooldown": 0
-            },
-            "3": {
-                  "cooldown": 0
-            }
-      },
-  },
-  {
     id: 'firebolt',
     name: 'Firebolt',
     category: 'mage',
@@ -173,7 +131,7 @@ export const MAGE_ABILITIES: AbilityData[] = [
     iconPath: 'btnfirebolt.png',
     manaCost: 10,
     cooldown: 30,
-    maxTargets: 4,
+    areaOfEffect: 600,
     hotkey: 'W',
     levels: {
             "1": {
@@ -274,28 +232,6 @@ export const MAGE_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'negative-blast',
-    name: 'Negative Blast',
-    category: 'mage',
-    classRequirement: 'mage',
-    description: '',
-    tooltip: 'Blasts a target with negative energy dealing |cffFF020240|r damage and slowing for a short duration. Has |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'btnwandofshadowsight.png',
-    manaCost: 10,
-    cooldown: 20,
-    duration: 5,
-    hotkey: 'E',
-    levels: {
-            "1": {
-                  "manaCost": 10,
-                  "cooldown": 20,
-                  "duration": 5
-            }
-      },
-    availableToClasses: ['mage'],
-    spellbook: 'normal',
-  },
-  {
     id: 'reduce-food',
     name: 'Reduce Food',
     category: 'mage',
@@ -306,7 +242,7 @@ export const MAGE_ABILITIES: AbilityData[] = [
     manaCost: 25,
     cooldown: 15,
     range: 100,
-    hotkey: 'curse',
+    hotkey: 'R',
     targetsAllowed: 'enemies,ground,hero',
     levels: {
             "1": {
@@ -317,17 +253,7 @@ export const MAGE_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'the-elementalist-is-adept-at-controlling-the-elements-allowing-him-to-cast-powerful-damage-dealing-spells-can-only-choose-1-subclass',
-    name: 'The Elementalist is adept at controlling the elements,allowing him to cast powerful damage dealing spells. Can only choose 1 subClass!',
-    category: 'mage',
-    classRequirement: 'mage',
-    description: '',
-    tooltip: 'The Elementalist is adept at controlling the elements,allowing him to cast powerful damage dealing spells. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'btnicetrollshaman.png',
-    hotkey: 'Q',
-  },
-  {
-    id: 'the-hypnotist-is-adept-at-controlling-enemies-thoughts-and-emotions-he-can-easily-zap-enemies-energy-by-means-of-depression-and-got-some-crowd-controll-spells-can-only-choose-1-subclass',
+    id: 'the-hypnotist-is-adept-at-controlling-enemies-thoughts-and-emotions-he-can-easily-zap-enemi-63008cf0',
     name: 'The Hypnotist is adept at controlling enemies thoughts and emotions. He can easily zap enemies energy by means of depression and got some crowd controll spells. Can only choose 1 subClass!',
     category: 'mage',
     classRequirement: 'mage',
@@ -335,25 +261,5 @@ export const MAGE_ABILITIES: AbilityData[] = [
     tooltip: 'The Hypnotist is adept at controlling enemies thoughts and emotions. He can easily zap enemies energy by means of depression and got some crowd controll spells. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFF0202Hard|r',
     iconPath: 'BTNHypnotist.png',
     hotkey: 'W',
-  },
-  {
-    id: 'dreamwalker-has-control-over-dreams-both-his-and-his-enemies-he-can-consume-dreams-of-his-enemiesstealing-their-health-and-energy-can-only-choose-1-subclass',
-    name: 'Dreamwalker has control over dreams, both his and his enemies. He can consume dreams of his enemiesstealing their health and energy.Can only choose 1 subClass!',
-    category: 'mage',
-    classRequirement: 'mage',
-    description: '',
-    tooltip: 'Dreamwalker has control over dreams, both his and his enemies. He can consume dreams of his enemiesstealing their health and energy.|cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFF0202Hard|r',
-    iconPath: 'BTNHypnotist.png',
-    hotkey: 'W',
-  },
-  {
-    id: 'the-dementia-master-spent-too-much-time-studying-dark-magic-and-trying-to-talk-with-being-from-another-world-he-got-alot-of-damage-dealing-spells',
-    name: 'The Dementia Master spent too much time studying dark magic and trying to talk with being from another world, he got alot of damage dealing spells.',
-    category: 'mage',
-    classRequirement: 'mage',
-    description: '',
-    tooltip: 'The Dementia Master spent too much time studying dark magic and trying to talk with being from another world, he got alot of damage dealing spells.|cff7DBEF1\n\nDifficulty: |r|cffFF0202Hard|r',
-    iconPath: 'btndarktrollshadowpriest.png',
-    hotkey: 'E',
   }
 ];

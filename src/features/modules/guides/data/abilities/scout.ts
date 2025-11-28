@@ -17,21 +17,6 @@ export const SCOUT_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'spy-inherited-spells',
-    name: 'Spy Inherited Spells',
-    category: 'scout',
-    classRequirement: 'scout',
-    description: '',
-    tooltip: 'All the scouting skills you\'ll ever need.',
-    iconPath: 'btntome.png',
-    hotkey: 'T',
-    levels: {
-            "1": {
-                  "cooldown": 0
-            }
-      },
-  },
-  {
     id: 'reveal',
     name: 'Reveal',
     category: 'scout',
@@ -107,15 +92,6 @@ export const SCOUT_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'swoop',
-    name: 'Swoop',
-    category: 'scout',
-    classRequirement: 'scout',
-    description: '',
-    tooltip: 'Hawk swoops down onto a target, attempting to claw their eyes out, blinding them.\nDeals |cffFF020210|r damage per second.\nLasts for |cff7DBEF14|r(|cff7DBEF12|r) seconds.\nHas |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'PASBTNSWoopEnemy.png',
-  },
-  {
     id: 'bird-of-prey',
     name: 'Bird of Prey',
     category: 'scout',
@@ -171,7 +147,7 @@ export const SCOUT_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'the-observer-is-adept-at-controlling-vision-he-can-learn-to-drop-wards-to-keep-vision-on-an-area-and-has-a-wide-ranged-reveal-can-only-choose-1-subclass',
+    id: 'the-observer-is-adept-at-controlling-vision-he-can-learn-to-drop-wards-to-keep-vision-on-an-8486ec20',
     name: 'The Observer is adept at controlling vision. He can learn to drop wards to keep vision on an area and has a wide ranged reveal. Can only choose 1 subClass!',
     category: 'scout',
     classRequirement: 'scout',
@@ -181,7 +157,7 @@ export const SCOUT_ABILITIES: AbilityData[] = [
     hotkey: 'Q',
   },
   {
-    id: 'the-trapper-got-an-advanced-radar-allowing-him-to-locate-precisely-animals-and-enemies-he-also-has-the-ability-to-place-traps-which-either-reveals-enemy-position-or-slow-them-down-can-only-choose-1-subclass',
+    id: 'the-trapper-got-an-advanced-radar-allowing-him-to-locate-precisely-animals-and-enemies-he-a-b4ac2769',
     name: 'The Trapper got an advanced radar allowing him to locate precisely animals and enemies. He also has the ability to place traps which either reveals enemy position or slow them down. Can only choose 1 subClass!',
     category: 'scout',
     classRequirement: 'scout',

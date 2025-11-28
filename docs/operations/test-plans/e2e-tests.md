@@ -92,29 +92,31 @@ This document outlines all end-to-end scenario tests needed for critical user fl
 
 ## Scheduled Game Flow
 
-- [ ] Test scheduled game creation
-  - **What**: Verify scheduled game creation works
-  - **Expected**: Game scheduled, visible in list
+**Note**: Scheduled games are now managed through the main games collection with `gameState: 'scheduled'`. The dedicated scheduled games collection and pages have been removed. These tests should be integrated into the Game Creation Flow tests above, focusing on games with `gameState: 'scheduled'`.
+
+- [ ] Test scheduled game creation (via games API with gameState: 'scheduled')
+  - **What**: Verify scheduled game creation works through main games API
+  - **Expected**: Game created with gameState: 'scheduled', visible in appropriate views
   - **Edge cases**: Past dates, validation errors, timezone issues
 
-- [ ] Test player joining
+- [ ] Test player joining scheduled games
   - **What**: Verify players can join scheduled games
   - **Expected**: Player added to game, list updated
   - **Edge cases**: Already joined, game full, cancelled game
 
-- [ ] Test player leaving
+- [ ] Test player leaving scheduled games
   - **What**: Verify players can leave scheduled games
   - **Expected**: Player removed from game, list updated
   - **Edge cases**: Not in game, already left, game started
 
-- [ ] Test replay upload
-  - **What**: Verify replay upload works
-  - **Expected**: Replay uploaded, game archived
+- [ ] Test replay upload for scheduled games
+  - **What**: Verify replay upload works for scheduled games
+  - **Expected**: Replay uploaded, game state updated appropriately
   - **Edge cases**: Large files, invalid formats, upload errors
 
-- [ ] Test game completion
-  - **What**: Verify game completion flow works
-  - **Expected**: Game marked complete, stats updated
+- [ ] Test scheduled game completion
+  - **What**: Verify scheduled game completion flow works
+  - **Expected**: Game state updated, stats updated
   - **Edge cases**: Missing replay, completion errors, stat updates
 
 ## Player Search Flow

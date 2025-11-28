@@ -26,18 +26,18 @@ const GAME_MODES: string[] = [
 ];
 
 export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = false }: EditGameFormProps) {
-  const [teamSize, setTeamSize] = useState<TeamSize>(game.teamSize);
+  const [teamSize, setTeamSize] = useState<TeamSize>(game.teamSize || '1v1');
   const [customTeamSize, setCustomTeamSize] = useState(game.customTeamSize || '');
-  const [gameType, setGameType] = useState<GameType>(game.gameType);
+  const [gameType, setGameType] = useState<GameType>(game.gameType || 'normal');
   const [gameVersion, setGameVersion] = useState<string>(game.gameVersion || 'v3.28');
   const [gameLength, setGameLength] = useState<number>(game.gameLength || 1800);
   const [selectedModes, setSelectedModes] = useState<string[]>(game.modes || []);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    setTeamSize(game.teamSize);
+    setTeamSize(game.teamSize || '1v1');
     setCustomTeamSize(game.customTeamSize || '');
-    setGameType(game.gameType);
+    setGameType(game.gameType || 'normal');
     setGameVersion(game.gameVersion || 'v3.28');
     setGameLength(game.gameLength || 1800);
     setSelectedModes(game.modes || []);
@@ -78,7 +78,10 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
     );
   };
 
-  const gameDate = formatDateTimeInTimezone(timestampToIso(game.scheduledDateTime), game.timezone, {
+  const gameDate = formatDateTimeInTimezone(
+    game.scheduledDateTime ? timestampToIso(game.scheduledDateTime) : new Date().toISOString(),
+    game.timezone || 'UTC',
+    {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -97,7 +100,7 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
           <div className="text-sm text-gray-400 space-y-1">
             <div><span className="text-amber-500">Scheduled Time:</span> {gameDate}</div>
             <div><span className="text-amber-500">Scheduled By:</span> {game.creatorName}</div>
-            <div><span className="text-amber-500">Participants:</span> {game.participants.length}</div>
+            <div><span className="text-amber-500">Participants:</span> {game.participants?.length || 0}</div>
           </div>
         </div>
 

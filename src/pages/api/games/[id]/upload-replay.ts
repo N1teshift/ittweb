@@ -6,12 +6,12 @@ import { parseReplayFile } from '@/features/modules/games/lib/replayParser';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { getFirestoreAdmin, getAdminTimestamp, getStorageAdmin, getStorageBucketName } from '@/features/infrastructure/api/firebase/admin';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
-import type { CreateCompletedGame, Game } from '@/features/modules/games/types';
+import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
+import type { CreateCompletedGame } from '@/features/modules/games/types';
 import { IncomingForm, Fields, Files, File as FormidableFile } from 'formidable';
 import { promises as fs } from 'fs';
 import os from 'os';
 import { randomUUID } from 'crypto';
-import { Timestamp } from 'firebase/firestore';
 
 const logger = createComponentLogger('api/games/[id]/upload-replay');
 
@@ -222,7 +222,8 @@ export default async function handler(
     const adminTimestampNow = adminTimestamp.now();
     
     for (const player of parsedGameData.players) {
-      await playersCollection.add({
+      // Remove undefined values before writing to Firestore
+      const playerData = removeUndefined({
         gameId: gameId,
         name: player.name,
         pid: player.pid,
@@ -237,7 +238,9 @@ export default async function handler(
         damageDealt: player.damageDealt,
         damageTaken: player.damageTaken,
         createdAt: adminTimestampNow,
-      });
+      } as Record<string, unknown>);
+      
+      await playersCollection.add(playerData);
     }
 
     // Update ELO scores for completed game

@@ -37,6 +37,7 @@ export default async function handler(
     const err = error as Error;
     logError(err, 'Failed to leave game', {
       component: 'api/games/[id]/leave',
+      operation: 'leave-game',
       gameId: req.query.id,
     });
 

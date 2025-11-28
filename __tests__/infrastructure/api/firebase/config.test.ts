@@ -88,4 +88,40 @@ describe('firebase client config', () => {
 
     expect(errors).toEqual([]);
   });
+
+  it('validates empty string values as invalid', () => {
+    const errors = validateFirebaseClientConfig({
+      apiKey: '', // empty string
+      authDomain: 'domain',
+      projectId: 'project',
+      storageBucket: 'bucket',
+      messagingSenderId: 'sender',
+      appId: 'app'
+    });
+
+    // Empty string is falsy, so it should be caught
+    expect(errors).toContain('NEXT_PUBLIC_FIREBASE_API_KEY is required');
+  });
+
+  it('handles undefined measurementId gracefully', () => {
+    const config = getFirebaseClientConfig();
+    const errors = validateFirebaseClientConfig(config);
+
+    // measurementId is optional, so undefined should not cause errors
+    expect(errors).not.toContain(expect.stringContaining('MEASUREMENT_ID'));
+  });
+
+  it('validates malformed API key format', () => {
+    // API key validation - empty string should fail
+    const errors = validateFirebaseClientConfig({
+      apiKey: '',
+      authDomain: 'valid-domain',
+      projectId: 'valid-project',
+      storageBucket: 'valid-bucket',
+      messagingSenderId: 'valid-sender',
+      appId: 'valid-app'
+    });
+
+    expect(errors).toContain('NEXT_PUBLIC_FIREBASE_API_KEY is required');
+  });
 });

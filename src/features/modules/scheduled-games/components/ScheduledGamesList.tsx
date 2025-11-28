@@ -74,38 +74,38 @@ export default function ScheduledGamesList({
     }
   };
   
-  const isUserParticipant = (game: ScheduledGame): boolean => {
-    if (!session?.discordId) return false;
+  const isUserParticipant = (game: Game): boolean => {
+    if (!session?.discordId || !game.participants) return false;
     return game.participants.some(p => p.discordId === session.discordId);
   };
 
-  const isUserCreator = (game: ScheduledGame): boolean => {
+  const isUserCreator = (game: Game): boolean => {
     if (!session?.discordId) return false;
     return game.createdByDiscordId === session.discordId;
   };
 
-  const handleEditClick = (e: React.MouseEvent, game: ScheduledGame) => {
+  const handleEditClick = (e: React.MouseEvent, game: Game) => {
     e.stopPropagation();
     if (onEdit) {
       onEdit(game);
     }
   };
 
-  const handleDeleteClick = (e: React.MouseEvent, game: ScheduledGame) => {
+  const handleDeleteClick = (e: React.MouseEvent, game: Game) => {
     e.stopPropagation();
     if (onRequestDelete) {
       onRequestDelete(game);
     }
   };
 
-  const handleUploadReplayClick = (e: React.MouseEvent, game: ScheduledGame) => {
+  const handleUploadReplayClick = (e: React.MouseEvent, game: Game) => {
     e.stopPropagation();
     if (onUploadReplay) {
       onUploadReplay(game);
     }
   };
 
-  const canDeleteGame = (game: ScheduledGame): boolean => {
+  const canDeleteGame = (game: Game): boolean => {
     return userIsAdmin || isUserCreator(game);
   };
 
@@ -122,9 +122,9 @@ export default function ScheduledGamesList({
     <div className="space-y-4">
       {games.map(game => {
         // Ensure scheduledDateTime is a string (handle both Timestamp and string)
-        const scheduledDateTimeString = timestampToIso(game.scheduledDateTime);
+        const scheduledDateTimeString = game.scheduledDateTime ? timestampToIso(game.scheduledDateTime) : new Date().toISOString();
         
-        const gameDate = formatDateTimeInTimezone(scheduledDateTimeString, game.timezone, {
+        const gameDate = formatDateTimeInTimezone(scheduledDateTimeString, game.timezone || 'UTC', {
           year: 'numeric',
           month: 'long',
           day: 'numeric',
@@ -146,7 +146,7 @@ export default function ScheduledGamesList({
         const userIsCreator = isUserCreator(game);
         const canDelete = canDeleteGame(game);
         const isProcessing = isJoining === game.id || isLeaving === game.id || isDeleting === game.id || isUploadingReplay === game.id;
-        const statusMeta = statusConfig[game.status] ?? { label: game.status, className: 'bg-gray-700 text-gray-200' };
+        const statusMeta = game.status ? (statusConfig[game.status] ?? { label: game.status, className: 'bg-gray-700 text-gray-200' }) : { label: 'unknown', className: 'bg-gray-700 text-gray-200' };
         
         return (
           <div
@@ -160,9 +160,11 @@ export default function ScheduledGamesList({
                   <h3 className="text-xl font-medieval-brand text-amber-400">
                     {game.teamSize === 'custom' ? game.customTeamSize : game.teamSize} - {game.gameType === 'elo' ? 'ELO' : 'Normal'}
                   </h3>
-                  <span className="text-sm text-gray-400">
-                    #{game.scheduledGameId}
-                  </span>
+                  {game.scheduledGameId && (
+                    <span className="text-sm text-gray-400">
+                      #{game.scheduledGameId}
+                    </span>
+                  )}
                 </div>
                 <p className="text-gray-300">
                   Scheduled by: <span className="text-amber-400">{game.creatorName}</span>
@@ -174,7 +176,7 @@ export default function ScheduledGamesList({
                 </span>
                 {session && (
                   <div className="flex gap-2">
-                    {game.status === 'awaiting_replay' && (
+                    {game.status && game.status === 'awaiting_replay' && (
                       <button
                         onClick={(e) => handleUploadReplayClick(e, game)}
                         disabled={isProcessing}
@@ -184,7 +186,7 @@ export default function ScheduledGamesList({
                         {isProcessing ? 'Uploading...' : 'Upload Replay'}
                       </button>
                     )}
-                    {game.status === 'scheduled' && (
+                    {game.status && game.status === 'scheduled' && (
                       <>
                         {userIsCreator && (
                           <button
@@ -252,7 +254,7 @@ export default function ScheduledGamesList({
                   }
                 </div>
               )}
-              {game.modes.length > 0 && (
+              {game.modes && game.modes.length > 0 && (
                 <div>
                   <span className="text-amber-500">Modes:</span> {game.modes.join(', ')}
                 </div>
@@ -260,7 +262,7 @@ export default function ScheduledGamesList({
             </div>
             
             {/* Participants Section */}
-            {game.participants.length > 0 && (
+            {game.participants && game.participants.length > 0 && (
               <div className="mt-4 pt-4 border-t border-amber-500/20">
                 <div className="text-amber-500 text-sm mb-2">
                   Participants ({game.participants.length}):

@@ -1,38 +1,58 @@
 # ITT Web
 
-A modern website built with Next.js, TypeScript, Tailwind CSS, and internationalization support.
+A modern website for Island Troll Tribes game statistics, guides, and community features.
 
 ## Technology Stack
 
-- **Next.js 15.0.3** - React framework for production
-- **TypeScript** - Type safety and better development experience
-- **Tailwind CSS** - Utility-first CSS framework
-- **i18next** - Internationalization support
-- **Console Logging** - Lightweight logging system
+- **Next.js 15.0.3** - React framework
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **Firebase/Firestore** - Database
+- **NextAuth** - Authentication
+- **i18next** - Internationalization
+- **Recharts** - Data visualization
 
-## Features
+## Core Features
 
-- ✅ **TypeScript** - Full type safety
-- ✅ **Tailwind CSS** - Modern styling with utility classes
-- ✅ **Internationalization** - Multi-language support (currently English, expandable)
-- ✅ **Logging** - Lightweight console logging with error categorization
-- ✅ **ESLint** - Code quality and consistency
-- ✅ **Responsive Design** - Mobile-first approach
-- ✅ **Dark Mode Support** - Automatic theme switching
+### Game Statistics
+- ✅ Game tracking and management
+- ✅ ELO rating system
+- ✅ Player statistics and profiles
+- ✅ Leaderboards and standings
+- ✅ Player comparison tools
+- ✅ Analytics dashboard
+
+### Community Features
+- ✅ Scheduled games with timezone support
+- ✅ Archive entries (replays, clips)
+- ✅ Blog posts with MDX support
+- ✅ Game guides and class information
+
+### Tools
+- ✅ Map analyzer (Warcraft 3 map visualization)
+- ✅ Icon mapper utilities
+- ✅ Replay parser integration
 
 ## Project Structure
 
 ```
 ittweb/
 ├── src/
-│   ├── features/        # Feature-based components
-│   │   └── shared/     # Shared utilities and components
-│   ├── pages/          # Next.js pages
+│   ├── features/
+│   │   ├── modules/    # Feature modules (games, players, archives, etc.)
+│   │   ├── infrastructure/  # Core systems (auth, Firebase, logging)
+│   │   └── shared/     # Shared components and utilities
+│   ├── pages/          # Next.js pages and API routes
 │   ├── styles/         # Global styles
 │   └── types/          # TypeScript type definitions
-├── public/
-│   └── locales/        # Translation files
-├── config/             # Centralized Next/Tailwind/Jest/PostCSS configs
+├── docs/               # Documentation
+│   ├── api/           # API reference
+│   ├── operations/    # Testing and operations guides
+│   ├── product/       # Product documentation
+│   ├── schemas/       # Firestore schemas
+│   └── systems/       # System implementation docs
+├── scripts/           # Data pipeline scripts
+└── config/            # Configuration files
 ```
 
 ## Getting Started
@@ -68,6 +88,11 @@ npm run dev
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
+- `npm run test` - Run Jest tests
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:coverage` - Generate test coverage
+- `npm run type-check` - TypeScript type checking
+- `npm run build:check` - Type check + build
 
 
 ## Internationalization
@@ -89,20 +114,38 @@ The application uses a lightweight console-based logging system with:
 - Component-specific logging
 - Console output in development mode
 
+## Documentation
+
+- **[Documentation Index](docs/README.md)** - Complete documentation overview
+- **[API Reference](docs/api/README.md)** - All API endpoints
+- **[Module Documentation](src/features/modules/)** - Feature module READMEs
+- **[Firestore Schemas](docs/schemas/firestore-collections.md)** - Database schema reference
+- **[Testing Guide](docs/operations/testing-guide.md)** - Testing documentation
+
 ## Development
 
 ### Code Style
 
 - TypeScript strict mode enabled
 - ESLint with Next.js configuration
-- Prettier formatting (recommended)
+- Files should be under 200 lines when possible
+- Error handling uses `loggerUtils` system
 
 ### Adding New Features
 
-1. Create feature directory in `src/features/`
-2. Add components in `src/shared/components/`
-3. Add utilities in `src/shared/utils/`
-4. Update translations in `public/locales/en/`
+1. Create module in `src/features/modules/[module]/`
+2. Add README.md in module directory
+3. Create API routes in `src/pages/api/[module]/`
+4. Update documentation as needed
+
+### Module Structure
+
+Each module should have:
+- `README.md` - Module documentation
+- `components/` - React components
+- `lib/` - Service layer
+- `hooks/` - Custom hooks
+- `types/` - TypeScript types
 
 ## Deployment
 

@@ -64,11 +64,11 @@ This document tracks which tests already exist in the project and what still nee
 - ✅ `src/features/modules/scheduled-games/lib/scheduledGameService.test.ts` - Scheduled Game Service
 - ✅ `src/features/modules/scheduled-games/utils/timezoneUtils.test.ts` - Timezone Utils
 
+**Note**: The scheduled games collection and dedicated pages have been removed. Scheduled games are now managed through the main `games` collection with `gameState: 'scheduled'`. API routes for scheduled games no longer exist - functionality has been moved to `/api/games`.
+
 **Still Needed:**
-- ❌ Scheduled Games API Route Tests (`src/pages/api/scheduled-games/__tests__/`)
-- ❌ Scheduled Games Components Tests (`src/features/modules/scheduled-games/components/__tests__/`)
-- ❌ Scheduled Games Hooks Tests (`src/features/modules/scheduled-games/hooks/__tests__/`)
-- ❌ Scheduled Games Pages Tests (`src/pages/scheduled-games/__tests__/`)
+- ❌ Scheduled Games Components Tests (`src/features/modules/scheduled-games/components/__tests__/`) - Components still exist and are used in other parts of the app
+- ❌ Scheduled Games Hooks Tests (`src/features/modules/scheduled-games/hooks/__tests__/`) - If hooks exist
 
 ### Standings Tests (`standings-tests.md`)
 **Still Needed:**
@@ -130,11 +130,18 @@ This document tracks which tests already exist in the project and what still nee
 ### Edge Cases Tests (`edge-cases-tests.md`)
 - ❌ All edge case tests
 
-### Security Tests (`security-tests.md`)
-- ❌ All security tests
+### Security Tests (✅ Complete - All tests implemented)
+- ✅ `__tests__/security/authentication.test.ts` - Authentication & Authorization
+- ✅ `__tests__/security/dataValidation.test.ts` - Data Validation (Input Sanitization, Output Encoding, File Upload, URL Validation)
+- ✅ `__tests__/security/csrfAndSession.test.ts` - CSRF Protection & Session Security
 
-### Accessibility Tests (`accessibility-tests.md`)
-- ❌ All accessibility tests
+### Accessibility Tests (✅ Complete - All tests implemented)
+- ✅ `__tests__/accessibility/keyboardNavigation.test.tsx` - Keyboard Navigation
+- ✅ `__tests__/accessibility/screenReader.test.tsx` - Screen Reader Compatibility
+- ✅ `__tests__/accessibility/ariaLabels.test.tsx` - ARIA Labels
+- ✅ `__tests__/accessibility/focusManagement.test.tsx` - Focus Management
+- ✅ `__tests__/accessibility/colorContrast.test.tsx` - Color Contrast
+- ✅ `src/features/shared/utils/accessibility/helpers.ts` - Accessibility Testing Utilities
 
 ### Snapshot Tests (`snapshot-tests.md`)
 - ❌ All snapshot tests

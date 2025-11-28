@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Card } from '@/features/infrastructure/shared/components/ui/Card';
 import { formatDuration, formatEloChange } from '../../shared/utils';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { GameWithPlayers } from '../types';
 
 interface GameDetailProps {
@@ -9,17 +10,55 @@ interface GameDetailProps {
   onEdit?: (game: GameWithPlayers) => void;
   onDelete?: (game: GameWithPlayers) => void;
   onLeave?: (gameId: string) => Promise<void>;
+  onUploadReplay?: (game: GameWithPlayers) => void;
   isLeaving?: boolean;
   userIsCreator?: boolean;
   userIsParticipant?: boolean;
   userIsAdmin?: boolean;
 }
 
+/**
+ * Parse a date value that could be a Timestamp, ISO string, or other format
+ */
+function parseDate(value: string | undefined): Date | null {
+  if (!value) return null;
+  
+  const date = new Date(value);
+  // Check if the date is valid
+  if (!isNaN(date.getTime())) {
+    return date;
+  }
+  
+  return null;
+}
+
+/**
+ * Compute if a scheduled game is awaiting replay upload
+ * A game is awaiting replay if: scheduledDateTime + gameLength < now
+ */
+function isAwaitingReplay(game: GameWithPlayers): boolean {
+  if (game.gameState !== 'scheduled') return false;
+  if (!game.scheduledDateTime) return false;
+  
+  // Prefer scheduledDateTimeString, fallback to converting scheduledDateTime
+  const scheduledDateTimeIso = game.scheduledDateTimeString || timestampToIso(game.scheduledDateTime);
+  const scheduledDate = parseDate(scheduledDateTimeIso);
+  if (!scheduledDate) return false;
+  
+  // Default game length to 1 hour (3600 seconds) if not specified
+  const gameLengthSeconds = game.gameLength || 3600;
+  const gameEndTime = new Date(scheduledDate.getTime() + gameLengthSeconds * 1000);
+  const now = new Date();
+  
+  return gameEndTime < now;
+}
+
 export function GameDetail({ 
   game, 
   onEdit, 
   onDelete, 
-  onLeave, 
+  onLeave,
+  onUploadReplay,
   isLeaving = false,
   userIsCreator = false,
   userIsParticipant = false,
@@ -29,11 +68,20 @@ export function GameDetail({
   const canEdit = isScheduled && (userIsCreator || userIsAdmin);
   const canDelete = isScheduled && (userIsCreator || userIsAdmin);
   const canLeave = isScheduled && userIsParticipant && !userIsCreator;
-  const gameDate = isScheduled && game.scheduledDateTime
-    ? new Date(game.scheduledDateTime as string)
-    : game.datetime
-    ? new Date(game.datetime as string)
+  const awaitingReplay = isAwaitingReplay(game);
+  const canUploadReplay = isScheduled && awaitingReplay && onUploadReplay;
+  
+  // Parse scheduled date - prefer scheduledDateTimeString, fallback to converting scheduledDateTime
+  const scheduledDate = isScheduled && game.scheduledDateTime
+    ? parseDate(game.scheduledDateTimeString || timestampToIso(game.scheduledDateTime))
     : null;
+  
+  // Parse completed game date
+  const completedDate = !isScheduled && game.datetime
+    ? parseDate(timestampToIso(game.datetime))
+    : null;
+  
+  const gameDate = scheduledDate || completedDate;
   
   const winners = game.players?.filter(p => p.flag === 'winner') || [];
   const losers = game.players?.filter(p => p.flag === 'loser') || [];
@@ -115,9 +163,29 @@ export function GameDetail({
           </div>
         )}
         
+        {/* Status indicator for scheduled games */}
+        {isScheduled && awaitingReplay && (
+          <div className="mt-4 pt-4 border-t border-amber-500/20">
+            <div className="bg-blue-900/30 border border-blue-500/50 rounded-lg px-4 py-2">
+              <p className="text-blue-300 font-medium">Waiting for Replay Upload</p>
+              <p className="text-blue-400 text-sm mt-1">
+                This game has ended. Please upload the replay file to complete the game record.
+              </p>
+            </div>
+          </div>
+        )}
+        
         {/* Action buttons for scheduled games */}
-        {isScheduled && (canEdit || canDelete || canLeave) && (
+        {isScheduled && (canEdit || canDelete || canLeave || canUploadReplay) && (
           <div className="mt-4 pt-4 border-t border-amber-500/20 flex flex-wrap gap-3">
+            {canUploadReplay && (
+              <button
+                onClick={() => onUploadReplay(game)}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded transition-colors"
+              >
+                Upload Replay
+              </button>
+            )}
             {canEdit && onEdit && (
               <button
                 onClick={() => onEdit(game)}

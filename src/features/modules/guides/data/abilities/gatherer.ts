@@ -93,59 +93,6 @@ export const GATHERER_ABILITIES: AbilityData[] = [
       },
   },
   {
-    id: 'item-radar',
-    name: 'Item Radar',
-    category: 'gatherer',
-    classRequirement: 'gatherer',
-    description: '',
-    tooltip: 'Contains spells allowing the gatherer to locate the items nearby using minimap ping.',
-    iconPath: 'btnspy.png',
-    hotkey: 'R',
-    levels: {
-            "1": {
-                  "cooldown": 0
-            },
-            "2": {
-                  "cooldown": 0
-            },
-            "3": {
-                  "cooldown": 0
-            }
-      },
-    availableToClasses: ['gatherer'],
-    spellbook: 'hero',
-  },
-  {
-    id: 'advanced-item-radar',
-    name: 'Advanced Item Radar',
-    category: 'gatherer',
-    classRequirement: 'gatherer',
-    description: '',
-    tooltip: 'An improved item radar, can cast multiple spell at same time.',
-    iconPath: 'btnspy.png',
-    hotkey: 'R',
-    levels: {
-            "1": {
-                  "cooldown": 0
-            }
-      },
-  },
-  {
-    id: 'omnigatherer-inherited-spells',
-    name: 'Omnigatherer Inherited Spells',
-    category: 'gatherer',
-    classRequirement: 'gatherer',
-    description: '',
-    tooltip: 'Contains all spells from the gatherer class.',
-    iconPath: 'btntome.png',
-    hotkey: 'T',
-    levels: {
-            "1": {
-                  "cooldown": 0
-            }
-      },
-  },
-  {
     id: 'find-tinders',
     name: 'Find Tinders',
     category: 'gatherer',
@@ -352,53 +299,5 @@ export const GATHERER_ABILITIES: AbilityData[] = [
                   "cooldown": 80
             }
       },
-  },
-  {
-    id: 'mix-herb',
-    name: 'Mix Herb',
-    category: 'gatherer',
-    classRequirement: 'gatherer',
-    description: '',
-    tooltip: 'Takes all the herbs in the pot and mixes them into a potion if a potion can be made. All items in the pot are used except for non-herbs. If you add to many herbs of one type, you lose the extra. Many powerful items can be made here so experiment and have fun.|nItems with the |c00408000Herb|r tag are considered herbs.',
-    iconPath: 'btnunstableconcoction.png',
-    duration: 0.01,
-    hotkey: 'R',
-    levels: {
-            "1": {
-                  "manaCost": 0,
-                  "cooldown": 0,
-                  "duration": 0.01
-            }
-      },
-  },
-  {
-    id: 'the-herb-master-tele-gatherers-can-mix-herbs-wherever-they-go-he-can-learn-tele-gathering-a-spell-allowing-him-to-teleport-items-picked-up-to-a-fire-can-tele-gather-herbs-can-only-choose-1-subclass',
-    name: 'The Herb Master Tele-Gatherers can mix herbs wherever they go. He can learn Tele-Gathering,a spell allowing him to teleport items picked up to a fire. Can tele-gather herbs. Can only choose 1 subClass!',
-    category: 'gatherer',
-    classRequirement: 'gatherer',
-    description: '',
-    tooltip: 'The Herb Master Tele-Gatherers can mix herbs wherever they go. He can learn Tele-Gathering,a spell allowing him to teleport items picked up to a fire. Can tele-gather herbs. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'btnicetrollshadowpriest.png',
-    hotkey: 'Q',
-  },
-  {
-    id: 'the-radar-is-adept-at-locating-and-gathering-items-he-got-an-improved-item-radar-and-he-can-learn-tele-gathering-a-spell-allowing-him-to-teleport-items-picked-up-to-a-fire-cannot-tele-gather-herbs-can-only-choose-1-subclass',
-    name: 'The Radar is adept at locating and gathering items, he got an improved Item Radar and he can learn Tele-Gathering,a spell allowing him to teleport items picked up to a fire. Cannot tele-gather herbs. Can only choose 1 subClass!',
-    category: 'gatherer',
-    classRequirement: 'gatherer',
-    description: '',
-    tooltip: 'The Radar is adept at locating and gathering items, he got an improved Item Radar and he can learn Tele-Gathering,a spell allowing him to teleport items picked up to a fire. Cannot tele-gather herbs. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'BTNTerrorTroll.png',
-    hotkey: 'W',
-  },
-  {
-    id: 'the-alchemist-has-discovered-the-secret-of-the-philosopher-s-stone-which-allows-him-to-conjure-potion-effects-can-only-choose-1-subclass',
-    name: 'The Alchemist has discovered the secret of the Philosopher\'s Stone which allows him to conjure potion effects. Can only choose 1 subClass!',
-    category: 'gatherer',
-    classRequirement: 'gatherer',
-    description: '',
-    tooltip: 'The Alchemist has discovered the secret of the Philosopher\'s Stone which allows him to conjure potion effects. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'BTNAlchemist.png',
-    hotkey: 'R',
   }
 ];
