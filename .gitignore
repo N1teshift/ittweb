@@ -60,3 +60,6 @@ tmp/
 
 
 Island.Troll.Tribes.v3.28.w3x
+
+# Agent workflow system (local only, not in repository)
+.workflow/
