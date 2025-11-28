@@ -34,6 +34,21 @@ If you have access to base Warcraft 3 object data files, we could extract those 
 ### Option 3: Leave as Placeholders
 Keep the references visible so users know what data is missing. They can be manually filled in later.
 
+## Field Identifier Meanings
+
+**See detailed documentation**: [`ability-field-identifiers.md`](./ability-field-identifiers.md)
+
+### Quick Reference
+
+- `Cool1` - Cooldown (Level 1)
+- `Dur1` - Duration (Level 1)
+- `HeroDur1` - Hero Duration (Level 1)
+- `DataA1` - Primary data field (context-dependent: attack speed, damage, armor, etc.)
+- `DataB1` - Secondary data field (context-dependent: intelligence, poison %, etc.)
+- `DataC1` - Tertiary data field (context-dependent: strength, tertiary effects, etc.)
+
+**Note**: `DataA1`, `DataB1`, and `DataC1` are highly context-dependent - they represent different properties depending on the ability type. See the detailed documentation for examples.
+
 ## Current Status
 
 The historical resolver script (`scripts/resolve-field-references.mjs`) attempted to resolve references by:
@@ -42,4 +57,12 @@ The historical resolver script (`scripts/resolve-field-references.mjs`) attempte
 3. If not found, leaving the placeholder as-is
 
 _That script is not present in the current repository snapshot; follow `scripts/README.md` if a new resolver is added. For now most references remain unresolved because they point to base game data not in the modifications._
+
+## Source of Field Identifier Information
+
+The field identifier meanings were extracted from the Wurst source code:
+- `external/island-troll-tribes/wurst/utils/ToolTipsUtils.wurst` - Core tooltip utility functions
+- `external/island-troll-tribes/wurst/objects/items/*.wurst` - Item definitions showing field usage
+
+This information shows how the game developers used these field references in tooltips.
 

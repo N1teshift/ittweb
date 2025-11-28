@@ -1,5 +1,5 @@
 import React, { useState, FormEvent } from 'react';
-import type { ScheduledGame } from '@/types/scheduledGame';
+import type { Game } from '@/features/modules/games/types';
 
 interface ApiResponse {
   success?: boolean;
@@ -10,7 +10,7 @@ interface ApiResponse {
 }
 
 interface UploadReplayModalProps {
-  game: ScheduledGame;
+  game: Game;
   onClose: () => void;
   onSuccess?: () => void;
 }
@@ -43,7 +43,7 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
         setStatus('parsing');
       }, 1000);
 
-      const response = await fetch(`/api/scheduled-games/${game.id}/upload-replay`, {
+      const response = await fetch(`/api/games/${game.id}/upload-replay`, {
         method: 'POST',
         body: formData,
       });

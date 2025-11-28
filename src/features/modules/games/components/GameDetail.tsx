@@ -89,12 +89,7 @@ export function GameDetail({
               <p className="text-amber-300">{game.gameType}</p>
             </div>
           )}
-          {isScheduled && game.status && (
-            <div>
-              <span className="text-gray-500">Status:</span>
-              <p className="text-amber-300 capitalize">{game.status}</p>
-            </div>
-          )}
+          {/* Status field removed - using gameState instead */}
           <div>
             <span className="text-gray-500">Creator:</span>
             <p className="text-amber-300">{game.creatorName}</p>

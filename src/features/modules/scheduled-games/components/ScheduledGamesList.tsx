@@ -1,17 +1,17 @@
 import React from 'react';
-import { ScheduledGame } from '@/types/scheduledGame';
+import type { Game } from '@/features/modules/games/types';
 import { formatDateTimeInTimezone, getUserTimezone } from '../utils/timezoneUtils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import { useSession } from 'next-auth/react';
 
 interface ScheduledGamesListProps {
-  games: ScheduledGame[];
-  onGameClick?: (game: ScheduledGame) => void;
+  games: Game[];
+  onGameClick?: (game: Game) => void;
   onJoin?: (gameId: string) => Promise<void>;
   onLeave?: (gameId: string) => Promise<void>;
-  onEdit?: (game: ScheduledGame) => void;
-  onRequestDelete?: (game: ScheduledGame) => void;
-  onUploadReplay?: (game: ScheduledGame) => void;
+  onEdit?: (game: Game) => void;
+  onRequestDelete?: (game: Game) => void;
+  onUploadReplay?: (game: Game) => void;
   isJoining?: string | null;
   isLeaving?: string | null;
   isDeleting?: string | null;
@@ -35,7 +35,9 @@ export default function ScheduledGamesList({
 }: ScheduledGamesListProps) {
   const { data: session } = useSession();
   const userTimezone = getUserTimezone();
-  const statusConfig: Record<ScheduledGame['status'], { label: string; className: string }> = {
+  // Note: status field removed, using gameState instead
+  // This component may need refactoring if still in use
+  const statusConfig: Record<string, { label: string; className: string }> = {
     scheduled: {
       label: 'Scheduled',
       className: 'bg-green-900/50 text-green-300',

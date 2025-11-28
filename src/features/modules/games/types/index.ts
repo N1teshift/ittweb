@@ -46,11 +46,6 @@ export interface GameParticipant {
 }
 
 /**
- * Scheduled game status
- */
-export type ScheduledGameStatus = 'scheduled' | 'ongoing' | 'awaiting_replay' | 'archived' | 'cancelled';
-
-/**
  * Archive content embedded in completed games
  */
 export interface GameArchiveContent {
@@ -104,6 +99,7 @@ export interface Game {
   
   // Scheduled game fields (only when gameState === 'scheduled')
   scheduledDateTime?: Timestamp | string; // ISO 8601 string in UTC or Timestamp
+  scheduledDateTimeString?: string; // ISO 8601 string (for querying)
   timezone?: string; // IANA timezone identifier (e.g., 'America/New_York')
   teamSize?: TeamSize;
   customTeamSize?: string; // Only used when teamSize is 'custom'
@@ -111,8 +107,7 @@ export interface Game {
   gameVersion?: string; // Game version (e.g., 'v3.28')
   gameLength?: number; // Game length in seconds
   modes?: GameMode[];
-  participants?: GameParticipant[];
-  status?: ScheduledGameStatus; // 'scheduled' | 'ongoing' | 'awaiting_replay' | 'archived' | 'cancelled'
+  participants?: GameParticipant[]; // Discord/website users who joined
   
   // Completed game fields (only when gameState === 'completed')
   datetime?: Timestamp | string; // When the game was played
@@ -159,7 +154,6 @@ export interface CreateScheduledGame {
   createdByDiscordId?: string;
   submittedAt?: Timestamp | string;
   participants?: GameParticipant[];
-  status?: ScheduledGameStatus;
 }
 
 /**
@@ -178,7 +172,6 @@ export interface CreateCompletedGame {
   replayFileName?: string;
   createdByDiscordId?: string | null;
   submittedAt?: Timestamp | string;
-  scheduledGameId?: number; // Link to scheduled game if this completed game was created from a scheduled game
   playerNames?: string[];
   playerCount?: number;
   verified?: boolean;
@@ -210,6 +203,7 @@ export interface UpdateGame {
   
   // Scheduled game updates
   scheduledDateTime?: Timestamp | string;
+  scheduledDateTimeString?: string;
   timezone?: string;
   teamSize?: TeamSize;
   customTeamSize?: string;
@@ -218,7 +212,6 @@ export interface UpdateGame {
   gameLength?: number;
   modes?: GameMode[];
   participants?: GameParticipant[];
-  status?: ScheduledGameStatus;
   
   // Completed game updates
   datetime?: Timestamp | string;
@@ -241,6 +234,7 @@ export interface UpdateGame {
  * Game filters
  */
 export interface GameFilters {
+  gameState?: GameState; // Filter by 'scheduled' or 'completed'
   startDate?: string; // ISO date string
   endDate?: string; // ISO date string
   category?: GameCategory;
@@ -248,7 +242,7 @@ export interface GameFilters {
   ally?: string; // Comma-separated ally names
   enemy?: string; // Comma-separated enemy names
   teamFormat?: string; // e.g., "1v1", "2v2"
-  gameId?: number; // Numeric gameId field (matches scheduledGameId)
+  gameId?: number; // Numeric gameId field
   page?: number;
   limit?: number;
   cursor?: string;

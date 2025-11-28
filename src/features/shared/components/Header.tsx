@@ -79,7 +79,6 @@ export default function Header() {
 
     const communityItems = [
         { href: '/archives', label: 'Archives' },
-        { href: '/scheduled-games', label: 'Scheduled Games' },
         { href: '/players', label: 'Players' },
     ];
 

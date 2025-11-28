@@ -436,69 +436,34 @@ function removeUndefined<T>(obj: T): T {
 export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
   const withI18n = getStaticPropsWithTranslations(pageNamespaces);
   const i18nResult = await withI18n({ locale: locale as string });
-  const [{ getAllEntriesServer }, { getGames }, { getAllScheduledGames }] = await Promise.all([
+  const [{ getAllEntriesServer }, { getGames }] = await Promise.all([
     import('@/features/modules/entries/lib/entryService.server'),
     import('@/features/modules/games/lib/gameService'),
-    import('@/features/modules/scheduled-games/lib/scheduledGameService'),
   ]);
   
   try {
-    const [allEntries, allGames, scheduledGames] = await Promise.all([
+    const [allEntries, completedGamesResult, scheduledGamesResult] = await Promise.all([
       getAllEntriesServer().catch((err) => {
         console.error('Failed to fetch entries:', err);
         return [];
       }),
-      getGames({ limit: 100 }).catch((err) => {
-        console.error('Failed to fetch games:', err);
+      getGames({ gameState: 'completed', limit: 100 }).catch((err) => {
+        console.error('Failed to fetch completed games:', err);
         return { games: [], hasMore: false };
       }),
-      getAllScheduledGames(true, false).catch((err) => {
+      getGames({ gameState: 'scheduled', limit: 100 }).catch((err) => {
         console.error('Failed to fetch scheduled games:', err);
-        return [];
+        return { games: [], hasMore: false };
       }),
     ]);
     
-    // Convert scheduled games to unified Game format
-    const scheduledGamesAsGames: Game[] = scheduledGames.map((sg) => ({
-      id: sg.id,
-      gameId: sg.scheduledGameId,
-      gameState: 'scheduled' as const,
-      creatorName: sg.creatorName,
-      createdByDiscordId: sg.createdByDiscordId,
-      createdAt: sg.createdAt,
-      updatedAt: sg.updatedAt,
-      submittedAt: sg.submittedAt,
-      scheduledDateTime: sg.scheduledDateTime,
-      timezone: sg.timezone,
-      teamSize: sg.teamSize,
-      customTeamSize: sg.customTeamSize,
-      gameType: sg.gameType,
-      gameVersion: sg.gameVersion,
-      gameLength: sg.gameLength,
-      modes: sg.modes,
-      participants: sg.participants,
-      status: sg.status,
-      isDeleted: sg.isDeleted ?? false,
-      deletedAt: sg.deletedAt ?? null,
-    }));
-    
     // Combine completed and scheduled games
-    const allGamesCombined = [...allGames.games, ...scheduledGamesAsGames];
+    const allGamesCombined = [...completedGamesResult.games, ...scheduledGamesResult.games];
     
     console.log('Fetched entries:', allEntries.length);
-    console.log('Fetched completed games:', allGames.games.length);
-    console.log('Fetched scheduled games:', scheduledGames.length);
-    if (scheduledGames.length > 0) {
-      console.log('Sample scheduled game:', {
-        id: scheduledGames[0].id,
-        scheduledGameId: scheduledGames[0].scheduledGameId,
-        scheduledDateTime: scheduledGames[0].scheduledDateTime,
-        teamSize: scheduledGames[0].teamSize,
-        status: scheduledGames[0].status,
-      });
-    }
+    console.log('Fetched completed games:', completedGamesResult.games.length);
+    console.log('Fetched scheduled games:', scheduledGamesResult.games.length);
     console.log('Total games:', allGamesCombined.length);
-    console.log('Scheduled games converted:', scheduledGamesAsGames.length);
     
     // Debug: Log entry details
     if (allEntries.length > 0) {

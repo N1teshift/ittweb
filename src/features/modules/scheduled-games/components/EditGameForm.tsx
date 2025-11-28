@@ -1,10 +1,10 @@
 import React, { useState, FormEvent, useEffect } from 'react';
-import { TeamSize, GameType, ScheduledGame } from '@/types/scheduledGame';
+import type { TeamSize, GameType, Game } from '@/features/modules/games/types';
 import { formatDateTimeInTimezone } from '../utils/timezoneUtils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 
 interface EditGameFormProps {
-  game: ScheduledGame;
+  game: Game;
   onSubmit: (updates: {
     teamSize: TeamSize;
     customTeamSize?: string;

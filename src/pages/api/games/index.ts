@@ -17,6 +17,7 @@ export default async function handler(
     if (req.method === 'GET') {
       // Get all games with filters
       const filters: GameFilters = {
+        gameState: req.query.gameState as 'scheduled' | 'completed' | undefined,
         startDate: req.query.startDate as string | undefined,
         endDate: req.query.endDate as string | undefined,
         category: req.query.category as string | undefined,
@@ -31,7 +32,7 @@ export default async function handler(
       };
 
       const result = await getGames(filters);
-      return res.status(200).json(result);
+      return res.status(200).json({ success: true, data: result });
     }
 
     if (req.method === 'POST') {

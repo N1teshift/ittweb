@@ -1,11 +1,11 @@
 import { useState, FormEvent } from 'react';
-import {
+import type {
   TeamSize,
   GameType,
   CreateScheduledGame,
   GameParticipant,
   ParticipantResult,
-} from '@/types/scheduledGame';
+} from '@/features/modules/games/types';
 import {
   getUserTimezone,
   convertLocalToUTC,
@@ -137,10 +137,13 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
 
     setSubmitting(true);
     try {
-      const response = await fetch('/api/scheduled-games', {
+      const response = await fetch('/api/games', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          ...payload,
+          gameState: 'scheduled',
+        }),
       });
       const data = await response.json();
       if (!response.ok) {

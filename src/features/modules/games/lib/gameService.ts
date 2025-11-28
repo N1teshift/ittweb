@@ -33,7 +33,7 @@ import type {
   GameArchiveContent,
   TeamSize,
   GameType,
-  ScheduledGameStatus,
+  GameParticipant,
 } from '../types';
 import { updateEloScores } from './eloCalculator';
 
@@ -107,6 +107,7 @@ function convertGameDoc(docData: Record<string, unknown>, id: string): Game {
     return {
       ...baseGame,
       scheduledDateTime: docData.scheduledDateTime ? (docData.scheduledDateTime as Timestamp | string) : undefined,
+      scheduledDateTimeString: typeof docData.scheduledDateTimeString === 'string' ? docData.scheduledDateTimeString : undefined,
       timezone: typeof docData.timezone === 'string' ? docData.timezone : undefined,
       teamSize: (docData.teamSize as TeamSize | undefined),
       customTeamSize: typeof docData.customTeamSize === 'string' ? docData.customTeamSize : undefined,
@@ -115,7 +116,6 @@ function convertGameDoc(docData: Record<string, unknown>, id: string): Game {
       gameLength: typeof docData.gameLength === 'number' ? docData.gameLength : undefined,
       modes: Array.isArray(docData.modes) ? docData.modes : [],
       participants: Array.isArray(docData.participants) ? docData.participants : [],
-      status: (docData.status as ScheduledGameStatus | undefined),
     };
   }
 
@@ -215,7 +215,6 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
             ? adminTimestamp.fromDate(cleanedData.submittedAt.toDate())
             : adminTimestamp.fromDate(new Date(cleanedData.submittedAt as string))
         } : {}),
-        status: cleanedData.status ?? 'scheduled',
         participants: cleanedData.participants || [],
         createdAt: adminTimestamp.now(),
         updatedAt: adminTimestamp.now(),
@@ -239,7 +238,6 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
         scheduledDateTime,
         scheduledDateTimeString: cleanedData.scheduledDateTime,
         ...(cleanedData.submittedAt ? { submittedAt: Timestamp.fromDate(new Date(cleanedData.submittedAt as string)) } : {}),
-        status: cleanedData.status ?? 'scheduled',
         participants: cleanedData.participants || [],
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
@@ -669,6 +667,7 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
     logger.info('Fetching games', { filters });
 
     const {
+      gameState,
       startDate,
       endDate,
       category,
@@ -684,22 +683,52 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
       let gamesQuery: any = adminDb.collection(GAMES_COLLECTION);
 
       // Apply filters
-      if (startDate) {
-        gamesQuery = gamesQuery.where('datetime', '>=', getAdminTimestamp().fromDate(new Date(startDate)));
-      }
-      if (endDate) {
-        gamesQuery = gamesQuery.where('datetime', '<=', getAdminTimestamp().fromDate(new Date(endDate)));
-      }
-      if (category) {
-        gamesQuery = gamesQuery.where('category', '==', category);
-      }
-      if (gameId !== undefined) {
-        gamesQuery = gamesQuery.where('gameId', '==', gameId);
-        // When filtering by gameId (which should be unique), we don't need to order
-        // This avoids requiring a composite index
+      if (gameState) {
+        gamesQuery = gamesQuery.where('gameState', '==', gameState);
+        
+        if (gameState === 'scheduled') {
+          // For scheduled games, filter by scheduledDateTime
+          if (startDate) {
+            gamesQuery = gamesQuery.where('scheduledDateTime', '>=', getAdminTimestamp().fromDate(new Date(startDate)));
+          }
+          if (endDate) {
+            gamesQuery = gamesQuery.where('scheduledDateTime', '<=', getAdminTimestamp().fromDate(new Date(endDate)));
+          }
+          if (gameId !== undefined) {
+            gamesQuery = gamesQuery.where('gameId', '==', gameId);
+          } else {
+            gamesQuery = gamesQuery.orderBy('scheduledDateTime', 'asc');
+          }
+        } else if (gameState === 'completed') {
+          // For completed games, filter by datetime
+          if (startDate) {
+            gamesQuery = gamesQuery.where('datetime', '>=', getAdminTimestamp().fromDate(new Date(startDate)));
+          }
+          if (endDate) {
+            gamesQuery = gamesQuery.where('datetime', '<=', getAdminTimestamp().fromDate(new Date(endDate)));
+          }
+          if (category) {
+            gamesQuery = gamesQuery.where('category', '==', category);
+          }
+          if (gameId !== undefined) {
+            gamesQuery = gamesQuery.where('gameId', '==', gameId);
+          } else {
+            gamesQuery = gamesQuery.orderBy('datetime', 'desc');
+          }
+        }
       } else {
-        // Order by datetime descending only when not filtering by gameId
-        gamesQuery = gamesQuery.orderBy('datetime', 'desc');
+        // When gameState is not specified, we can't use datetime or scheduledDateTime filters
+        // because they're on different fields. Filter by gameId if provided, otherwise
+        // we'll need to fetch all and filter in memory (or require gameState to be specified)
+        if (gameId !== undefined) {
+          gamesQuery = gamesQuery.where('gameId', '==', gameId);
+        } else {
+          // Without gameState, we can't order by datetime or scheduledDateTime
+          // Default to ordering by createdAt descending
+          gamesQuery = gamesQuery.orderBy('createdAt', 'desc');
+        }
+        // Note: startDate/endDate and category filters are ignored when gameState is not specified
+        // because they apply to different fields for scheduled vs completed games
       }
 
       // Apply pagination
@@ -735,22 +764,52 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
       const constraints: QueryConstraint[] = [];
 
       // Apply filters
-      if (startDate) {
-        constraints.push(where('datetime', '>=', Timestamp.fromDate(new Date(startDate))));
-      }
-      if (endDate) {
-        constraints.push(where('datetime', '<=', Timestamp.fromDate(new Date(endDate))));
-      }
-      if (category) {
-        constraints.push(where('category', '==', category));
-      }
-      if (gameId !== undefined) {
-        constraints.push(where('gameId', '==', gameId));
-        // When filtering by gameId (which should be unique), we don't need to order
-        // This avoids requiring a composite index
+      if (gameState) {
+        constraints.push(where('gameState', '==', gameState));
+        
+        if (gameState === 'scheduled') {
+          // For scheduled games, filter by scheduledDateTime
+          if (startDate) {
+            constraints.push(where('scheduledDateTime', '>=', Timestamp.fromDate(new Date(startDate))));
+          }
+          if (endDate) {
+            constraints.push(where('scheduledDateTime', '<=', Timestamp.fromDate(new Date(endDate))));
+          }
+          if (gameId !== undefined) {
+            constraints.push(where('gameId', '==', gameId));
+          } else {
+            constraints.push(orderBy('scheduledDateTime', 'asc'));
+          }
+        } else if (gameState === 'completed') {
+          // For completed games, filter by datetime
+          if (startDate) {
+            constraints.push(where('datetime', '>=', Timestamp.fromDate(new Date(startDate))));
+          }
+          if (endDate) {
+            constraints.push(where('datetime', '<=', Timestamp.fromDate(new Date(endDate))));
+          }
+          if (category) {
+            constraints.push(where('category', '==', category));
+          }
+          if (gameId !== undefined) {
+            constraints.push(where('gameId', '==', gameId));
+          } else {
+            constraints.push(orderBy('datetime', 'desc'));
+          }
+        }
       } else {
-        // Order by datetime descending only when not filtering by gameId
-        constraints.push(orderBy('datetime', 'desc'));
+        // When gameState is not specified, we can't use datetime or scheduledDateTime filters
+        // because they're on different fields. Filter by gameId if provided, otherwise
+        // we'll need to fetch all and filter in memory (or require gameState to be specified)
+        if (gameId !== undefined) {
+          constraints.push(where('gameId', '==', gameId));
+        } else {
+          // Without gameState, we can't order by datetime or scheduledDateTime
+          // Default to ordering by createdAt descending
+          constraints.push(orderBy('createdAt', 'desc'));
+        }
+        // Note: startDate/endDate and category filters are ignored when gameState is not specified
+        // because they apply to different fields for scheduled vs completed games
       }
 
       // Apply pagination
@@ -885,6 +944,173 @@ export async function deleteGame(id: string): Promise<void> {
       component: 'gameService',
       operation: 'deleteGame',
       id,
+    });
+    throw err;
+  }
+}
+
+/**
+ * Join a scheduled game (add participant)
+ */
+export async function joinGame(
+  gameId: string,
+  discordId: string,
+  name: string
+): Promise<void> {
+  try {
+    logger.info('Joining game', { gameId, discordId });
+
+    if (isServerSide()) {
+      const adminDb = getFirestoreAdmin();
+      const adminTimestamp = getAdminTimestamp();
+      const gameRef = adminDb.collection(GAMES_COLLECTION).doc(gameId);
+      
+      // Get current game data
+      const gameDoc = await gameRef.get();
+      if (!gameDoc.exists) {
+        throw new Error('Game not found');
+      }
+      
+      const gameData = gameDoc.data();
+      if (gameData?.gameState !== 'scheduled') {
+        throw new Error('Can only join scheduled games');
+      }
+      
+      const participants = (gameData?.participants || []) as GameParticipant[];
+      
+      // Check if user is already a participant
+      if (participants.some(p => p.discordId === discordId)) {
+        throw new Error('User is already a participant');
+      }
+      
+      // Add user to participants
+      participants.push({
+        discordId,
+        name,
+        joinedAt: new Date().toISOString(),
+      });
+      
+      await gameRef.update({
+        participants,
+        updatedAt: adminTimestamp.now(),
+      });
+    } else {
+      const db = getFirestoreInstance();
+      const gameRef = doc(db, GAMES_COLLECTION, gameId);
+      
+      // Get current game data
+      const gameDoc = await getDoc(gameRef);
+      if (!gameDoc.exists()) {
+        throw new Error('Game not found');
+      }
+      
+      const gameData = gameDoc.data();
+      if (gameData?.gameState !== 'scheduled') {
+        throw new Error('Can only join scheduled games');
+      }
+      
+      const participants = (gameData?.participants || []) as GameParticipant[];
+      
+      // Check if user is already a participant
+      if (participants.some(p => p.discordId === discordId)) {
+        throw new Error('User is already a participant');
+      }
+      
+      // Add user to participants
+      participants.push({
+        discordId,
+        name,
+        joinedAt: new Date().toISOString(),
+      });
+      
+      await updateDoc(gameRef, {
+        participants,
+        updatedAt: Timestamp.now(),
+      });
+    }
+
+    logger.info('Successfully joined game', { gameId, discordId });
+  } catch (error) {
+    const err = error as Error;
+    logError(err, 'Failed to join game', {
+      component: 'gameService',
+      operation: 'joinGame',
+      gameId,
+      discordId,
+    });
+    throw err;
+  }
+}
+
+/**
+ * Leave a scheduled game (remove participant)
+ */
+export async function leaveGame(
+  gameId: string,
+  discordId: string
+): Promise<void> {
+  try {
+    logger.info('Leaving game', { gameId, discordId });
+
+    if (isServerSide()) {
+      const adminDb = getFirestoreAdmin();
+      const adminTimestamp = getAdminTimestamp();
+      const gameRef = adminDb.collection(GAMES_COLLECTION).doc(gameId);
+      
+      // Get current game data
+      const gameDoc = await gameRef.get();
+      if (!gameDoc.exists) {
+        throw new Error('Game not found');
+      }
+      
+      const gameData = gameDoc.data();
+      if (gameData?.gameState !== 'scheduled') {
+        throw new Error('Can only leave scheduled games');
+      }
+      
+      const participants = (gameData?.participants || []) as GameParticipant[];
+      
+      // Remove user from participants
+      const updatedParticipants = participants.filter(p => p.discordId !== discordId);
+      
+      await gameRef.update({
+        participants: updatedParticipants,
+        updatedAt: adminTimestamp.now(),
+      });
+    } else {
+      const db = getFirestoreInstance();
+      const gameRef = doc(db, GAMES_COLLECTION, gameId);
+      
+      // Get current game data
+      const gameDoc = await getDoc(gameRef);
+      if (!gameDoc.exists()) {
+        throw new Error('Game not found');
+      }
+      
+      const gameData = gameDoc.data();
+      if (gameData?.gameState !== 'scheduled') {
+        throw new Error('Can only leave scheduled games');
+      }
+      
+      const participants = (gameData?.participants || []) as GameParticipant[];
+      
+      // Remove user from participants
+      const updatedParticipants = participants.filter(p => p.discordId !== discordId);
+      
+      await updateDoc(gameRef, {
+        participants: updatedParticipants,
+        updatedAt: Timestamp.now(),
+      });
+    }
+
+    logger.info('Successfully left game', { gameId, discordId });
+  } catch (error) {
+    const err = error as Error;
+    logError(err, 'Failed to leave game', {
+      component: 'gameService',
+      operation: 'leaveGame',
+      gameId,
+      discordId,
     });
     throw err;
   }
