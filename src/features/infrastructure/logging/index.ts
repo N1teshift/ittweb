@@ -1,3 +1,3 @@
-export { Logger, createComponentLogger, logError, logAndThrow, ErrorCategory } from './logger';
-export { Logger as default } from './logger';
+export { default as Logger, createComponentLogger, logError, logAndThrow, ErrorCategory } from './logger';
+export { default } from './logger';
 

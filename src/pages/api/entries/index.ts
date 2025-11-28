@@ -54,10 +54,10 @@ export default createGetPostHandler<Entry[] | { id: string }>(
       if (body && typeof body === 'object') {
         const requiredError = validateRequiredFields(body, ['title', 'content', 'contentType', 'date']);
         if (requiredError) return requiredError;
-        const bodyObj = body as { contentType?: unknown };
+        const bodyObj = body as { contentType?: unknown; title?: unknown };
         const contentTypeError = validateEnum(bodyObj.contentType, 'contentType', ['post', 'memory'] as const);
         if (contentTypeError) return contentTypeError;
-        const titleError = validateString(body.title, 'title', 1);
+        const titleError = validateString(bodyObj.title, 'title', 1);
         if (titleError) return titleError;
       }
       return true;

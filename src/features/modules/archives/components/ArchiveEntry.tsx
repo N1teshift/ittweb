@@ -71,9 +71,9 @@ export default function ArchiveEntry({ entry, onEdit, onDelete, canDelete, onIma
   const isScheduledGameArchive = titleMatchesPattern && hasReplay;
   
   // Extract game number from title if game data not available
-  const titleMatch = entry.title.match(/^Game #(\d+) - (.+)$/);
-  const gameNumber = titleMatch ? titleMatch[1] : null;
-  const gameType = titleMatch ? titleMatch[2] : null;
+  const titleMatch2 = entry.title.match(/^Game #(\d+) - (.+)$/);
+  const gameNumber = titleMatch2 ? titleMatch2[1] : null;
+  const gameType = titleMatch2 ? titleMatch2[2] : null;
   
   // If this archive entry has a gameId OR is a scheduled game archive, render it as a GameCard-style component
   if (entry.linkedGameDocumentId || isScheduledGameArchive) {

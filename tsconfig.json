@@ -21,5 +21,10 @@
     ".next/types/**/*.ts",
     "next.config.ts",
     "tailwind.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".next",
+    "src/pages/**/__tests__/**"
   ]
 }

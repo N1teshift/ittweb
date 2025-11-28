@@ -22,6 +22,7 @@ export function PlayersPage({ pageNamespaces: _pageNamespaces }: PlayersPageProp
     compareMode,
     setCompareMode,
     selectedPlayers,
+    setSelectedPlayers,
     togglePlayerSelection,
     comparison,
     comparisonLoading,

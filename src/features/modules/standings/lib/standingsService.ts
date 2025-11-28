@@ -70,7 +70,7 @@ async function getStandingsOptimized(
     const adminDb = getFirestoreAdmin();
     
     // Query denormalized collection with filters
-    let standingsQuery = adminDb
+    const standingsQuery = adminDb
       .collection(PLAYER_CATEGORY_STATS_COLLECTION)
       .where('category', '==', category)
       .where('games', '>=', minGames);

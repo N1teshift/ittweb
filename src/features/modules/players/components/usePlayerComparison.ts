@@ -50,6 +50,7 @@ export function usePlayerComparison() {
     compareMode,
     setCompareMode,
     selectedPlayers,
+    setSelectedPlayers,
     togglePlayerSelection,
     comparison,
     comparisonLoading,

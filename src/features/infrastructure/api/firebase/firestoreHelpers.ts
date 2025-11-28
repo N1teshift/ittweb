@@ -8,6 +8,8 @@
 
 import { getFirestoreInstance } from './firebaseClient';
 import { getFirestoreAdmin, isServerSide } from './admin';
+import type { Firestore as AdminFirestore } from 'firebase-admin/firestore';
+import type { Firestore as ClientFirestore } from 'firebase/firestore';
 
 /**
  * Execute a function with the appropriate Firestore database instance
@@ -17,8 +19,8 @@ import { getFirestoreAdmin, isServerSide } from './admin';
  * @returns Result from the executed function
  */
 export async function withFirestore<T>(
-  serverFn: (adminDb: any) => Promise<T>,
-  clientFn: (db: any) => Promise<T>
+  serverFn: (adminDb: AdminFirestore) => Promise<T>,
+  clientFn: (db: ClientFirestore) => Promise<T>
 ): Promise<T> {
   if (isServerSide()) {
     const adminDb = getFirestoreAdmin();
@@ -39,7 +41,7 @@ export async function withFirestore<T>(
 export async function getDocument(
   collectionName: string,
   documentId: string
-): Promise<{ exists: boolean; data: () => any; id: string } | null> {
+): Promise<{ exists: boolean; data: () => Record<string, unknown> | undefined; id: string } | null> {
   return withFirestore(
     async (adminDb) => {
       const doc = await adminDb.collection(collectionName).doc(documentId).get();
@@ -60,12 +62,12 @@ export async function getDocument(
  * @param collectionName - Name of the collection
  * @returns Array of document snapshots
  */
-export async function getCollectionSnapshot(collectionName: string): Promise<Array<{ data: () => any; id: string }>> {
+export async function getCollectionSnapshot(collectionName: string): Promise<Array<{ data: () => Record<string, unknown> | undefined; id: string }>> {
   return withFirestore(
     async (adminDb) => {
       const snapshot = await adminDb.collection(collectionName).get();
-      const docs: Array<{ data: () => any; id: string }> = [];
-      snapshot.forEach((doc: any) => {
+      const docs: Array<{ data: () => Record<string, unknown> | undefined; id: string }> = [];
+      snapshot.forEach((doc) => {
         docs.push({ data: () => doc.data(), id: doc.id });
       });
       return docs;
@@ -73,7 +75,7 @@ export async function getCollectionSnapshot(collectionName: string): Promise<Arr
     async (db) => {
       const { collection, getDocs } = await import('firebase/firestore');
       const snapshot = await getDocs(collection(db, collectionName));
-      const docs: Array<{ data: () => any; id: string }> = [];
+      const docs: Array<{ data: () => Record<string, unknown> | undefined; id: string }> = [];
       snapshot.forEach((doc) => {
         docs.push({ data: () => doc.data(), id: doc.id });
       });

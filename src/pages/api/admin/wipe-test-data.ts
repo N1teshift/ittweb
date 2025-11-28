@@ -11,7 +11,10 @@ const logger = createComponentLogger('api/admin/wipe-test-data');
 export default createPostHandler<{ success: boolean; message: string; deletedCounts: Record<string, number> }>(
   async (req: NextApiRequest, res, context) => {
     // Session is guaranteed to be available and user is admin due to requireAdmin option
-    const session = context?.session!;
+    if (!context?.session) {
+      throw new Error('Session required');
+    }
+    const session = context.session;
 
     const adminDb = getFirestoreAdmin();
     const deletedCounts: Record<string, number> = {};

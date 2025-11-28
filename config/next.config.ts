@@ -7,9 +7,27 @@ const withBundleAnalyzer = bundleAnalyzer({
 
 const baseConfig: NextConfig = {
     reactStrictMode: false,
+    pageExtensions: ['page.tsx', 'page.ts', 'tsx', 'ts', 'jsx', 'js', 'mdx', 'md'],
     i18n: {
         locales: ["en"],
         defaultLocale: "en",
+    },
+    webpack: (config) => {
+        // Exclude test files and __tests__ directories from page building
+        const originalEntry = config.entry;
+        config.entry = async () => {
+            const entries = await originalEntry();
+            // Filter out test files from entries
+            if (typeof entries === 'object') {
+                Object.keys(entries).forEach((key) => {
+                    if (key.includes('__tests__') || key.includes('.test.') || key.includes('.spec.')) {
+                        delete entries[key];
+                    }
+                });
+            }
+            return entries;
+        };
+        return config;
     },
     images: {
         remotePatterns: [

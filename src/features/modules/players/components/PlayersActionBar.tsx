@@ -1,12 +1,13 @@
 import React from 'react';
 import { Card } from '@/features/infrastructure/components/ui/Card';
+import type { PlayerComparison } from '../types';
 
 interface PlayersActionBarProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
   compareMode: boolean;
   selectedCount: number;
-  comparison: any;
+  comparison: PlayerComparison | null;
   comparisonLoading: boolean;
   onCompareModeToggle: () => void;
   onCompareSelected: () => void;
