@@ -360,7 +360,7 @@ export const BEASTMASTER_ABILITIES: AbilityData[] = [
     iconPath: 'btndirewolf.png',
   },
   {
-    id: 'the-shapeshifter-is-strong-in-battle-and-versatile-he-can-transform-himself-into-a-wolf-a-bear-a-panther-or-a-tiger-each-form-got-a-unique-ability-allowing-the-shapeshifter-to-either-get-lifesteal-buff-his-allies-armor-and-health-regeneration-escape-or-cripple-the-enemy-can-only-choose-1-subclass',
+    id: 'shapeshifter-subclass-selection',
     name: 'The Shapeshifter is strong in battle and versatile, he can transform himself into a wolf,a bear,a panther or a tiger. Each form got a unique ability allowing the shapeshifter to either,get lifesteal,buff his allies armor and health regeneration,escape or cripple the enemy. Can only choose 1 subClass!',
     category: 'beastmaster',
     classRequirement: 'beastmaster',

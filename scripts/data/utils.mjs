@@ -5,6 +5,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import crypto from 'crypto';
 
 /**
  * Get the root directory of the project (2 levels up from scripts/data/)
@@ -39,13 +40,26 @@ export function writeJson(filePath, data) {
 
 /**
  * Generate slug from name (lowercase, hyphenated)
+ * Limits length to 100 characters to prevent filesystem path length issues
+ * If truncated, appends a hash suffix to ensure uniqueness
  */
 export function slugify(name) {
   if (!name) return '';
-  return name
+  const MAX_SLUG_LENGTH = 100;
+  
+  let slug = name
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
+  
+  // If slug is too long, truncate and append hash for uniqueness
+  if (slug.length > MAX_SLUG_LENGTH) {
+    const hash = crypto.createHash('md5').update(slug).digest('hex').substring(0, 8);
+    const truncated = slug.substring(0, MAX_SLUG_LENGTH - 9); // Leave room for '-' + 8 char hash
+    slug = truncated.replace(/-+$/, '') + '-' + hash; // Remove trailing hyphens before adding hash
+  }
+  
+  return slug;
 }
 
 /**
