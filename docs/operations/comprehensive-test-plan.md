@@ -975,17 +975,61 @@ This document provides a comprehensive list of all Jest tests that could be crea
 ## Guides System Tests
 
 ### Guide Data Loading
-- [ ] Test abilities data loading
-- [ ] Test items data loading
-- [ ] Test units data loading
-- [ ] Test classes data loading
-- [ ] Test icon mapping
+- [ ] `src/features/modules/guides/data/abilities/index.ts`
+  - Test `ABILITIES` aggregates all category arrays
+  - Test `getAbilitiesByCategory` filters by category
+  - Test `getAbilitiesByClass` filters by class requirement
+  - Test `getAbilityById` returns exact ability match
+  - Test `searchAbilities` matches name, description, and ID fields
+
+- [ ] `src/features/modules/guides/data/items/index.ts`
+  - Test `ITEMS_DATA` concatenates all item groups (raw materials, weapons, armor, potions, scrolls, buildings, unknown)
+  - Test `ITEMS_BY_CATEGORY` groups items by category
+  - Test `getItemById` returns undefined for missing IDs and matches by slug
+  - Test `getItemsByCategory` returns empty array for categories without entries
+  - Test `getItemsBySubcategory` filters by subcategory
+  - Test `searchItems` matches name, description, and recipe ingredients (case-insensitive)
+
+- [ ] `src/features/modules/guides/data/units/classes.ts`
+  - Test `BASE_TROLL_CLASS_SLUGS` lists every base class slug
+  - Test `getClassBySlug` returns correct class data and undefined for invalid slug
+  - Test base class entries include subclass and superclass relationships
+  - Test growth stats and base stats are preserved for each class
+
+- [ ] `src/features/modules/guides/data/units/derivedClasses.ts`
+  - Test derived classes inherit correct parent slug and type (sub vs super)
+  - Test derived class entries include growth and base stat fields
+  - Test derived classes include optional metadata (tips, iconSrc) when provided
+
+- [ ] `src/features/modules/guides/hooks/useItemsData.ts`
+  - Test initial state uses cached values when available
+  - Test successful fetch updates `items`, `meta`, and clears errors
+  - Test fetch failure sets error and stops loading state
+  - Test in-flight request is reused across mounts
+  - Test `refetch` clears caches and reloads data
+  - Test cleanup prevents state updates after unmount
+
+- [ ] `src/features/modules/guides/data/iconMap.ts`
+  - Test ICON_MAP contains required categories (abilities, items, buildings, trolls, units)
+  - Test entries map to filenames (no directory prefixes) and are serializable
+  - Test icon lookups can round-trip known keys from each category
 
 ### Guide Utilities
-- [ ] Test icon path resolution
-- [ ] Test item ID mapping
-- [ ] Test ability ID mapping
-- [ ] Test icon utilities
+- [ ] `src/features/modules/guides/utils/iconMap.ts`
+  - Test `resolveExplicitIcon` returns category-specific matches
+  - Test `resolveExplicitIcon` searches across categories when not found in requested category
+  - Test `resolveExplicitIcon` returns undefined when key is missing everywhere
+  - Test resolved paths include `/icons/itt/` prefix
+
+- [ ] `src/features/modules/guides/utils/iconUtils.ts`
+  - Test `getDefaultIconPath` returns default fallback path
+  - Test default path is used when icon mapping is missing
+
+- [ ] `src/features/modules/guides/utils/itemIdMapper.ts`
+  - Test `itemConstantToId` strips ITEM_ prefix and converts to kebab-case
+  - Test `itemIdToConstant` prefixes ITEM_ and uppercases
+  - Test `mapCraftingStation` maps known stations and capitalizes unknown values
+  - Test `normalizeIngredientName` applies `INGREDIENT_NAME_MAP` overrides
 
 ---
 
