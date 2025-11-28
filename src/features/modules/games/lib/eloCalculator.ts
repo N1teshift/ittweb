@@ -98,7 +98,6 @@ export async function updateEloScores(gameId: string): Promise<void> {
 
     const winnerTeamElo = calculateTeamElo(winnerElos);
     const loserTeamElo = calculateTeamElo(loserElos);
-    const drawerTeamElo = calculateTeamElo(drawerElos);
 
     // Calculate ELO changes
     const eloChanges: Map<string, number> = new Map();

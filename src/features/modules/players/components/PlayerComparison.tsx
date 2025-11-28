@@ -19,7 +19,7 @@ interface PlayerComparisonProps {
   pageNamespaces: string[];
 }
 
-export function PlayerComparison({ pageNamespaces }: PlayerComparisonProps) {
+export function PlayerComparison({ pageNamespaces: _pageNamespaces }: PlayerComparisonProps) {
   const router = useRouter();
   const [comparison, setComparison] = useState<PlayerComparisonType | null>(null);
   const [loading, setLoading] = useState(true);

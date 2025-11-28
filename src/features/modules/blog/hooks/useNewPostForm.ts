@@ -1,5 +1,4 @@
 import { FormEvent, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
 import { signIn, useSession } from 'next-auth/react';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 
@@ -31,7 +30,6 @@ const slugify = (value: string) =>
     .replace(/^-+|-+$/g, '');
 
 export function useNewPostForm(onSuccess?: () => void) {
-  const router = useRouter();
   const { status } = useSession();
   const isAuthenticated = status === 'authenticated';
   const [formState, setFormState] = useState<PostFormState>(initialState);

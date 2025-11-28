@@ -3,24 +3,21 @@ import {
   addDoc, 
   getDocs, 
   updateDoc, 
-  deleteDoc, 
   doc, 
   query, 
   orderBy, 
-  where,
   Timestamp 
 } from 'firebase/firestore';
 import { 
   ref, 
   uploadBytes, 
-  getDownloadURL, 
-  deleteObject 
+  getDownloadURL
 } from 'firebase/storage';
 import { getFirestoreInstance, getStorageInstance } from '@/features/infrastructure/api/firebase';
 
 // Check if we're on the client side
 const isClient = typeof window !== 'undefined';
-import { ArchiveEntry, CreateArchiveEntry, DateInfo } from '@/types/archive';
+import { ArchiveEntry, CreateArchiveEntry } from '@/types/archive';
 
 const ARCHIVE_COLLECTION = 'archives';
 const db = getFirestoreInstance();

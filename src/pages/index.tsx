@@ -15,6 +15,7 @@ import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import type { GetStaticProps } from 'next';
 import type { Entry } from '@/types/entry';
 import type { Game, CreateScheduledGame } from '@/features/modules/games/types';
+import type { ScheduledGame } from '@/types/scheduledGame';
 import { Button } from '@/features/infrastructure/shared/components/ui';
 
 const pageNamespaces = ["common"];
@@ -116,8 +117,22 @@ export default function Home({ latestEntry, mdxSource, recentActivity }: HomePro
       }
 
       setShowScheduleForm(false);
-      // Reload the page to show the new game in recent activity
-      router.reload();
+      // Revalidate the homepage to show the new game
+      try {
+        await fetch('/api/revalidate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ path: '/' }),
+        });
+      } catch (revalidateError) {
+        console.error('Failed to revalidate homepage:', revalidateError);
+      }
+      // Force a full page reload to fetch the revalidated page
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 500);
     } catch (err) {
       console.error('Failed to schedule game:', err);
       throw err;
@@ -382,13 +397,14 @@ function removeUndefined<T>(obj: T): T {
 export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
   const withI18n = getStaticPropsWithTranslations(pageNamespaces);
   const i18nResult = await withI18n({ locale: locale as string });
-  const [{ getAllEntriesServer }, { getGames }] = await Promise.all([
+  const [{ getAllEntriesServer }, { getGames }, { getAllScheduledGames }] = await Promise.all([
     import('@/features/modules/entries/lib/entryService.server'),
     import('@/features/modules/games/lib/gameService'),
+    import('@/features/modules/scheduled-games/lib/scheduledGameService'),
   ]);
   
   try {
-    const [allEntries, allGames] = await Promise.all([
+    const [allEntries, allGames, scheduledGames] = await Promise.all([
       getAllEntriesServer().catch((err) => {
         console.error('Failed to fetch entries:', err);
         return [];
@@ -397,10 +413,53 @@ export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
         console.error('Failed to fetch games:', err);
         return { games: [], hasMore: false };
       }),
+      getAllScheduledGames(true, false).catch((err) => {
+        console.error('Failed to fetch scheduled games:', err);
+        return [];
+      }),
     ]);
     
+    // Convert scheduled games to unified Game format
+    const scheduledGamesAsGames: Game[] = scheduledGames.map((sg) => ({
+      id: sg.id,
+      gameId: sg.scheduledGameId,
+      gameState: 'scheduled' as const,
+      creatorName: sg.creatorName,
+      createdByDiscordId: sg.createdByDiscordId,
+      createdAt: sg.createdAt,
+      updatedAt: sg.updatedAt,
+      submittedAt: sg.submittedAt,
+      scheduledDateTime: sg.scheduledDateTime,
+      timezone: sg.timezone,
+      teamSize: sg.teamSize,
+      customTeamSize: sg.customTeamSize,
+      gameType: sg.gameType,
+      gameVersion: sg.gameVersion,
+      gameLength: sg.gameLength,
+      modes: sg.modes,
+      participants: sg.participants,
+      status: sg.status,
+      isDeleted: sg.isDeleted ?? false,
+      deletedAt: sg.deletedAt ?? null,
+    }));
+    
+    // Combine completed and scheduled games
+    const allGamesCombined = [...allGames.games, ...scheduledGamesAsGames];
+    
     console.log('Fetched entries:', allEntries.length);
-    console.log('Fetched games:', allGames.games.length);
+    console.log('Fetched completed games:', allGames.games.length);
+    console.log('Fetched scheduled games:', scheduledGames.length);
+    if (scheduledGames.length > 0) {
+      console.log('Sample scheduled game:', {
+        id: scheduledGames[0].id,
+        scheduledGameId: scheduledGames[0].scheduledGameId,
+        scheduledDateTime: scheduledGames[0].scheduledDateTime,
+        teamSize: scheduledGames[0].teamSize,
+        status: scheduledGames[0].status,
+      });
+    }
+    console.log('Total games:', allGamesCombined.length);
+    console.log('Scheduled games converted:', scheduledGamesAsGames.length);
     
     // Debug: Log entry details
     if (allEntries.length > 0) {
@@ -417,15 +476,21 @@ export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
 
     // Sanitize entries and games to remove undefined values
     const sanitizedEntries = allEntries.map(removeUndefined) as Entry[];
-    const sanitizedGames = allGames.games.map(removeUndefined) as Game[];
+    const sanitizedGames = allGamesCombined.map(removeUndefined) as Game[];
     
     console.log('Sanitized entries:', sanitizedEntries.length);
+    console.log('Sanitized games:', sanitizedGames.length);
+    console.log('Scheduled games in sanitized:', sanitizedGames.filter(g => g.gameState === 'scheduled').length);
 
     // Combine all activity items
     const activityItems: RecentActivityItem[] = [
       ...sanitizedEntries.map((entry): RecentActivityItem => ({ type: 'entry', data: entry })),
       ...sanitizedGames.map((game): RecentActivityItem => ({ type: 'game', data: game })),
     ];
+    
+    console.log('Total activity items before sort:', activityItems.length);
+    console.log('Games in activity:', activityItems.filter(a => a.type === 'game').length);
+    console.log('Scheduled games in activity:', activityItems.filter(a => a.type === 'game' && a.data.gameState === 'scheduled').length);
 
     // Sort by date (most recent first)
     // Import timestampToIso for server-side conversion
@@ -453,8 +518,18 @@ export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
     console.log('Total activity items:', sortedActivity.length);
     console.log('Activity breakdown:', {
       entries: sortedActivity.filter(a => a.type === 'entry').length,
-      games: sortedActivity.filter(a => a.type === 'game').length
+      games: sortedActivity.filter(a => a.type === 'game').length,
+      scheduledGames: sortedActivity.filter(a => a.type === 'game' && a.data.gameState === 'scheduled').length,
+      completedGames: sortedActivity.filter(a => a.type === 'game' && a.data.gameState === 'completed').length,
     });
+    if (sortedActivity.filter(a => a.type === 'game' && a.data.gameState === 'scheduled').length > 0) {
+      const firstScheduled = sortedActivity.find(a => a.type === 'game' && a.data.gameState === 'scheduled');
+      console.log('First scheduled game in activity:', firstScheduled ? {
+        id: firstScheduled.data.id,
+        gameId: firstScheduled.data.gameId,
+        scheduledDateTime: firstScheduled.data.scheduledDateTime,
+      } : 'none');
+    }
     
     // Get latest entry (post) for display
     const latestEntry = sanitizedEntries

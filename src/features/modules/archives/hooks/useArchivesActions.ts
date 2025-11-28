@@ -57,7 +57,7 @@ export function useArchivesActions({
   setShowImageModal,
   setModalImage,
   setSortOrder,
-  entries,
+  entries: _entries,
   sortOrder,
 }: UseArchivesActionsProps): UseArchivesActionsReturn {
   const { status } = useSession();

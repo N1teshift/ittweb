@@ -9,7 +9,7 @@ interface ClassDetailPageProps {
   pageNamespaces: string[];
 }
 
-export function ClassDetailPage({ pageNamespaces }: ClassDetailPageProps) {
+export function ClassDetailPage({ pageNamespaces: _pageNamespaces }: ClassDetailPageProps) {
   const router = useRouter();
   const className = router.query.className as string;
   const [classStat, setClassStat] = useState<ClassStats | null>(null);

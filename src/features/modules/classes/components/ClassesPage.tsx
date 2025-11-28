@@ -8,7 +8,7 @@ interface ClassesPageProps {
   pageNamespaces: string[];
 }
 
-export function ClassesPage({ pageNamespaces }: ClassesPageProps) {
+export function ClassesPage({ pageNamespaces: _pageNamespaces }: ClassesPageProps) {
   const [classStats, setClassStats] = useState<ClassStats[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

@@ -13,7 +13,6 @@ import {
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { PlayerStats, PlayerProfile, CategoryStats, PlayerSearchFilters, PlayerComparison } from '../types';
 import { STARTING_ELO } from '../../games/lib/eloCalculator';

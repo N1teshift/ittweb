@@ -12,7 +12,7 @@ type GuideIconProps = {
   src?: string; // explicit override (absolute like /icons/itt/...)
 };
 
-export default function GuideIcon({ category, name, size = 48, state, className, src: srcOverride }: GuideIconProps) {
+export default function GuideIcon({ category, name, size = 48, state: _state, className, src: srcOverride }: GuideIconProps) {
   // Priority: 1. srcOverride, 2. explicit mapping, 3. default fallback
   const explicit = useMemo(() => resolveExplicitIcon(category, name), [category, name]);
   const initialIconSrc = useMemo(() => {

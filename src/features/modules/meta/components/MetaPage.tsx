@@ -26,7 +26,7 @@ interface MetaData {
   classWinRates: ClassWinRateData[];
 }
 
-export function MetaPage({ pageNamespaces }: MetaPageProps) {
+export function MetaPage({ pageNamespaces: _pageNamespaces }: MetaPageProps) {
   const [metaData, setMetaData] = useState<MetaData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

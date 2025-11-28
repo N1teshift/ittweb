@@ -1,6 +1,5 @@
 import React, { useState, FormEvent, useEffect } from 'react';
 import { TeamSize, GameType, ScheduledGame } from '@/types/scheduledGame';
-import { getUserTimezone, convertLocalToUTC, getCommonTimezones, getTimezoneAbbreviation } from '../utils/timezoneUtils';
 import { formatDateTimeInTimezone } from '../utils/timezoneUtils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 

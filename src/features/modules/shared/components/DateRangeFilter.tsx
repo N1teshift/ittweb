@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Button } from '@/features/infrastructure/shared/components/ui/Button';
 import { Card } from '@/features/infrastructure/shared/components/ui/Card';
-import type { DateRange, DateRangePreset } from '../types';
+import type { DateRangePreset } from '../types';
 
 interface DateRangeFilterProps {
   startDate?: Date | null;

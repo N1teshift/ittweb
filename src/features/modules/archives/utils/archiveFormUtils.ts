@@ -1,4 +1,4 @@
-import { DateInfo, CreateArchiveEntry } from '@/types/archive';
+import { DateInfo } from '@/types/archive';
 
 export type SectionKey = 'images' | 'video' | 'twitch' | 'replay' | 'game' | 'text';
 

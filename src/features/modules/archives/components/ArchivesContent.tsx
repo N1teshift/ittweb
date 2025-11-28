@@ -2,7 +2,6 @@ import React, { memo, useMemo } from 'react';
 import { ArchiveEntry } from '@/types/archive';
 import type { Game } from '@/features/modules/games/types';
 import TimelineSection from './sections/TimelineSection';
-import ArchiveEntryComponent from './ArchiveEntry';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import { 
   ArchivesEmptyState,

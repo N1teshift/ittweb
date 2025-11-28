@@ -20,7 +20,6 @@ export function useEditPostForm(postId: string, initialPost: PostFormState | nul
       published: true,
     }
   );
-  const [slugManuallyEdited, setSlugManuallyEdited] = useState(true); // In edit mode, slug is already set
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);

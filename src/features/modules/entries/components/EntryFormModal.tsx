@@ -21,7 +21,7 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
   const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
   const [videoUrl, setVideoUrl] = useState('');
   const [twitchClipUrl, setTwitchClipUrl] = useState('');
-  const [sectionOrder, setSectionOrder] = useState<Array<'images' | 'video' | 'twitch' | 'text'>>(['text']);
+  const [sectionOrder] = useState<Array<'images' | 'video' | 'twitch' | 'text'>>(['text']);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
@@ -88,7 +88,7 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
         try {
           const errorData = await response.json();
           errorMessage = errorData.error || errorMessage;
-        } catch (jsonError) {
+        } catch {
           // If response is not JSON, try to get text
           try {
             const text = await response.text();

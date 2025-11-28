@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
 import { getEloHistory } from '@/features/modules/analytics/lib/analyticsService';
 

@@ -1,5 +1,3 @@
-import { ITTIconCategory } from '../utils/iconUtils';
-
 export type IconMap = {
   abilities: Record<string, string>;
   items: Record<string, string>;

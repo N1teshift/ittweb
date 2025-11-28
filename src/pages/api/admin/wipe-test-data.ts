@@ -30,15 +30,21 @@ export default async function handler(
     }
 
     const adminDb = getFirestoreAdmin();
-    let deletedCounts: Record<string, number> = {};
+    const deletedCounts: Record<string, number> = {};
 
     logger.info('Starting complete data wipe', { discordId: session.discordId });
 
-    // 1. Delete ALL Firestore collections
+    // 1. Delete ALL Firestore collections (except userData)
     const collections = await adminDb.listCollections();
-    logger.info('Found collections to delete', { count: collections.length, collections: collections.map(c => c.id) });
+    const collectionsToDelete = collections.filter(c => c.id !== 'userData');
+    logger.info('Found collections to delete', { 
+      total: collections.length, 
+      toDelete: collectionsToDelete.length,
+      skipped: ['userData'],
+      collections: collectionsToDelete.map(c => c.id) 
+    });
 
-    for (const collection of collections) {
+    for (const collection of collectionsToDelete) {
       const collectionName = collection.id;
       let collectionCount = 0;
 

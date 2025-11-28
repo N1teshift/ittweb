@@ -29,7 +29,7 @@ export default function TerrainVisualizerContainer() {
         const parsedUi = JSON.parse(uiStored);
         if (typeof parsedUi.zoom === 'number' && parsedUi.scroll) setUiState(parsedUi);
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

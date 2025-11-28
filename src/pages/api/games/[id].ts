@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
 import { getGameById, updateGame, deleteGame } from '@/features/modules/games/lib/gameService';
 import type { UpdateGame } from '@/features/modules/games/types';

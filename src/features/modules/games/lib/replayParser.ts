@@ -6,6 +6,27 @@ import { buildW3MMDLookup, mapMissionStatsToPlayers, type ParsedW3MMDEntry } fro
 
 const logger = createComponentLogger('games/replayParser');
 
+interface ParsedReplay {
+  randomseed?: number;
+  winningTeamId?: number;
+  winnerTeamId?: number;
+  duration?: number;
+  gamename?: string;
+  map?: {
+    path?: string;
+    file?: string;
+  };
+  creator?: string;
+  players?: Player[];
+  w3mmd?: unknown[];
+}
+
+interface PlayerWithResult extends Player {
+  result?: string;
+  status?: string;
+  won?: boolean;
+}
+
 export interface ReplayParserOptions {
   scheduledGameId?: number;
   fallbackDatetime?: string;
@@ -26,7 +47,7 @@ export async function parseReplayFile(
 ): Promise<ReplayParserResult> {
   try {
     const replay = new W3GReplay();
-    const parsed = await replay.parse(buffer);
+    const parsed = await replay.parse(buffer) as unknown as ParsedReplay;
     const players = parsed.players || [];
 
     if (players.length < 2) {
@@ -153,7 +174,7 @@ function deriveCategory(players: Player[]): GameCategory | undefined {
  * Derive the winning team ID from multiple sources
  */
 function deriveWinningTeamId(
-  parsed: any,
+  parsed: ParsedReplay,
   players: Player[],
   w3mmdLookup: Record<string, Record<string, number>>,
 ): number | undefined {
@@ -184,17 +205,16 @@ function deriveWinningTeamId(
   }
 
   // Check players for result/status properties
-  const playersWithResult = players.filter(p => {
-    const playerAny = p as any;
-    return playerAny.result !== undefined || 
-           playerAny.status !== undefined || 
-           playerAny.won !== undefined;
+  const playersWithResult = players.filter((p): p is PlayerWithResult => {
+    const playerWithResult = p as PlayerWithResult;
+    return playerWithResult.result !== undefined || 
+           playerWithResult.status !== undefined || 
+           playerWithResult.won !== undefined;
   });
   
   if (playersWithResult.length > 0) {
     for (const player of playersWithResult) {
-      const playerAny = player as any;
-      if (playerAny.result === 'win' || playerAny.status === 'winner' || playerAny.won === true) {
+      if (player.result === 'win' || player.status === 'winner' || player.won === true) {
         logger.info('Found winner from player result property', {
           player: player.name,
           teamId: player.teamid,
@@ -315,11 +335,11 @@ function deriveFlag(
   }
 
   // Check player object itself for result/status
-  const playerAny = player as any;
-  if (playerAny.result === 'win' || playerAny.status === 'winner' || playerAny.won === true) {
+  const playerWithResult = player as PlayerWithResult;
+  if (playerWithResult.result === 'win' || playerWithResult.status === 'winner' || playerWithResult.won === true) {
     return 'winner';
   }
-  if (playerAny.result === 'loss' || playerAny.status === 'loser' || playerAny.won === false) {
+  if (playerWithResult.result === 'loss' || playerWithResult.status === 'loser' || playerWithResult.won === false) {
     return 'loser';
   }
 

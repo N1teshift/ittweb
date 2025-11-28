@@ -19,7 +19,7 @@ interface PlayersPageProps {
   pageNamespaces: string[];
 }
 
-export function PlayersPage({ pageNamespaces }: PlayersPageProps) {
+export function PlayersPage({ pageNamespaces: _pageNamespaces }: PlayersPageProps) {
   const [players, setPlayers] = useState<PlayerStats[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

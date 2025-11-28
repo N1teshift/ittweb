@@ -11,8 +11,6 @@ import {
   where,
   Timestamp,
   limit as firestoreLimit,
-  startAfter,
-  QueryDocumentSnapshot,
   QueryConstraint,
 } from 'firebase/firestore';
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
@@ -33,6 +31,9 @@ import type {
   GameListResponse,
   GameState,
   GameArchiveContent,
+  TeamSize,
+  GameType,
+  ScheduledGameStatus,
 } from '../types';
 import { normalizePlayerName } from '../../players/lib/playerService';
 import { updateEloScores } from './eloCalculator';
@@ -108,14 +109,14 @@ function convertGameDoc(docData: Record<string, unknown>, id: string): Game {
       ...baseGame,
       scheduledDateTime: docData.scheduledDateTime,
       timezone: typeof docData.timezone === 'string' ? docData.timezone : undefined,
-      teamSize: docData.teamSize as any,
+      teamSize: (docData.teamSize as TeamSize | undefined),
       customTeamSize: typeof docData.customTeamSize === 'string' ? docData.customTeamSize : undefined,
-      gameType: docData.gameType as any,
+      gameType: (docData.gameType as GameType | undefined),
       gameVersion: typeof docData.gameVersion === 'string' ? docData.gameVersion : undefined,
       gameLength: typeof docData.gameLength === 'number' ? docData.gameLength : undefined,
       modes: Array.isArray(docData.modes) ? docData.modes : [],
       participants: Array.isArray(docData.participants) ? docData.participants : [],
-      status: docData.status as any,
+      status: (docData.status as ScheduledGameStatus | undefined),
     };
   }
 
@@ -272,8 +273,6 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
       throw new Error(`Game with gameId ${gameData.gameId} already exists`);
     }
 
-    const cleanedData = removeUndefined(gameData as unknown as Record<string, unknown>);
-    
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
       const adminTimestamp = getAdminTimestamp();
@@ -435,8 +434,6 @@ export async function createGame(gameData: CreateGame): Promise<string> {
       throw new Error(`Game with gameId ${gameData.gameId} already exists`);
     }
 
-    const cleanedData = removeUndefined(gameData as unknown as Record<string, unknown>);
-    
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
       const adminTimestamp = getAdminTimestamp();
@@ -657,19 +654,14 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
       endDate,
       category,
       player,
-      ally,
-      enemy,
-      teamFormat,
       gameId,
-      page = 1,
       limit = 20,
       cursor,
     } = filters;
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      let gamesQuery: any = adminDb.collection(GAMES_COLLECTION);
+      let gamesQuery = adminDb.collection(GAMES_COLLECTION);
 
       // Apply filters
       if (startDate) {
@@ -704,18 +696,17 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
 
       // Filter by player names if specified (client-side filtering for now)
       // TODO: Optimize with proper Firestore queries
-      const filteredGames = games;
       if (player) {
-        const playerNames = player.split(',').map(n => normalizePlayerName(n.trim()));
         // This requires fetching players for each game - not optimal
         // For now, we'll do basic filtering
+        // const playerNames = player.split(',').map(n => normalizePlayerName(n.trim()));
       }
 
       const lastDoc = snapshot.docs[snapshot.docs.length - 1];
       const hasMore = snapshot.docs.length === limit;
 
       return {
-        games: filteredGames,
+        games,
         nextCursor: hasMore && lastDoc ? lastDoc.id : undefined,
         hasMore,
       };
