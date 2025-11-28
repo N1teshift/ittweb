@@ -16,6 +16,7 @@ The `scripts/` folder hosts the end-to-end data regeneration pipeline for Island
 | 6. Convert | `convert-extracted-to-typescript.mjs` | Generate typed data consumed by the app (merges all sources) | `src/features/modules/guides/data/**` |
 | 7. Icon map | `regenerate-iconmap.mjs` | Produce `iconMap.ts` from PNG assets + generated data | `src/features/modules/guides/data/iconMap.ts` |
 | 8. Fix paths | `fix-icon-paths.mjs` | Validate and fix icon paths in generated TypeScript files | Updated `src/features/modules/guides/data/**` |
+| 9. Resolve references | `resolve-field-references.mjs` | Resolve field references in tooltips (e.g., `<AMd5,Cool1>`) | Updated `src/features/modules/guides/data/**` |
 
 All stages can be orchestrated with one command:
 
@@ -38,31 +39,130 @@ node scripts/data/extract-ability-codes-from-items.mjs
 node scripts/data/convert-extracted-to-typescript.mjs
 node scripts/data/regenerate-iconmap.mjs
 node scripts/data/fix-icon-paths.mjs
+node scripts/resolve-field-references.mjs
 ```
 
 When debugging, re-run the downstream stages only for the assets you changed to save time.
 
 ## Required Inputs
 
-- `external/Work/` with the Warcraft III map exports (`war3map.w3t`, `.w3a`, `.w3u`, `.w3b`, etc.).
-- `scripts/data/category-mappings.json` (manually curated categories used by the converter).
-- Icon PNGs in `public/icons/itt/` for the icon-mapping stage.
+### Input Files
+
+The pipeline requires the following input files in `external/Work/`:
+
+- **war3map.w3t** - Item data (Warcraft 3 Table)
+- **war3map.w3a** - Ability data
+- **war3map.w3u** - Unit data
+- **war3map.w3b** - Building/Destructable data
+- **war3map.j** - JASS code (for recipe extraction)
+
+**How to prepare input files:**
+
+1. **Extract from .w3x map file:**
+   - Download **MPQ Editor** from: https://www.zezula.net/en/mpq/download.html
+   - Open the `.w3x` map file (e.g., `Island.Troll.Tribes.v3.28.w3x`)
+   - Extract the required files listed above
+   - Place them directly in `external/Work/` directory
+
+2. **Verify files are present:**
+   ```bash
+   ls -la external/Work/war3map.*
+   ```
+   Should show all 5 files: `.w3t`, `.w3a`, `.w3u`, `.w3b`, `.j`
+
+For detailed extraction instructions, see [`docs/systems/scripts/extract-w3x.md`](../docs/systems/scripts/extract-w3x.md).
+
+### Configuration Files
+
+- **category-mappings.json** - Manually curated categories (`scripts/data/category-mappings.json`)
+- **Icon PNGs** - Icon files in `public/icons/itt/` for the icon-mapping stage
 
 ## Outputs & Verification
 
-- Intermediate JSON (raw + metadata) lives under `tmp/work-data/` and is regenerated every run.
-- TypeScript data is written to `src/features/modules/guides/data/`.
-- Icon mapping is regenerated at `src/features/modules/guides/data/iconMap.ts`.
+### Output Locations
 
-After running the pipeline, spot-check:
-1. `tmp/work-data/metadata/recipes.json` – verifies the recipe extractor parsed `war3map.j`.
-2. `src/features/modules/guides/data/items/*.ts` – ensures the converter rebuilt TypeScript modules with fresh recipes/categories.
-3. `src/features/modules/guides/data/iconMap.ts` – ensures icons line up with the latest assets.
+- **Intermediate JSON** (raw + metadata) lives under `tmp/work-data/` and is regenerated every run
+- **TypeScript data** is written to `src/features/modules/guides/data/`
+- **Icon mapping** is regenerated at `src/features/modules/guides/data/iconMap.ts`
+
+### Validation Checklist
+
+After running the pipeline, verify the following:
+
+1. **Check extraction completed:**
+   ```bash
+   ls -la tmp/work-data/raw/
+   ```
+   Should contain: `items.json`, `abilities.json`, `units.json`, `buildings.json`
+
+2. **Check metadata extracted:**
+   ```bash
+   ls -la tmp/work-data/metadata/
+   ```
+   Should contain: `recipes.json`, `units.json`, `buildings.json`, plus Wurst-extracted data
+
+3. **Verify TypeScript compilation:**
+   ```bash
+   npm run type-check
+   ```
+   Should complete without errors
+
+4. **Spot-check generated files:**
+   - `tmp/work-data/metadata/recipes.json` – verifies recipe extractor parsed `war3map.j`
+   - `src/features/modules/guides/data/items/*.ts` – ensures items were converted correctly
+   - `src/features/modules/guides/data/abilities/*.ts` – ensures abilities were converted correctly
+   - `src/features/modules/guides/data/iconMap.ts` – ensures icon map was generated
+
+5. **Count generated entities:**
+   ```bash
+   # Count items
+   find src/features/modules/guides/data/items -name "*.ts" -type f | wc -l
+   
+   # Count abilities
+   find src/features/modules/guides/data/abilities -name "*.ts" -type f | wc -l
+   ```
+
+For detailed validation procedures and troubleshooting, see [`docs/systems/scripts/TROUBLESHOOTING.md`](../docs/systems/scripts/TROUBLESHOOTING.md#data-validation).
+
+## Troubleshooting
+
+### Common Issues
+
+**Work directory not found:**
+- Verify `external/Work/` directory exists with required `war3map.*` files
+- See [Required Inputs](#required-inputs) section above
+
+**TypeScript compilation errors:**
+- Run `npm run type-check` to identify errors
+- Check generated files for syntax issues
+- Review converter logic if data format is incorrect
+
+**Missing or incorrect data:**
+- Check intermediate JSON files in `tmp/work-data/`
+- Verify input files are not corrupted
+- Review filtering logic in converters
+
+**For detailed troubleshooting:**
+See the complete [Pipeline Troubleshooting Guide](../docs/systems/data-pipeline/troubleshooting.md) for:
+- Common error messages and solutions
+- Debugging procedures
+- Performance issues
+- Data validation steps
 
 ## Documentation & References
 
-- Operational details and manual steps: `docs/README.md` → **Systems › Scripts**.
-- Refactoring backlog + status: `scripts/data/REFACTORING_PLAN.md`.
-- Deep-dive guides (icon mapping, extractor notes, historical analysis): `docs/systems/scripts/`.
+### Essential Guides
+
+- **[Pipeline Architecture](../docs/systems/data-pipeline/architecture.md)** – High-level architecture and data flow
+- **[Data Schemas](../docs/systems/data-pipeline/schemas.md)** – Complete data structure documentation
+- **[Troubleshooting Guide](../docs/systems/data-pipeline/troubleshooting.md)** – Common issues and debugging
+- **[Complete Documentation Index](../docs/systems/data-pipeline/README.md)** – All pipeline documentation
+
+### Additional Resources
+
+- **Operational details:** `docs/README.md` → **Systems › Data Pipeline**
+- **Refactoring backlog:** `scripts/data/REFACTORING_PLAN.md`
+- **Deep-dive guides:** `docs/systems/data-pipeline/guides/` (icon mapping, extraction, field references)
+- **Input file extraction:** `docs/systems/data-pipeline/guides/extract-w3x.md`
 
 Need to refresh fixtures before testing? Both `docs/QUICK_START_TESTING.md` and `docs/TESTING_GUIDE.md` include links to this README so you always land back here.

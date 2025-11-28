@@ -21,13 +21,10 @@
 
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import { ObjectsTranslator } from 'wc3maptranslator';
 import { Buffer } from 'buffer';
 import { WORK_DIR, TMP_RAW_DIR, ensureTmpDirs } from './paths.mjs';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT_DIR = path.join(__dirname, '..', '..');
+import { logWarning, logError, validateDirExists, writeJson } from './utils.mjs';
 
 ensureTmpDirs();
 
@@ -37,7 +34,7 @@ ensureTmpDirs();
 function readExtractedFile(filename) {
   const filePath = path.join(WORK_DIR, filename);
   if (!fs.existsSync(filePath)) {
-    console.warn(`  File not found: ${filePath}`);
+    logWarning(`File not found: ${filename}`, { filePath });
     return null;
   }
   return fs.readFileSync(filePath);
@@ -51,15 +48,12 @@ function parseObjectData(TranslatorClass, buffer, objectType) {
   try {
     const result = TranslatorClass.warToJson(objectType, buffer);
     if (!result || !result.json) {
-      console.warn(`  Failed to parse ${objectType}: no result or json`);
+      logWarning(`Failed to parse ${objectType}: no result or json`, { objectType });
       return null;
     }
     return result.json; // Return the json property which contains { original, custom }
   } catch (error) {
-    console.warn(`  Error parsing ${objectType}:`, error.message);
-    if (error.stack) {
-      console.warn(`  Stack: ${error.stack.split('\n').slice(0, 3).join('\n')}`);
-    }
+    logWarning(`Error parsing ${objectType}`, { objectType, error: error.message });
     return null;
   }
 }
@@ -403,8 +397,10 @@ function main() {
   console.log(`\nLooking for extracted files in: ${WORK_DIR}`);
   
   // Check if extracted directory exists
-  if (!fs.existsSync(WORK_DIR)) {
-    console.error(`\n❌ Extracted files directory not found: ${WORK_DIR}`);
+  try {
+    validateDirExists(WORK_DIR);
+  } catch (error) {
+    logError('Extracted files directory not found', error, { workDir: WORK_DIR });
     console.error('\n📋 INSTRUCTIONS:');
     console.error('  1. Extract the .w3x file using an MPQ editor (e.g., MPQ Editor)');
     console.error('  2. Extract these files from the archive:');
@@ -442,33 +438,21 @@ function main() {
     
     // Write combined output
     const outputFile = path.join(TMP_RAW_DIR, 'all_objects.json');
-    fs.writeFileSync(outputFile, JSON.stringify(output, null, 2));
+    writeJson(outputFile, output);
     console.log(`\n✅ Saved combined data to: ${outputFile}`);
     
     // Write individual files
     if (items) {
-      fs.writeFileSync(
-        path.join(TMP_RAW_DIR, 'items.json'),
-        JSON.stringify({ items, generatedAt: new Date().toISOString() }, null, 2)
-      );
+      writeJson(path.join(TMP_RAW_DIR, 'items.json'), { items, generatedAt: new Date().toISOString() });
     }
     if (abilities) {
-      fs.writeFileSync(
-        path.join(TMP_RAW_DIR, 'abilities.json'),
-        JSON.stringify({ abilities, generatedAt: new Date().toISOString() }, null, 2)
-      );
+      writeJson(path.join(TMP_RAW_DIR, 'abilities.json'), { abilities, generatedAt: new Date().toISOString() });
     }
     if (units) {
-      fs.writeFileSync(
-        path.join(TMP_RAW_DIR, 'units.json'),
-        JSON.stringify({ units, generatedAt: new Date().toISOString() }, null, 2)
-      );
+      writeJson(path.join(TMP_RAW_DIR, 'units.json'), { units, generatedAt: new Date().toISOString() });
     }
     if (buildings) {
-      fs.writeFileSync(
-        path.join(TMP_RAW_DIR, 'buildings.json'),
-        JSON.stringify({ buildings, generatedAt: new Date().toISOString() }, null, 2)
-      );
+      writeJson(path.join(TMP_RAW_DIR, 'buildings.json'), { buildings, generatedAt: new Date().toISOString() });
     }
     
     console.log('\n📊 Summary:');
@@ -479,7 +463,7 @@ function main() {
     console.log(`\n✅ Extraction complete!`);
     
   } catch (error) {
-    console.error('❌ Error:', error);
+    logError('Extraction failed', error);
     process.exit(1);
   }
 }

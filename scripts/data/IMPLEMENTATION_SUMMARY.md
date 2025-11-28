@@ -229,3 +229,4 @@ src/features/modules/guides/data/abilities/*.ts (with new fields)
 - Level data is only extracted if multiple levels exist
 - Relationships are extracted from spell lists in TrollUnitTextConstant.wurst
 
+

@@ -5,10 +5,9 @@
 
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { getRootDir, parseJSString, escapeString } from './utils.mjs';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT_DIR = path.join(__dirname, '..', '..');
+const ROOT_DIR = getRootDir();
 const ICONS_DIR = path.join(ROOT_DIR, 'public', 'icons', 'itt');
 const ICON_MAP_FILE = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'data', 'iconMap.ts');
 
@@ -46,25 +45,7 @@ function getAllIconFiles(dir) {
   return files;
 }
 
-/**
- * Parse JavaScript string literal (handles escaped quotes)
- */
-function parseJSString(str) {
-  // Remove surrounding quotes
-  if ((str.startsWith("'") && str.endsWith("'")) || (str.startsWith('"') && str.endsWith('"'))) {
-    str = str.slice(1, -1);
-  }
-  // Unescape escaped quotes and backslashes
-  return str.replace(/\\'/g, "'").replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-}
-
-/**
- * Escape string for use in JavaScript/TypeScript single-quoted string
- */
-function escapeForJS(str) {
-  // Escape backslashes first, then single quotes
-  return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-}
+// parseJSString and escapeString imported from utils.mjs
 
 /**
  * Normalize string for matching
@@ -294,17 +275,17 @@ function generateIconMap(items, abilities, units, allIcons) {
   // Generate TypeScript content
   const itemsEntries = Object.entries(itemMappings)
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([key, value]) => `    '${escapeForJS(key)}': '${value}'`)
+    .map(([key, value]) => `    '${escapeString(key)}': '${value}'`)
     .join(',\n');
   
   const abilitiesEntries = Object.entries(abilityMappings)
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([key, value]) => `    '${escapeForJS(key)}': '${value}'`)
+    .map(([key, value]) => `    '${escapeString(key)}': '${value}'`)
     .join(',\n');
   
   const unitsEntries = Object.entries(unitMappings)
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([key, value]) => `    '${escapeForJS(key)}': '${value}'`)
+    .map(([key, value]) => `    '${escapeString(key)}': '${value}'`)
     .join(',\n');
   
   return `import { ITTIconCategory } from '../utils/iconUtils';

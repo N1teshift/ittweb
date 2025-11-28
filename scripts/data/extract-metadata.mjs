@@ -11,7 +11,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { loadJson, writeJson, slugify, getField } from './utils.mjs';
+import { loadJson, writeJson, slugify, getField, validateJsonStructure, validateArrayItems, logWarning } from './utils.mjs';
 import { TMP_RAW_DIR, TMP_METADATA_DIR, WORK_DIR, ROOT_DIR, ensureTmpDirs } from './paths.mjs';
 
 const EXTRACTED_DIR = TMP_RAW_DIR;
@@ -618,6 +618,21 @@ function main() {
   // Load extracted data
   const extractedUnits = loadJson(path.join(EXTRACTED_DIR, 'units.json'));
   const extractedBuildings = loadJson(path.join(EXTRACTED_DIR, 'buildings.json'));
+  
+  // Validate loaded data structure
+  if (extractedUnits) {
+    validateJsonStructure(extractedUnits, ['units'], 'extractedUnits');
+    if (extractedUnits.units) {
+      validateArrayItems(extractedUnits.units, ['id', 'name'], 'extractedUnits.units');
+    }
+  }
+  
+  if (extractedBuildings) {
+    validateJsonStructure(extractedBuildings, ['buildings'], 'extractedBuildings');
+    if (extractedBuildings.buildings) {
+      validateArrayItems(extractedBuildings.buildings, ['id', 'name'], 'extractedBuildings.buildings');
+    }
+  }
   
   // Extract units metadata
   console.log('👤 Extracting units metadata...');

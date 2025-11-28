@@ -7,7 +7,6 @@
  * Usage: node scripts/data/convert-extracted-to-typescript.mjs
  */
 
-import fs from 'fs';
 import path from 'path';
 import { loadJson, slugify } from './utils.mjs';
 import { mapAbilityCategory, isGarbageAbilityName, getMissingAbilityCategorySlugs } from './converters/category-mapper.mjs';
@@ -18,16 +17,10 @@ import { writeItemsFile, writeAbilitiesFile, writeClassesFile, writeDerivedClass
 import { generateItemsIndex, generateAbilitiesIndex, generateUnitsIndex, generateAbilitiesTypes, generateItemsIconUtils } from './generators/index-generator.mjs';
 import { TMP_RAW_DIR, TMP_METADATA_DIR, ITEMS_TS_DIR, ABILITIES_TS_DIR, UNITS_TS_DIR } from './paths.mjs';
 
-const EXTRACTED_DIR = TMP_RAW_DIR;
 const RECIPES_FILE = path.join(TMP_METADATA_DIR, 'recipes.json');
 const BUILDINGS_FILE = path.join(TMP_METADATA_DIR, 'buildings.json');
 const UNITS_FILE = path.join(TMP_METADATA_DIR, 'units.json');
-const EXTRACTED_UNITS_FILE = path.join(EXTRACTED_DIR, 'units.json');
-
-// TypeScript output directories
-const ITEMS_DIR = ITEMS_TS_DIR;
-const ABILITIES_DIR = ABILITIES_TS_DIR;
-const UNITS_DIR = UNITS_TS_DIR;
+const EXTRACTED_UNITS_FILE = path.join(TMP_RAW_DIR, 'units.json');
 
 function normalizeObjectId(rawId) {
   if (!rawId || typeof rawId !== 'string') return null;
@@ -58,8 +51,8 @@ function main() {
   console.log('🔄 Converting extracted .w3x data to TypeScript format...\n');
 
   // Load extracted data
-  const itemsData = loadJson(path.join(EXTRACTED_DIR, 'items.json'));
-  const abilitiesData = loadJson(path.join(EXTRACTED_DIR, 'abilities.json'));
+  const itemsData = loadJson(path.join(TMP_RAW_DIR, 'items.json'));
+  const abilitiesData = loadJson(path.join(TMP_RAW_DIR, 'abilities.json'));
   const buildingsData = loadJson(BUILDINGS_FILE);
   const unitsData = loadJson(UNITS_FILE);
   const extractedUnitsData = loadJson(EXTRACTED_UNITS_FILE);
@@ -168,7 +161,7 @@ function main() {
 
   for (const [category, items] of Object.entries(itemsByCategory)) {
     const fileName = categoryFileMap[category] || `${category}.ts`;
-    const filePath = path.join(ITEMS_DIR, fileName);
+    const filePath = path.join(ITEMS_TS_DIR, fileName);
     writeItemsFile(filePath, items, category);
     console.log(`✅ Wrote ${items.length} items to ${fileName}`);
   }
@@ -305,7 +298,7 @@ function main() {
 
   for (const [categoryKey, fileName] of Object.entries(abilityFileMap)) {
     const abilities = abilitiesByCategory[categoryKey] || [];
-    const filePath = path.join(ABILITIES_DIR, fileName);
+    const filePath = path.join(ABILITIES_TS_DIR, fileName);
     writeAbilitiesFile(filePath, abilities, categoryKey);
     console.log(`✅ Wrote ${abilities.length} abilities to ${fileName}`);
   }
@@ -344,7 +337,7 @@ function main() {
     const baseUnits = allUnits.filter(u => u.type === 'base' && !u.id?.endsWith('-1'));
     const convertedBaseClasses = baseUnits.map(u => convertBaseClass(u, allUnits));
 
-    const classesFilePath = path.join(UNITS_DIR, 'classes.ts');
+    const classesFilePath = path.join(UNITS_TS_DIR, 'classes.ts');
     writeClassesFile(classesFilePath, convertedBaseClasses);
     console.log(`✅ Wrote ${convertedBaseClasses.length} base classes to classes.ts`);
 
@@ -355,7 +348,7 @@ function main() {
     );
     const convertedDerivedClasses = derivedUnits.map(u => convertDerivedClass(u, allUnits));
 
-    const derivedClassesFilePath = path.join(UNITS_DIR, 'derivedClasses.ts');
+    const derivedClassesFilePath = path.join(UNITS_TS_DIR, 'derivedClasses.ts');
     writeDerivedClassesFile(derivedClassesFilePath, convertedDerivedClasses);
     console.log(`✅ Wrote ${convertedDerivedClasses.length} derived classes to derivedClasses.ts`);
   } else {
@@ -416,7 +409,7 @@ function main() {
       unitsByType[u.type] = (unitsByType[u.type] || 0) + 1;
     });
 
-    const allUnitsFilePath = path.join(UNITS_DIR, 'allUnits.ts');
+    const allUnitsFilePath = path.join(UNITS_TS_DIR, 'allUnits.ts');
     writeAllUnitsFile(allUnitsFilePath, deduplicatedUnits);
     console.log(`✅ Wrote ${deduplicatedUnits.length} units to allUnits.ts (${convertedUnits.length - deduplicatedUnits.length} duplicates removed)`);
     console.log(`   Types: ${Object.entries(unitsByType).map(([type, count]) => `${type}: ${count}`).join(', ')}`);
@@ -426,11 +419,11 @@ function main() {
 
   // Generate index files and utility files
   console.log('\n📝 Generating index and utility files...');
-  generateItemsIndex(ITEMS_DIR, itemsByCategory);
-  generateAbilitiesIndex(ABILITIES_DIR, abilitiesByCategory);
-  generateUnitsIndex(UNITS_DIR);
-  generateAbilitiesTypes(ABILITIES_DIR);
-  generateItemsIconUtils(ITEMS_DIR);
+  generateItemsIndex(ITEMS_TS_DIR, itemsByCategory);
+  generateAbilitiesIndex(ABILITIES_TS_DIR, abilitiesByCategory);
+  generateUnitsIndex(UNITS_TS_DIR);
+  generateAbilitiesTypes(ABILITIES_TS_DIR);
+  generateItemsIconUtils(ITEMS_TS_DIR);
 
   console.log(`\n📊 Summary:`);
   console.log(`  Items: ${convertedItems.length}`);

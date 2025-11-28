@@ -289,3 +289,4 @@ export type ItemData = {
 6. ⏳ Test with sample items
 7. ⏳ Update UI components to display new fields
 
+
