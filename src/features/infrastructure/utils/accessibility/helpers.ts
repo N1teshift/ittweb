@@ -1,4 +1,4 @@
-import { logError } from '@/features/shared/utils/loggerUtils';
+import { logError } from '@/features/infrastructure/logging';
 
 /**
  * Accessibility testing utilities

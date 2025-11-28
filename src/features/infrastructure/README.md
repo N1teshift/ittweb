@@ -23,16 +23,25 @@
 - Component-specific logger creation
 - Error categorization and logging
 
-### Shared UI Components (`shared/components/ui/`)
-- `Button` - Standard button component
-- `Card` - Card container component
-- `Input` - Form input component
-- `LoadingOverlay` - Loading overlay component
-- `LoadingScreen` - Full-page loading screen
+### Components (`components/`)
+- **Layout Components**: `Layout`, `Header`, `Footer`, `PageHero`, `DataCollectionNotice`, `DiscordButton`, `GitHubButton`
+- **UI Components** (`components/ui/`): `Button`, `Card`, `Input`, `LoadingOverlay`, `LoadingScreen`
+
+### Services (`lib/`)
+- `userDataService` - User data CRUD operations
+- `archiveService` - Archive entry service
+- `getStaticProps` - Next.js static props utilities
+- `TranslationNamespaceContext` - i18n namespace context
 
 ### Utils (`utils/`)
 - `objectUtils` - Object manipulation utilities
 - `timestampUtils` - Timestamp conversion utilities
+- `userRoleUtils` - User role checking utilities
+- `accessibility/helpers` - Accessibility testing utilities
+- `loggerUtils` - Error logging utilities (deprecated, use `logging/`)
+
+### Hooks (`hooks/`)
+- `useFallbackTranslation` - Translation fallback handling
 
 ## Usage
 
@@ -84,6 +93,5 @@ export default async function handler(req, res) {
 
 ## Related Documentation
 
-- [Shared Utilities](../shared/README.md)
-- [Logger Utils](../shared/utils/loggerUtils.ts)
+- [Error Handling Guide](../../../docs/operations/testing-guide.md)
 

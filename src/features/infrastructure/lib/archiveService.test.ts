@@ -37,7 +37,7 @@ jest.mock('@/features/infrastructure/logging', () => ({
   logError: jest.fn(),
 }));
 
-import { extractYouTubeId, extractTwitchClipId } from '../archiveService';
+import { extractYouTubeId, extractTwitchClipId } from './archiveService';
 
 describe('archiveService helpers', () => {
   it('extracts YouTube IDs from common URLs', () => {

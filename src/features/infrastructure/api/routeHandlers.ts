@@ -1,5 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getServerSession } from 'next-auth/next';
+import type { Session } from 'next-auth';
 import { createComponentLogger } from '@/features/infrastructure/logging';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
+import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 
 /**
  * Standard API response format
@@ -18,11 +23,36 @@ export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 /**
  * Handler function type for API routes
+ * Session is available if requireAuth or requireAdmin is true
  */
 export type ApiHandler<T = unknown> = (
   req: NextApiRequest,
-  res: NextApiResponse<ApiResponse<T>>
+  res: NextApiResponse<ApiResponse<T>>,
+  context?: { session: Session | null }
 ) => Promise<T>;
+
+/**
+ * Cache control options
+ */
+export interface CacheControlOptions {
+  /** Max age in seconds - how long the response can be cached */
+  maxAge?: number;
+  /** Whether the response can be cached by public caches (browsers, CDNs) */
+  public?: boolean;
+  /** Whether the response must be revalidated with the server */
+  mustRevalidate?: boolean;
+  /** Whether the response can be stored in shared caches */
+  private?: boolean;
+}
+
+/**
+ * Resource ownership checker function
+ * Returns true if the user has permission to access/modify the resource
+ */
+export type ResourceOwnershipChecker<T = unknown> = (
+  resource: T,
+  session: Session
+) => boolean | Promise<boolean>;
 
 /**
  * Options for API route handler
@@ -30,8 +60,14 @@ export type ApiHandler<T = unknown> = (
 export interface ApiHandlerOptions {
   methods?: HttpMethod[];
   requireAuth?: boolean;
+  /** Require admin role (implies requireAuth: true) */
+  requireAdmin?: boolean;
+  /** Function to check resource ownership - used with requireResourceOwnership */
+  checkResourceOwnership?: ResourceOwnershipChecker;
   validateBody?: (body: unknown) => boolean | string;
   logRequests?: boolean;
+  /** Cache control options - only applies to GET requests */
+  cacheControl?: CacheControlOptions | false;
 }
 
 /**
@@ -40,7 +76,7 @@ export interface ApiHandlerOptions {
  * - Error handling
  * - Response formatting
  * - Logging
- * - Authentication (future)
+ * - Authentication
  */
 export const createApiHandler = <T = unknown>(
   handler: ApiHandler<T>,
@@ -49,9 +85,14 @@ export const createApiHandler = <T = unknown>(
   const {
     methods = ['GET'],
     requireAuth = false,
+    requireAdmin = false,
     validateBody,
-    logRequests = true
+    logRequests = true,
+    cacheControl
   } = options;
+  
+  // requireAdmin implies requireAuth
+  const needsAuth = requireAuth || requireAdmin;
 
   return async (req: NextApiRequest, res: NextApiResponse<ApiResponse<T>>) => {
     const logger = createComponentLogger('ApiHandler', req.url || 'unknown');
@@ -76,6 +117,33 @@ export const createApiHandler = <T = unknown>(
         });
       }
 
+      // Set cache headers for GET requests if cacheControl is configured
+      if (req.method === 'GET' && options.cacheControl !== false && options.cacheControl) {
+        const cacheOptions = options.cacheControl;
+        const cacheParts: string[] = [];
+        
+        if (cacheOptions.maxAge !== undefined) {
+          cacheParts.push(`max-age=${cacheOptions.maxAge}`);
+        }
+        
+        if (cacheOptions.public) {
+          cacheParts.push('public');
+        } else if (cacheOptions.private) {
+          cacheParts.push('private');
+        }
+        
+        if (cacheOptions.mustRevalidate) {
+          cacheParts.push('must-revalidate');
+        }
+        
+        if (cacheParts.length > 0) {
+          res.setHeader('Cache-Control', cacheParts.join(', '));
+        }
+      } else if (req.method === 'GET' && options.cacheControl === false) {
+        // Explicitly disable caching
+        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+      }
+
       // Validate request body if validator provided
       if (validateBody && req.body) {
         const validationResult = validateBody(req.body);
@@ -93,21 +161,46 @@ export const createApiHandler = <T = unknown>(
         }
       }
 
-      // Authentication check if requireAuth is true
-      if (requireAuth) {
-        // TODO: Implement authentication check
-        // const session = getSession(req);
-        // if (!session) {
-        //   return res.status(401).json({
-        //     success: false,
-        //     error: 'Authentication required'
-        //   });
-        // }
-        logger.debug('Authentication verified');
+      // Authentication check if requireAuth or requireAdmin is true
+      let session: Session | null = null;
+      if (needsAuth) {
+        session = await getServerSession(req, res, authOptions);
+        if (!session) {
+          logger.warn('Unauthenticated request to protected endpoint', {
+            method: req.method,
+            url: req.url
+          });
+          return res.status(401).json({
+            success: false,
+            error: 'Authentication required'
+          });
+        }
+        
+        // Admin check if required
+        if (requireAdmin) {
+          const userData = await getUserDataByDiscordId(session.discordId || '');
+          if (!isAdmin(userData?.role)) {
+            logger.warn('Unauthorized admin request', {
+              method: req.method,
+              url: req.url,
+              userId: session.discordId || 'unknown'
+            });
+            return res.status(403).json({
+              success: false,
+              error: 'Admin access required'
+            });
+          }
+        }
+        
+        logger.debug('Authentication verified', {
+          userId: session.discordId || 'unknown',
+          isAdmin: requireAdmin
+        });
       }
 
-      // Execute the handler
-      const result = await handler(req, res);
+      // Execute the handler with context (session if authenticated)
+      const context = needsAuth ? { session: session! } : { session: null };
+      const result = await handler(req, res, context);
 
       // Log successful response
       if (logRequests) {
@@ -194,4 +287,46 @@ export const successResponse = <T>(res: NextApiResponse, data: T, message?: stri
     message
   });
 };
+
+/**
+ * Helper to check if a user owns a resource or is an admin
+ * @param resource - The resource to check ownership for
+ * @param session - The user session
+ * @param ownerField - The field name that contains the owner ID (default: 'createdByDiscordId')
+ * @returns Promise<boolean> - true if user owns the resource or is admin
+ */
+export async function checkResourceOwnership(
+  resource: { [key: string]: unknown } | null | undefined,
+  session: Session | null,
+  ownerField: string = 'createdByDiscordId'
+): Promise<boolean> {
+  if (!session?.discordId) {
+    return false;
+  }
+
+  if (!resource) {
+    return false;
+  }
+
+  // Check if user is admin
+  const userData = await getUserDataByDiscordId(session.discordId);
+  if (isAdmin(userData?.role)) {
+    return true;
+  }
+
+  // Check if user owns the resource
+  const ownerId = resource[ownerField];
+  return ownerId === session.discordId;
+}
+
+/**
+ * Helper to get authenticated session from handler context
+ * Throws error if session is not available
+ */
+export function requireSession(context?: { session: Session | null }): Session {
+  if (!context?.session) {
+    throw new Error('Authentication required');
+  }
+  return context.session;
+}
 
