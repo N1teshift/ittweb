@@ -26,6 +26,14 @@ export type SerializedPost = {
   mdxSource: MDXRemoteSerializeResult;
 };
 
+function isValidPost(post: Post): boolean {
+  if (!post.title?.trim()) return false;
+  if (!post.slug?.trim()) return false;
+  if (!post.content?.trim()) return false;
+  if (!post.date?.trim()) return false;
+  return !Number.isNaN(Date.parse(post.date));
+}
+
 /**
  * Convert Post to PostMeta
  */
@@ -46,7 +54,13 @@ function postToMeta(post: Post): PostMeta {
  */
 export async function listPostSlugs(): Promise<string[]> {
   const posts = await getAllPosts();
-  return posts.map((post) => post.slug);
+  return Array.from(
+    new Set(
+      posts
+        .filter(isValidPost)
+        .map((post) => post.slug)
+    )
+  );
 }
 
 /**
@@ -54,7 +68,7 @@ export async function listPostSlugs(): Promise<string[]> {
  */
 export async function loadPostBySlug(slug: string): Promise<LoadedPost | null> {
   const post = await getPostBySlug(slug);
-  if (!post) return null;
+  if (!post || !isValidPost(post)) return null;
 
   return {
     meta: postToMeta(post),
@@ -67,10 +81,12 @@ export async function loadPostBySlug(slug: string): Promise<LoadedPost | null> {
  */
 export async function loadAllPosts(): Promise<LoadedPost[]> {
   const posts = await getAllPosts();
-  return posts.map((post) => ({
-    meta: postToMeta(post),
-    content: post.content,
-  }));
+  return posts
+    .filter(isValidPost)
+    .map((post) => ({
+      meta: postToMeta(post),
+      content: post.content,
+    }));
 }
 
 /**
@@ -78,7 +94,7 @@ export async function loadAllPosts(): Promise<LoadedPost[]> {
  */
 export async function loadLatestPostSerialized(): Promise<SerializedPost | null> {
   const latest = await getLatestPost();
-  if (!latest) return null;
+  if (!latest || !isValidPost(latest)) return null;
 
   const mdxSource = await serialize(latest.content, {
     mdxOptions: {
