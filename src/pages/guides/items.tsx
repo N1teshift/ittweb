@@ -88,7 +88,7 @@ function ItemCard({ item, category }: { item: ItemData; category?: ItemCategory 
         onClick={(e) => {
           e.stopPropagation();
           e.preventDefault();
-          router.push(`/guides/units/${craftedAtBuilding.id}?from=item&itemId=${item.id}`);
+          router.push(`/guides/units/${encodeURIComponent(craftedAtBuilding.id)}?from=item&itemId=${item.id}`);
         }}
         className="flex-shrink-0 hover:opacity-80 transition-opacity cursor-pointer"
       >

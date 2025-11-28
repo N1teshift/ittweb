@@ -1,4 +1,6 @@
 import { buildW3MMDLookup, mapMissionStatsToPlayers } from '../w3mmdUtils';
+import type { W3MMDAction } from 'w3gjs/dist/types/parsers/ActionParser';
+import type Player from 'w3gjs/dist/types/Player';
 
 jest.mock('@/features/infrastructure/logging', () => ({
   createComponentLogger: () => ({
@@ -11,7 +13,7 @@ jest.mock('@/features/infrastructure/logging', () => ({
 
 describe('buildW3MMDLookup', () => {
   it('normalizes mission keys and collects raw entries', () => {
-    const actions = [
+    const actions: W3MMDAction[] = [
       {
         cache: { missionKey: ' Player1 ', key: 'Kills', filename: 'test.w3g' },
         value: 5,
@@ -24,7 +26,7 @@ describe('buildW3MMDLookup', () => {
         cache: { missionKey: '', key: 'ignored', filename: 'test.w3g' },
         value: 1,
       },
-    ] as any;
+    ] as W3MMDAction[];
 
     const result = buildW3MMDLookup(actions);
 
@@ -34,8 +36,8 @@ describe('buildW3MMDLookup', () => {
 });
 
 describe('mapMissionStatsToPlayers', () => {
-  const player = { id: 1, name: 'Player1', teamid: 0 } as any;
-  const otherPlayer = { id: 2, name: 'Player2', teamid: 1 } as any;
+  const player: Player = { id: 1, name: 'Player1', teamid: 0 } as Player;
+  const otherPlayer: Player = { id: 2, name: 'Player2', teamid: 1 } as Player;
 
   it('maps mission statistics to players using multiple candidate keys', () => {
     const encodedClass = Buffer.from('Mage').readUInt32BE(0);

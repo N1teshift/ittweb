@@ -4,7 +4,6 @@ import {
   updateEloScores,
   recalculateFromGame,
   STARTING_ELO,
-  DEFAULT_K_FACTOR,
 } from '../eloCalculator';
 
 jest.mock('@/features/infrastructure/logging', () => ({

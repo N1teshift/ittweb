@@ -14,14 +14,15 @@ const pageNamespaces = ["common"];
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: ALL_UNITS.map((unit) => ({ 
-      params: { id: unit.id } 
+      params: { id: encodeURIComponent(unit.id) } 
     })),
     fallback: false,
   };
 };
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) => {
-  const id = String(params?.id || '');
+  const encodedId = String(params?.id || '');
+  const id = decodeURIComponent(encodedId);
   const unit = getUnitById(id);
   if (!unit) {
     return { notFound: true };

@@ -13,15 +13,15 @@ describe('timezoneUtils', () => {
       expect(typeof getUserTimezone()).toBe('string');
     });
 
-    it('returns UTC on server environments', () => {
-      const originalWindow = (global as any).window;
-      // @ts-expect-error overriding for test
-      delete (global as any).window;
+  it('returns UTC on server environments', () => {
+    const originalWindow = (global as typeof globalThis & { window?: Window }).window;
+    // @ts-expect-error overriding for test
+    delete (global as typeof globalThis & { window?: Window }).window;
 
-      expect(getUserTimezone()).toBe('UTC');
+    expect(getUserTimezone()).toBe('UTC');
 
-      (global as any).window = originalWindow;
-    });
+    (global as typeof globalThis & { window?: Window }).window = originalWindow;
+  });
   });
 
   it('converts UTC string to target timezone', () => {

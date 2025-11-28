@@ -1,4 +1,5 @@
 import { parseReplayFile } from '../replayParser';
+import type { W3MMDAction } from 'w3gjs/dist/types/parsers/ActionParser';
 
 jest.mock('@/features/infrastructure/logging', () => ({
   createComponentLogger: () => ({
@@ -10,7 +11,7 @@ jest.mock('@/features/infrastructure/logging', () => ({
 }));
 
 const mockParse = jest.fn();
-let mockW3mmdEntries: any[] = [];
+let mockW3mmdEntries: W3MMDAction[] = [];
 
 jest.mock('w3gjs', () => {
   return jest.fn().mockImplementation(() => ({
@@ -33,7 +34,7 @@ describe('parseReplayFile', () => {
         cache: { missionKey: 'player1', key: 'kills', filename: 'game.w3g' },
         value: 10,
       },
-    ] as any;
+    ] as W3MMDAction[];
 
     mockParse.mockResolvedValue({
       randomseed: 42,

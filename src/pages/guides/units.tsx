@@ -65,7 +65,7 @@ function UnitCard({ unit }: { unit: UnitData }) {
 
   return (
     <GuideCard
-      href={`/guides/units/${unit.id}`}
+      href={`/guides/units/${encodeURIComponent(unit.id)}`}
       title={unit.name}
       icon={icon}
       description={unit.description || unit.tooltip || 'No description available.'}

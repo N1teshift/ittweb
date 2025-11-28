@@ -108,7 +108,7 @@ export default function ItemDetailPage({ item }: Props) {
                     <div>
                       <span className="text-gray-400">Crafted at:</span>{' '}
                       <Link 
-                        href={`/guides/units/${building.id}?from=item&itemId=${item.id}`}
+                        href={`/guides/units/${encodeURIComponent(building.id)}?from=item&itemId=${item.id}`}
                         className="text-blue-300 hover:text-blue-200 underline transition-colors"
                       >
                         {item.craftedAt}
