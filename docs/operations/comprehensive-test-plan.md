@@ -897,18 +897,117 @@ This document provides a comprehensive list of all Jest tests that could be crea
 
 ## Scheduled Games Tests
 
-### Scheduled Game Logic
-- [ ] Test game scheduling with timezone
-- [ ] Test player capacity limits
-- [ ] Test duplicate player prevention
-- [ ] Test game start time validation
-- [ ] Test past game prevention
+### Scheduled Game Service
+- [ ] `src/features/modules/scheduled-games/lib/scheduledGameService.ts`
+  - Test `deriveGameStatus` returns scheduled/ongoing/awaiting_replay based on start and duration
+  - Test `deriveGameStatus` respects stored archived/awaiting_replay/cancelled statuses
+  - Test `deriveGameStatus` handles invalid timestamps gracefully
+  - Test `getNextScheduledGameId` increments highest ID and falls back when index queries fail
+  - Test `createScheduledGame` sets default creator fields and timestamps on server/client SDKs
+  - Test `createScheduledGame` preserves provided participants and modes
+  - Test `createScheduledGame` converts scheduledDateTime string to Timestamp/admin Timestamp
+  - Test `getAllScheduledGames` filters past/archived games based on flags
+  - Test `getAllScheduledGames` sorts by scheduled date ascending and derives statuses
+  - Test `getAllScheduledGames` returns empty array when Firestore setup errors occur
+  - Test `getScheduledGameById` returns null for missing game
+  - Test `getScheduledGameById` normalizes participant timestamps and derived status
+  - Test `updateScheduledGame` updates team size/custom size/modes/version/length
+  - Test `updateScheduledGame` removes undefined fields via `removeUndefined`
+  - Test `updateScheduledGame` updates timestamps in admin/client environments
+  - Test `deleteScheduledGame` removes document and handles non-existent IDs
+  - Test `joinScheduledGame` prevents duplicate participants and appends join timestamp
+  - Test `joinScheduledGame` rejects unknown game ID
+  - Test `leaveScheduledGame` removes participant by discordId and updates timestamp
+  - Test `leaveScheduledGame` handles leaving non-existent or already-left users
 
-### Scheduled Game State
-- [ ] Test game state transitions
-- [ ] Test player join validation
-- [ ] Test player leave validation
-- [ ] Test replay upload validation
+### Scheduled Games API Routes
+- [ ] `src/pages/api/scheduled-games/index.ts`
+  - Test GET returns upcoming games by default and honors includePast/includeArchived flags
+  - Test POST requires authentication and validates required fields
+  - Test POST rejects past dates for non-admin users and allows admins/manual entries
+  - Test POST adds creator as participant when addCreatorToParticipants is true/undefined
+  - Test POST preserves provided participants when addCreatorToParticipants is false
+  - Test POST returns 201 with scheduled game ID on success
+  - Test POST handles archived status flow: creates scheduled game and attempts game/archive linking
+  - Test POST surfaces internal errors as 500 with redacted production message
+  - Test method not allowed returns 405 for unsupported verbs
+- [ ] `src/pages/api/scheduled-games/[id]/index.ts`
+  - Test GET returns single game or 404 when missing
+  - Test PUT/PATCH require authentication and creator ownership
+  - Test PUT/PATCH validate required update fields (teamSize, gameType)
+  - Test PUT/PATCH support custom team size and optional version/length/modes
+  - Test method not allowed for DELETE/POST/etc.
+  - Test server error path returns 500 with environment-specific messaging
+- [ ] `src/pages/api/scheduled-games/[id]/join.ts`
+  - Test POST requires authentication and discordId
+  - Test joining adds participant and prevents duplicates
+  - Test join rejects missing game or cancelled/archived game
+  - Test method not allowed for non-POST verbs
+- [ ] `src/pages/api/scheduled-games/[id]/leave.ts`
+  - Test POST requires authentication and discordId
+  - Test leaving removes participant and is idempotent when user absent
+  - Test leave rejects missing game
+  - Test method not allowed for non-POST verbs
+- [ ] `src/pages/api/scheduled-games/[id]/upload-replay.ts`
+  - Test POST requires authentication and creator ownership
+  - Test replay upload rejects oversized files and invalid MIME types
+  - Test replay upload stores metadata and links to archive/game IDs
+  - Test replay upload updates scheduled game status to archived
+  - Test upload rejects missing game or missing file payload
+  - Test method not allowed for non-POST verbs
+- [ ] `src/pages/api/scheduled-games/[id]/delete.ts`
+  - Test POST requires authentication and creator ownership
+  - Test deletion removes scheduled game and returns success payload
+  - Test deletion handles missing game with 404
+  - Test method not allowed for non-POST verbs
+
+### Scheduled Games Components
+- [ ] `src/features/modules/scheduled-games/components/ScheduleGameForm.tsx`
+  - Test form renders available team sizes, types, and timezones
+  - Test validation for required date/time/timezone/teamSize fields
+  - Test manual entry toggle allows past dates and archived status selection
+  - Test add/remove participant rows and validation requiring winner/loser mix
+  - Test submission calls `/api/scheduled-games` with assembled payload
+  - Test success and error alert rendering
+- [ ] `src/features/modules/scheduled-games/components/EditGameForm.tsx`
+  - Test initial values populate from selected game
+  - Test editing fields updates local state and payload structure
+  - Test submit enforces creator-only updates and handles API errors
+  - Test cancel action restores view without saving
+- [ ] `src/features/modules/scheduled-games/components/ScheduledGamesList.tsx`
+  - Test list renders grouped by status with derived badges
+  - Test loading/error states while fetching games
+  - Test join/leave buttons visibility based on participation and status
+  - Test edit/delete/upload buttons show for creator only
+  - Test filtering to include past/archived games when toggled
+- [ ] `src/features/modules/scheduled-games/components/GameDeleteDialog.tsx`
+  - Test confirmation dialog shows game info and disables buttons while deleting
+  - Test confirm triggers delete API and closes on success
+  - Test cancel/close actions dismiss dialog without calling API
+- [ ] `src/features/modules/scheduled-games/components/UploadReplayModal.tsx`
+  - Test replay file selection and size validation messaging
+  - Test upload button triggers `/api/scheduled-games/{id}/upload-replay`
+  - Test progress/disabled states during upload
+  - Test success closes modal and shows toast/message
+  - Test error responses display inline feedback
+- [ ] `src/features/modules/scheduled-games/components/CreateGameInlineForm.tsx`
+  - Test default date/time/timezone initialization from user context
+  - Test participant generation enforces at least one winner and one loser
+  - Test custom team size is required when teamSize is `custom`
+  - Test form rejects submissions without two named participants
+  - Test successful submit archives game immediately and closes modal
+
+### Scheduled Games Pages
+- [ ] `src/pages/scheduled-games/index.tsx`
+  - Test initial fetch calls includePast=true to populate list
+  - Test Create Game modal toggles visibility and passes callbacks
+  - Test join/leave/edit/delete/upload flows update list after completion
+  - Test error states render when API requests fail
+  - Test loading skeleton/placeholder while fetching
+- [ ] `src/pages/scheduled-games/[id]/upload-replay.tsx`
+  - Test page fetches scheduled game details and handles 404 redirects
+  - Test form submission uploads replay and navigates back on success
+  - Test validation errors surface when no file chosen or upload fails
 
 ---
 
