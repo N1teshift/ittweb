@@ -795,7 +795,7 @@ This document provides a comprehensive list of all Jest tests that could be crea
 ## Game System Tests
 
 ### ELO Calculator
-- [ ] `src/features/modules/games/lib/eloCalculator.ts`
+- [x] `src/features/modules/games/lib/eloCalculator.ts`
   - Test `calculateEloChange` with win result
   - Test `calculateEloChange` with loss result
   - Test `calculateEloChange` with draw result
@@ -820,7 +820,7 @@ This document provides a comprehensive list of all Jest tests that could be crea
   - Test STARTING_ELO constant
 
 ### Replay Parser
-- [ ] `src/features/modules/games/lib/replayParser.ts`
+- [x] `src/features/modules/games/lib/replayParser.ts`
   - Test parses W3G replay file
   - Test extracts player information
   - Test extracts game duration
@@ -829,7 +829,7 @@ This document provides a comprehensive list of all Jest tests that could be crea
   - Test handles corrupted replay file
 
 ### W3MMD Utils
-- [ ] `src/features/modules/games/lib/w3mmdUtils.ts`
+- [x] `src/features/modules/games/lib/w3mmdUtils.ts`
   - Test parses W3MMD data
   - Test extracts statistics
   - Test handles missing data
