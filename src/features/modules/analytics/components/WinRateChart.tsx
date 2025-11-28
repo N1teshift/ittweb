@@ -1,6 +1,6 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
+import { Card } from '@/features/infrastructure/components/ui/Card';
 import type { WinRateData } from '../../analytics/types';
 
 interface WinRateChartProps {

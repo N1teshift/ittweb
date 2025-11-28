@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useCallback, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { PageHero } from '@/features/shared/components';
+import { PageHero } from '@/features/infrastructure/components';
 import type { ArchiveEntry } from '@/types/archive';
 import type { GameFilters } from '@/features/modules/games/types';
 import { 
@@ -13,9 +13,9 @@ import {
 import ImageModal from '@/features/modules/archives/components/sections/ImageModal';
 import { useArchivesPage, useArchivesActions } from '@/features/modules/archives/hooks';
 import { useGames } from '@/features/modules/games/hooks/useGames';
-import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
+import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
 import { UserRole } from '@/types/userData';
-import { isAdmin } from '@/features/shared/utils/userRoleUtils';
+import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 import ArchiveDeleteDialog from '@/features/modules/archives/components/ArchiveDeleteDialog';
 
 interface ArchivesPageProps {

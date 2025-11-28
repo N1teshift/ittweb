@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
 import { Logger } from '@/features/infrastructure/logging';
 import TerrainVisualizerContainer from '@/features/modules/map-analyzer/components/TerrainVisualizerContainer';
 

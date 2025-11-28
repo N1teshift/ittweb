@@ -2,10 +2,10 @@ import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../api/auth/[...nextauth]';
 import Head from 'next/head';
-import PageHero from '@/features/shared/components/PageHero';
+import PageHero from '@/features/infrastructure/components/PageHero';
 import { getPostById } from '@/features/modules/blog/lib/postService';
-import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
-import { isAdmin } from '@/features/shared/utils/userRoleUtils';
+import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
+import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 import EditPostForm from '@/features/modules/blog/components/EditPostForm';
 import type { PostFormState } from '@/features/modules/blog/hooks/useNewPostForm';
 

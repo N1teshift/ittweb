@@ -9,7 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
+import { Card } from '@/features/infrastructure/components/ui/Card';
 import type { EloHistoryDataPoint } from '../../analytics/types';
 
 interface EloChartProps {
@@ -17,7 +17,7 @@ interface EloChartProps {
   title?: string;
 }
 
-export function EloChart({ data, title = 'ELO History' }: EloChartProps) {
+function EloChartComponent({ data, title = 'ELO History' }: EloChartProps) {
   if (data.length === 0) {
     return (
       <Card variant="medieval" className="p-8 text-center">
@@ -65,5 +65,8 @@ export function EloChart({ data, title = 'ELO History' }: EloChartProps) {
     </Card>
   );
 }
+
+// Memoize component to prevent unnecessary re-renders when props haven't changed
+export const EloChart = React.memo(EloChartComponent);
 
 

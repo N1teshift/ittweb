@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSession } from 'next-auth/react';
-import { createArchiveEntry } from '@/features/shared/lib/archiveService';
+import { createArchiveEntry } from '@/features/infrastructure/lib/archiveService';
 import { CreateArchiveEntry } from '@/types/archive';
 import ArchiveFormBase from './ArchiveFormBase';
 

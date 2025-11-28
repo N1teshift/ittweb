@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { PlayerProfile, PlayerSearchFilters } from '../types';
+import { logError } from '@/features/infrastructure/logging';
 
 interface UsePlayerStatsResult {
   player: PlayerProfile | null;
@@ -44,7 +45,14 @@ export function usePlayerStats(
 
       setPlayer(data.data as PlayerProfile);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Unknown error'));
+      const error = err instanceof Error ? err : new Error('Unknown error');
+      logError(error, 'Failed to fetch player stats', {
+        component: 'usePlayerStats',
+        operation: 'fetchPlayer',
+        playerName: name,
+        filters,
+      });
+      setError(error);
     } finally {
       setLoading(false);
     }

@@ -19,8 +19,7 @@ import { createComponentLogger, logError } from '@/features/infrastructure/loggi
 import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
 import { timestampToIso, type TimestampLike } from '@/features/infrastructure/utils/timestampUtils';
 
-const SCHEDULED_GAMES_COLLECTION = 'scheduledGames';
-const GAMES_COLLECTION = 'games'; // Also check games collection for unified scheduled games
+const GAMES_COLLECTION = 'games'; // Unified games collection (scheduled and completed)
 const logger = createComponentLogger('scheduledGameService');
 
 function deriveGameStatus(data: {
@@ -63,34 +62,37 @@ async function getNextScheduledGameId(): Promise<number> {
   try {
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const querySnapshot = await adminDb.collection(SCHEDULED_GAMES_COLLECTION)
-        .orderBy('scheduledGameId', 'desc')
+      // Query unified games collection for scheduled games
+      const querySnapshot = await adminDb.collection(GAMES_COLLECTION)
+        .where('gameState', '==', 'scheduled')
+        .orderBy('gameId', 'desc')
         .limit(1)
         .get();
 
       if (querySnapshot.empty) {
-        // No games exist, start at 1
+        // No scheduled games exist, start at 1
         return 1;
       }
 
       const lastGame = querySnapshot.docs[0].data();
-      const lastId = lastGame.scheduledGameId || 0;
+      const lastId = typeof lastGame.gameId === 'number' ? lastGame.gameId : Number(lastGame.gameId) || 0;
       return lastId + 1;
     } else {
       const db = getFirestoreInstance();
       const q = query(
-        collection(db, SCHEDULED_GAMES_COLLECTION),
-        orderBy('scheduledGameId', 'desc')
+        collection(db, GAMES_COLLECTION),
+        where('gameState', '==', 'scheduled'),
+        orderBy('gameId', 'desc')
       );
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
-        // No games exist, start at 1
+        // No scheduled games exist, start at 1
         return 1;
       }
 
       const lastGame = querySnapshot.docs[0].data();
-      const lastId = lastGame.scheduledGameId || 0;
+      const lastId = typeof lastGame.gameId === 'number' ? lastGame.gameId : Number(lastGame.gameId) || 0;
       return lastId + 1;
     }
   } catch (error) {
@@ -100,12 +102,15 @@ async function getNextScheduledGameId(): Promise<number> {
     try {
       if (isServerSide()) {
         const adminDb = getFirestoreAdmin();
-        const querySnapshot = await adminDb.collection(SCHEDULED_GAMES_COLLECTION).get();
+        // Query all scheduled games from unified collection
+        const querySnapshot = await adminDb.collection(GAMES_COLLECTION)
+          .where('gameState', '==', 'scheduled')
+          .get();
         
         let maxId = 0;
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const id = data.scheduledGameId || 0;
+          const id = typeof data.gameId === 'number' ? data.gameId : Number(data.gameId) || 0;
           if (id > maxId) {
             maxId = id;
           }
@@ -114,12 +119,14 @@ async function getNextScheduledGameId(): Promise<number> {
         return maxId + 1;
       } else {
         const db = getFirestoreInstance();
-        const querySnapshot = await getDocs(collection(db, SCHEDULED_GAMES_COLLECTION));
+        const querySnapshot = await getDocs(
+          query(collection(db, GAMES_COLLECTION), where('gameState', '==', 'scheduled'))
+        );
         
         let maxId = 0;
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const id = data.scheduledGameId || 0;
+          const id = typeof data.gameId === 'number' ? data.gameId : Number(data.gameId) || 0;
           if (id > maxId) {
             maxId = id;
           }
@@ -160,9 +167,11 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
         ? adminTimestamp.fromDate(new Date(cleanedData.scheduledDateTime))
         : adminTimestamp.now();
       
-      const docRef = await adminDb.collection(SCHEDULED_GAMES_COLLECTION).add({
+      // Create in unified games collection
+      const docRef = await adminDb.collection(GAMES_COLLECTION).add({
         ...cleanedData,
-        scheduledGameId,
+        gameId: scheduledGameId,
+        gameState: 'scheduled',
         creatorName: cleanedData.creatorName || 'Unknown',
         createdByDiscordId: cleanedData.createdByDiscordId || '',
         scheduledDateTime,
@@ -172,6 +181,7 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
         participants: cleanedData.participants || [],
         createdAt: adminTimestamp.now(),
         updatedAt: adminTimestamp.now(),
+        isDeleted: false,
       });
       logger.info('Scheduled game created', { id: docRef.id, scheduledGameId });
       return docRef.id;
@@ -182,9 +192,11 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
         ? Timestamp.fromDate(new Date(cleanedData.scheduledDateTime))
         : Timestamp.now();
       
-      const docRef = await addDoc(collection(db, SCHEDULED_GAMES_COLLECTION), {
+      // Create in unified games collection
+      const docRef = await addDoc(collection(db, GAMES_COLLECTION), {
         ...cleanedData,
-        scheduledGameId,
+        gameId: scheduledGameId,
+        gameState: 'scheduled',
         creatorName: cleanedData.creatorName || 'Unknown',
         createdByDiscordId: cleanedData.createdByDiscordId || '',
         scheduledDateTime,
@@ -194,6 +206,7 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
         participants: cleanedData.participants || [],
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
+        isDeleted: false,
       });
       logger.info('Scheduled game created', { id: docRef.id, scheduledGameId });
       return docRef.id;
@@ -214,7 +227,7 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
  */
 export async function getAllScheduledGames(includePast: boolean = false, includeArchived: boolean = false): Promise<ScheduledGame[]> {
   try {
-    logger.info('Fetching scheduled games', { includePast, includeArchived });
+    logger.info('Fetching scheduled games from unified games collection', { includePast, includeArchived });
 
     const games: ScheduledGame[] = [];
 
@@ -232,178 +245,9 @@ export async function getAllScheduledGames(includePast: boolean = false, include
         return [];
       }
       
-      // Try to use the optimized query first, but fall back to in-memory filtering
-      // if the index is still building or doesn't exist
+      // Query the unified games collection for scheduled games
       try {
-        // Query for scheduled, ongoing, and awaiting_replay games (exclude archived unless requested, exclude cancelled)
-        // Note: We can't query by 'ongoing' status directly since it's derived, so we include it in the in-memory filtering
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const statusArray = includeArchived 
-          ? ['scheduled', 'ongoing', 'awaiting_replay', 'archived']
-          : ['scheduled', 'ongoing', 'awaiting_replay'];
-        const adminQuery = adminDb.collection(SCHEDULED_GAMES_COLLECTION)
-          .where('status', 'in', statusArray)
-          .orderBy('scheduledDateTime', 'asc');
-
-        const querySnapshot = await adminQuery.get();
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        querySnapshot.forEach((docSnap: any) => {
-          const data = docSnap.data();
-          
-          // Filter out deleted games
-          if (data.isDeleted === true) {
-            return;
-          }
-          
-          // Filter out cancelled games
-          if (data.status === 'cancelled') {
-            return;
-          }
-          
-          const scheduledDateTime = data.scheduledDateTimeString || timestampToIso(data.scheduledDateTime);
-          
-          // Filter past games if includePast is false
-          if (!includePast) {
-            const gameDate = new Date(scheduledDateTime);
-            if (gameDate < new Date()) {
-              return;
-            }
-          }
-          
-          const derivedStatus = deriveGameStatus({
-            status: data.status,
-            scheduledDateTime: scheduledDateTime,
-            gameLength: data.gameLength,
-          });
-
-          games.push({
-            id: docSnap.id,
-            scheduledGameId: data.scheduledGameId || 0,
-            creatorName: data.creatorName || 'Unknown',
-            createdByDiscordId: data.createdByDiscordId,
-            scheduledDateTime: scheduledDateTime,
-            scheduledDateTimeString: scheduledDateTime,
-            timezone: data.timezone || 'UTC',
-            teamSize: data.teamSize,
-            customTeamSize: data.customTeamSize,
-            gameType: data.gameType,
-            gameVersion: data.gameVersion,
-            gameLength: data.gameLength,
-            modes: data.modes || [],
-            participants: (data.participants || []).map((p: Record<string, unknown>) => ({
-              discordId: p.discordId,
-              name: p.name,
-              joinedAt: typeof p.joinedAt === 'string' ? p.joinedAt : timestampToIso(p.joinedAt as Timestamp | TimestampLike | Date | undefined),
-              result: (p.result === 'winner' || p.result === 'loser' || p.result === 'draw') ? p.result as ParticipantResult : undefined,
-            })),
-            createdAt: timestampToIso(data.createdAt),
-            updatedAt: timestampToIso(data.updatedAt),
-            submittedAt: data.submittedAt ? timestampToIso(data.submittedAt) : undefined,
-            status: derivedStatus,
-            linkedGameDocumentId: data.linkedGameDocumentId,
-            linkedArchiveDocumentId: data.linkedArchiveDocumentId,
-          });
-        });
-      } catch (error: unknown) {
-        // If index is still building, fall back to fetching all and filtering in memory
-        const firestoreError = error as { code?: number; message?: string };
-        if (firestoreError?.code === 9 || firestoreError?.message?.includes('index is currently building')) {
-          logger.info('Index still building, falling back to in-memory filtering');
-          
-          const querySnapshot = await adminDb.collection(SCHEDULED_GAMES_COLLECTION).get();
-          
-          logger.debug('Fallback: Total documents in scheduledGames collection', { count: querySnapshot.size });
-
-          querySnapshot.forEach((docSnap) => {
-            const data = docSnap.data();
-            
-            // Filter out deleted games
-            if (data.isDeleted === true) {
-              logger.debug('Fallback: Skipping deleted game', { id: docSnap.id });
-              return;
-            }
-            
-            // Filter by status (exclude archived unless requested, exclude cancelled)
-            if (!includeArchived && data.status === 'archived') {
-              logger.debug('Fallback: Skipping archived game', { id: docSnap.id, status: data.status });
-              return;
-            }
-            if (data.status === 'cancelled') {
-              logger.debug('Fallback: Skipping cancelled game', { id: docSnap.id, status: data.status });
-              return;
-            }
-            
-            // Include: 'scheduled', 'ongoing', 'awaiting_replay', and optionally 'archived'
-            // Note: 'ongoing' status is valid and should be included (it was being filtered out before)
-            
-            logger.debug('Fallback: Processing game', { 
-              id: docSnap.id, 
-              status: data.status,
-              scheduledDateTime: data.scheduledDateTimeString || data.scheduledDateTime 
-            });
-            
-            const scheduledDateTime = data.scheduledDateTimeString || timestampToIso(data.scheduledDateTime);
-            
-            // Filter past games if includePast is false
-            if (!includePast) {
-              const gameDate = new Date(scheduledDateTime);
-              if (gameDate < new Date()) {
-                return;
-              }
-            }
-            
-            const derivedStatus = deriveGameStatus({
-              status: data.status,
-              scheduledDateTime: scheduledDateTime,
-              gameLength: data.gameLength,
-            });
-            
-            games.push({
-              id: docSnap.id,
-              scheduledGameId: data.scheduledGameId || 0,
-              creatorName: data.creatorName || 'Unknown',
-              createdByDiscordId: data.createdByDiscordId || '',
-              scheduledDateTime: scheduledDateTime,
-              scheduledDateTimeString: scheduledDateTime,
-              timezone: data.timezone || 'UTC',
-              teamSize: data.teamSize,
-              customTeamSize: data.customTeamSize,
-              gameType: data.gameType,
-              gameVersion: data.gameVersion,
-              gameLength: data.gameLength,
-              modes: data.modes || [],
-              participants: (data.participants || []).map((p: Record<string, unknown>) => ({
-                discordId: p.discordId,
-                name: p.name,
-                joinedAt: typeof p.joinedAt === 'string' ? p.joinedAt : timestampToIso(p.joinedAt as Timestamp | TimestampLike | Date | undefined),
-                result: (p.result === 'winner' || p.result === 'loser' || p.result === 'draw') ? p.result as ParticipantResult : undefined,
-              })),
-              createdAt: timestampToIso(data.createdAt),
-              updatedAt: timestampToIso(data.updatedAt),
-              status: derivedStatus,
-              linkedGameDocumentId: data.linkedGameDocumentId,
-              linkedArchiveDocumentId: data.linkedArchiveDocumentId,
-            });
-          });
-          
-          // Sort by scheduled date (ascending - upcoming first) in memory
-          games.sort((a, b) => {
-            const dateA = new Date(timestampToIso(a.scheduledDateTime)).getTime();
-            const dateB = new Date(timestampToIso(b.scheduledDateTime)).getTime();
-            return dateA - dateB; // Ascending order
-          });
-          
-          logger.info('Fallback: Scheduled games fetched from scheduledGames collection', { count: games.length, totalInCollection: querySnapshot.size });
-        } else {
-          // Re-throw if it's a different error
-          throw error;
-        }
-      }
-      
-      // Also query the games collection for scheduled games (created via unified API)
-      try {
-        logger.debug('Querying games collection for scheduled games');
+        logger.debug('Querying unified games collection for scheduled games');
         const gamesQuerySnapshot = await adminDb.collection(GAMES_COLLECTION)
           .where('gameState', '==', 'scheduled')
           .where('isDeleted', '==', false)
@@ -472,7 +316,7 @@ export async function getAllScheduledGames(includePast: boolean = false, include
           });
         });
         
-        logger.debug('Added scheduled games from games collection', { count: gamesQuerySnapshot.size });
+        logger.debug('Added scheduled games from unified games collection', { count: gamesQuerySnapshot.size });
       } catch (gamesCollectionError) {
         // Log but don't fail if we can't query games collection
         logger.warn('Failed to query games collection for scheduled games', { 
@@ -489,11 +333,12 @@ export async function getAllScheduledGames(includePast: boolean = false, include
     } else {
       const db = getFirestoreInstance();
       
-      // Try the optimized query first
+      // Query unified games collection for scheduled games
       try {
         const q = query(
-          collection(db, SCHEDULED_GAMES_COLLECTION),
-          where('status', 'in', includeArchived ? ['scheduled', 'awaiting_replay', 'archived'] : ['scheduled', 'awaiting_replay']),
+          collection(db, GAMES_COLLECTION),
+          where('gameState', '==', 'scheduled'),
+          where('isDeleted', '==', false),
           orderBy('scheduledDateTime', 'asc')
         );
 
@@ -501,6 +346,17 @@ export async function getAllScheduledGames(includePast: boolean = false, include
 
         querySnapshot.forEach((docSnap) => {
           const data = docSnap.data();
+          
+          // Filter out cancelled games
+          if (data.status === 'cancelled') {
+            return;
+          }
+          
+          // Filter by status (exclude archived unless requested)
+          if (!includeArchived && data.status === 'archived') {
+            return;
+          }
+          
           const scheduledDateTime = data.scheduledDateTimeString || timestampToIso(data.scheduledDateTime as Timestamp);
           
           // Filter past games if includePast is false
@@ -517,11 +373,12 @@ export async function getAllScheduledGames(includePast: boolean = false, include
             gameLength: data.gameLength,
           });
           
+          // Convert from games collection format to ScheduledGame format
           games.push({
             id: docSnap.id,
-            scheduledGameId: data.scheduledGameId || 0,
+            scheduledGameId: typeof data.gameId === 'number' ? data.gameId : Number(data.gameId) || 0,
             creatorName: data.creatorName || 'Unknown',
-            createdByDiscordId: data.createdByDiscordId,
+            createdByDiscordId: data.createdByDiscordId || '',
             scheduledDateTime: scheduledDateTime,
             scheduledDateTimeString: scheduledDateTime,
             timezone: data.timezone || 'UTC',
@@ -530,10 +387,10 @@ export async function getAllScheduledGames(includePast: boolean = false, include
             gameType: data.gameType,
             gameVersion: data.gameVersion,
             gameLength: data.gameLength,
-            modes: data.modes || [],
-            participants: (data.participants || []).map((p: Record<string, unknown>) => ({
-              discordId: p.discordId,
-              name: p.name,
+            modes: Array.isArray(data.modes) ? data.modes : [],
+            participants: (Array.isArray(data.participants) ? data.participants : []).map((p: Record<string, unknown>) => ({
+              discordId: typeof p.discordId === 'string' ? p.discordId : String(p.discordId || ''),
+              name: typeof p.name === 'string' ? p.name : String(p.name || ''),
               joinedAt: typeof p.joinedAt === 'string' ? p.joinedAt : timestampToIso(p.joinedAt as Timestamp | TimestampLike | Date | undefined),
               result: (p.result === 'winner' || p.result === 'loser' || p.result === 'draw') ? p.result as ParticipantResult : undefined,
             })),
@@ -543,6 +400,8 @@ export async function getAllScheduledGames(includePast: boolean = false, include
             status: derivedStatus,
             linkedGameDocumentId: data.linkedGameDocumentId,
             linkedArchiveDocumentId: data.linkedArchiveDocumentId,
+            isDeleted: data.isDeleted ?? false,
+            deletedAt: data.deletedAt ? timestampToIso(data.deletedAt) : null,
           });
         });
       } catch (error: unknown) {
@@ -551,16 +410,25 @@ export async function getAllScheduledGames(includePast: boolean = false, include
         if (firestoreError?.code === 'failed-precondition' || firestoreError?.message?.includes('index')) {
           logger.info('Index still building, falling back to in-memory filtering');
           
-          const querySnapshot = await getDocs(collection(db, SCHEDULED_GAMES_COLLECTION));
+          const querySnapshot = await getDocs(
+            query(collection(db, GAMES_COLLECTION), where('gameState', '==', 'scheduled'))
+          );
 
           querySnapshot.forEach((docSnap) => {
             const data = docSnap.data();
             
-            // Filter by status (exclude archived unless requested)
-            if (!includeArchived && data.status === 'archived') {
+            // Filter out deleted games
+            if (data.isDeleted === true) {
               return;
             }
-            if (data.status !== 'scheduled' && data.status !== 'awaiting_replay' && data.status !== 'archived') {
+            
+            // Filter out cancelled games
+            if (data.status === 'cancelled') {
+              return;
+            }
+            
+            // Filter by status (exclude archived unless requested)
+            if (!includeArchived && data.status === 'archived') {
               return;
             }
             
@@ -580,9 +448,10 @@ export async function getAllScheduledGames(includePast: boolean = false, include
               gameLength: data.gameLength,
             });
             
+            // Convert from games collection format to ScheduledGame format
             games.push({
               id: docSnap.id,
-              scheduledGameId: data.scheduledGameId || 0,
+              scheduledGameId: typeof data.gameId === 'number' ? data.gameId : Number(data.gameId) || 0,
               creatorName: data.creatorName || 'Unknown',
               createdByDiscordId: data.createdByDiscordId || '',
               scheduledDateTime: scheduledDateTime,
@@ -593,18 +462,21 @@ export async function getAllScheduledGames(includePast: boolean = false, include
               gameType: data.gameType,
               gameVersion: data.gameVersion,
               gameLength: data.gameLength,
-              modes: data.modes || [],
-              participants: (data.participants || []).map((p: Record<string, unknown>) => ({
-                discordId: p.discordId,
-                name: p.name,
+              modes: Array.isArray(data.modes) ? data.modes : [],
+              participants: (Array.isArray(data.participants) ? data.participants : []).map((p: Record<string, unknown>) => ({
+                discordId: typeof p.discordId === 'string' ? p.discordId : String(p.discordId || ''),
+                name: typeof p.name === 'string' ? p.name : String(p.name || ''),
                 joinedAt: typeof p.joinedAt === 'string' ? p.joinedAt : timestampToIso(p.joinedAt as Timestamp | TimestampLike | Date | undefined),
                 result: (p.result === 'winner' || p.result === 'loser' || p.result === 'draw') ? p.result as ParticipantResult : undefined,
               })),
               createdAt: timestampToIso(data.createdAt),
               updatedAt: timestampToIso(data.updatedAt),
+              submittedAt: data.submittedAt ? timestampToIso(data.submittedAt) : undefined,
               status: derivedStatus,
               linkedGameDocumentId: data.linkedGameDocumentId,
               linkedArchiveDocumentId: data.linkedArchiveDocumentId,
+              isDeleted: data.isDeleted ?? false,
+              deletedAt: data.deletedAt ? timestampToIso(data.deletedAt) : null,
             });
           });
           
@@ -661,7 +533,8 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const docRef = adminDb.collection(SCHEDULED_GAMES_COLLECTION).doc(id);
+      // Query unified games collection
+      const docRef = adminDb.collection(GAMES_COLLECTION).doc(id);
       const docSnap = await docRef.get();
 
       if (!docSnap.exists) {
@@ -671,6 +544,12 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
 
       const data = docSnap.data();
       if (!data) {
+        return null;
+      }
+
+      // Verify it's a scheduled game
+      if (data.gameState !== 'scheduled') {
+        logger.info('Game is not a scheduled game', { id, gameState: data.gameState });
         return null;
       }
 
@@ -684,7 +563,7 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
 
       return {
         id: docSnap.id,
-        scheduledGameId: data.scheduledGameId || 0,
+        scheduledGameId: typeof data.gameId === 'number' ? data.gameId : Number(data.gameId) || 0,
         creatorName: data.creatorName || 'Unknown',
         createdByDiscordId: data.createdByDiscordId || '',
             scheduledDateTime: scheduledDateTime,
@@ -695,23 +574,26 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
         gameType: data.gameType,
         gameVersion: data.gameVersion,
         gameLength: data.gameLength,
-        modes: data.modes || [],
-        participants: (data.participants || []).map((p: Record<string, unknown>) => ({
-          discordId: p.discordId as string,
-          name: p.name as string,
+        modes: Array.isArray(data.modes) ? data.modes : [],
+        participants: (Array.isArray(data.participants) ? data.participants : []).map((p: Record<string, unknown>) => ({
+          discordId: typeof p.discordId === 'string' ? p.discordId : String(p.discordId || ''),
+          name: typeof p.name === 'string' ? p.name : String(p.name || ''),
           joinedAt: typeof p.joinedAt === 'string' ? p.joinedAt : timestampToIso(p.joinedAt as Timestamp | TimestampLike | Date | undefined),
-          result: p.result as string | undefined,
+          result: (p.result === 'winner' || p.result === 'loser' || p.result === 'draw') ? p.result as ParticipantResult : undefined,
         })),
-        createdAt: data.createdAt,
-        updatedAt: data.updatedAt,
+        createdAt: timestampToIso(data.createdAt),
+        updatedAt: timestampToIso(data.updatedAt),
         submittedAt: data.submittedAt ? timestampToIso(data.submittedAt) : undefined,
         status: derivedStatus,
         linkedGameDocumentId: data.linkedGameDocumentId,
         linkedArchiveDocumentId: data.linkedArchiveDocumentId,
+        isDeleted: data.isDeleted ?? false,
+        deletedAt: data.deletedAt ? timestampToIso(data.deletedAt) : null,
       };
     } else {
       const db = getFirestoreInstance();
-      const docRef = doc(db, SCHEDULED_GAMES_COLLECTION, id);
+      // Query unified games collection
+      const docRef = doc(db, GAMES_COLLECTION, id);
       const docSnap = await getDoc(docRef);
 
       if (!docSnap.exists()) {
@@ -720,6 +602,13 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
       }
 
       const data = docSnap.data();
+      
+      // Verify it's a scheduled game
+      if (data.gameState !== 'scheduled') {
+        logger.info('Game is not a scheduled game', { id, gameState: data.gameState });
+        return null;
+      }
+      
       const scheduledDateTime = data.scheduledDateTimeString || timestampToIso(data.scheduledDateTime as Timestamp);
       const derivedStatus = deriveGameStatus({
         status: data.status,
@@ -729,7 +618,7 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
       
       return {
         id: docSnap.id,
-        scheduledGameId: data.scheduledGameId || 0,
+        scheduledGameId: typeof data.gameId === 'number' ? data.gameId : Number(data.gameId) || 0,
         creatorName: data.creatorName || 'Unknown',
         createdByDiscordId: data.createdByDiscordId || '',
             scheduledDateTime: scheduledDateTime,
@@ -740,19 +629,21 @@ export async function getScheduledGameById(id: string): Promise<ScheduledGame | 
         gameType: data.gameType,
         gameVersion: data.gameVersion,
         gameLength: data.gameLength,
-        modes: data.modes || [],
-        participants: (data.participants || []).map((p: Record<string, unknown>) => ({
-          discordId: p.discordId as string,
-          name: p.name as string,
+        modes: Array.isArray(data.modes) ? data.modes : [],
+        participants: (Array.isArray(data.participants) ? data.participants : []).map((p: Record<string, unknown>) => ({
+          discordId: typeof p.discordId === 'string' ? p.discordId : String(p.discordId || ''),
+          name: typeof p.name === 'string' ? p.name : String(p.name || ''),
           joinedAt: typeof p.joinedAt === 'string' ? p.joinedAt : timestampToIso(p.joinedAt as Timestamp | TimestampLike | Date | undefined),
-          result: p.result as string | undefined,
+          result: (p.result === 'winner' || p.result === 'loser' || p.result === 'draw') ? p.result as ParticipantResult : undefined,
         })),
-        createdAt: data.createdAt,
-        updatedAt: data.updatedAt,
+        createdAt: timestampToIso(data.createdAt),
+        updatedAt: timestampToIso(data.updatedAt),
         submittedAt: data.submittedAt ? timestampToIso(data.submittedAt) : undefined,
         status: derivedStatus,
         linkedGameDocumentId: data.linkedGameDocumentId,
         linkedArchiveDocumentId: data.linkedArchiveDocumentId,
+        isDeleted: data.isDeleted ?? false,
+        deletedAt: data.deletedAt ? timestampToIso(data.deletedAt) : null,
       };
     }
   } catch (error) {
@@ -853,13 +744,14 @@ export async function updateScheduledGame(
       const adminDb = getFirestoreAdmin();
       const adminTimestamp = getAdminTimestamp();
       
-      await adminDb.collection(SCHEDULED_GAMES_COLLECTION).doc(id).update({
+      // Update in unified games collection
+      await adminDb.collection(GAMES_COLLECTION).doc(id).update({
         ...updateData,
         updatedAt: adminTimestamp.now(),
       });
     } else {
       const db = getFirestoreInstance();
-      const docRef = doc(db, SCHEDULED_GAMES_COLLECTION, id);
+      const docRef = doc(db, GAMES_COLLECTION, id);
       
       await updateDoc(docRef, {
         ...updateData,
@@ -888,11 +780,21 @@ export async function deleteScheduledGame(id: string): Promise<void> {
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      await adminDb.collection(SCHEDULED_GAMES_COLLECTION).doc(id).delete();
+      // Delete from unified games collection (soft delete)
+      await adminDb.collection(GAMES_COLLECTION).doc(id).update({
+        isDeleted: true,
+        deletedAt: getAdminTimestamp().now(),
+        updatedAt: getAdminTimestamp().now(),
+      });
     } else {
       const db = getFirestoreInstance();
-      const docRef = doc(db, SCHEDULED_GAMES_COLLECTION, id);
-      await deleteDoc(docRef);
+      const docRef = doc(db, GAMES_COLLECTION, id);
+      // Soft delete from unified games collection
+      await updateDoc(docRef, {
+        isDeleted: true,
+        deletedAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+      });
     }
 
     logger.info('Scheduled game deleted', { id });
@@ -921,7 +823,7 @@ export async function joinScheduledGame(
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
       const adminTimestamp = getAdminTimestamp();
-      const gameRef = adminDb.collection(SCHEDULED_GAMES_COLLECTION).doc(gameId);
+      const gameRef = adminDb.collection(GAMES_COLLECTION).doc(gameId);
       
       // Get current game data
       const gameDoc = await gameRef.get();
@@ -950,7 +852,7 @@ export async function joinScheduledGame(
       });
     } else {
       const db = getFirestoreInstance();
-      const gameRef = doc(db, SCHEDULED_GAMES_COLLECTION, gameId);
+      const gameRef = doc(db, GAMES_COLLECTION, gameId);
       
       // Get current game data
       const gameDoc = await getDoc(gameRef);
@@ -1005,7 +907,7 @@ export async function leaveScheduledGame(
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
       const adminTimestamp = getAdminTimestamp();
-      const gameRef = adminDb.collection(SCHEDULED_GAMES_COLLECTION).doc(gameId);
+      const gameRef = adminDb.collection(GAMES_COLLECTION).doc(gameId);
       
       // Get current game data
       const gameDoc = await gameRef.get();
@@ -1025,7 +927,7 @@ export async function leaveScheduledGame(
       });
     } else {
       const db = getFirestoreInstance();
-      const gameRef = doc(db, SCHEDULED_GAMES_COLLECTION, gameId);
+      const gameRef = doc(db, GAMES_COLLECTION, gameId);
       
       // Get current game data
       const gameDoc = await getDoc(gameRef);

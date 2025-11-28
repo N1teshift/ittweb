@@ -72,7 +72,6 @@ export default function IconMapperMappingsList({
                       alt={gameName}
                       width={32}
                       height={32}
-                      unoptimized={true}
                       className="border border-amber-500/30 rounded"
                       onError={(e) => {
                         const img = e.target as HTMLImageElement;

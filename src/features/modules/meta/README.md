@@ -24,3 +24,4 @@ The meta page is accessible at `/meta` and displays:
 
 - [Analytics Module](./analytics/README.md) - Chart components and services
 
+

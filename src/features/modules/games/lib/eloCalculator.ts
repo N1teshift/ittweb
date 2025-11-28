@@ -182,19 +182,183 @@ export async function updateEloScores(gameId: string): Promise<void> {
 /**
  * Recalculate ELO from a specific game forward
  * Used when fixing incorrect games
+ * 
+ * This function:
+ * 1. Gets the target game and all games after it
+ * 2. Rolls back ELO changes for all affected players to their state before the target game
+ * 3. Recalculates ELO for the target game and all subsequent games in chronological order
  */
 export async function recalculateFromGame(gameId: string): Promise<void> {
   try {
     logger.info('Recalculating ELO from game', { gameId });
 
-    // TODO: Implement full recalculation
-    // This would require:
-    // 1. Getting all games after this gameId
-    // 2. Rolling back ELO changes
-    // 3. Recalculating in order
+    const { getGameById, getGames } = await import('./gameService');
+    const { getPlayerStats, updatePlayerStats } = await import('../../players/lib/playerService');
+    
+    // Get the target game
+    const targetGame = await getGameById(gameId);
+    if (!targetGame || !targetGame.players || targetGame.players.length < 2) {
+      throw new Error(`Game not found or invalid: ${gameId}`);
+    }
 
-    logger.warn('recalculateFromGame not fully implemented', { gameId });
-    throw new Error('Not yet fully implemented');
+    // Only recalculate completed games (scheduled games don't affect ELO)
+    if (targetGame.gameState !== 'completed') {
+      throw new Error('Can only recalculate ELO for completed games');
+    }
+
+    if (!targetGame.datetime) {
+      throw new Error('Game must have a datetime to recalculate ELO');
+    }
+
+    const targetDate = typeof targetGame.datetime === 'string' 
+      ? new Date(targetGame.datetime)
+      : targetGame.datetime.toDate();
+
+    // Get all games before the target game to find player ELOs before this game
+    const gamesBefore = await getGames({
+      gameState: 'completed',
+      endDate: targetDate.toISOString(),
+      limit: 10000, // Get all games before
+    });
+
+    // Get all games from the target game forward (including the target game)
+    const gamesAfter = await getGames({
+      gameState: 'completed',
+      startDate: targetDate.toISOString(),
+      limit: 10000, // Get all games after
+    });
+
+    // Collect all unique players from target game and subsequent games
+    const affectedPlayers = new Set<string>();
+    targetGame.players.forEach(p => affectedPlayers.add(p.name.toLowerCase().trim()));
+    gamesAfter.games.forEach(game => {
+      if (game.playerNames) {
+        game.playerNames.forEach(name => affectedPlayers.add(name.toLowerCase().trim()));
+      }
+    });
+
+    // Get ELOs for all affected players before the target game
+    const playerElosBefore: Map<string, number> = new Map();
+    const category = targetGame.category || 'default';
+
+    for (const playerName of affectedPlayers) {
+      // Find the player's last game before the target game
+      let lastElo = STARTING_ELO;
+      
+      // Sort games before by datetime descending to find most recent
+      const playerGamesBefore = gamesBefore.games
+        .filter(g => g.playerNames?.some(n => n.toLowerCase().trim() === playerName))
+        .sort((a, b) => {
+          const dateA = typeof a.datetime === 'string' ? new Date(a.datetime).getTime() : a.datetime?.toMillis() || 0;
+          const dateB = typeof b.datetime === 'string' ? new Date(b.datetime).getTime() : b.datetime?.toMillis() || 0;
+          return dateB - dateA; // Descending
+        });
+
+      if (playerGamesBefore.length > 0) {
+        // Get the most recent game for this player
+        const mostRecentGame = await getGameById(playerGamesBefore[0].id);
+        if (mostRecentGame?.players) {
+          const playerInGame = mostRecentGame.players.find(
+            p => p.name.toLowerCase().trim() === playerName
+          );
+          if (playerInGame?.eloAfter !== undefined) {
+            lastElo = playerInGame.eloAfter;
+          } else {
+            // Fallback to current stats
+            const stats = await getPlayerStats(playerName);
+            lastElo = stats?.categories[category]?.score ?? STARTING_ELO;
+          }
+        } else {
+          // Fallback to current stats
+          const stats = await getPlayerStats(playerName);
+          lastElo = stats?.categories[category]?.score ?? STARTING_ELO;
+        }
+      } else {
+        // Player has no games before, use current stats or starting ELO
+        const stats = await getPlayerStats(playerName);
+        lastElo = stats?.categories[category]?.score ?? STARTING_ELO;
+      }
+
+      playerElosBefore.set(playerName, lastElo);
+    }
+
+    // Roll back player stats to ELOs before the target game
+    // This is done by updating player stats directly
+    const { getFirestoreAdmin, isServerSide } = await import('@/features/infrastructure/api/firebase/admin');
+    const { doc, updateDoc, getDocs, collection, query, where } = await import('firebase/firestore');
+    const { getFirestoreInstance } = await import('@/features/infrastructure/api/firebase');
+
+    if (isServerSide()) {
+      const adminDb = getFirestoreAdmin();
+      const playersCollection = adminDb.collection('players');
+      
+      for (const [playerName, elo] of playerElosBefore.entries()) {
+        const playerQuery = playersCollection.where('name', '==', playerName);
+        const playerSnapshot = await playerQuery.get();
+        
+        if (!playerSnapshot.empty) {
+          const playerDoc = playerSnapshot.docs[0];
+          const playerData = playerDoc.data();
+          const categories = playerData.categories || {};
+          
+          categories[category] = {
+            ...categories[category],
+            score: elo,
+          };
+          
+          await playerDoc.ref.update({ categories });
+        }
+      }
+    } else {
+      const db = getFirestoreInstance();
+      const playersCollection = collection(db, 'players');
+      
+      for (const [playerName, elo] of playerElosBefore.entries()) {
+        const playerQuery = query(playersCollection, where('name', '==', playerName));
+        const playerSnapshot = await getDocs(playerQuery);
+        
+        if (!playerSnapshot.empty) {
+          const playerDoc = playerSnapshot.docs[0];
+          const playerData = playerDoc.data();
+          const categories = playerData.categories || {};
+          
+          categories[category] = {
+            ...categories[category],
+            score: elo,
+          };
+          
+          await updateDoc(doc(db, 'players', playerDoc.id), { categories });
+        }
+      }
+    }
+
+    // Sort all games from target forward by datetime
+    const allGamesToRecalculate = [
+      targetGame,
+      ...gamesAfter.games.filter(g => g.id !== gameId),
+    ].sort((a, b) => {
+      const dateA = typeof a.datetime === 'string' 
+        ? new Date(a.datetime).getTime() 
+        : a.datetime?.toMillis() || 0;
+      const dateB = typeof b.datetime === 'string' 
+        ? new Date(b.datetime).getTime() 
+        : b.datetime?.toMillis() || 0;
+      return dateA - dateB; // Ascending order
+    });
+
+    // Recalculate ELO for each game in chronological order
+    for (const game of allGamesToRecalculate) {
+      if (game.id) {
+        await updateEloScores(game.id);
+        logger.info('Recalculated ELO for game', { gameId: game.id, gameIdNumber: game.gameId });
+      }
+    }
+
+    logger.info('ELO recalculation completed', { 
+      gameId, 
+      gamesRecalculated: allGamesToRecalculate.length,
+      playersAffected: affectedPlayers.size,
+    });
   } catch (error) {
     const err = error as Error;
     logger.error('Failed to recalculate ELO from game', err, { gameId });

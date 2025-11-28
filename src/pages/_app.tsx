@@ -10,7 +10,7 @@ import { appWithTranslation } from "next-i18next";
 import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
 import Head from "next/head";
-import Layout from "@/features/shared/components/Layout";
+import Layout from "@/features/infrastructure/components/Layout";
 import { Logger } from "@/features/infrastructure/logging";
 
 // Initialize logging

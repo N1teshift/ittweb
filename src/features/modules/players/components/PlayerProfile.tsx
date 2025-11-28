@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Timestamp } from 'firebase/firestore';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
+import { Card } from '@/features/infrastructure/components/ui/Card';
 import { usePlayerStats } from '../hooks/usePlayerStats';
 import type { PlayerSearchFilters } from '../types';
 

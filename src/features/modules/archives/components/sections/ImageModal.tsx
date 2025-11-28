@@ -36,6 +36,9 @@ export default function ImageModal({ isOpen, image, onClose }: ImageModalProps) 
             className="max-w-full max-h-full object-contain"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
             onClick={(e) => e.stopPropagation()}
+            // Unoptimized for Firebase Storage URLs: Next.js Image optimization cannot access
+            // authenticated external URLs with query parameters. Images are already compressed
+            // on upload (see archiveService.ts compression logic).
             unoptimized={image.url.includes('firebasestorage.googleapis.com')}
           />
         </div>

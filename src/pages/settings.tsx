@@ -1,15 +1,15 @@
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
-import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
+import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
 import { UserData, UserRole } from '@/types/userData';
 import { signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
-import PageHero from '@/features/shared/components/PageHero';
+import PageHero from '@/features/infrastructure/components/PageHero';
 import { Timestamp } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { isAdmin } from '@/features/shared/utils/userRoleUtils';
+import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 
 type SerializedUserData = Record<string, unknown> | null;
 

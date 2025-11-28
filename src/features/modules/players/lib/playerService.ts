@@ -17,6 +17,7 @@ import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { PlayerStats, PlayerProfile, CategoryStats, PlayerSearchFilters, PlayerComparison } from '../types';
 import { STARTING_ELO } from '../../games/lib/eloCalculator';
 import { getGames, getGameById } from '../../games/lib/gameService';
+import { upsertPlayerCategoryStats } from '../../standings/lib/playerCategoryStatsService';
 
 const PLAYER_STATS_COLLECTION = 'playerStats';
 const logger = createComponentLogger('playerService');
@@ -190,6 +191,20 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
             createdAt: adminTimestamp.now(),
             updatedAt: adminTimestamp.now(),
           });
+
+          // Update denormalized category stats collection
+          await upsertPlayerCategoryStats(
+            normalizedName,
+            player.name,
+            category,
+            {
+              wins: categories[category].wins,
+              losses: categories[category].losses,
+              draws: categories[category].draws,
+              score: eloAfter,
+              lastPlayed: gameDatetime,
+            }
+          );
         } else {
           // Update existing player stats
           const data = playerDoc.data();
@@ -227,6 +242,20 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
             lastPlayed: adminTimestamp.fromDate(gameDatetime),
             updatedAt: adminTimestamp.now(),
           });
+
+          // Update denormalized category stats collection
+          await upsertPlayerCategoryStats(
+            normalizedName,
+            player.name,
+            category,
+            {
+              wins: categoryStats.wins,
+              losses: categoryStats.losses,
+              draws: categoryStats.draws,
+              score: eloAfter,
+              lastPlayed: gameDatetime,
+            }
+          );
         }
       }
     } else {
@@ -262,6 +291,20 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
             createdAt: Timestamp.now(),
             updatedAt: Timestamp.now(),
           });
+
+          // Update denormalized category stats collection
+          await upsertPlayerCategoryStats(
+            normalizedName,
+            player.name,
+            category,
+            {
+              wins: categories[category].wins,
+              losses: categories[category].losses,
+              draws: categories[category].draws,
+              score: eloAfter,
+              lastPlayed: gameDatetime,
+            }
+          );
         } else {
           // Update existing player stats
           const data = playerDoc.data();
@@ -299,6 +342,20 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
             lastPlayed: Timestamp.fromDate(gameDatetime),
             updatedAt: Timestamp.now(),
           });
+
+          // Update denormalized category stats collection
+          await upsertPlayerCategoryStats(
+            normalizedName,
+            player.name,
+            category,
+            {
+              wins: categoryStats.wins,
+              losses: categoryStats.losses,
+              draws: categoryStats.draws,
+              score: eloAfter,
+              lastPlayed: gameDatetime,
+            }
+          );
         }
       }
     }
@@ -439,7 +496,7 @@ export async function searchPlayers(searchQuery: string): Promise<string[]> {
     logError(err, 'Failed to search players', {
       component: 'playerService',
       operation: 'searchPlayers',
-      query,
+      query: searchQuery,
     });
     // Return empty array on error (search is non-critical)
     return [];

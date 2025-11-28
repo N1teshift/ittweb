@@ -203,7 +203,6 @@ export default function IconItem({ icon, allMappingsForIcon, onUpdate, onRemove,
             alt={icon.filename}
             width={64}
             height={64}
-            unoptimized={true}
             className="border border-amber-500/30 rounded"
             onError={(e) => {
               const img = e.target as HTMLImageElement;

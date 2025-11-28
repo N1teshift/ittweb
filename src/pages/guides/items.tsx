@@ -1,4 +1,4 @@
-import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState, useMemo, useEffect } from 'react';

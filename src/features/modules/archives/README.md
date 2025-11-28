@@ -28,7 +28,7 @@
 
 ```typescript
 import { useArchivesPage } from '@/features/modules/archives';
-import { createArchiveEntry } from '@/features/shared/lib/archiveService';
+import { createArchiveEntry } from '@/features/infrastructure/lib/archiveService';
 
 // Use archives page hook
 const {

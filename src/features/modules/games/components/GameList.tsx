@@ -1,7 +1,7 @@
 import React from 'react';
 import { useGames } from '../hooks/useGames';
 import { GameCard } from './GameCard';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
+import { Card } from '@/features/infrastructure/components/ui/Card';
 import type { GameFilters } from '../types';
 
 interface GameListProps {

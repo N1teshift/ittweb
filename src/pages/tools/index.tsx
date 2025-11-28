@@ -1,4 +1,4 @@
-import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
 import { Logger } from '@/features/infrastructure/logging';
 import Link from 'next/link';
 import type { GetStaticProps } from 'next';

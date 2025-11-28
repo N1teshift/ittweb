@@ -1,0 +1,175 @@
+/**
+ * Service for managing denormalized player category statistics
+ * 
+ * This service maintains the playerCategoryStats collection which allows
+ * efficient querying of standings by category without fetching all players.
+ */
+
+import {
+  doc,
+  setDoc,
+  deleteDoc,
+  Timestamp,
+} from 'firebase/firestore';
+import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
+import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
+import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { normalizePlayerName } from '@/features/modules/players/lib/playerService';
+import type { PlayerCategoryStats } from '../types';
+import type { GameCategory } from '../../games/types';
+
+const PLAYER_CATEGORY_STATS_COLLECTION = 'playerCategoryStats';
+const logger = createComponentLogger('playerCategoryStatsService');
+
+/**
+ * Generate document ID for player category stats
+ */
+export function getPlayerCategoryStatsId(playerId: string, category: GameCategory): string {
+  return `${playerId}_${category}`;
+}
+
+/**
+ * Calculate win rate percentage
+ */
+function calculateWinRate(wins: number, games: number): number {
+  if (games === 0) return 0;
+  return Math.round((wins / games) * 100 * 100) / 100; // Round to 2 decimal places
+}
+
+/**
+ * Update or create player category stats
+ * This should be called whenever player stats are updated for a category
+ */
+export async function upsertPlayerCategoryStats(
+  playerId: string,
+  playerName: string,
+  category: GameCategory,
+  stats: {
+    wins: number;
+    losses: number;
+    draws: number;
+    score: number;
+    lastPlayed?: Date;
+  }
+): Promise<void> {
+  try {
+    const normalizedPlayerId = normalizePlayerName(playerId);
+    const docId = getPlayerCategoryStatsId(normalizedPlayerId, category);
+    const games = stats.wins + stats.losses + stats.draws;
+    const winRate = calculateWinRate(stats.wins, games);
+
+    if (isServerSide()) {
+      const adminDb = getFirestoreAdmin();
+      const adminTimestamp = getAdminTimestamp();
+      const docRef = adminDb.collection(PLAYER_CATEGORY_STATS_COLLECTION).doc(docId);
+
+      const data: PlayerCategoryStats = {
+        id: docId,
+        playerId: normalizedPlayerId,
+        playerName,
+        category,
+        wins: stats.wins,
+        losses: stats.losses,
+        draws: stats.draws,
+        score: stats.score,
+        games,
+        winRate,
+        lastPlayed: stats.lastPlayed
+          ? adminTimestamp.fromDate(stats.lastPlayed)
+          : undefined,
+        updatedAt: adminTimestamp.now(),
+      };
+
+      // Use setDoc with merge to upsert
+      await docRef.set(data, { merge: true });
+
+      logger.debug('Updated player category stats', {
+        docId,
+        playerId: normalizedPlayerId,
+        category,
+        games,
+      });
+    } else {
+      const db = getFirestoreInstance();
+      const docRef = doc(db, PLAYER_CATEGORY_STATS_COLLECTION, docId);
+
+      const data: PlayerCategoryStats = {
+        id: docId,
+        playerId: normalizedPlayerId,
+        playerName,
+        category,
+        wins: stats.wins,
+        losses: stats.losses,
+        draws: stats.draws,
+        score: stats.score,
+        games,
+        winRate,
+        lastPlayed: stats.lastPlayed
+          ? Timestamp.fromDate(stats.lastPlayed)
+          : undefined,
+        updatedAt: Timestamp.now(),
+      };
+
+      // Use setDoc with merge to upsert
+      await setDoc(docRef, data, { merge: true });
+
+      logger.debug('Updated player category stats', {
+        docId,
+        playerId: normalizedPlayerId,
+        category,
+        games,
+      });
+    }
+  } catch (error) {
+    const err = error as Error;
+    logError(err, 'Failed to upsert player category stats', {
+      component: 'playerCategoryStatsService',
+      operation: 'upsertPlayerCategoryStats',
+      playerId,
+      category,
+    });
+    // Don't throw - this is a non-critical operation for standings optimization
+    // The standings will still work from the main playerStats collection
+    logger.warn('Failed to update denormalized stats, continuing...', {
+      playerId,
+      category,
+      error: err.message,
+    });
+  }
+}
+
+/**
+ * Delete player category stats document
+ * Use when a player's category stats should be removed
+ */
+export async function deletePlayerCategoryStats(
+  playerId: string,
+  category: GameCategory
+): Promise<void> {
+  try {
+    const normalizedPlayerId = normalizePlayerName(playerId);
+    const docId = getPlayerCategoryStatsId(normalizedPlayerId, category);
+
+    if (isServerSide()) {
+      const adminDb = getFirestoreAdmin();
+      const docRef = adminDb.collection(PLAYER_CATEGORY_STATS_COLLECTION).doc(docId);
+      await docRef.delete();
+    } else {
+      const db = getFirestoreInstance();
+      const docRef = doc(db, PLAYER_CATEGORY_STATS_COLLECTION, docId);
+      await deleteDoc(docRef);
+    }
+
+    logger.debug('Deleted player category stats', { docId, playerId: normalizedPlayerId, category });
+  } catch (error) {
+    const err = error as Error;
+    logError(err, 'Failed to delete player category stats', {
+      component: 'playerCategoryStatsService',
+      operation: 'deletePlayerCategoryStats',
+      playerId,
+      category,
+    });
+    // Don't throw - non-critical operation
+  }
+}
+

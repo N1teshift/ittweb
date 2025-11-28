@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import { ArchiveEntry } from '@/types/archive';
-import { getArchiveEntries, deleteArchiveEntry } from '@/features/shared/lib/archiveService';
+import { getArchiveEntries, deleteArchiveEntry } from '@/features/infrastructure/lib/archiveService';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 
 interface UseArchivesActionsProps {

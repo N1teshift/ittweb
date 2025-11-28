@@ -28,3 +28,4 @@ import { ClassesPage, ClassDetailPage } from '@/features/modules/classes';
 - [Guides Module](./guides/README.md) - Class data source
 - [Classes Data](../../guides/data/units/classes.ts)
 
+

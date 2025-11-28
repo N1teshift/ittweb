@@ -3,11 +3,11 @@ import { useIconMapperData } from '../useIconMapperData';
 import type { ItemData } from '@/types/items';
 
 const mockItemsData: ItemData[] = [
-  { id: 'orb', name: 'Orb', category: 'items' },
-  { id: 'tower', name: 'Tower', category: 'buildings' },
+  { id: 'orb', name: 'Orb', category: 'weapons', description: 'Test orb' },
+  { id: 'tower', name: 'Tower', category: 'buildings', description: 'Test tower' },
 ];
 
-jest.mock('@/features/shared/utils/loggerUtils', () => ({
+jest.mock('@/features/infrastructure/utils/loggerUtils', () => ({
   createComponentLogger: () => ({
     info: jest.fn(),
     warn: jest.fn(),

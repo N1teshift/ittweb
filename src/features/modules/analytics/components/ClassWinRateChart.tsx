@@ -8,7 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
+import { Card } from '@/features/infrastructure/components/ui/Card';
 import type { ClassWinRateData } from '../types';
 
 interface ClassWinRateChartProps {
@@ -16,7 +16,7 @@ interface ClassWinRateChartProps {
   title?: string;
 }
 
-export function ClassWinRateChart({ data, title = 'Class Win Rate' }: ClassWinRateChartProps) {
+function ClassWinRateChartComponent({ data, title = 'Class Win Rate' }: ClassWinRateChartProps) {
   if (data.length === 0) {
     return (
       <Card variant="medieval" className="p-8 text-center">
@@ -68,4 +68,7 @@ export function ClassWinRateChart({ data, title = 'Class Win Rate' }: ClassWinRa
     </Card>
   );
 }
+
+// Memoize component to prevent unnecessary re-renders when props haven't changed
+export const ClassWinRateChart = React.memo(ClassWinRateChartComponent);
 

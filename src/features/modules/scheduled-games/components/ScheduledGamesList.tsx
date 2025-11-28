@@ -35,8 +35,8 @@ export default function ScheduledGamesList({
 }: ScheduledGamesListProps) {
   const { data: session } = useSession();
   const userTimezone = getUserTimezone();
-  // Note: status field removed, using gameState instead
-  // This component may need refactoring if still in use
+  // Note: status field is still used for scheduled games (scheduled, ongoing, awaiting_replay, archived, cancelled)
+  // gameState distinguishes between 'scheduled' and 'completed' games at a higher level
   const statusConfig: Record<string, { label: string; className: string }> = {
     scheduled: {
       label: 'Scheduled',

@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
 import Link from 'next/link';
 import { BASE_TROLL_CLASS_SLUGS, getClassBySlug, TrollClassData } from '@/features/modules/guides/data/units/classes';
 import { getSubclassesByParentSlug, getSupersByParentSlug } from '@/features/modules/guides/data/units/derivedClasses';

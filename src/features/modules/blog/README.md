@@ -54,3 +54,4 @@ const post = await getPostById('post-id');
 
 - [Post Type Definition](../../../../src/types/post.ts)
 
+

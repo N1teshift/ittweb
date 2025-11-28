@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { GameWithPlayers } from '../types';
+import { logError } from '@/features/infrastructure/logging';
 
 interface UseGameResult {
   game: GameWithPlayers | null;
@@ -35,7 +36,13 @@ export function useGame(id: string): UseGameResult {
 
       setGame(data.data as GameWithPlayers);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Unknown error'));
+      const error = err instanceof Error ? err : new Error('Unknown error');
+      logError(error, 'Failed to fetch game', {
+        component: 'useGame',
+        operation: 'fetchGame',
+        gameId: id,
+      });
+      setError(error);
     } finally {
       setLoading(false);
     }

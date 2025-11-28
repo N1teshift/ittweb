@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { StandingsResponse, StandingsFilters } from '../types';
+import { logError } from '@/features/infrastructure/logging';
 
 interface UseStandingsResult {
   standings: StandingsResponse['standings'];
@@ -46,7 +47,13 @@ export function useStandings(filters: StandingsFilters = {}): UseStandingsResult
       setPage(result.page);
       setHasMore(result.hasMore);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Unknown error'));
+      const error = err instanceof Error ? err : new Error('Unknown error');
+      logError(error, 'Failed to fetch standings', {
+        component: 'useStandings',
+        operation: 'fetchStandings',
+        filters,
+      });
+      setError(error);
     } finally {
       setLoading(false);
     }

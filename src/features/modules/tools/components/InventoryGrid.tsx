@@ -84,7 +84,6 @@ export default function InventoryGrid({
                     alt={item.name}
                     fill
                     className="object-cover rounded-md"
-                    unoptimized
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = '/icons/itt/BTNYellowHerb.png'; // fallback icon

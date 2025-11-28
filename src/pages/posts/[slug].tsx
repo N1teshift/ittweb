@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
-import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
 import BlogPost from '@/features/modules/blog/components/BlogPost';
 import PostDeleteDialog from '@/features/modules/blog/components/PostDeleteDialog';
 import { MDXRemote } from 'next-mdx-remote';
@@ -13,7 +13,7 @@ import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { Button } from '@/features/infrastructure/shared/components/ui';
+import { Button } from '@/features/infrastructure/components/ui';
 
 const pageNamespaces = ["common"];
 
@@ -164,8 +164,8 @@ export const getServerSideProps: GetServerSideProps<PostPageProps> = async (cont
 
     if (session && session.discordId) {
       try {
-        const { getUserDataByDiscordId } = await import('@/features/shared/lib/userDataService');
-        const { isAdmin } = await import('@/features/shared/utils/userRoleUtils');
+        const { getUserDataByDiscordId } = await import('@/features/infrastructure/lib/userDataService');
+        const { isAdmin } = await import('@/features/infrastructure/utils/userRoleUtils');
         const userData = await getUserDataByDiscordId(session.discordId);
         const userIsAdmin = isAdmin(userData?.role);
         const userIsAuthor = post.meta.createdByDiscordId === session.discordId;

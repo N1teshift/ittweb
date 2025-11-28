@@ -3,13 +3,13 @@ import { useRouter } from 'next/router';
 import { useSession, signIn } from 'next-auth/react';
 import { useGame } from '@/features/modules/games/hooks/useGame';
 import { GameDetail } from '@/features/modules/games/components/GameDetail';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
+import { Card } from '@/features/infrastructure/components/ui/Card';
 import EditGameForm from '@/features/modules/scheduled-games/components/EditGameForm';
 import GameDeleteDialog from '@/features/modules/scheduled-games/components/GameDeleteDialog';
 import UploadReplayModal from '@/features/modules/scheduled-games/components/UploadReplayModal';
 import { Logger } from '@/features/infrastructure/logging';
-import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
-import { isAdmin } from '@/features/shared/utils/userRoleUtils';
+import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
+import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 import type { GameWithPlayers } from '@/features/modules/games/types';
 
 export default function GameDetailPage() {

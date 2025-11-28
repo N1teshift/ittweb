@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { PageHero } from '@/features/shared/components';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
-import { ActivityChart } from '../../analytics/components/ActivityChart';
-import { GameLengthChart } from '../../analytics/components/GameLengthChart';
-import { PlayerActivityChart } from '../../analytics/components/PlayerActivityChart';
-import { ClassSelectionChart } from '../../analytics/components/ClassSelectionChart';
-import { ClassWinRateChart } from '../../analytics/components/ClassWinRateChart';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import dynamic from 'next/dynamic';
+import { PageHero } from '@/features/infrastructure/components';
+import { Card } from '@/features/infrastructure/components/ui/Card';
 import type {
   ActivityDataPoint,
   GameLengthDataPoint,
@@ -13,6 +9,82 @@ import type {
   ClassSelectionData,
   ClassWinRateData,
 } from '../../analytics/types';
+
+// Lazy load chart components to reduce initial bundle size (~300KB)
+const ActivityChart = dynamic(
+  () => import('../../analytics/components/ActivityChart').then(mod => ({ default: mod.ActivityChart })),
+  {
+    loading: () => (
+      <Card variant="medieval" className="p-8">
+        <div className="animate-pulse space-y-4">
+          <div className="h-4 bg-amber-500/20 rounded w-1/4"></div>
+          <div className="h-64 bg-amber-500/10 rounded"></div>
+        </div>
+      </Card>
+    ),
+    ssr: false,
+  }
+);
+
+const GameLengthChart = dynamic(
+  () => import('../../analytics/components/GameLengthChart').then(mod => ({ default: mod.GameLengthChart })),
+  {
+    loading: () => (
+      <Card variant="medieval" className="p-8">
+        <div className="animate-pulse space-y-4">
+          <div className="h-4 bg-amber-500/20 rounded w-1/4"></div>
+          <div className="h-64 bg-amber-500/10 rounded"></div>
+        </div>
+      </Card>
+    ),
+    ssr: false,
+  }
+);
+
+const PlayerActivityChart = dynamic(
+  () => import('../../analytics/components/PlayerActivityChart').then(mod => ({ default: mod.PlayerActivityChart })),
+  {
+    loading: () => (
+      <Card variant="medieval" className="p-8">
+        <div className="animate-pulse space-y-4">
+          <div className="h-4 bg-amber-500/20 rounded w-1/4"></div>
+          <div className="h-64 bg-amber-500/10 rounded"></div>
+        </div>
+      </Card>
+    ),
+    ssr: false,
+  }
+);
+
+const ClassSelectionChart = dynamic(
+  () => import('../../analytics/components/ClassSelectionChart').then(mod => ({ default: mod.ClassSelectionChart })),
+  {
+    loading: () => (
+      <Card variant="medieval" className="p-8">
+        <div className="animate-pulse space-y-4">
+          <div className="h-4 bg-amber-500/20 rounded w-1/4"></div>
+          <div className="h-64 bg-amber-500/10 rounded"></div>
+        </div>
+      </Card>
+    ),
+    ssr: false,
+  }
+);
+
+const ClassWinRateChart = dynamic(
+  () => import('../../analytics/components/ClassWinRateChart').then(mod => ({ default: mod.ClassWinRateChart })),
+  {
+    loading: () => (
+      <Card variant="medieval" className="p-8">
+        <div className="animate-pulse space-y-4">
+          <div className="h-4 bg-amber-500/20 rounded w-1/4"></div>
+          <div className="h-64 bg-amber-500/10 rounded"></div>
+        </div>
+      </Card>
+    ),
+    ssr: false,
+  }
+);
 
 interface MetaPageProps {
   pageNamespaces: string[];
@@ -34,17 +106,23 @@ export function MetaPage({ pageNamespaces: _pageNamespaces }: MetaPageProps) {
   const [teamFormat, setTeamFormat] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
+  
+  // Debounced filter values to avoid excessive API calls
+  const [debouncedCategory, setDebouncedCategory] = useState<string>('');
+  const [debouncedTeamFormat, setDebouncedTeamFormat] = useState<string>('');
+  const [debouncedStartDate, setDebouncedStartDate] = useState<string>('');
+  const [debouncedEndDate, setDebouncedEndDate] = useState<string>('');
 
-  const fetchMetaData = async () => {
+  const fetchMetaData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
       
       const params = new URLSearchParams();
-      if (category) params.append('category', category);
-      if (teamFormat) params.append('teamFormat', teamFormat);
-      if (startDate) params.append('startDate', startDate);
-      if (endDate) params.append('endDate', endDate);
+      if (debouncedCategory) params.append('category', debouncedCategory);
+      if (debouncedTeamFormat) params.append('teamFormat', debouncedTeamFormat);
+      if (debouncedStartDate) params.append('startDate', debouncedStartDate);
+      if (debouncedEndDate) params.append('endDate', debouncedEndDate);
 
       const response = await fetch(`/api/analytics/meta?${params.toString()}`);
       if (!response.ok) {
@@ -58,11 +136,40 @@ export function MetaPage({ pageNamespaces: _pageNamespaces }: MetaPageProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [debouncedCategory, debouncedTeamFormat, debouncedStartDate, debouncedEndDate]);
+
+  // Debounce filter inputs (300ms delay)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedCategory(category);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [category]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedTeamFormat(teamFormat);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [teamFormat]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedStartDate(startDate);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [startDate]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedEndDate(endDate);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [endDate]);
 
   useEffect(() => {
     fetchMetaData();
-  }, [category, teamFormat, startDate, endDate]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [fetchMetaData]);
 
   const resetFilters = () => {
     setCategory('');

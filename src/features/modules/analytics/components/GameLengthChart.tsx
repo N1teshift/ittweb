@@ -8,7 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
+import { Card } from '@/features/infrastructure/components/ui/Card';
 import type { GameLengthDataPoint } from '../types';
 
 interface GameLengthChartProps {
@@ -16,7 +16,7 @@ interface GameLengthChartProps {
   title?: string;
 }
 
-export function GameLengthChart({ data, title = 'Average Game Length' }: GameLengthChartProps) {
+function GameLengthChartComponent({ data, title = 'Average Game Length' }: GameLengthChartProps) {
   if (data.length === 0 || data.every(d => d.averageDuration === 0)) {
     return (
       <Card variant="medieval" className="p-8 text-center">
@@ -64,4 +64,7 @@ export function GameLengthChart({ data, title = 'Average Game Length' }: GameLen
     </Card>
   );
 }
+
+// Memoize component to prevent unnecessary re-renders when props haven't changed
+export const GameLengthChart = React.memo(GameLengthChartComponent);
 

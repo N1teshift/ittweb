@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { extractYouTubeId } from '@/features/shared/lib/archiveService';
+import { extractYouTubeId } from '@/features/infrastructure/lib/archiveService';
 
 interface YouTubeEmbedProps {
   url: string;

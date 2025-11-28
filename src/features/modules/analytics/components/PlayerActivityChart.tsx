@@ -8,7 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
+import { Card } from '@/features/infrastructure/components/ui/Card';
 import type { PlayerActivityDataPoint } from '../types';
 
 interface PlayerActivityChartProps {
@@ -16,7 +16,7 @@ interface PlayerActivityChartProps {
   title?: string;
 }
 
-export function PlayerActivityChart({ data, title = 'Active Players' }: PlayerActivityChartProps) {
+function PlayerActivityChartComponent({ data, title = 'Active Players' }: PlayerActivityChartProps) {
   if (data.length === 0 || data.every(d => d.players === 0)) {
     return (
       <Card variant="medieval" className="p-8 text-center">
@@ -64,4 +64,7 @@ export function PlayerActivityChart({ data, title = 'Active Players' }: PlayerAc
     </Card>
   );
 }
+
+// Memoize component to prevent unnecessary re-renders when props haven't changed
+export const PlayerActivityChart = React.memo(PlayerActivityChartComponent);
 

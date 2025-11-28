@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
+import { Card } from '@/features/infrastructure/components/ui/Card';
 import { useStandings } from '../hooks/useStandings';
 import type { StandingsFilters } from '../types';
 

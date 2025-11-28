@@ -1,6 +1,6 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
+import { Card } from '@/features/infrastructure/components/ui/Card';
 import type { ClassSelectionData } from '../types';
 
 interface ClassSelectionChartProps {
@@ -13,7 +13,7 @@ const COLORS = [
   '#ec4899', '#14b8a6', '#f97316', '#84cc16', '#06b6d4', '#6366f1',
 ];
 
-export function ClassSelectionChart({ data, title = 'Class Selection' }: ClassSelectionChartProps) {
+function ClassSelectionChartComponent({ data, title = 'Class Selection' }: ClassSelectionChartProps) {
   if (data.length === 0) {
     return (
       <Card variant="medieval" className="p-8 text-center">
@@ -63,4 +63,7 @@ export function ClassSelectionChart({ data, title = 'Class Selection' }: ClassSe
     </Card>
   );
 }
+
+// Memoize component to prevent unnecessary re-renders when props haven't changed
+export const ClassSelectionChart = React.memo(ClassSelectionChartComponent);
 

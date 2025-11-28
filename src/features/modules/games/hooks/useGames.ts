@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { Game, GameFilters, GameListResponse } from '../types';
+import { logError } from '@/features/infrastructure/logging';
 
 interface UseGamesResult {
   games: Game[];
@@ -23,6 +24,7 @@ export function useGames(filters: GameFilters = {}): UseGamesResult {
       setError(null);
 
       const queryParams = new URLSearchParams();
+      if (filters.gameState) queryParams.append('gameState', filters.gameState);
       if (filters.startDate) queryParams.append('startDate', filters.startDate);
       if (filters.endDate) queryParams.append('endDate', filters.endDate);
       if (filters.category) queryParams.append('category', filters.category);
@@ -49,7 +51,13 @@ export function useGames(filters: GameFilters = {}): UseGamesResult {
       setHasMore(result.hasMore);
       setNextCursor(result.nextCursor);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Unknown error'));
+      const error = err instanceof Error ? err : new Error('Unknown error');
+      logError(error, 'Failed to fetch games', {
+        component: 'useGames',
+        operation: 'fetchGames',
+        filters,
+      });
+      setError(error);
     } finally {
       setLoading(false);
     }
@@ -59,6 +67,7 @@ export function useGames(filters: GameFilters = {}): UseGamesResult {
     fetchGames();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    filters.gameState,
     filters.startDate,
     filters.endDate,
     filters.category,

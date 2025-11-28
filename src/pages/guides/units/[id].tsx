@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { ALL_UNITS, getUnitById, UnitData } from '@/features/modules/guides/data/units/allUnits';

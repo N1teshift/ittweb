@@ -2,7 +2,7 @@ import { useState, FormEvent } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { EntryContentType } from '@/types/entry';
-import { uploadImage } from '@/features/shared/lib/archiveService';
+import { uploadImage } from '@/features/infrastructure/lib/archiveService';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('EntryFormModal');

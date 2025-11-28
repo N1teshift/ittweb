@@ -30,7 +30,7 @@ jest.mock('../../../players/lib/playerService', () => ({
 const mockIsServerSide = jest.fn(() => false);
 jest.mock('@/features/infrastructure/api/firebase/admin', () => ({
   getFirestoreAdmin: jest.fn(),
-  isServerSide: (...args: unknown[]) => mockIsServerSide(...args),
+  isServerSide: mockIsServerSide,
 }));
 
 const mockDoc = jest.fn((...args: unknown[]) => ({ path: args.join('/') }));

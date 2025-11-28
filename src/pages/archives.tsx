@@ -1,4 +1,4 @@
-import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
 import { ArchivesPage } from '@/features/modules/archives/components';
 
 const pageNamespaces = ["common"];

@@ -1,19 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts';
-import { PageHero } from '@/features/shared/components';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
+import { PageHero } from '@/features/infrastructure/components';
+import { Card } from '@/features/infrastructure/components/ui/Card';
 import type { PlayerComparison as PlayerComparisonType, CategoryStats } from '../types';
+
+// Lazy load Recharts components to reduce initial bundle size
+const ELOComparisonChart = dynamic(
+  () => import('./ELOComparisonChart'),
+  {
+    loading: () => (
+      <Card variant="medieval" className="p-8">
+        <div className="animate-pulse space-y-4">
+          <div className="h-4 bg-amber-500/20 rounded w-1/4"></div>
+          <div className="h-64 bg-amber-500/10 rounded"></div>
+        </div>
+      </Card>
+    ),
+    ssr: false,
+  }
+);
 
 interface PlayerComparisonProps {
   pageNamespaces: string[];
@@ -238,56 +245,23 @@ export function PlayerComparison({ pageNamespaces: _pageNamespaces }: PlayerComp
           </Card>
         )}
 
-        {/* ELO Comparison Chart */}
-        {eloComparison && eloComparison.length > 0 && (
-          <Card variant="medieval" className="p-6">
-            <h2 className="text-2xl font-semibold text-amber-400 mb-4">ELO Comparison</h2>
-            <ResponsiveContainer width="100%" height={400}>
-              <LineChart data={eloComparison}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#d97706" opacity={0.2} />
-                <XAxis
-                  dataKey="date"
-                  stroke="#d97706"
-                  tick={{ fill: '#d97706' }}
-                  style={{ fontSize: '12px' }}
-                />
-                <YAxis
-                  stroke="#d97706"
-                  tick={{ fill: '#d97706' }}
-                  style={{ fontSize: '12px' }}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    border: '1px solid rgba(217, 119, 6, 0.3)',
-                    borderRadius: '4px',
-                    color: '#d97706',
-                  }}
-                />
-                <Legend wrapperStyle={{ color: '#d97706' }} />
-                {players.map((player, index) => {
-                  const colors = ['#d97706', '#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'];
-                  return (
-                    <Line
-                      key={player.name}
-                      type="monotone"
-                      dataKey={player.name}
-                      stroke={colors[index % colors.length]}
-                      strokeWidth={2}
-                      dot={{ r: 3 }}
-                      activeDot={{ r: 5 }}
-                    />
-                  );
-                })}
-              </LineChart>
-            </ResponsiveContainer>
-          </Card>
-        )}
-
-        {eloComparison && eloComparison.length === 0 && (
-          <Card variant="medieval" className="p-6">
-            <p className="text-gray-400 text-center">No ELO history data available for comparison.</p>
-          </Card>
+        {/* ELO Comparison Chart - Lazy loaded */}
+        {eloComparison && (
+          <Suspense
+            fallback={
+              <Card variant="medieval" className="p-8">
+                <div className="animate-pulse space-y-4">
+                  <div className="h-4 bg-amber-500/20 rounded w-1/4"></div>
+                  <div className="h-64 bg-amber-500/10 rounded"></div>
+                </div>
+              </Card>
+            }
+          >
+            <ELOComparisonChart
+              eloComparison={eloComparison}
+              players={players}
+            />
+          </Suspense>
         )}
       </div>
     </div>

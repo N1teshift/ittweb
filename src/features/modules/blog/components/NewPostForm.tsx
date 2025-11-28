@@ -1,4 +1,4 @@
-import { Button } from '@/features/infrastructure/shared/components/ui';
+import { Button } from '@/features/infrastructure/components/ui';
 import { useNewPostForm } from '@/features/modules/blog/hooks/useNewPostForm';
 
 export default function NewPostForm() {

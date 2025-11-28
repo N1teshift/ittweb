@@ -1,4 +1,4 @@
-import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
 import Link from 'next/link';
 import { BASE_TROLL_CLASSES } from '@/features/modules/guides/data/units/classes';
 import GuideCard from '@/features/modules/guides/components/GuideCard';

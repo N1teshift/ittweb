@@ -58,3 +58,4 @@ const game = await createScheduledGame({
 
 - [Firestore Collections Schema](../../../../docs/schemas/firestore-collections.md#scheduledgames-collection)
 
+

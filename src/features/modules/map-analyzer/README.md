@@ -47,3 +47,4 @@ const mapData = await parseMapFile(file);
 
 - [Map Types](./types/map.ts)
 
+

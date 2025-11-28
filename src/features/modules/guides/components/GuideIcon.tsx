@@ -50,7 +50,6 @@ export default function GuideIcon({ category, name, size = 48, state: _state, cl
       alt={alt}
       width={size}
       height={size}
-      unoptimized={true}
       className={className}
       onError={handleError}
     />

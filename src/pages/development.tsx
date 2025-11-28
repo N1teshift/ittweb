@@ -1,7 +1,7 @@
-import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
 import { Logger } from '@/features/infrastructure/logging';
-import DiscordButton from '@/features/shared/components/DiscordButton';
-import GitHubButton from '@/features/shared/components/GitHubButton';
+import DiscordButton from '@/features/infrastructure/components/DiscordButton';
+import GitHubButton from '@/features/infrastructure/components/GitHubButton';
 import type { GetStaticProps } from 'next';
 
 const pageNamespaces = ["common"];

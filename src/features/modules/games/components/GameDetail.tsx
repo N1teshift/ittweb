@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
+import { Card } from '@/features/infrastructure/components/ui/Card';
 import { formatDuration, formatEloChange } from '../../shared/utils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { GameWithPlayers } from '../types';

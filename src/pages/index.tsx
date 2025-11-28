@@ -2,22 +2,22 @@ import Link from 'next/link';
 import { useSession, signIn } from 'next-auth/react';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { getStaticPropsWithTranslations } from '@/features/shared/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
 import BlogPost from '@/features/modules/blog/components/BlogPost';
 import { MDXRemote } from 'next-mdx-remote';
 import EntryFormModal from '@/features/modules/entries/components/EntryFormModal';
 import ScheduleGameForm from '@/features/modules/scheduled-games/components/ScheduleGameForm';
-import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
-import { isAdmin } from '@/features/shared/utils/userRoleUtils';
+import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
+import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import type { GetStaticProps } from 'next';
 import type { Entry } from '@/types/entry';
 import type { Game, CreateScheduledGame } from '@/features/modules/games/types';
-import { Button } from '@/features/infrastructure/shared/components/ui';
+import { Button } from '@/features/infrastructure/components/ui';
 import YouTubeEmbed from '@/features/modules/archives/components/YouTubeEmbed';
 import TwitchClipEmbed from '@/features/modules/archives/components/TwitchClipEmbed';
-import { extractYouTubeId, extractTwitchClipId } from '@/features/shared/lib/archiveService';
+import { extractYouTubeId, extractTwitchClipId } from '@/features/infrastructure/lib/archiveService';
 
 const pageNamespaces = ["common"];
 
@@ -252,6 +252,8 @@ export default function Home({ latestEntry, mdxSource, recentActivity }: HomePro
                         fill
                         className="object-cover rounded-lg"
                         sizes="100vw"
+                        // Unoptimized for Firebase Storage URLs: Next.js cannot optimize authenticated
+                        // external URLs. Images are already compressed on upload.
                         unoptimized={latestEntry.images[0].includes('firebasestorage.googleapis.com')}
                       />
                     </div>

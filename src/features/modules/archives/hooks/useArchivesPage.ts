@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { ArchiveEntry } from '@/types/archive';
-import { sortArchiveEntries } from '@/features/shared/lib/archiveService';
+import { sortArchiveEntries } from '@/features/infrastructure/lib/archiveService';
 
 interface ArchivesPageState {
   entries: ArchiveEntry[];
@@ -59,12 +59,12 @@ export function useArchivesPage(): UseArchivesPageReturn {
 
   // Computed values
   const datedEntries = useMemo(() => 
-    entries.filter(entry => entry.dateInfo.type !== 'undated'),
+    entries.filter((entry: ArchiveEntry) => entry.dateInfo.type !== 'undated'),
     [entries]
   );
 
   const undatedEntries = useMemo(() => 
-    entries.filter(entry => entry.dateInfo.type === 'undated'),
+    entries.filter((entry: ArchiveEntry) => entry.dateInfo.type === 'undated'),
     [entries]
   );
 

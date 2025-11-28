@@ -1,17 +1,45 @@
 import React from 'react';
 import Link from 'next/link';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
+import { Card } from '@/features/infrastructure/components/ui/Card';
 import { formatDuration } from '../../shared/utils';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { Game } from '../types';
 
 interface GameCardProps {
   game: Game;
 }
 
+/**
+ * Parse a date value that could be a Timestamp, ISO string, or other format
+ */
+function parseDate(value: string | undefined): Date | null {
+  if (!value) return null;
+  
+  const date = new Date(value);
+  // Check if the date is valid
+  if (!isNaN(date.getTime())) {
+    return date;
+  }
+  
+  return null;
+}
+
 export function GameCard({ game }: GameCardProps) {
-  const gameDate = new Date(game.datetime as string);
-  const formattedDate = gameDate.toLocaleDateString();
-  const formattedTime = gameDate.toLocaleTimeString();
+  const isScheduled = game.gameState === 'scheduled';
+  
+  // Parse scheduled date - prefer scheduledDateTimeString, fallback to converting scheduledDateTime
+  const scheduledDate = isScheduled && game.scheduledDateTime
+    ? parseDate(game.scheduledDateTimeString || timestampToIso(game.scheduledDateTime))
+    : null;
+  
+  // Parse completed game date
+  const completedDate = !isScheduled && game.datetime
+    ? parseDate(timestampToIso(game.datetime))
+    : null;
+  
+  const gameDate = scheduledDate || completedDate;
+  const formattedDate = gameDate ? gameDate.toLocaleDateString() : 'TBD';
+  const formattedTime = gameDate ? gameDate.toLocaleTimeString() : '';
 
   return (
     <Card variant="medieval" className="p-4 hover:border-amber-400/70 transition-colors">
