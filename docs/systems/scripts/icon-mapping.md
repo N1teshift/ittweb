@@ -60,6 +60,9 @@ Maps entity names → icon filenames (without path). Uses `resolveExplicitIcon()
 - Some items have `iconPath` in data
 - Uses `getItemIconPathFromRecord()` utility
 - Also checks ICON_MAP
+- **Important**: `getItemIconPathFromRecord()` always returns full paths starting with `/icons/itt/`
+  - If `item.iconPath` exists, it's prepended with `/icons/itt/` (since data files store just filenames)
+  - This ensures Next.js Image components resolve paths correctly regardless of page location
 
 **For Abilities**:
 - Some abilities have `iconPath` in data

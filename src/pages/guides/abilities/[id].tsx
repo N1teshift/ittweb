@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { AbilityData } from '@/features/modules/guides/data/abilities';
 import { ABILITIES, ABILITY_CATEGORIES, getAbilityById } from '@/features/modules/guides/data/abilities';
 import { getItemById } from '@/features/modules/guides/data/items';
+import { getClassBySlug } from '@/features/modules/guides/data/units/classes';
 import { ColoredText } from '@/features/modules/guides/components/ColoredText';
 
 type Props = { ability: AbilityData };
@@ -187,15 +188,18 @@ export default function AbilityDetail({ ability }: Props) {
             <div className="mb-4">
               <h2 className="text-amber-300 text-lg font-semibold mb-3">Available to Classes</h2>
               <div className="flex flex-wrap gap-2">
-                {ability.availableToClasses.map((className) => (
-                  <Link
-                    key={className}
-                    href={`/guides/classes/${className}`}
-                    className="bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/50 rounded px-3 py-1 text-sm transition-colors text-amber-200 hover:text-amber-100"
-                  >
-                    {className.charAt(0).toUpperCase() + className.slice(1)}
-                  </Link>
-                ))}
+                {ability.availableToClasses
+                  .filter((className) => getClassBySlug(className)) // Only show links for valid classes
+                  .map((className) => (
+                    <Link
+                      key={className}
+                      href={`/guides/classes/${className}`}
+                      prefetch={false}
+                      className="bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/50 rounded px-3 py-1 text-sm transition-colors text-amber-200 hover:text-amber-100"
+                    >
+                      {className.charAt(0).toUpperCase() + className.slice(1)}
+                    </Link>
+                  ))}
               </div>
             </div>
           )}

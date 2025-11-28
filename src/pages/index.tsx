@@ -15,6 +15,9 @@ import type { GetStaticProps } from 'next';
 import type { Entry } from '@/types/entry';
 import type { Game, CreateScheduledGame } from '@/features/modules/games/types';
 import { Button } from '@/features/infrastructure/shared/components/ui';
+import YouTubeEmbed from '@/features/modules/archives/components/YouTubeEmbed';
+import TwitchClipEmbed from '@/features/modules/archives/components/TwitchClipEmbed';
+import { extractYouTubeId, extractTwitchClipId } from '@/features/shared/lib/archiveService';
 
 const pageNamespaces = ["common"];
 
@@ -239,17 +242,56 @@ export default function Home({ latestEntry, mdxSource, recentActivity }: HomePro
             author={latestEntry.creatorName}
           >
             <div className="prose prose-invert max-w-none">
-              {latestEntry.contentType === 'memory' && latestEntry.images && latestEntry.images.length > 0 && (
-                <div className="mb-4 relative w-full aspect-video rounded-lg overflow-hidden">
-                  <Image 
-                    src={latestEntry.images[0]} 
-                    alt={latestEntry.title} 
-                    fill
-                    className="object-cover rounded-lg"
-                    sizes="100vw"
-                    unoptimized={latestEntry.images[0].includes('firebasestorage.googleapis.com')}
-                  />
-                </div>
+              {latestEntry.contentType === 'memory' && (
+                <>
+                  {latestEntry.images && latestEntry.images.length > 0 && (
+                    <div className="mb-4 relative w-full aspect-video rounded-lg overflow-hidden">
+                      <Image 
+                        src={latestEntry.images[0]} 
+                        alt={latestEntry.title} 
+                        fill
+                        className="object-cover rounded-lg"
+                        sizes="100vw"
+                        unoptimized={latestEntry.images[0].includes('firebasestorage.googleapis.com')}
+                      />
+                    </div>
+                  )}
+                  {latestEntry.videoUrl && (() => {
+                    const youtubeId = extractYouTubeId(latestEntry.videoUrl);
+                    const twitchId = extractTwitchClipId(latestEntry.videoUrl);
+                    
+                    if (youtubeId) {
+                      return (
+                        <div className="mb-4">
+                          <YouTubeEmbed url={latestEntry.videoUrl} title={latestEntry.title} />
+                        </div>
+                      );
+                    } else if (twitchId) {
+                      return (
+                        <div className="mb-4">
+                          <TwitchClipEmbed url={latestEntry.videoUrl} title={latestEntry.title} />
+                        </div>
+                      );
+                    } else {
+                      // Fallback for other video URLs
+                      return (
+                        <div className="mb-4">
+                          <iframe
+                            src={latestEntry.videoUrl}
+                            className="w-full aspect-video rounded-lg"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          />
+                        </div>
+                      );
+                    }
+                  })()}
+                  {latestEntry.twitchClipUrl && (
+                    <div className="mb-4">
+                      <TwitchClipEmbed url={latestEntry.twitchClipUrl} title={latestEntry.title} />
+                    </div>
+                  )}
+                </>
               )}
               <MDXRemote {...mdxSource} />
             </div>

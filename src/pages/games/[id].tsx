@@ -156,15 +156,24 @@ export default function GameDetailPage() {
       });
 
       // If that fails, try games API (for games in games collection with gameState: 'scheduled')
+      // 404 is expected when the game is in the games collection instead
       if (!response.ok) {
-        response = await fetch(`/api/games/${pendingDeleteGame.id}`, {
+        // If it's a 404, silently try the games API (expected fallback)
+        // For other errors, also try games API as fallback
+        const secondResponse = await fetch(`/api/games/${pendingDeleteGame.id}`, {
           method: 'DELETE',
         });
-      }
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to delete game');
+        
+        if (!secondResponse.ok) {
+          // Both attempts failed - parse error from the second response (most recent)
+          const errorData = await secondResponse.json().catch(() => ({ 
+            error: response.status === 404 ? 'Game not found' : 'Failed to delete game' 
+          }));
+          throw new Error(errorData.error || 'Failed to delete game');
+        }
+        
+        // Second attempt succeeded
+        response = secondResponse;
       }
 
       setPendingDeleteGame(null);

@@ -16,6 +16,9 @@ import Image from 'next/image';
 import { Button } from '@/features/infrastructure/shared/components/ui';
 import { getEntryById } from '@/features/modules/entries/lib/entryService';
 import { Entry } from '@/types/entry';
+import YouTubeEmbed from '@/features/modules/archives/components/YouTubeEmbed';
+import TwitchClipEmbed from '@/features/modules/archives/components/TwitchClipEmbed';
+import { extractYouTubeId, extractTwitchClipId } from '@/features/shared/lib/archiveService';
 
 const pageNamespaces = ["common"];
 
@@ -143,25 +146,41 @@ export default function EntryPage({ entry, content, canEdit, canDelete }: EntryP
                 )}
 
                 {/* Video */}
-                {entry.videoUrl && (
-                  <div className="mb-6">
-                    <iframe
-                      src={entry.videoUrl}
-                      className="w-full aspect-video rounded-lg"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  </div>
-                )}
+                {entry.videoUrl && (() => {
+                  const youtubeId = extractYouTubeId(entry.videoUrl);
+                  const twitchId = extractTwitchClipId(entry.videoUrl);
+                  
+                  if (youtubeId) {
+                    return (
+                      <div className="mb-6">
+                        <YouTubeEmbed url={entry.videoUrl} title={entry.title} />
+                      </div>
+                    );
+                  } else if (twitchId) {
+                    return (
+                      <div className="mb-6">
+                        <TwitchClipEmbed url={entry.videoUrl} title={entry.title} />
+                      </div>
+                    );
+                  } else {
+                    // Fallback for other video URLs
+                    return (
+                      <div className="mb-6">
+                        <iframe
+                          src={entry.videoUrl}
+                          className="w-full aspect-video rounded-lg"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      </div>
+                    );
+                  }
+                })()}
 
                 {/* Twitch Clip */}
                 {entry.twitchClipUrl && (
                   <div className="mb-6">
-                    <iframe
-                      src={entry.twitchClipUrl}
-                      className="w-full aspect-video rounded-lg"
-                      allowFullScreen
-                    />
+                    <TwitchClipEmbed url={entry.twitchClipUrl} title={entry.title} />
                   </div>
                 )}
               </>
