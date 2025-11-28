@@ -96,60 +96,6 @@ import { Card } from '@/features/infrastructure/shared/components/ui';
 </Card>
 ```
 
-## Input
-
-Form input component with label and error support.
-
-### Props
-
-```typescript
-interface InputProps {
-  label?: string;
-  error?: string;
-  // ... standard HTML input attributes
-}
-```
-
-### Usage
-
-```typescript
-import { Input, NumberInput, SelectInput } from '@/features/infrastructure/shared/components/ui';
-
-// Text input
-<Input
-  label="Player Name"
-  name="playerName"
-  value={value}
-  onChange={handleChange}
-  placeholder="Enter name"
-/>
-
-// With error
-<Input
-  label="Email"
-  name="email"
-  error="Invalid email address"
-/>
-
-// Number input
-<NumberInput
-  label="Age"
-  name="age"
-  min={0}
-  max={100}
-/>
-
-// Select dropdown
-<SelectInput
-  label="Category"
-  name="category"
-  options={[
-    { value: 'ranked', label: 'Ranked' },
-    { value: 'casual', label: 'Casual' }
-  ]}
-/>
-```
-
 ## LoadingOverlay
 
 Overlay component for background operations.
@@ -195,48 +141,6 @@ if (loading) {
 
 ## Component Patterns
 
-### Form with Validation
-
-```typescript
-import { Input, Button, Card } from '@/features/infrastructure/shared/components/ui';
-
-function MyForm() {
-  const [formData, setFormData] = useState({ name: '', email: '' });
-  const [errors, setErrors] = useState({ name: '', email: '' });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // Validation and submission
-  };
-
-  return (
-    <Card variant="medieval" className="p-6">
-      <form onSubmit={handleSubmit}>
-        <Input
-          label="Name"
-          name="name"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          error={errors.name}
-        />
-        <Input
-          label="Email"
-          name="email"
-          type="email"
-          value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          error={errors.email}
-        />
-        <div className="mt-4 flex gap-2">
-          <Button type="submit" variant="primary">Submit</Button>
-          <Button type="button" variant="ghost" onClick={onCancel}>Cancel</Button>
-        </div>
-      </form>
-    </Card>
-  );
-}
-```
-
 ### Loading States
 
 ```typescript
@@ -264,4 +168,5 @@ function MyComponent() {
 
 - [Development Guide](./DEVELOPMENT.md)
 - [Infrastructure README](../src/features/infrastructure/README.md)
+
 

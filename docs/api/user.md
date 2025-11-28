@@ -36,3 +36,4 @@ Delete user account. **Requires authentication.**
 }
 ```
 
+

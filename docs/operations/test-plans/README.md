@@ -60,6 +60,11 @@ These test plans can be used to:
 - **Component Tests**: 60%+ coverage for React components
 - **E2E Tests**: Critical user flows covered
 
+## Test Status and Locations
+
+- **TEST_STATUS.md** - Consolidated test status tracking and file location patterns
+- **CODEX_QUICK_START.md** - Quick start guide for using Codex agents to create tests
+
 ## Notes
 
 - Use `@testing-library/react` for component tests

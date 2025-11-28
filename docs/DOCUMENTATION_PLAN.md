@@ -1,5 +1,8 @@
 # Documentation Plan: Minimal Documentation Strategy
 
+**⚠️ NOTE**: This is a **planning/strategy document**, not a task list.
+
+
 ## What "Proper Minimal Documentation" Means
 
 **Minimal documentation** means:
@@ -17,59 +20,58 @@
 - **Systems**: `docs/systems/` - Game stats, replay parser implementation plans
 - **Scripts**: `scripts/README.md` - Data pipeline documentation
 
-### ⚠️ Partially Documented
-- **API Routes**: Some routes documented in test plans, but no centralized API reference
-- **Feature Modules**: Individual modules lack README files explaining their purpose and usage
-- **Infrastructure**: Core infrastructure (auth, logging, Firebase) lacks usage documentation
-- **Shared Utilities**: Utility functions lack usage examples
+### ✅ Fully Documented
+- **API Routes**: All API endpoints documented in `docs/api/` with request/response examples
+- **Feature Modules**: All 13 modules have README files with purpose, exports, and usage examples
+- **Infrastructure**: Core infrastructure documented in `src/features/infrastructure/README.md`
+- **Infrastructure & Shared**: All infrastructure and shared components/utilities documented in `src/features/infrastructure/README.md`
+- **Development Guides**: Complete guides for development workflow, environment setup, architecture
+- **Component Library**: Shared components documented in `COMPONENT_LIBRARY.md`
 
-### ❌ Missing Documentation
-- **Module READMEs**: Each feature module needs a brief README
-- **API Reference**: Centralized API endpoint documentation
-- **Component Library**: Shared components usage guide
-- **Hooks Documentation**: Custom hooks usage and examples
-- **Development Workflow**: How to add new features, run scripts, etc.
+### ⚠️ Areas for Enhancement
+- **Hooks Documentation**: Some custom hooks could use more detailed usage examples
+- **Advanced Patterns**: Some advanced code patterns could be documented in CODE_COOKBOOK.md
 
 ## Documentation Structure Plan
 
 ### 1. Root Level Documentation
 ```
-├── README.md (✅ exists, needs update)
-├── CONTRIBUTING.md (❌ missing)
-├── ARCHITECTURE.md (❌ missing - high-level overview)
-└── API.md (❌ missing - API reference)
+├── README.md (✅ exists, updated with current features)
+├── CONTRIBUTING.md (✅ exists)
+├── ARCHITECTURE.md (✅ exists - high-level overview)
+└── docs/api/ (✅ exists - API reference in docs/api/)
 ```
 
 ### 2. Module-Level Documentation
-Each feature module should have:
+Each feature module has:
 ```
 src/features/modules/[module]/
-├── README.md (❌ missing for most modules)
+├── README.md (✅ all 13 modules have READMEs)
 │   - Purpose
 │   - Key exports
 │   - Usage examples
 │   - Related API routes
 ```
 
-**Modules needing READMEs:**
-- `analytics/` - Analytics service and chart components
-- `archives/` - Archive entry management
-- `blog/` - Blog post system
-- `classes/` - Class information pages
-- `entries/` - Entry form system
-- `games/` - Game statistics and management
-- `guides/` - Game guides and data
-- `map-analyzer/` - Map visualization tools
-- `meta/` - Analytics dashboard
-- `players/` - Player statistics and profiles
-- `scheduled-games/` - Scheduled game management
-- `standings/` - Leaderboards
-- `tools/` - Utility tools (icon mapper, etc.)
+**All modules documented:**
+- ✅ `analytics/` - Analytics service and chart components
+- ✅ `archives/` - Archive entry management
+- ✅ `blog/` - Blog post system
+- ✅ `classes/` - Class information pages
+- ✅ `entries/` - Entry form system
+- ✅ `games/` - Game statistics and management
+- ✅ `guides/` - Game guides and data
+- ✅ `map-analyzer/` - Map visualization tools
+- ✅ `meta/` - Analytics dashboard
+- ✅ `players/` - Player statistics and profiles
+- ✅ `scheduled-games/` - Scheduled game management
+- ✅ `standings/` - Leaderboards
+- ✅ `tools/` - Utility tools (icon mapper, etc.)
 
 ### 3. Infrastructure Documentation
 ```
 src/features/infrastructure/
-├── README.md (❌ missing)
+├── README.md (✅ exists)
 │   - Auth system
 │   - Firebase setup
 │   - Logging system
@@ -80,7 +82,7 @@ src/features/infrastructure/
 ### 4. Shared Documentation
 ```
 src/features/shared/
-├── README.md (❌ missing)
+├── README.md (✅ exists)
 │   - Shared components (Layout, Header, Footer, etc.)
 │   - Shared hooks
 │   - Shared utilities
@@ -90,13 +92,15 @@ src/features/shared/
 ### 5. API Documentation
 ```
 docs/api/
-├── README.md (❌ missing - API index)
-├── games.md (❌ missing)
-├── players.md (❌ missing)
-├── archives.md (❌ missing)
-├── scheduled-games.md (❌ missing)
-├── analytics.md (❌ missing)
-└── ... (one file per API namespace)
+├── README.md (✅ exists - API index)
+├── games.md (✅ exists)
+├── players.md (✅ exists)
+├── archives.md (✅ exists)
+├── scheduled-games.md (✅ exists)
+├── analytics.md (✅ exists)
+├── items.md (✅ exists)
+├── revalidate.md (✅ exists)
+└── ... (all API namespaces documented)
 ```
 
 ## Minimal Documentation Template
@@ -176,30 +180,20 @@ docs/api/
 
 ## Implementation Priority
 
-### Phase 1: Critical (Start Here)
-1. **Root README.md** - Update with current project state
-2. **API.md** - Centralized API reference
-3. **Module READMEs** for core features:
-   - `games/`
-   - `players/`
-   - `archives/`
-   - `scheduled-games/`
+### ✅ Completed Phases
+1. **Root README.md** - ✅ Updated with current project state
+2. **API Documentation** - ✅ All API endpoints documented in `docs/api/`
+3. **Module READMEs** - ✅ All 13 modules have READMEs
+4. **Infrastructure README** - ✅ Auth, Firebase, logging documented
+5. **Shared README** - ✅ Shared components and utilities documented
+6. **ARCHITECTURE.md** - ✅ High-level system architecture documented
+7. **CONTRIBUTING.md** - ✅ Development workflow documented
+8. **Component library docs** - ✅ Documented in `COMPONENT_LIBRARY.md`
 
-### Phase 2: Important
-4. **Infrastructure README** - Auth, Firebase, logging
-5. **Shared README** - Shared components and utilities
-6. **Module READMEs** for remaining features:
-   - `analytics/`
-   - `blog/`
-   - `standings/`
-   - `guides/`
-   - `map-analyzer/`
-   - `tools/`
-
-### Phase 3: Nice to Have
-7. **ARCHITECTURE.md** - High-level system architecture
-8. **CONTRIBUTING.md** - Development workflow
-9. **Component library docs** - Detailed component usage
+### Future Enhancements
+- Enhanced hooks documentation with more detailed examples
+- Advanced code patterns in CODE_COOKBOOK.md
+- Periodic consolidation reviews to prevent bloat
 
 ## Documentation Principles
 
@@ -208,12 +202,21 @@ docs/api/
 3. **Link to code**: Reference actual files when helpful
 4. **Update with code**: Documentation should live next to code
 5. **No duplication**: Reference existing docs rather than repeating
+6. **Consolidate smartly**: Merge redundant documentation, reduce bloat, maintain clarity
 
-## Next Steps
+## Current Status
 
-1. **Audit existing code**: Identify all modules, APIs, and utilities
-2. **Create templates**: Standardize documentation format
-3. **Generate initial docs**: Create minimal READMEs for each module
-4. **Create API reference**: Document all API endpoints
-5. **Update root docs**: Refresh README.md and create missing root docs
+**Note**: This is a planning document. For actionable tasks, see [`.workflow/agent-tasks.md`](../../.workflow/agent-tasks.md).
+
+✅ **Completed**:
+1. ✅ **Audit existing code**: All modules, APIs, and utilities identified
+2. ✅ **Create templates**: Documentation format standardized
+3. ✅ **Generate initial docs**: All module READMEs created
+4. ✅ **Create API reference**: All API endpoints documented
+5. ✅ **Update root docs**: README.md updated with current features
+
+**Ongoing**:
+- Maintain documentation as codebase evolves
+- Periodic consolidation reviews
+- Keep documentation style guide updated
 

@@ -63,12 +63,10 @@ This document summarizes all the improvements applied to the ittweb project base
 - Created foundational UI components:
   - `Button.tsx` - Variant-based button component (primary, secondary, ghost, amber, success, danger)
   - `Card.tsx` - Card component with variants (default, glass, medieval)
-  - `Input.tsx` - Input component with label and error support
-  - `NumberInput.tsx` - Number input variant
-  - `SelectInput.tsx` - Select dropdown component
   - `LoadingOverlay.tsx` - Full-screen loading overlay
   - `LoadingScreen.tsx` - Loading screen component
-- **Location:** `src/features/infrastructure/shared/components/ui/`
+  - **Location:** `src/features/infrastructure/components/ui/`
+  - **Note:** Input components (Input, NumberInput, SelectInput) were removed as they were unused
 
 ### 7. Testing Infrastructure ✅
 - Added Jest configuration:

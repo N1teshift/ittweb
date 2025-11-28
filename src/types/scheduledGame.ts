@@ -65,3 +65,4 @@ export interface CreateScheduledGame {
   submittedAt?: Timestamp | string;
 }
 
+

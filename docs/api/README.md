@@ -17,22 +17,22 @@ Most POST/PUT/DELETE endpoints require authentication via NextAuth session. Incl
 - [Blog](./blog.md) - Blog posts
 - [Classes](./classes.md) - Class information
 - [Items](./items.md) - Item data
+- [Icons](./icons.md) - Icon file listing
 - [User](./user.md) - User account operations
 - [Admin](./admin.md) - Admin operations
+- [Revalidate](./revalidate.md) - ISR revalidation (internal)
 
 ## Common Response Formats
 
-**Note**: The codebase currently uses multiple response formats. This documentation reflects the actual formats in use.
+### Standardized Format
 
-### Standardized Format (createApiHandler)
-
-Routes using `createApiHandler` return this format:
+**All API routes use the standardized response format via `createApiHandler`:**
 
 **Success Response:**
 ```typescript
 {
   success: true,
-  data: T  // Response data
+  data: T  // Response data from handler
 }
 ```
 
@@ -44,39 +44,49 @@ Routes using `createApiHandler` return this format:
 }
 ```
 
-### Legacy Formats (Manual Handlers)
+### Handler Return Values
 
-Some routes use manual handlers with different formats:
+When using `createApiHandler`, your handler should return the data directly (not wrapped in `{ success: true }`). The handler automatically wraps it:
 
-**Success - Wrapped:**
+**Creation Endpoints:**
 ```typescript
+// Handler returns:
+return { id: gameId };
+
+// Client receives:
 {
   success: true,
-  data: T
-}
-// OR
-{
-  id: string,
-  success: true
+  data: { id: gameId }
 }
 ```
 
-**Success - Direct Data:**
+**Update/Delete Endpoints:**
 ```typescript
-T  // Direct data (no wrapper)
-```
+// Handler returns:
+return {}; // or return { success: true };
 
-**Error:**
-```typescript
+// Client receives:
 {
-  error: string
-  // OR in development:
-  error: string,
-  details?: string
+  success: true,
+  data: {} // or { success: true, data: { success: true } }
 }
 ```
 
-**Recommendation**: New routes should use `createApiHandler` for consistent formatting. Existing routes will be migrated over time.
+**Data Endpoints:**
+```typescript
+// Handler returns:
+return { items: [...], meta: {...} };
+
+// Client receives:
+{
+  success: true,
+  data: { items: [...], meta: {...} }
+}
+```
+
+**Note**: Avoid returning `{ success: true, ... }` from handlers as it creates redundant nesting. The `createApiHandler` automatically adds the `success` field.
+
+**Standardization Complete**: All API routes have been migrated to use `createApiHandler` and the standardized response format. This ensures consistent error handling, authentication, and response structure across all endpoints.
 
 ### Status Codes
 - `200` - Success

@@ -1,5 +1,7 @@
 # Documentation Audit: What Needs Documentation
 
+**⚠️ NOTE**: This is an **inventory/audit document** that provides a complete inventory of what exists and what needs documentation.
+
 ## Summary
 
 This audit identifies what exists in the codebase and what needs minimal documentation.
@@ -39,53 +41,58 @@ This audit identifies what exists in the codebase and what needs minimal documen
    - Game stats implementation
    - Replay parser integration
 
-### ⚠️ Partially Documented
+### ✅ Fully Documented
 
 1. **Root README** (`README.md`)
-   - Basic project info exists
-   - Missing: current feature list, architecture overview, API overview
+   - ✅ Current feature list included
+   - ✅ Architecture overview included
+   - ✅ API overview included
+   - ✅ Complete documentation index
 
 2. **Module Features** (`src/features/modules/`)
-   - Code exists but no README files
-   - No usage examples
-   - No API route references
+   - ✅ All 13 modules have README files
+   - ✅ Usage examples included
+   - ✅ API route references included
+   - ✅ Purpose, exports, and examples documented
 
 3. **API Routes** (`src/pages/api/`)
-   - Routes exist and work
-   - No centralized API documentation
-   - Some routes documented in test plans, but not user-friendly
+   - ✅ All 13 API namespaces documented in `docs/api/`
+   - ✅ Request/response examples included
+   - ✅ Authentication requirements documented
+   - ✅ Error responses documented
 
-### ❌ Missing Documentation
+4. **Infrastructure Documentation**
+   - ✅ `src/features/infrastructure/README.md` - Auth, Firebase, logging, API handlers, shared components, hooks, utilities
 
-1. **Module READMEs** (13 modules need docs)
-   - `analytics/` - Analytics service and charts
-   - `archives/` - Archive management
-   - `blog/` - Blog post system
-   - `classes/` - Class pages
-   - `entries/` - Entry forms
-   - `games/` - Game statistics
-   - `guides/` - Game guides
-   - `map-analyzer/` - Map tools
-   - `meta/` - Analytics dashboard
-   - `players/` - Player stats
-   - `scheduled-games/` - Scheduled games
-   - `standings/` - Leaderboards
-   - `tools/` - Utility tools
+5. **API Reference**
+   - ✅ Centralized API documentation in `docs/api/`
+   - ✅ Request/response examples with TypeScript types
+   - ✅ Authentication requirements documented
 
-2. **Infrastructure Documentation**
-   - `src/features/infrastructure/` - Auth, Firebase, logging, API handlers
-   - `src/features/shared/` - Shared components, hooks, utilities
+6. **Development Guides**
+   - ✅ `DEVELOPMENT.md` - How to add features and API routes
+   - ✅ `CONTRIBUTING.md` - Development standards
+   - ✅ `ENVIRONMENT_SETUP.md` - Complete setup guide
+   - ✅ `CODE_COOKBOOK.md` - Common patterns
+   - ✅ `API_CLIENT_USAGE.md` - Client-side API usage
+   - ✅ `COMPONENT_LIBRARY.md` - Shared components
+   - ✅ `TROUBLESHOOTING.md` - Common issues
 
-3. **API Reference**
-   - Centralized API documentation
-   - Request/response examples
-   - Authentication requirements
+### ⚠️ Areas for Enhancement
 
-4. **Development Guides**
-   - How to add a new feature
-   - How to add a new API route
-   - How to use shared utilities
-   - How to use the logger system
+1. **API Documentation Examples**
+   - Could add more complete request/response body examples
+   - Could add authentication header examples
+   - Could add more error response examples
+
+2. **Development Guide Examples**
+   - Could add more complete service layer examples
+   - Could add more advanced patterns to CODE_COOKBOOK.md
+   - Could add more error handling scenarios
+
+3. **Navigation Improvements**
+   - Long documents could benefit from table of contents
+   - Could improve cross-references between related docs
 
 ## Complete Feature Inventory
 
@@ -183,6 +190,9 @@ This audit identifies what exists in the codebase and what needs minimal documen
 **Games** (`/api/games/`)
 - `index.ts` - List/create games
 - `[id].ts` - Get/update/delete game
+- `[id]/join.ts` - Join game
+- `[id]/leave.ts` - Leave game
+- `[id]/upload-replay.ts` - Upload replay
 
 **Icons** (`/api/icons/`)
 - `list.ts` - List available icons
@@ -202,11 +212,8 @@ This audit identifies what exists in the codebase and what needs minimal documen
 
 **Scheduled Games** (`/api/scheduled-games/`)
 - `index.ts` - List/create scheduled games
-- `[id]/index.ts` - Get/update scheduled game
-- `[id]/delete.ts` - Delete scheduled game
-- `[id]/join.ts` - Join scheduled game
-- `[id]/leave.ts` - Leave scheduled game
-- `[id]/upload-replay.ts` - Upload replay
+- `[id]/index.ts` - Get scheduled game
+- **Note**: Join/leave/upload-replay functionality moved to `/api/games/[id]/*` routes
 
 **Standings** (`/api/standings/`)
 - `index.ts` - Get leaderboard
@@ -220,7 +227,133 @@ This audit identifies what exists in the codebase and what needs minimal documen
 - `wipe-test-data.ts` - Wipe test data (admin only)
 
 **Other**
-- `revalidate.ts` - Revalidation endpoint
+- `revalidate.ts` - Revalidation endpoint (Next.js ISR)
+
+## API Documentation Status
+
+### Documented API Namespaces
+
+✅ **Fully Documented**:
+- `games.md` - Games API
+- `players.md` - Players API  
+- `archives.md` - Archives API
+- `scheduled-games.md` - Scheduled Games API
+- `analytics.md` - Analytics API
+- `standings.md` - Standings API
+- `blog.md` - Blog API
+- `classes.md` - Classes API
+- `items.md` - Items API
+- `user.md` - User API
+- `admin.md` - Admin API
+
+### Route-by-Route Documentation Status
+
+#### `/api/games/`
+- ✅ `GET /api/games` - Documented
+- ✅ `POST /api/games` - Documented
+- ✅ `GET /api/games/[id]` - Documented
+- ✅ `POST /api/games/[id]/join` - Documented
+- ✅ `POST /api/games/[id]/leave` - Documented
+- ✅ `POST /api/games/[id]/upload-replay` - Documented
+
+#### `/api/players/`
+- ✅ `GET /api/players` - Documented
+- ✅ `GET /api/players/[name]` - Documented
+- ✅ `GET /api/players/compare` - Documented
+- ✅ `GET /api/players/search` - Documented
+
+#### `/api/entries/`
+- ✅ `GET /api/entries` - Documented (in archives.md)
+- ✅ `POST /api/entries` - Documented (in archives.md)
+- ✅ `GET /api/entries/[id]` - Documented (in archives.md)
+- ✅ `PUT /api/entries/[id]` - Documented (in archives.md)
+- ✅ `DELETE /api/entries/[id]` - Documented (in archives.md)
+
+#### `/api/scheduled-games/`
+- ✅ `GET /api/scheduled-games` - Documented
+- ✅ `GET /api/scheduled-games/[id]` - Documented
+- ✅ `POST /api/scheduled-games` - Documented
+- **Note**: The `scheduled-games/[id]/` folder exists but is empty. Join/leave/upload-replay functionality has been moved to `/api/games/[id]/*` routes.
+
+#### `/api/analytics/`
+- ✅ `GET /api/analytics/activity` - Documented
+- ✅ `GET /api/analytics/elo-history` - Documented
+- ✅ `GET /api/analytics/meta` - Documented
+- ✅ `GET /api/analytics/win-rate` - Documented
+
+#### `/api/standings/`
+- ✅ `GET /api/standings` - Documented
+
+#### `/api/posts/`
+- ✅ `GET /api/posts` - Documented (in blog.md)
+- ✅ `POST /api/posts` - Documented (in blog.md)
+- ✅ `GET /api/posts/[id]` - Documented (in blog.md)
+- ✅ `PUT /api/posts/[id]` - Documented (in blog.md)
+- ✅ `DELETE /api/posts/[id]` - Documented (in blog.md)
+
+#### `/api/classes/`
+- ✅ `GET /api/classes` - Documented
+- ✅ `GET /api/classes/[className]` - Documented
+
+#### `/api/items/`
+- ✅ `GET /api/items` - Documented
+
+#### `/api/user/`
+- ✅ `POST /api/user/accept-data-notice` - Documented
+- ✅ `GET /api/user/data-notice-status` - Documented
+- ✅ `DELETE /api/user/delete` - Documented
+
+#### `/api/admin/`
+- ✅ `POST /api/admin/wipe-test-data` - Documented
+
+#### `/api/icons/`
+- ❌ `GET /api/icons/list` - **NOT DOCUMENTED**
+  - Returns list of icon files from `public/icons/itt/`
+  - Response: `IconFile[]` (array of icon metadata)
+  - No authentication required
+  - **Action**: Create documentation or add to guides/items API docs
+
+#### `/api/revalidate/`
+- ❌ `POST /api/revalidate` - **NOT DOCUMENTED** (Next.js ISR revalidation)
+  - Requires authentication
+  - Request body: `{ path: string }`
+  - Response: `{ revalidated: true, path: string }`
+  - **Action**: Document as internal/admin endpoint (may not need user-facing docs)
+
+#### `/api/auth/`
+- ℹ️ `[...nextauth].ts` - NextAuth handler (not user-facing API, documented in ENVIRONMENT_SETUP.md)
+
+### Missing API Documentation
+
+**Critical**:
+1. **`/api/icons/list`** - Icon listing endpoint (no documentation found)
+2. **`/api/revalidate`** - Revalidation endpoint (Next.js ISR, may not need user docs)
+
+### API Documentation Quality Issues
+
+**Response Format Inconsistency**:
+- Some docs show standardized format `{ success, data }`
+- Some docs show legacy formats
+- **Action**: Update all docs to reflect actual response formats (see KNOWN_ISSUES.md)
+
+**Missing Details**:
+- Some endpoints lack request/response examples
+- Some endpoints lack error response documentation
+- Authentication requirements not consistently documented
+
+### API Documentation Recommendations
+
+1. **Create missing documentation**:
+   - `/api/icons/list.md` or add to existing docs
+   - Verify and document scheduled-games sub-routes
+
+2. **Standardize documentation format**:
+   - Use consistent template for all endpoints
+   - Include: method, path, auth requirements, request body, response format, error responses
+
+3. **Update response format docs**:
+   - Document actual formats in use (see KNOWN_ISSUES.md)
+   - Add migration notes for legacy formats
 
 ### Infrastructure Components
 
@@ -243,38 +376,33 @@ This audit identifies what exists in the codebase and what needs minimal documen
 - objectUtils
 - timestampUtils
 
-### Shared Components
+### Shared Components & Utilities
 
-**Components** (`src/features/shared/components/`)
-- Layout, Header, Footer
-- PageHero
-- DataCollectionNotice
-- DiscordButton, GitHubButton
+**Components** (`src/features/infrastructure/shared/components/ui/`)
+- Button, Card, Input, LoadingScreen, LoadingOverlay
+- UI components library
 
-**Hooks** (`src/features/shared/hooks/`)
-- useFallbackTranslation
-
-**Services** (`src/features/shared/lib/`)
+**Services** (`src/features/infrastructure/lib/`)
 - userDataService
 - archiveService
-- getStaticProps
+- Other shared services
 
-**Utils** (`src/features/shared/utils/`)
-- loggerUtils (error handling)
-- userRoleUtils
+**Utils** (`src/features/infrastructure/utils/`)
+- userRoleUtils (role checking)
+- objectUtils (object manipulation)
+- timestampUtils (timestamp conversion)
+- Logging utilities (see infrastructure logging)
 
-## Documentation Gaps
+## Documentation Status Summary
 
-### Critical Gaps (Must Document)
-1. Module READMEs - Developers can't understand what each module does
-2. API Reference - No way to know what endpoints exist and how to use them
-3. Infrastructure docs - Core systems (auth, logging, Firebase) undocumented
-4. Shared utilities - No usage examples for common utilities
-
-### Important Gaps (Should Document)
-5. Component library - Shared components lack usage docs
-6. Development workflow - How to add features/APIs
-7. Root README - Outdated, missing current features
+### ✅ Complete Documentation
+1. ✅ Module READMEs - All 13 modules documented with purpose, exports, examples
+2. ✅ API Reference - All 13 API namespaces documented in `docs/api/` with examples
+3. ✅ Infrastructure docs - Core systems documented in `src/features/infrastructure/README.md`
+4. ✅ Shared utilities - Documented in `src/features/infrastructure/README.md` with examples
+5. ✅ Component library - Documented in `COMPONENT_LIBRARY.md`
+6. ✅ Development workflow - Documented in `DEVELOPMENT.md` and `CONTRIBUTING.md`
+7. ✅ Root README - Updated with current features, architecture overview, and API overview
 
 ### Nice to Have
 8. Architecture diagram - High-level system overview
@@ -308,10 +436,7 @@ src/features/modules/[module]/
 └── README.md (NEW - minimal module docs)
 
 src/features/infrastructure/
-└── README.md (NEW)
-
-src/features/shared/
-└── README.md (NEW)
+└── README.md (NEW - includes all infrastructure and shared features)
 ```
 
 ## Next Steps
@@ -327,4 +452,5 @@ Each documentation file should be:
 - **Minimal** - Essential info only
 - **Actionable** - Include usage examples
 - **Maintainable** - Easy to update
+
 

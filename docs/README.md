@@ -2,6 +2,76 @@
 
 Use this index to jump to the latest, audience-focused docs.
 
+## Current Features
+
+ITT Web is a Next.js application for Island Troll Tribes game statistics, community features, and content management.
+
+### Core Features
+- **Game Statistics** - Track games, calculate ELO ratings, manage game history
+- **Player Profiles** - Player statistics, ELO tracking, win/loss records, player comparison
+- **Leaderboards** - Category-based rankings with minimum games threshold
+- **Analytics Dashboard** - Activity charts, ELO history, win rate analysis
+
+### Community Features
+- **Scheduled Games** - Schedule upcoming games with timezone support and player signups
+- **Archive System** - Manage game replays, clips, and media content
+- **Blog System** - Create and manage blog posts with MDX support
+
+### Content & Tools
+- **Game Guides** - Static game data (classes, items, abilities, units)
+- **Class Information** - Detailed class pages with statistics
+- **Map Analyzer** - Map visualization and analysis tools
+- **Icon Mapper** - Utility for mapping game icons to entities
+- **Entry Forms** - Create archive entries and content
+
+### Technical Features
+- **RESTful API** - 13 API namespaces with authentication
+- **Firebase Integration** - Firestore database with real-time capabilities
+- **Discord OAuth** - Authentication via NextAuth.js
+- **Replay Parser** - Parse Warcraft 3 replay files for automatic game data extraction
+- **ISR (Incremental Static Regeneration)** - Optimized static page generation
+
+See [Module Documentation](#module-documentation-srcfeaturesmodules) for detailed module information.
+
+## Architecture Overview
+
+ITT Web follows a modular, feature-based architecture:
+
+- **Framework**: Next.js 15.0.3 with React 18
+- **Language**: TypeScript (strict mode)
+- **Database**: Firebase Firestore
+- **Authentication**: NextAuth.js (Discord OAuth)
+- **Styling**: Tailwind CSS
+- **Architecture Pattern**: Feature modules with service layer, component-based UI
+
+**Key Architectural Principles**:
+- Feature-based module organization (`src/features/modules/`)
+- Service layer for business logic (`lib/` directories)
+- Shared infrastructure (`src/features/infrastructure/`)
+- Type-safe API routes with standardized handlers
+- Minimal file size (target: under 200 lines per file)
+
+For detailed architecture information, see [ARCHITECTURE.md](./ARCHITECTURE.md).
+
+## API Overview
+
+Complete RESTful API with 13 namespaces:
+
+- **Games** - Game CRUD, ELO calculations, replay uploads
+- **Players** - Player profiles, statistics, search, comparison
+- **Standings** - Leaderboards and rankings
+- **Analytics** - Activity data, ELO history, win rates
+- **Archives** - Archive entry management
+- **Scheduled Games** - Game scheduling and management
+- **Blog** - Blog post CRUD operations
+- **Classes** - Class information endpoints
+- **Items** - Item data and icon listing
+- **User** - User account operations
+- **Admin** - Administrative functions
+- **Revalidate** - ISR revalidation (internal)
+
+All API endpoints are documented with request/response formats, authentication requirements, and examples. See [API Reference](#api-reference-docsapi) for complete documentation.
+
 ## Product & Delivery (`docs/product/`)
 - `summary.md` – showcase of shipped features (great for stakeholders/recruiters) plus the `/meta` analytics overview.
 - `status.md` – current roadmap + remaining phases.
@@ -25,13 +95,6 @@ Use this index to jump to the latest, audience-focused docs.
 - `testing-guide.md` – deeper scenarios + API calls.
 - Both docs link back to `scripts/README.md` so you always regenerate data before testing.
 
-## Workflow (`docs/workflow/`)
-- **`README.md`** – **Agent workflow system overview and quick start guide.**
-- **`agent-tasks.md`** – **Central task management file (all agents read/write here).**
-- **`communication-protocol.md`** – **How agents communicate and coordinate.**
-- **`agent-roles/`** – **Role definitions for each specialized agent (Test, Documentation, UI, API, Quality Control, etc.).**
-- **`progress/`** – **Goal tracking and agent status reports.**
-
 ## Systems (`docs/systems/`)
 - `game-stats/implementation-plan.md` – detailed breakdown of the game stats architecture.
 - `replay-parser/` – integration plan + quick start for the parser.
@@ -51,15 +114,16 @@ Use this index to jump to the latest, audience-focused docs.
 - Request/response examples and authentication requirements
 
 ## Module Documentation (`src/features/modules/`)
-- Module-level READMEs are planned but not yet implemented
-- See [Documentation Plan](./DOCUMENTATION_PLAN.md) for status
-- Module code is documented inline with TypeScript types and JSDoc comments
+- ✅ **All 13 modules have README files** - Complete module documentation
+- Each module README includes: purpose, exports, usage examples, API routes
+- See [Documentation Status](./DOCUMENTATION_STATUS.md) for complete status
 
 ## Infrastructure (`src/features/infrastructure/`)
 - `README.md` – Core systems (auth, Firebase, logging, API utilities)
 
-## Shared Features (`src/features/shared/`)
-- `README.md` – Shared components, hooks, utilities, and services
+## Shared Features (`src/features/infrastructure/`)
+- Shared components, hooks, utilities, and services are consolidated under infrastructure
+- See `src/features/infrastructure/README.md` for details
 
 ## Known Issues & Migration Status
 - **`KNOWN_ISSUES.md`** – ⚠️ **Track technical debt, migration status, and known issues** - **Start here if you encounter problems or want to understand current technical debt**
@@ -67,8 +131,9 @@ Use this index to jump to the latest, audience-focused docs.
 ## Supporting References
 - `../scripts/README.md` – canonical instructions for regenerating data/icon maps (all commands are `node scripts/data/*.mjs`).
 - `../scripts/data/REFACTORING_PLAN.md` – status + backlog for the pipeline scripts.
-- `../DOCUMENTATION_PLAN.md` – Documentation strategy and templates
-- `../DOCUMENTATION_AUDIT.md` – Complete documentation inventory
+- **`DOCUMENTATION_STYLE.md`** – **Single source of truth for documentation preferences and standards**
+- `DOCUMENTATION_PLAN.md` – Documentation strategy and templates (reference document, not task list)
+- `DOCUMENTATION_AUDIT.md` – Complete documentation inventory (reference document, not task list)
 
-_Tip: start with `product/` when you want to impress someone, drop into `operations/` when you need to run/test, browse `api/` for API endpoints, check `src/features/modules/` for module docs, and browse `systems/` when you or an AI agent needs the full picture._
+_Tip: start with `product/` when you want to impress someone, drop into `operations/` when you need to run/test, browse `api/` for API endpoints, check `src/features/modules/` for module docs, and browse `systems/` when you need the full picture._
 

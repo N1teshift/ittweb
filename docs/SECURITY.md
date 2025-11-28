@@ -56,8 +56,8 @@ export default createApiHandler(
 Check user roles for admin operations:
 
 ```typescript
-import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
-import { isAdmin } from '@/features/shared/utils/userRoleUtils';
+import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
+import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 
 const session = await getServerSession(req, res, authOptions);
 if (!session) {

@@ -4,6 +4,8 @@ Material in this folder is preserved for historical context only. Nothing here s
 
 - `phase-0-complete.md` – snapshot of the earliest milestone.
 - `twgb-pages-comparison.md` / `twgb-website-analysis.md` – old research on reference sites.
+- `workflow/` – old workflow system files (migrated to `.workflow/` at project root).
+- `analysis/` – historical analysis documents (collections comparison, simplification opportunities).
 
 When a document becomes obsolete (or risks confusing AI agents), move it here and add a single sentence at the top explaining why it was archived.
 

@@ -45,7 +45,7 @@ export interface CreateMyEntity {
 Create service in `lib/[module]Service.ts`:
 
 ```typescript
-import { getFirestoreAdmin } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
 import { logError } from '@/features/infrastructure/logging';
 import type { CreateMyEntity, MyEntity } from '../types';
 
@@ -168,31 +168,97 @@ Create `README.md` following the template in [Documentation Plan](../DOCUMENTATI
 
 ### Option 1: Using `createApiHandler` (Recommended)
 
-**Note**: The `requireAuth` option is currently not implemented. Authentication checks must be done manually in the handler. See [TODO: Implement authentication in createApiHandler](#) for tracking.
-
 ```typescript
 // src/pages/api/my-entities/[id].ts
 import type { NextApiRequest } from 'next';
-import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
+import { createApiHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
+import { parseRequiredQueryString } from '@/features/infrastructure/api/queryParser';
 import { getMyEntity } from '@/features/modules/my-entities/lib/myEntityService';
 
+// Public GET endpoint
 export default createApiHandler(
   async (req: NextApiRequest) => {
-    const id = req.query.id as string;
-    if (!id) {
-      throw new Error('ID is required');
-    }
-
+    const id = parseRequiredQueryString(req, 'id');
     const entity = await getMyEntity(id);
     if (!entity) {
       throw new Error('Entity not found');
     }
-
     return entity;
   },
   {
     methods: ['GET'],
-    requireAuth: false, // ⚠️ Currently not implemented - authentication must be checked manually
+    requireAuth: false, // Public endpoint
+    logRequests: true,
+    cacheControl: {
+      maxAge: 300, // Cache for 5 minutes
+      public: true,
+    },
+  }
+);
+```
+
+**With Authentication:**
+```typescript
+// src/pages/api/my-entities/index.ts
+import type { NextApiRequest } from 'next';
+import { createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
+import { validateRequiredFields, validateString } from '@/features/infrastructure/api/validators';
+import { createMyEntity } from '@/features/modules/my-entities/lib/myEntityService';
+
+export default createPostHandler(
+  async (req: NextApiRequest, res, context) => {
+    // Session is guaranteed to be available due to requireAuth: true
+    const session = requireSession(context);
+    
+    // Validate request body
+    const validationError = validateRequiredFields(req.body, ['name']);
+    if (validationError) {
+      throw new Error(validationError);
+    }
+    
+    const nameError = validateString(req.body.name, 'name', 1, 100);
+    if (nameError) {
+      throw new Error(nameError);
+    }
+    
+    const entityId = await createMyEntity({
+      name: req.body.name,
+      createdByDiscordId: session.discordId || '',
+    });
+    
+    return { id: entityId };
+  },
+  {
+    requireAuth: true, // Automatically checks authentication
+    validateBody: (body) => {
+      const requiredError = validateRequiredFields(body, ['name']);
+      if (requiredError) return requiredError;
+      return validateString(body.name, 'name', 1, 100) || true;
+    },
+    logRequests: true,
+  }
+);
+```
+
+**With Admin Access:**
+```typescript
+// src/pages/api/admin/my-entities/[id].ts
+import type { NextApiRequest } from 'next';
+import { createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
+import { parseRequiredQueryString } from '@/features/infrastructure/api/queryParser';
+import { deleteMyEntity } from '@/features/modules/my-entities/lib/myEntityService';
+
+export default createPostHandler(
+  async (req: NextApiRequest, res, context) => {
+    // Session is guaranteed and user is admin due to requireAdmin: true
+    const session = requireSession(context);
+    const id = parseRequiredQueryString(req, 'id');
+    
+    await deleteMyEntity(id);
+    return { success: true };
+  },
+  {
+    requireAdmin: true, // Automatically requires auth AND admin role
     logRequests: true,
   }
 );
@@ -254,10 +320,10 @@ export default async function handler(
 
 ### Error Handling
 
-Always use `loggerUtils` for error handling:
+Always use infrastructure logging for error handling:
 
 ```typescript
-import { logError, logAndThrow } from '@/features/shared/utils/loggerUtils';
+import { logError, logAndThrow } from '@/features/infrastructure/logging';
 
 try {
   // operation
@@ -301,23 +367,78 @@ const doc = await db.collection('games').doc('id').get();
 
 ### Authentication
 
+#### Using `createApiHandler` (Recommended)
+
+When using `createApiHandler`, authentication is handled automatically:
+
+```typescript
+export default createPostHandler(
+  async (req: NextApiRequest, res, context) => {
+    // Session is guaranteed to be available when requireAuth: true
+    const session = requireSession(context);
+    
+    // Use session data
+    const userId = session.discordId;
+    // ... rest of handler
+  },
+  {
+    requireAuth: true, // Automatically checks authentication
+    // Returns 401 Unauthorized if not authenticated
+  }
+);
+```
+
+**How it works**:
+- `requireAuth: true` automatically calls `getServerSession(req, res, authOptions)`
+- If no session exists, returns `401 Unauthorized` with `{ success: false, error: 'Authentication required' }`
+- If session exists, it's available via `requireSession(context)` helper
+- No need to manually check authentication
+
+**Admin Access**:
+```typescript
+export default createPostHandler(
+  async (req: NextApiRequest, res, context) => {
+    const session = requireSession(context);
+    // User is guaranteed to be admin when requireAdmin: true
+    // ... admin-only operations
+  },
+  {
+    requireAuth: true,
+    requireAdmin: true, // Also checks admin role
+    // Returns 403 Forbidden if not admin
+  }
+);
+```
+
+#### Manual Authentication (Legacy)
+
+If you're not using `createApiHandler`, check authentication manually:
+
 ```typescript
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/features/infrastructure/auth';
-import { isAdmin } from '@/features/shared/utils/userRoleUtils';
-import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
+import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
+import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
 
 const session = await getServerSession(req, res, authOptions);
 if (!session) {
-  return res.status(401).json({ error: 'Authentication required' });
+  return res.status(401).json({ 
+    success: false,
+    error: 'Authentication required' 
+  });
 }
 
 // Check admin role
 const userData = await getUserDataByDiscordId(session.discordId || '');
 if (!isAdmin(userData?.role)) {
-  return res.status(403).json({ error: 'Admin access required' });
+  return res.status(403).json({ 
+    success: false,
+    error: 'Admin access required' 
+  });
 }
 ```
+
+**Note**: All API routes should use `createApiHandler` for consistent authentication and error handling.
 
 ### Component Patterns
 
@@ -326,7 +447,7 @@ if (!isAdmin(userData?.role)) {
 import { Button, Card, Input } from '@/features/infrastructure/shared/components/ui';
 
 // Use Layout wrapper
-import { Layout } from '@/features/shared';
+import { Layout } from '@/features/infrastructure';
 
 export default function MyPage() {
   return (
@@ -387,5 +508,5 @@ describe('MyEntityList', () => {
 - [API Reference](./api/README.md)
 - [Firestore Schemas](./schemas/firestore-collections.md)
 - [Infrastructure](../src/features/infrastructure/README.md)
-- [Shared Features](../src/features/shared/README.md)
+- [Infrastructure & Shared Features](../src/features/infrastructure/README.md)
 

@@ -1,5 +1,7 @@
 # Comprehensive Jest Test Plan
 
+**⚠️ NOTE**: This is a **test specification document**.
+
 This document provides a comprehensive list of all Jest tests that could be created for the ITT Web project. Tests are organized by module and feature area.
 
 ## Table of Contents
@@ -74,12 +76,13 @@ This document provides a comprehensive list of all Jest tests that could be crea
   - Test log filtering based on environment
   - Test log formatting
 
-- [ ] `src/features/shared/utils/loggerUtils.ts`
+- [ ] `src/features/infrastructure/logging/logger.ts`
   - Test `createComponentLogger` factory
   - Test component logger prefixing
   - Test `logError` function
   - Test `logAndThrow` function
   - Test `determineErrorCategory` with various error types
+  - Note: Legacy `loggerUtils.ts` is a backward-compatibility re-export
   - Test error categorization (VALIDATION, NETWORK, DATABASE, etc.)
   - Test logger in development vs production modes
 
@@ -1383,6 +1386,8 @@ src/
 
 ---
 
+
+
 ## Notes
 
 - Use `@testing-library/react` for component tests
@@ -1394,3 +1399,7 @@ src/
 - Use descriptive test names
 - Test behavior, not implementation
 - Maintain test data fixtures for consistency
+
+## Related Documentation
+
+- [Testing Guide](./testing-guide.md) - How to run and write tests

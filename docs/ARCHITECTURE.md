@@ -136,12 +136,13 @@ src/features/modules/[module]/
 
 ### Logging
 
-**Location**: `src/features/infrastructure/logging/`, `src/features/shared/utils/loggerUtils.ts`
+**Location**: `src/features/infrastructure/logging/`
 
 - Component-specific loggers
 - Error categorization
 - Environment-aware logging levels
 - Console-based (development) / structured (production)
+- Note: Legacy `loggerUtils.ts` exists as backward-compatibility re-export only
 
 ### Firebase
 
@@ -163,44 +164,72 @@ src/features/modules/[module]/
 
 ## Shared Features
 
+**Location**: `src/features/infrastructure/`
+
+All shared features have been consolidated under the infrastructure layer:
+
 ### Components
 
-**Location**: `src/features/shared/components/`
+**Location**: `src/features/infrastructure/shared/components/ui/`
 
-- Layout wrapper
-- Header/Navigation
-- Footer
-- PageHero
-- Data collection notice
+- UI components (Button, Card, Input, LoadingScreen, etc.)
+- Layout components
 
 ### Services
 
-**Location**: `src/features/shared/lib/`
+**Location**: `src/features/infrastructure/lib/`
 
 - `userDataService` - User data operations
 - `archiveService` - Archive entry operations
-- `getStaticProps` - Next.js static props utilities
+- Other shared services
 
 ### Utilities
 
-**Location**: `src/features/shared/utils/`
+**Location**: `src/features/infrastructure/utils/`
 
-- `loggerUtils` - Error logging utilities
 - `userRoleUtils` - Role checking (admin, moderator, etc.)
+- `objectUtils` - Object manipulation utilities
+- `timestampUtils` - Timestamp conversion utilities
+- Logging utilities (see Logging section above)
 
 ## Database Schema
 
 ### Collections
 
-- `games` - Game records
+- `games` - **Unified game records** (scheduled and completed games)
 - `games/{gameId}/players` - Players in a game (subcollection)
 - `playerStats` - Player statistics
-- `scheduledGames` - Scheduled game events
 - `archiveEntries` - Archive entries (replays, clips)
 - `posts` - Blog posts
 - `userData` - User account data
 
 **Schema Documentation**: [Firestore Collections Schema](./schemas/firestore-collections.md)
+
+### Unified Games Collection
+
+The `games` collection uses a **unified design** that stores both scheduled and completed games in a single collection:
+
+- **`gameState` field**: Distinguishes between `'scheduled'` and `'completed'` games
+- **Single `gameId` system**: Both scheduled and completed games share the same numeric `gameId` identifier
+- **Conditional fields**: 
+  - Scheduled games: `scheduledDateTime`, `timezone`, `teamSize`, `gameType`, `participants`, `status`
+  - Completed games: `datetime`, `duration`, `gamename`, `map`, `category`, `players`, `replayUrl`
+- **Common fields**: Both types share `creatorName`, `createdByDiscordId`, `createdAt`, `updatedAt`, `isDeleted`
+
+**Benefits**:
+- Single source of truth for all game data
+- Easier querying across game types
+- Simplified linking between scheduled and completed games
+- Consistent data structure and validation
+
+**Querying**: Use `gameState` filter to query specific game types:
+```typescript
+// Get scheduled games
+const scheduled = await getGames({ gameState: 'scheduled' });
+
+// Get completed games
+const completed = await getGames({ gameState: 'completed' });
+```
 
 ### Design Principles
 

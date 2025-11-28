@@ -2,6 +2,20 @@
 
 How to use APIs from client-side code.
 
+## Table of Contents
+
+- [Basic Usage](#basic-usage)
+- [Custom Hooks Pattern](#custom-hooks-pattern)
+- [POST Requests](#post-requests)
+- [PUT/DELETE Requests](#putdelete-requests)
+- [Query Parameters](#query-parameters)
+- [File Uploads](#file-uploads)
+- [TypeScript Types](#typescript-types)
+- [Error Handling Patterns](#error-handling-patterns)
+- [Pagination](#pagination)
+- [Common Patterns](#common-patterns)
+- [Related Documentation](#related-documentation)
+
 ## Basic Usage
 
 ### Fetch Pattern
@@ -453,4 +467,5 @@ async function fetchWithRetry(
 - [API Reference](./api/README.md)
 - [Code Cookbook](./CODE_COOKBOOK.md)
 - [Development Guide](./DEVELOPMENT.md)
+
 

@@ -43,6 +43,7 @@ try {
 - **API Documentation**: Add to `docs/api/` when adding API routes
 - **Code Comments**: Add comments for complex logic
 - **Type Definitions**: Document complex types
+- **Style Guide**: Follow `docs/DOCUMENTATION_STYLE.md` for all documentation
 
 ## Git Workflow
 

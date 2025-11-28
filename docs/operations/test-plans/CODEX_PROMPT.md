@@ -19,7 +19,7 @@ This is a Next.js/React project (ITT Web) that uses:
 
 ### Your Task
 
-1. **Check for existing tests first** - Some tests already exist! Check `EXISTING_TESTS.md` in the test-plans folder to see what's already done
+1. **Check for existing tests first** - Some tests already exist! Check `TEST_STATUS.md` in the test-plans folder to see what's already done
 2. **Read the assigned test plan file** from `docs/operations/test-plans/` (I will specify which file)
 3. **Review existing test patterns** - Look at similar existing test files to understand the project's testing style
 4. **Create Jest test files** for all test items in that plan that don't already exist
@@ -36,7 +36,7 @@ Each test plan file contains tests organized by:
 - **Utility Tests** → Utility tests in `src/features/[path]/utils/__tests__/` (preferred) or next to source file
 - **Infrastructure Tests** → Can be in `__tests__/infrastructure/` (root level) or co-located
 
-**Note**: The project currently uses mixed patterns. Prefer `__tests__/` subdirectories for new tests, but existing tests may be next to source files. See `TEST_LOCATIONS.md` for details.
+**Note**: The project currently uses mixed patterns. Prefer `__tests__/` subdirectories for new tests, but existing tests may be next to source files. See `TEST_STATUS.md` for details.
 
 ### Test Format from Plans
 
@@ -50,9 +50,9 @@ Each test item in the plan follows this format:
 
 ### Critical Requirements
 
-1. **Error Handling**: All error handling MUST use the `loggerUtils.ts` system. Import and use:
+1. **Error Handling**: All error handling MUST use the infrastructure logging system. Import and use:
    ```typescript
-   import { logError, logAndThrow, createComponentLogger } from 'src/features/shared/utils/loggerUtils';
+   import { logError, logAndThrow, createComponentLogger } from '@/features/infrastructure/logging';
    ```
 
 2. **File Size**: Keep test files under 200 lines when possible. Split large test suites into multiple files if needed.
@@ -99,10 +99,10 @@ Each test item in the plan follows this format:
 ```typescript
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { functionToTest } from '../path/to/module';
-import { logError } from 'src/features/shared/utils/loggerUtils';
+import { logError } from '@/features/infrastructure/logging';
 
 // Mock dependencies
-jest.mock('src/features/shared/utils/loggerUtils');
+jest.mock('@/features/infrastructure/logging');
 
 describe('ModuleName', () => {
   beforeEach(() => {
@@ -175,8 +175,8 @@ describe('API Route', () => {
 
 ### Important Notes
 
-- **Check Existing Tests First**: Review `docs/operations/test-plans/EXISTING_TESTS.md` to see what tests already exist. Don't recreate existing tests!
-- **Follow Existing Patterns**: Look at similar existing test files to understand the project's testing style. Note: Tests may be in `__tests__/` subdirectories OR next to source files - both are acceptable. See `TEST_LOCATIONS.md` for current patterns.
+- **Check Existing Tests First**: Review `docs/operations/test-plans/TEST_STATUS.md` to see what tests already exist. Don't recreate existing tests!
+- **Follow Existing Patterns**: Look at similar existing test files to understand the project's testing style. Note: Tests may be in `__tests__/` subdirectories OR next to source files - both are acceptable. See `TEST_STATUS.md` for current patterns.
 - **Prefer `__tests__/` subdirectories**: For new tests, use `__tests__/` subdirectories (e.g., `src/features/modules/games/lib/__tests__/gameService.test.ts`) rather than placing tests next to source files
 - **Test Isolation**: Each test should be independent and not rely on other tests
 - **Cleanup**: Use `beforeEach`/`afterEach` to clean up state

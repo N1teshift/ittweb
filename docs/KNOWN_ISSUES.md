@@ -1,124 +1,87 @@
 # Known Issues & Migration Status
 
-**⚠️ IMPORTANT**: This document tracks known issues, technical debt, and migration status in the codebase. See [Documentation Index](./README.md) for navigation.
+**⚠️ IMPORTANT**: This document tracks **known issues and technical debt**. See [Documentation Index](./README.md) for navigation.
 
 This document tracks known issues, technical debt, and migration status in the codebase.
 
 ## 🔴 Critical Issues
 
-### 1. Duplicate Logging Systems
-**Status**: Migration artifact from infrastructure refactoring
+### 1. ~~Duplicate Logging Systems~~ ✅ RESOLVED
+**Status**: ✅ Migration complete (2025-01-15)
 
-**Issue**: Two identical logging implementations exist:
-- `src/features/shared/utils/loggerUtils.ts` (legacy)
-- `src/features/infrastructure/logging/logger.ts` (current)
+**Previous Issue**: Two identical logging implementations existed
 
-**Impact**: 
-- Code duplication
-- Confusion about which import path to use
-- 3 files still use legacy path: `src/features/shared/README.md`, `src/features/shared/utils/accessibility/helpers.ts`, `src/features/modules/tools/useIconMapperData.ts`
+**Resolution**:
+- ✅ All files migrated to `@/features/infrastructure/logging`
+- ✅ `loggerUtils.ts` converted to backward-compatibility re-export with deprecation notice
+- ✅ All references updated
 
-**Recommended Action**: 
-- Migrate remaining 3 files to `@/features/infrastructure/logging`
-- Remove `loggerUtils.ts` from shared (or make it a re-export for backward compatibility)
-- Update `src/features/shared/README.md` to reference infrastructure logging
-
-**Related**: See TODO `migration-logging-consolidation`
+**Current State**: Single logging system in use, legacy path maintained for backward compatibility only
 
 ---
 
-### 2. Shared Folder Structure - Planned Consolidation
-**Status**: Migration planned
+### 2. ~~Shared Folder Structure - Planned Consolidation~~ ✅ RESOLVED
+**Status**: ✅ Consolidation complete (2025-01-15)
 
-**Issue**: Two "shared" folders exist with different purposes:
-- `src/features/shared/` - Application-level shared features (Layout, services, utilities)
-- `src/features/infrastructure/shared/` - Infrastructure UI components (Button, Card, Input, etc.)
+**Previous Issue**: Two "shared" folders existed with different purposes
 
-**Planned Solution**: 
-- Merge `@/features/shared` into `@/features/infrastructure`
-- Create `@/features/infrastructure/ui/` subfolder for UI components (Button, Card, etc.)
-- Move application-level shared features to appropriate infrastructure subfolders
-- This will consolidate all shared code under infrastructure
+**Resolution**:
+- ✅ `src/features/shared/` folder removed
+- ✅ All functionality moved to `@/features/infrastructure`
+- ✅ All imports updated
+- ✅ Documentation references updated
 
-**Impact**: 
-- Current: Potential confusion about where to place new shared code
-- After migration: Single location for all shared/infrastructure code
-
-**Recommended Action**: 
-- Plan migration to consolidate under infrastructure
-- Create `infrastructure/ui/` for UI components
-- Update all imports after migration
-
-**Related**: See TODO `docs-shared-folder-clarification`
+**Current State**: Single location for all shared/infrastructure code under `@/features/infrastructure`
 
 ---
 
 ## ⚠️ Medium Priority Issues
 
-### 3. API Response Format Inconsistency
-**Status**: Multiple formats in use
+### 3. ~~API Response Format Inconsistency~~ ✅ RESOLVED
+**Status**: ✅ Standardization complete (2025-01-15)
 
-**Issue**: The codebase uses 3 different API response formats:
+**Previous Issue**: Multiple API response formats in use
 
-1. **Standardized** (`createApiHandler`): 
-   ```typescript
-   { success: boolean, data?: T, error?: string }
-   ```
+**Resolution**:
+- ✅ All 16 API routes migrated to `createApiHandler`
+- ✅ Standardized format: `{ success: boolean, data?: T, error?: string }`
+- ✅ All routes now use consistent response formatting
 
-2. **Legacy Wrapped**: 
-   ```typescript
-   { success: true, data: T } 
-   // OR
-   { id: string, success: true }
-   ```
-
-3. **Legacy Direct**: 
-   ```typescript
-   T  // Raw data, no wrapper
-   ```
-
-**Impact**: 
-- Inconsistent client-side error handling
-- Confusion about response structure
-- Harder to maintain
-
-**Recommended Action**: 
-- Migrate all routes to use `createApiHandler` for consistent formatting
-- Create migration plan for legacy routes
-- Document standard format in API docs
-
-**Related**: See TODO `api-response-standardization`
+**Current State**: All API routes use standardized response format via `createApiHandler`
 
 ---
 
-### 4. createApiHandler Authentication Not Implemented
-**Status**: Feature incomplete
+### 4. ~~createApiHandler Authentication Not Implemented~~ ✅ RESOLVED
+**Status**: ✅ Implementation complete (2025-01-15)
 
-**Issue**: The `requireAuth` option in `createApiHandler` is documented but not implemented (TODO in code).
+**Previous Issue**: `requireAuth` option was documented but not implemented
 
-**Impact**: 
-- Developers may think authentication is enforced when it's not
-- Manual authentication checks required in all handlers
+**Resolution**:
+- ✅ Authentication check implemented in `createApiHandler`
+- ✅ Returns 401 Unauthorized when `requireAuth: true` and no session
+- ✅ `requireSession(context)` helper available for accessing session
+- ✅ All routes can now use `requireAuth: true` option
 
-**Recommended Action**: 
-- Implement authentication check in `createApiHandler`
-- Update all routes using manual auth checks to use `requireAuth: true`
-
-**Related**: See TODO `implement-createApiHandler-auth`
+**Current State**: Authentication fully implemented and available via `requireAuth: true` option
 
 ---
 
 ## 📋 Migration Status
 
 ### Logging System Migration
-- ✅ 41 files migrated to `@/features/infrastructure/logging`
-- ⚠️ 3 files still using `@/features/shared/utils/loggerUtils`
-- ⚠️ `loggerUtils.ts` still exists (duplicate code)
+- ✅ **COMPLETE** - All files migrated to `@/features/infrastructure/logging`
+- ✅ `loggerUtils.ts` converted to backward-compatibility re-export
+- ✅ No remaining legacy imports
 
 ### API Response Standardization
-- ✅ `createApiHandler` provides standardized format
-- ⚠️ Many routes still use legacy formats
-- 📝 Migration plan needed
+- ✅ **COMPLETE** - All routes use `createApiHandler` with standardized format
+- ✅ All 16 API routes migrated
+- ✅ Consistent `{ success: boolean, data?: T, error?: string }` format
+
+### Shared Folder Consolidation
+- ✅ **COMPLETE** - `src/features/shared/` folder removed
+- ✅ All functionality moved to `@/features/infrastructure`
+- ✅ All imports updated
 
 ### Component Library Usage
 **Component Usage Statistics**:
@@ -154,6 +117,12 @@ This document tracks known issues, technical debt, and migration status in the c
 - [ ] Input components (`Input`, `NumberInput`, `SelectInput`) - only used in 2 files, should be removed
 
 ---
+
+
+1. **Review Issues**: Check all issues for security implications
+2. **Authentication**: Pay special attention to authentication-related issues (e.g., createApiHandler auth)
+3. **Create Tasks**: If security issues are found, add them here and create tasks
+
 
 ## Related Documentation
 

@@ -2,6 +2,16 @@
 
 Common patterns and recipes for development.
 
+## Table of Contents
+
+- [CRUD Feature Pattern](#crud-feature-pattern)
+- [Form Handling Pattern](#form-handling-pattern)
+- [Pagination Pattern](#pagination-pattern)
+- [Error Handling Pattern](#error-handling-pattern)
+- [Loading States Pattern](#loading-states-pattern)
+- [Filtering/Search Pattern](#filteringsearch-pattern)
+- [Related Documentation](#related-documentation)
+
 ## CRUD Feature Pattern
 
 Complete pattern for creating a CRUD feature.
@@ -362,7 +372,7 @@ export function useItems() {
 ### Service Layer
 
 ```typescript
-import { logError, logAndThrow } from '@/features/shared/utils/loggerUtils';
+import { logError, logAndThrow } from '@/features/infrastructure/logging';
 
 // Option 1: Log and throw
 export async function myOperation() {
@@ -491,20 +501,142 @@ function FilteredList() {
 
   return (
     <div>
-      <Input
+      <input
+        type="text"
         value={filters.search}
         onChange={(e) => setFilters({ ...filters, search: e.target.value })}
         placeholder="Search..."
+        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-gray-600 text-white"
       />
-      <SelectInput
+      <select
         value={filters.category}
         onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-        options={categoryOptions}
-      />
+        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-gray-600 text-white"
+      >
+        {categoryOptions.map(opt => (
+          <option key={opt.value} value={opt.value}>{opt.label}</option>
+        ))}
+      </select>
       {/* Render items */}
     </div>
   );
 }
+```
+
+## API Route Patterns
+
+### Authentication & Authorization
+
+**Public Endpoint:**
+```typescript
+export default createGetHandler(
+  async (req: NextApiRequest) => {
+    // Public - no auth required
+    return await getPublicData();
+  },
+  {
+    requireAuth: false,
+    cacheControl: { maxAge: 300, public: true },
+  }
+);
+```
+
+**Authenticated Endpoint:**
+```typescript
+export default createPostHandler(
+  async (req: NextApiRequest, res, context) => {
+    const session = requireSession(context); // Guaranteed to exist
+    // Use session.discordId, session.user, etc.
+    return await createData(req.body);
+  },
+  {
+    requireAuth: true,
+  }
+);
+```
+
+**Admin-Only Endpoint:**
+```typescript
+export default createPostHandler(
+  async (req: NextApiRequest, res, context) => {
+    const session = requireSession(context); // Guaranteed to exist and be admin
+    return await adminOperation(req.body);
+  },
+  {
+    requireAdmin: true, // Automatically requires auth + admin role
+  }
+);
+```
+
+### Query Parameter Parsing
+
+```typescript
+import { parseQueryString, parseQueryInt, parsePagination } from '@/features/infrastructure/api/queryParser';
+
+export default createGetHandler(
+  async (req: NextApiRequest) => {
+    const search = parseQueryString(req, 'q');
+    const page = parseQueryInt(req, 'page', 1) || 1;
+    const { limit, offset } = parsePagination(req, 20, 100);
+    
+    return await searchData(search, { limit, offset });
+  }
+);
+```
+
+### Request Validation
+
+```typescript
+import { validateRequiredFields, validateString, validateInt } from '@/features/infrastructure/api/validators';
+
+export default createPostHandler(
+  async (req: NextApiRequest, res, context) => {
+    // Validation happens automatically via validateBody option
+    const data = req.body; // Already validated
+    return await createData(data);
+  },
+  {
+    requireAuth: true,
+    validateBody: (body) => {
+      const requiredError = validateRequiredFields(body, ['name', 'email']);
+      if (requiredError) return requiredError;
+      
+      const nameError = validateString(body.name, 'name', 1, 100);
+      if (nameError) return nameError;
+      
+      return true; // Validation passed
+    },
+  }
+);
+```
+
+### Resource Ownership Check
+
+```typescript
+import { checkResourceOwnership } from '@/features/infrastructure/api/routeHandlers';
+
+export default createPostHandler(
+  async (req: NextApiRequest, res, context) => {
+    const session = requireSession(context);
+    const resourceId = parseRequiredQueryString(req, 'id');
+    
+    const resource = await getResource(resourceId);
+    if (!resource) {
+      throw new Error('Resource not found');
+    }
+    
+    // Check if user owns the resource or is admin
+    const hasAccess = await checkResourceOwnership(resource, session);
+    if (!hasAccess) {
+      throw new Error('You do not have permission to modify this resource');
+    }
+    
+    return await updateResource(resourceId, req.body);
+  },
+  {
+    requireAuth: true,
+  }
+);
 ```
 
 ## Related Documentation
