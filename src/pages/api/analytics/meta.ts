@@ -38,6 +38,12 @@ export default createApiHandler(
     methods: ['GET'],
     requireAuth: false,
     logRequests: true,
+    // Cache for 2 minutes - analytics data is expensive to compute but changes frequently
+    cacheControl: {
+      public: true,
+      maxAge: 120,
+      mustRevalidate: true,
+    },
   }
 );
 

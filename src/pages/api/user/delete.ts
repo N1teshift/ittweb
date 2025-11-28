@@ -1,26 +1,17 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../auth/[...nextauth]';
-import { deleteUserData } from '@/features/shared/lib/userDataService';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import type { NextApiRequest } from 'next';
+import { createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
+import { deleteUserData } from '@/features/infrastructure/lib/userDataService';
+import { createComponentLogger } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('api/user/delete');
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  try {
-    const session = await getServerSession(req, res, authOptions);
-    if (!session || !session.discordId) {
-      return res.status(401).json({ error: 'Authentication required' });
-    }
-
-    const discordId = session.discordId;
+/**
+ * POST /api/user/delete - Delete user account (requires authentication)
+ */
+export default createPostHandler<{ success: boolean; message: string }>(
+  async (req: NextApiRequest, res, context) => {
+    const session = requireSession(context);
+    const discordId = session.discordId || '';
 
     logger.info('Deleting user account', { discordId });
 
@@ -28,18 +19,11 @@ export default async function handler(
 
     logger.info('User account deleted successfully', { discordId });
 
-    return res.status(200).json({ success: true, message: 'Account deleted successfully' });
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to delete user account', {
-      component: 'api/user/delete',
-      operation: 'deleteAccount',
-    });
-
-    return res.status(500).json({ 
-      error: 'Failed to delete account',
-      message: err.message 
-    });
+    return { success: true, message: 'Account deleted successfully' };
+  },
+  {
+    requireAuth: true,
+    logRequests: true,
   }
-}
+);
 

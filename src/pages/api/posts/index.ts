@@ -1,39 +1,34 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../auth/[...nextauth]';
+import type { NextApiRequest } from 'next';
+import { createGetPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
+import { parseQueryBoolean } from '@/features/infrastructure/api/queryParser';
+import { validateRequiredFields, validateString } from '@/features/infrastructure/api/validators';
 import { getAllPosts, createPost } from '@/features/modules/blog/lib/postService';
 import { CreatePost } from '@/types/post';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@/features/infrastructure/logging';
+import type { Post } from '@/types/post';
 
 const logger = createComponentLogger('api/posts');
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  try {
+/**
+ * GET /api/posts - Get all posts (public)
+ * POST /api/posts - Create a new post (requires authentication)
+ */
+export default createGetPostHandler<Post[] | { id: string }>(
+  async (req: NextApiRequest, res, context) => {
     if (req.method === 'GET') {
       // Get all posts (public)
-      const includeUnpublished = req.query.includeUnpublished === 'true';
+      const includeUnpublished = parseQueryBoolean(req, 'includeUnpublished', false) || false;
       const posts = await getAllPosts(includeUnpublished);
-      return res.status(200).json(posts);
+      return posts;
     }
 
     if (req.method === 'POST') {
       // Create a new post (requires authentication)
-      const session = await getServerSession(req, res, authOptions);
-      if (!session) {
-        return res.status(401).json({ error: 'Authentication required' });
+      if (!context?.session) {
+        throw new Error('Authentication required');
       }
-
+      const session = context.session;
       const postData: CreatePost = req.body;
-
-      // Validate required fields
-      if (!postData.title || !postData.content || !postData.slug || !postData.date) {
-        return res.status(400).json({ 
-          error: 'Missing required fields: title, content, slug, and date are required' 
-        });
-      }
 
       // Add user info from session
       const postWithUser: CreatePost = {
@@ -46,21 +41,27 @@ export default async function handler(
       const postId = await createPost(postWithUser);
       logger.info('Post created', { postId, slug: postData.slug });
       
-      return res.status(201).json({ id: postId, success: true });
+      return { id: postId };
     }
 
-    return res.status(405).json({ error: 'Method not allowed' });
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'API request failed', {
-      component: 'api/posts',
-      operation: req.method || 'unknown',
-    });
-    return res.status(500).json({ 
-      error: process.env.NODE_ENV === 'production' 
-        ? 'Internal server error' 
-        : err.message 
-    });
+    throw new Error('Method not allowed');
+  },
+  {
+    requireAuth: false, // GET is public, POST uses requireSession helper
+    logRequests: true,
+    validateBody: (body: unknown) => {
+      // Only validate POST requests (GET requests don't have body)
+      if (body && typeof body === 'object' && body !== null) {
+        const requiredError = validateRequiredFields(body, ['title', 'content', 'slug', 'date']);
+        if (requiredError) return requiredError;
+        const bodyObj = body as { title?: unknown; slug?: unknown };
+        const titleError = validateString(bodyObj.title, 'title', 1);
+        if (titleError) return titleError;
+        const slugError = validateString(bodyObj.slug, 'slug', 1);
+        if (slugError) return slugError;
+      }
+      return true;
+    },
   }
-}
+);
 

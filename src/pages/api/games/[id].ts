@@ -1,5 +1,8 @@
-import type { NextApiRequest } from 'next';
-import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../auth/[...nextauth]';
+import { createApiHandler, checkResourceOwnership } from '@/features/infrastructure/api/routeHandlers';
+import { parseRequiredQueryString } from '@/features/infrastructure/api/queryParser';
 import { getGameById, updateGame, deleteGame } from '@/features/modules/games/lib/gameService';
 import type { UpdateGame } from '@/features/modules/games/types';
 import { createComponentLogger } from '@/features/infrastructure/logging';
@@ -10,62 +13,85 @@ const logger = createComponentLogger('api/games/[id]');
  * GET /api/games/[id] - Get a single game
  */
 const handleGet = async (req: NextApiRequest): Promise<ReturnType<typeof getGameById>> => {
-  const id = req.query.id as string;
-  if (!id) {
-    throw new Error('Game ID is required');
+  const id = parseRequiredQueryString(req, 'id');
+  const game = await getGameById(id);
+  if (!game) {
+    throw new Error('Game not found');
   }
+  return game;
+};
 
+/**
+ * PUT /api/games/[id] - Update a game (requires authentication and permission)
+ */
+const handlePut = async (req: NextApiRequest, res: NextApiResponse) => {
+  // Get session manually since this is a mixed-method route (GET is public)
+  const session = await getServerSession(req, res, authOptions);
+  if (!session || !session.discordId) {
+    throw new Error('Authentication required');
+  }
+  
+  const id = parseRequiredQueryString(req, 'id');
   const game = await getGameById(id);
   if (!game) {
     throw new Error('Game not found');
   }
 
-  return game;
-};
-
-/**
- * PUT /api/games/[id] - Update a game
- */
-const handlePut = async (req: NextApiRequest): Promise<void> => {
-  const id = req.query.id as string;
-  if (!id) {
-    throw new Error('Game ID is required');
+  // Check if user owns the resource or is admin
+  const hasAccess = await checkResourceOwnership(game as unknown as { [key: string]: unknown }, session);
+  if (!hasAccess) {
+    throw new Error('You do not have permission to edit this game');
   }
 
   const updates = req.body as UpdateGame;
   await updateGame(id, updates);
-  logger.info('Game updated via API', { id });
+  logger.info('Game updated via API', { id, userId: session.discordId });
+  return {}; // Wrapped as { success: true, data: {} }
 };
 
 /**
- * DELETE /api/games/[id] - Delete a game
+ * DELETE /api/games/[id] - Delete a game (requires authentication and permission)
  */
-const handleDelete = async (req: NextApiRequest): Promise<void> => {
-  const id = req.query.id as string;
-  if (!id) {
-    throw new Error('Game ID is required');
+const handleDelete = async (req: NextApiRequest, res: NextApiResponse) => {
+  // Get session manually since this is a mixed-method route (GET is public)
+  const session = await getServerSession(req, res, authOptions);
+  if (!session || !session.discordId) {
+    throw new Error('Authentication required');
+  }
+  
+  const id = parseRequiredQueryString(req, 'id');
+  const game = await getGameById(id);
+  if (!game) {
+    throw new Error('Game not found');
+  }
+
+  // Check if user owns the resource or is admin
+  const hasAccess = await checkResourceOwnership(game as unknown as { [key: string]: unknown }, session);
+  if (!hasAccess) {
+    throw new Error('You do not have permission to delete this game');
   }
 
   await deleteGame(id);
-  logger.info('Game deleted via API', { id });
+  logger.info('Game deleted via API', { id, userId: session.discordId });
+  return {}; // Wrapped as { success: true, data: {} }
 };
 
 export default createApiHandler(
-  async (req: NextApiRequest) => {
+  async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'GET') {
       return await handleGet(req);
     }
     if (req.method === 'PUT') {
-      return await handlePut(req);
+      return await handlePut(req, res);
     }
     if (req.method === 'DELETE') {
-      return await handleDelete(req);
+      return await handleDelete(req, res);
     }
     throw new Error('Method not allowed');
   },
   {
     methods: ['GET', 'PUT', 'DELETE'],
-    requireAuth: false, // TODO: Require auth for PUT/DELETE
+    requireAuth: false, // GET is public, PUT/DELETE check auth manually (mixed-method route)
     logRequests: true,
   }
 );

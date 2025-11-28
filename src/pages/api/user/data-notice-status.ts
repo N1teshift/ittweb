@@ -1,43 +1,24 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../auth/[...nextauth]';
-import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
-import { logError } from '@/features/infrastructure/logging';
+import type { NextApiRequest } from 'next';
+import { createGetHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
+import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+/**
+ * GET /api/user/data-notice-status - Get user's data collection notice acceptance status (requires authentication)
+ */
+export default createGetHandler<{ accepted: boolean }>(
+  async (req: NextApiRequest, res, context) => {
+    const session = requireSession(context);
+    const userData = await getUserDataByDiscordId(session.discordId || '');
 
-  try {
-    const session = await getServerSession(req, res, authOptions);
-    if (!session || !session.discordId) {
-      return res.status(401).json({ error: 'Authentication required' });
-    }
-
-    const discordId = session.discordId;
-
-    const userData = await getUserDataByDiscordId(discordId);
-
-    return res.status(200).json({ 
+    return { 
       accepted: userData?.dataCollectionNoticeAccepted ?? false 
-    });
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to fetch data notice status', {
-      component: 'api/user/data-notice-status',
-      operation: 'getDataNoticeStatus',
-    });
-
-    return res.status(500).json({ 
-      error: 'Failed to fetch status',
-      message: err.message 
-    });
+    };
+  },
+  {
+    requireAuth: true,
+    logRequests: true,
   }
-}
+);
 
 
 

@@ -1,6 +1,7 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest } from 'next';
 import { readdir } from 'fs/promises';
 import { join } from 'path';
+import { createGetHandler } from '@/features/infrastructure/api/routeHandlers';
 
 type IconFile = {
   filename: string;
@@ -43,15 +44,11 @@ async function findPngFiles(dir: string, baseDir: string, category: string): Pro
   return files;
 }
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<IconFile[] | { error: string }>
-) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  try {
+/**
+ * GET /api/icons/list - List all icon files
+ */
+export default createGetHandler<IconFile[]>(
+  async (req: NextApiRequest) => {
     const iconsDir = join(process.cwd(), 'public', 'icons', 'itt');
     // All icons are now in a flat directory structure
     const allIcons: IconFile[] = [];
@@ -59,12 +56,9 @@ export default async function handler(
     try {
       const icons = await findPngFiles(iconsDir, iconsDir, 'icons');
       allIcons.push(...icons);
-      console.log(`[API] Found ${icons.length} icons in flat directory`);
     } catch (err) {
       console.warn(`Could not read icons directory:`, err);
     }
-    
-    console.log(`Total icons found: ${allIcons.length}`);
 
     // Sort by category, then by filename
     allIcons.sort((a, b) => {
@@ -74,10 +68,17 @@ export default async function handler(
       return a.filename.localeCompare(b.filename);
     });
 
-    return res.status(200).json(allIcons);
-  } catch (error) {
-    console.error('Error listing icons:', error);
-    return res.status(500).json({ error: 'Failed to list icons' });
+    return allIcons;
+  },
+  {
+    requireAuth: false,
+    logRequests: true,
+    // Cache for 1 hour - icon list doesn't change frequently
+    cacheControl: {
+      public: true,
+      maxAge: 3600,
+      mustRevalidate: true,
+    },
   }
-}
+);
 

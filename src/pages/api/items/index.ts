@@ -1,4 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest } from 'next';
+import { createGetHandler } from '@/features/infrastructure/api/routeHandlers';
 import { ITEMS_DATA } from '@/features/modules/guides/data/items';
 import type { ItemCategory, ItemData } from '@/types/items';
 
@@ -28,42 +29,52 @@ function normalizeCategory(value: unknown): ItemCategory | undefined {
   return allowed.includes(normalized as ItemCategory) ? (normalized as ItemCategory) : undefined;
 }
 
-export default function handler(req: NextApiRequest, res: NextApiResponse<ItemsApiResponse | { error: string }>) {
-  if (req.method !== 'GET') {
-    res.setHeader('Allow', ['GET']);
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
+/**
+ * GET /api/items - Get all items with optional filtering
+ */
+export default createGetHandler<ItemsApiResponse>(
+  async (req: NextApiRequest) => {
+    const category = normalizeCategory(req.query.category);
+    const searchQuery = typeof req.query.q === 'string' ? req.query.q.trim().toLowerCase() : '';
 
-  const category = normalizeCategory(req.query.category);
-  const searchQuery = typeof req.query.q === 'string' ? req.query.q.trim().toLowerCase() : '';
+    let items = ITEMS_DATA;
 
-  let items = ITEMS_DATA;
+    if (category) {
+      items = items.filter((item) => item.category === category);
+    }
 
-  if (category) {
-    items = items.filter((item) => item.category === category);
-  }
+    if (searchQuery) {
+      items = items.filter((item) => {
+        const haystack = `${item.name} ${item.description ?? ''} ${(item.recipe ?? []).join(' ')}`.toLowerCase();
+        return haystack.includes(searchQuery);
+      });
+    }
 
-  if (searchQuery) {
-    items = items.filter((item) => {
-      const haystack = `${item.name} ${item.description ?? ''} ${(item.recipe ?? []).join(' ')}`.toLowerCase();
-      return haystack.includes(searchQuery);
-    });
-  }
+    const total = ITEMS_DATA.length;
+    const buildingsTotal = ITEMS_DATA.filter((item) => item.category === 'buildings').length;
 
-  const total = ITEMS_DATA.length;
-  const buildingsTotal = ITEMS_DATA.filter((item) => item.category === 'buildings').length;
-
-  return res.status(200).json({
-    items,
-    meta: {
-      total,
-      buildingsTotal,
-      count: items.length,
-      category,
-      query: searchQuery || undefined,
+    return {
+      items,
+      meta: {
+        total,
+        buildingsTotal,
+        count: items.length,
+        category,
+        query: searchQuery || undefined,
+      },
+    };
+  },
+  {
+    requireAuth: false,
+    logRequests: true,
+    // Cache for 1 hour - items data is static
+    cacheControl: {
+      public: true,
+      maxAge: 3600,
+      mustRevalidate: true,
     },
-  });
-}
+  }
+);
 
 
 

@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
-import { saveUserData } from "@/features/shared/lib/userDataService";
+import { saveUserData } from "@/features/infrastructure/lib/userDataService";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,

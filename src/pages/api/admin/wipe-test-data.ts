@@ -1,33 +1,17 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../auth/[...nextauth]';
-import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
-import { isAdmin } from '@/features/shared/utils/userRoleUtils';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import type { NextApiRequest } from 'next';
+import { createPostHandler } from '@/features/infrastructure/api/routeHandlers';
+import { createComponentLogger } from '@/features/infrastructure/logging';
 import { getFirestoreAdmin, getStorageAdmin, getStorageBucketName } from '@/features/infrastructure/api/firebase/admin';
 
 const logger = createComponentLogger('api/admin/wipe-test-data');
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  try {
-    if (req.method !== 'POST') {
-      return res.status(405).json({ error: 'Method not allowed' });
-    }
-
-    // Require authentication
-    const session = await getServerSession(req, res, authOptions);
-    if (!session || !session.discordId) {
-      return res.status(401).json({ error: 'Authentication required' });
-    }
-
-    // Check if user is admin
-    const userData = await getUserDataByDiscordId(session.discordId);
-    if (!isAdmin(userData?.role)) {
-      return res.status(403).json({ error: 'Admin access required' });
-    }
+/**
+ * POST /api/admin/wipe-test-data - Wipe all test data (requires admin authentication)
+ */
+export default createPostHandler<{ success: boolean; message: string; deletedCounts: Record<string, number> }>(
+  async (req: NextApiRequest, res, context) => {
+    // Session is guaranteed to be available and user is admin due to requireAdmin option
+    const session = context?.session!;
 
     const adminDb = getFirestoreAdmin();
     const deletedCounts: Record<string, number> = {};
@@ -131,24 +115,15 @@ export default async function handler(
       deletedCounts,
     });
 
-    return res.status(200).json({
+    return {
       success: true,
       message: 'Test data wiped successfully',
       deletedCounts,
-    });
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to wipe test data', {
-      component: 'api/admin/wipe-test-data',
-      operation: req.method || 'unknown',
-      method: req.method,
-    });
-
-    return res.status(500).json({
-      error: process.env.NODE_ENV === 'production' 
-        ? 'Internal server error' 
-        : err.message,
-    });
+    };
+  },
+  {
+    requireAdmin: true, // Automatically requires auth and admin role
+    logRequests: true,
   }
-}
+);
 

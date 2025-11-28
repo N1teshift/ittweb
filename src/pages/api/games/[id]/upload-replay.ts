@@ -1,9 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../../auth/[...nextauth]';
+import type { NextApiRequest } from 'next';
+import { createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
+import { parseRequiredQueryString } from '@/features/infrastructure/api/queryParser';
 import { getGameById, updateEloScores } from '@/features/modules/games/lib/gameService';
 import { parseReplayFile } from '@/features/modules/games/lib/replayParser';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@/features/infrastructure/logging';
 import { getFirestoreAdmin, getAdminTimestamp, getStorageAdmin, getStorageBucketName } from '@/features/infrastructure/api/firebase/admin';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
@@ -22,35 +22,24 @@ export const config = {
   },
 };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  try {
-    if (req.method !== 'POST') {
-      return res.status(405).json({ error: 'Method not allowed' });
-    }
-
-    // Require authentication
-    const session = await getServerSession(req, res, authOptions);
-    if (!session || !session.discordId) {
-      return res.status(401).json({ error: 'Authentication required' });
-    }
-
-    const gameId = req.query.id as string;
-    if (!gameId) {
-      return res.status(400).json({ error: 'Game ID is required' });
-    }
+/**
+ * POST /api/games/[id]/upload-replay - Upload replay for a scheduled game and convert it to completed (requires authentication)
+ */
+export default createPostHandler<{ gameId: string; message: string }>(
+  async (req: NextApiRequest, res, context) => {
+    // Session is guaranteed due to requireAuth: true
+    const session = requireSession(context);
+    const gameId = parseRequiredQueryString(req, 'id');
 
     // Get the game
     const game = await getGameById(gameId);
     if (!game) {
-      return res.status(404).json({ error: 'Game not found' });
+      throw new Error('Game not found');
     }
 
     // Check if game is scheduled
     if (game.gameState !== 'scheduled') {
-      return res.status(400).json({ error: 'Can only upload replay for scheduled games' });
+      throw new Error('Can only upload replay for scheduled games');
     }
 
     // Parse form data (replay file + optional game data)
@@ -73,7 +62,7 @@ export default async function handler(
     
     const replayFileField = Array.isArray(files.replay) ? files.replay[0] : files.replay;
     if (!replayFileField) {
-      return res.status(400).json({ error: 'Replay file is required (field name: replay)' });
+      throw new Error('Replay file is required (field name: replay)');
     }
 
     const replayFile = replayFileField as FormidableFile;
@@ -168,21 +157,15 @@ export default async function handler(
             verified: false,
           };
         } catch {
-          return res.status(400).json({ 
-            error: 'Replay parsing failed and invalid gameData JSON provided. Please provide valid JSON string.' 
-          });
+          throw new Error('Replay parsing failed and invalid gameData JSON provided. Please provide valid JSON string.');
         }
       } else {
-        return res.status(422).json({
-          error: 'Replay parsing failed. Please supply gameData JSON or try again later.',
-        });
+        throw new Error('Replay parsing failed. Please supply gameData JSON or try again later.');
       }
     }
 
     if (!parsedGameData || !parsedGameData.players || parsedGameData.players.length < 2) {
-      return res.status(400).json({ 
-        error: 'Invalid game data: at least 2 players are required' 
-      });
+      throw new Error('Invalid game data: at least 2 players are required');
     }
 
     // Update the game document to convert from scheduled to completed
@@ -260,30 +243,14 @@ export default async function handler(
       discordId: session.discordId 
     });
 
-    return res.status(200).json({ 
-      success: true,
+    return { 
       gameId,
       message: 'Replay uploaded and game completed successfully'
-    });
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'API request failed', {
-      component: 'api/games/[id]/upload-replay',
-      operation: 'upload-replay',
-      method: req.method,
-      gameId: req.query.id,
-    });
-
-    const errorMessage = process.env.NODE_ENV === 'production' 
-      ? 'Internal server error' 
-      : err.message;
-
-    return res.status(500).json({ 
-      error: errorMessage,
-      ...(process.env.NODE_ENV !== 'production' && { 
-        details: err.message 
-      })
-    });
+    };
+  },
+  {
+    requireAuth: true,
+    logRequests: true,
   }
-}
+);
 

@@ -1,39 +1,35 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../auth/[...nextauth]';
+import type { NextApiRequest } from 'next';
+import { createGetPostHandler } from '@/features/infrastructure/api/routeHandlers';
+import { parseQueryEnum } from '@/features/infrastructure/api/queryParser';
+import { validateRequiredFields, validateString, validateEnum } from '@/features/infrastructure/api/validators';
 import { getAllEntries, createEntry } from '@/features/modules/entries/lib/entryService';
 import { CreateEntry } from '@/types/entry';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@/features/infrastructure/logging';
+import type { Entry } from '@/types/entry';
 
 const logger = createComponentLogger('api/entries');
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  try {
+/**
+ * GET /api/entries - Get all entries (public)
+ * POST /api/entries - Create a new entry (requires authentication)
+ */
+export default createGetPostHandler<Entry[] | { id: string }>(
+  async (req: NextApiRequest, res, context) => {
     if (req.method === 'GET') {
       // Get all entries (public)
-      const contentType = req.query.contentType as 'post' | 'memory' | undefined;
+      const contentType = parseQueryEnum(req, 'contentType', ['post', 'memory'] as const);
       const entries = await getAllEntries(contentType);
-      return res.status(200).json(entries);
+      return entries;
     }
 
     if (req.method === 'POST') {
       // Create a new entry (requires authentication)
-      const session = await getServerSession(req, res, authOptions);
-      if (!session) {
-        return res.status(401).json({ error: 'Authentication required' });
+      if (!context?.session) {
+        throw new Error('Authentication required');
       }
+      const session = context.session;
 
       const entryData: CreateEntry = req.body;
-
-      // Validate required fields
-      if (!entryData.title || !entryData.content || !entryData.contentType || !entryData.date) {
-        return res.status(400).json({ 
-          error: 'Missing required fields: title, content, contentType, and date are required' 
-        });
-      }
 
       // Add user info from session
       const entryWithUser: CreateEntry = {
@@ -45,28 +41,27 @@ export default async function handler(
       const entryId = await createEntry(entryWithUser);
       logger.info('Entry created', { entryId, contentType: entryData.contentType });
       
-      return res.status(201).json({ id: entryId, success: true });
+      return { id: entryId };
     }
 
-    return res.status(405).json({ error: 'Method not allowed' });
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'API request failed', {
-      component: 'api/entries',
-      operation: req.method || 'unknown',
-      method: req.method,
-    });
-
-    const errorMessage = process.env.NODE_ENV === 'production' 
-      ? 'Internal server error' 
-      : err.message;
-
-    return res.status(500).json({ 
-      error: errorMessage,
-      ...(process.env.NODE_ENV !== 'production' && { 
-        details: err.message 
-      })
-    });
+    throw new Error('Method not allowed');
+  },
+  {
+    requireAuth: false, // GET is public, POST uses context.session check
+    logRequests: true,
+    validateBody: (body) => {
+      // Only validate POST requests (GET requests don't have body)
+      if (body && typeof body === 'object') {
+        const requiredError = validateRequiredFields(body, ['title', 'content', 'contentType', 'date']);
+        if (requiredError) return requiredError;
+        const bodyObj = body as { contentType?: unknown };
+        const contentTypeError = validateEnum(bodyObj.contentType, 'contentType', ['post', 'memory'] as const);
+        if (contentTypeError) return contentTypeError;
+        const titleError = validateString(body.title, 'title', 1);
+        if (titleError) return titleError;
+      }
+      return true;
+    },
   }
-}
+);
 
