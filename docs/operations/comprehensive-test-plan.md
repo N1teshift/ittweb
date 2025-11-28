@@ -915,12 +915,42 @@ This document provides a comprehensive list of all Jest tests that could be crea
 ## Standings System Tests
 
 ### Leaderboard Calculation
-- [ ] Test ranking by ELO
-- [ ] Test minimum games threshold
-- [ ] Test category-based leaderboards
-- [ ] Test tie-breaking logic
-- [ ] Test pagination
-- [ ] Test sorting
+- [ ] `src/features/modules/standings/lib/standingsService.ts` ranks players by score (ELO) descending
+- [ ] `standingsService.getStandings` applies tie-breakers by win rate, then wins when scores are equal
+- [ ] `standingsService.getStandings` calculates win rate percentage to two decimals
+- [ ] `standingsService.getStandings` assigns sequential ranks after sorting
+
+### Filters & Category Handling
+- [ ] `standingsService.getStandings` enforces the default minimum games threshold (10)
+- [ ] `standingsService.getStandings` respects custom `minGames` filter values
+- [ ] `standingsService.getStandings` excludes players missing stats for the requested category
+- [ ] `standingsService.getStandings` falls back to player ID when name is missing
+- [ ] Category-based leaderboards return distinct results per category
+
+### Pagination & Response Metadata
+- [ ] `standingsService.getStandings` paginates correctly for the first page
+- [ ] `standingsService.getStandings` paginates correctly for middle/end pages
+- [ ] `standingsService.getStandings` returns accurate `total` counts irrespective of pagination
+- [ ] `standingsService.getStandings` sets `hasMore` true/false based on remaining records
+
+### Environment-Specific Behavior
+- [ ] Server-side execution uses Firebase Admin (`getFirestoreAdmin`) when `isServerSide` is true
+- [ ] Client-side execution uses Firebase client (`getFirestoreInstance`) when `isServerSide` is false
+- [ ] Standings fetch logs errors and rethrows for calling code to handle
+
+### Standings API Route
+- [ ] `pages/api/standings/index.ts` accepts default filters when no query params provided
+- [ ] `pages/api/standings/index.ts` forwards category/minGames/page/limit query params to the service
+- [ ] `pages/api/standings/index.ts` returns 200 with payload shape `{ standings, total, page, hasMore }`
+- [ ] `pages/api/standings/index.ts` returns appropriate error status when the service throws
+
+### Hooks & Components
+- [ ] `src/features/modules/standings/hooks/useStandings.ts` sets loading state during fetch
+- [ ] `useStandings` handles successful responses and stores standings data
+- [ ] `useStandings` surfaces fetch errors and resets loading state
+- [ ] `src/features/modules/standings/components/Leaderboard.tsx` renders loading, empty, error, and populated states
+- [ ] `Leaderboard` displays rank, name, score, wins, losses, win rate, and games for each entry
+- [ ] `src/features/modules/standings/components/CategorySelector.tsx` renders category options and triggers filter updates
 
 ---
 
