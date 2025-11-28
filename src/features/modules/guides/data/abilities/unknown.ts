@@ -339,7 +339,6 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     manaCost: 10,
     cooldown: 60,
     hotkey: 'F',
-    castTime: 'Abilities\\Spells\\Orc\\Voodoo\\VoodooAuraTarget.mdx,Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeTarget.mdx',
     levels: {
             "1": {
                   "manaCost": 10,
@@ -1704,7 +1703,6 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     tooltip: 'Reveal invisible unit',
     range: 900,
     duration: 20,
-    castTime: 'Abilities\\Spells\\Human\\MagicSentry\\MagicSentryCaster.mdx',
     levels: {
             "1": {
                   "duration": 20,
@@ -3011,7 +3009,6 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     cooldown: 60,
     duration: 20,
     hotkey: 'R',
-    castTime: 'Abilities\\Spells\\NightElf\\Taunt\\TauntCaster.mdx',
     levels: {
             "1": {
                   "manaCost": 20,
@@ -3336,7 +3333,6 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     manaCost: 10,
     cooldown: 20,
     hotkey: 'R',
-    castTime: 'Abilities\\Spells\\Undead\\RegenerationAura\\ObsidianRegenAura.mdx',
     levels: {
             "1": {
                   "manaCost": 10,

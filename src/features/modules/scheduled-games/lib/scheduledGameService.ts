@@ -14,11 +14,13 @@ import {
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
 import { ScheduledGame, CreateScheduledGame } from '@/types/scheduledGame';
+import type { ParticipantResult } from '@/features/modules/games/types';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
 import { timestampToIso, type TimestampLike } from '@/features/infrastructure/utils/timestampUtils';
 
 const SCHEDULED_GAMES_COLLECTION = 'scheduledGames';
+const GAMES_COLLECTION = 'games'; // Also check games collection for unified scheduled games
 const logger = createComponentLogger('scheduledGameService');
 
 function deriveGameStatus(data: {
@@ -233,10 +235,14 @@ export async function getAllScheduledGames(includePast: boolean = false, include
       // Try to use the optimized query first, but fall back to in-memory filtering
       // if the index is still building or doesn't exist
       try {
-        // Query for scheduled and awaiting_replay games (exclude archived unless requested)
+        // Query for scheduled, ongoing, and awaiting_replay games (exclude archived unless requested, exclude cancelled)
+        // Note: We can't query by 'ongoing' status directly since it's derived, so we include it in the in-memory filtering
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const adminQuery: any = adminDb.collection(SCHEDULED_GAMES_COLLECTION)
-          .where('status', 'in', includeArchived ? ['scheduled', 'awaiting_replay', 'archived'] : ['scheduled', 'awaiting_replay'])
+        const statusArray = includeArchived 
+          ? ['scheduled', 'ongoing', 'awaiting_replay', 'archived']
+          : ['scheduled', 'ongoing', 'awaiting_replay'];
+        const adminQuery = adminDb.collection(SCHEDULED_GAMES_COLLECTION)
+          .where('status', 'in', statusArray)
           .orderBy('scheduledDateTime', 'asc');
 
         const querySnapshot = await adminQuery.get();
@@ -244,6 +250,17 @@ export async function getAllScheduledGames(includePast: boolean = false, include
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         querySnapshot.forEach((docSnap: any) => {
           const data = docSnap.data();
+          
+          // Filter out deleted games
+          if (data.isDeleted === true) {
+            return;
+          }
+          
+          // Filter out cancelled games
+          if (data.status === 'cancelled') {
+            return;
+          }
+          
           const scheduledDateTime = data.scheduledDateTimeString || timestampToIso(data.scheduledDateTime);
           
           // Filter past games if includePast is false
@@ -277,7 +294,7 @@ export async function getAllScheduledGames(includePast: boolean = false, include
               discordId: p.discordId,
               name: p.name,
               joinedAt: typeof p.joinedAt === 'string' ? p.joinedAt : timestampToIso(p.joinedAt as Timestamp | TimestampLike | Date | undefined),
-              result: p.result,
+              result: (p.result === 'winner' || p.result === 'loser' || p.result === 'draw') ? p.result as ParticipantResult : undefined,
             })),
             createdAt: timestampToIso(data.createdAt),
             updatedAt: timestampToIso(data.updatedAt),
@@ -294,17 +311,36 @@ export async function getAllScheduledGames(includePast: boolean = false, include
           logger.info('Index still building, falling back to in-memory filtering');
           
           const querySnapshot = await adminDb.collection(SCHEDULED_GAMES_COLLECTION).get();
+          
+          logger.debug('Fallback: Total documents in scheduledGames collection', { count: querySnapshot.size });
 
           querySnapshot.forEach((docSnap) => {
             const data = docSnap.data();
             
-            // Filter by status (exclude archived unless requested)
+            // Filter out deleted games
+            if (data.isDeleted === true) {
+              logger.debug('Fallback: Skipping deleted game', { id: docSnap.id });
+              return;
+            }
+            
+            // Filter by status (exclude archived unless requested, exclude cancelled)
             if (!includeArchived && data.status === 'archived') {
+              logger.debug('Fallback: Skipping archived game', { id: docSnap.id, status: data.status });
               return;
             }
-            if (data.status !== 'scheduled' && data.status !== 'awaiting_replay' && data.status !== 'archived') {
+            if (data.status === 'cancelled') {
+              logger.debug('Fallback: Skipping cancelled game', { id: docSnap.id, status: data.status });
               return;
             }
+            
+            // Include: 'scheduled', 'ongoing', 'awaiting_replay', and optionally 'archived'
+            // Note: 'ongoing' status is valid and should be included (it was being filtered out before)
+            
+            logger.debug('Fallback: Processing game', { 
+              id: docSnap.id, 
+              status: data.status,
+              scheduledDateTime: data.scheduledDateTimeString || data.scheduledDateTime 
+            });
             
             const scheduledDateTime = data.scheduledDateTimeString || timestampToIso(data.scheduledDateTime);
             
@@ -339,7 +375,7 @@ export async function getAllScheduledGames(includePast: boolean = false, include
                 discordId: p.discordId,
                 name: p.name,
                 joinedAt: typeof p.joinedAt === 'string' ? p.joinedAt : timestampToIso(p.joinedAt as Timestamp | TimestampLike | Date | undefined),
-                result: p.result,
+                result: (p.result === 'winner' || p.result === 'loser' || p.result === 'draw') ? p.result as ParticipantResult : undefined,
               })),
               createdAt: timestampToIso(data.createdAt),
               updatedAt: timestampToIso(data.updatedAt),
@@ -355,11 +391,98 @@ export async function getAllScheduledGames(includePast: boolean = false, include
             const dateB = new Date(timestampToIso(b.scheduledDateTime)).getTime();
             return dateA - dateB; // Ascending order
           });
+          
+          logger.info('Fallback: Scheduled games fetched from scheduledGames collection', { count: games.length, totalInCollection: querySnapshot.size });
         } else {
           // Re-throw if it's a different error
           throw error;
         }
       }
+      
+      // Also query the games collection for scheduled games (created via unified API)
+      try {
+        logger.debug('Querying games collection for scheduled games');
+        const gamesQuerySnapshot = await adminDb.collection(GAMES_COLLECTION)
+          .where('gameState', '==', 'scheduled')
+          .where('isDeleted', '==', false)
+          .get();
+        
+        logger.debug('Found scheduled games in games collection', { count: gamesQuerySnapshot.size });
+        
+        gamesQuerySnapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          
+          // Filter out cancelled games
+          if (data.status === 'cancelled') {
+            return;
+          }
+          
+          // Filter by status (exclude archived unless requested)
+          if (!includeArchived && data.status === 'archived') {
+            return;
+          }
+          
+          const scheduledDateTime = data.scheduledDateTimeString || timestampToIso(data.scheduledDateTime);
+          
+          // Filter past games if includePast is false
+          if (!includePast) {
+            const gameDate = new Date(scheduledDateTime);
+            if (gameDate < new Date()) {
+              return;
+            }
+          }
+          
+          const derivedStatus = deriveGameStatus({
+            status: data.status,
+            scheduledDateTime: scheduledDateTime,
+            gameLength: data.gameLength,
+          });
+          
+          // Convert from games collection format to ScheduledGame format
+          games.push({
+            id: docSnap.id,
+            scheduledGameId: typeof data.gameId === 'number' ? data.gameId : Number(data.gameId) || 0, // Use gameId as scheduledGameId
+            creatorName: data.creatorName || 'Unknown',
+            createdByDiscordId: data.createdByDiscordId || '',
+            scheduledDateTime: scheduledDateTime,
+            timezone: data.timezone || 'UTC',
+            teamSize: data.teamSize,
+            customTeamSize: data.customTeamSize,
+            gameType: data.gameType,
+            gameVersion: data.gameVersion,
+            gameLength: data.gameLength,
+            modes: Array.isArray(data.modes) ? data.modes : [],
+            participants: (Array.isArray(data.participants) ? data.participants : []).map((p: Record<string, unknown>) => ({
+              discordId: typeof p.discordId === 'string' ? p.discordId : String(p.discordId || ''),
+              name: typeof p.name === 'string' ? p.name : String(p.name || ''),
+              joinedAt: typeof p.joinedAt === 'string' ? p.joinedAt : timestampToIso(p.joinedAt as Timestamp | TimestampLike | Date | undefined),
+              result: (p.result === 'winner' || p.result === 'loser' || p.result === 'draw') ? p.result as ParticipantResult : undefined,
+            })),
+            createdAt: timestampToIso(data.createdAt),
+            updatedAt: timestampToIso(data.updatedAt),
+            submittedAt: data.submittedAt ? timestampToIso(data.submittedAt) : undefined,
+            status: derivedStatus,
+            linkedGameDocumentId: data.linkedGameDocumentId,
+            linkedArchiveDocumentId: data.linkedArchiveDocumentId,
+            isDeleted: data.isDeleted ?? false,
+            deletedAt: data.deletedAt ? timestampToIso(data.deletedAt) : null,
+          });
+        });
+        
+        logger.debug('Added scheduled games from games collection', { count: gamesQuerySnapshot.size });
+      } catch (gamesCollectionError) {
+        // Log but don't fail if we can't query games collection
+        logger.warn('Failed to query games collection for scheduled games', { 
+          error: gamesCollectionError instanceof Error ? gamesCollectionError.message : String(gamesCollectionError) 
+        });
+      }
+      
+      // Final sort by scheduled date (ascending - upcoming first)
+      games.sort((a, b) => {
+        const dateA = new Date(timestampToIso(a.scheduledDateTime)).getTime();
+        const dateB = new Date(timestampToIso(b.scheduledDateTime)).getTime();
+        return dateA - dateB; // Ascending order
+      });
     } else {
       const db = getFirestoreInstance();
       
@@ -408,7 +531,7 @@ export async function getAllScheduledGames(includePast: boolean = false, include
               discordId: p.discordId,
               name: p.name,
               joinedAt: typeof p.joinedAt === 'string' ? p.joinedAt : timestampToIso(p.joinedAt as Timestamp | TimestampLike | Date | undefined),
-              result: p.result,
+              result: (p.result === 'winner' || p.result === 'loser' || p.result === 'draw') ? p.result as ParticipantResult : undefined,
             })),
             createdAt: timestampToIso(data.createdAt),
             updatedAt: timestampToIso(data.updatedAt),
@@ -470,7 +593,7 @@ export async function getAllScheduledGames(includePast: boolean = false, include
                 discordId: p.discordId,
                 name: p.name,
                 joinedAt: typeof p.joinedAt === 'string' ? p.joinedAt : timestampToIso(p.joinedAt as Timestamp | TimestampLike | Date | undefined),
-                result: p.result,
+                result: (p.result === 'winner' || p.result === 'loser' || p.result === 'draw') ? p.result as ParticipantResult : undefined,
               })),
               createdAt: timestampToIso(data.createdAt),
               updatedAt: timestampToIso(data.updatedAt),

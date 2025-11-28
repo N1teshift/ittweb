@@ -94,7 +94,6 @@ export async function updateEloScores(gameId: string): Promise<void> {
     // Calculate team ELOs
     const winnerElos = winners.map(p => playerElos.get(p.name.toLowerCase().trim()) ?? STARTING_ELO);
     const loserElos = losers.map(p => playerElos.get(p.name.toLowerCase().trim()) ?? STARTING_ELO);
-    const drawerElos = drawers.map(p => playerElos.get(p.name.toLowerCase().trim()) ?? STARTING_ELO);
 
     const winnerTeamElo = calculateTeamElo(winnerElos);
     const loserTeamElo = calculateTeamElo(loserElos);
@@ -127,13 +126,12 @@ export async function updateEloScores(gameId: string): Promise<void> {
     }
 
     // Update game players with ELO changes
-    const { getFirestoreAdmin, isServerSide, getAdminTimestamp } = await import('@/features/infrastructure/api/firebase/admin');
+    const { getFirestoreAdmin, isServerSide } = await import('@/features/infrastructure/api/firebase/admin');
     const { doc, updateDoc, getDocs, collection } = await import('firebase/firestore');
     const { getFirestoreInstance } = await import('@/features/infrastructure/api/firebase');
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const adminTimestamp = getAdminTimestamp();
       const gameRef = adminDb.collection('games').doc(gameId);
       const playersSnapshot = await gameRef.collection('players').get();
 

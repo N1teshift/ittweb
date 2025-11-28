@@ -54,6 +54,7 @@ export function useStandings(filters: StandingsFilters = {}): UseStandingsResult
 
   useEffect(() => {
     fetchStandings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters.category, filters.minGames, filters.page, filters.limit]);
 
   return {

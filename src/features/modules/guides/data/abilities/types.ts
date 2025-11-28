@@ -9,6 +9,9 @@ export type AbilityCategory =
   | 'gatherer' 
   | 'item'
   | 'building'
+  | 'auradummy'
+  | 'bonushandler'
+  | 'buff'
   | 'unknown';
 
 export type AbilityLevelData = {

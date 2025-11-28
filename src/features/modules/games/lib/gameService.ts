@@ -35,7 +35,6 @@ import type {
   GameType,
   ScheduledGameStatus,
 } from '../types';
-import { normalizePlayerName } from '../../players/lib/playerService';
 import { updateEloScores } from './eloCalculator';
 
 const GAMES_COLLECTION = 'games';
@@ -96,18 +95,18 @@ function convertGameDoc(docData: Record<string, unknown>, id: string): Game {
     gameState,
     creatorName: typeof docData.creatorName === 'string' ? docData.creatorName : String(docData.creatorName || ''),
     createdByDiscordId: typeof docData.createdByDiscordId === 'string' ? docData.createdByDiscordId : undefined,
-    createdAt: docData.createdAt,
-    updatedAt: docData.updatedAt,
-    submittedAt: docData.submittedAt,
+    createdAt: (docData.createdAt as Timestamp | string) || Timestamp.now(),
+    updatedAt: (docData.updatedAt as Timestamp | string) || Timestamp.now(),
+    submittedAt: docData.submittedAt ? (docData.submittedAt as Timestamp | string) : undefined,
     isDeleted: typeof docData.isDeleted === 'boolean' ? docData.isDeleted : false,
-    deletedAt: docData.deletedAt || null,
+    deletedAt: docData.deletedAt ? (docData.deletedAt as Timestamp | string | null) : null,
   };
 
   // Add scheduled game fields if gameState is 'scheduled'
   if (gameState === 'scheduled') {
     return {
       ...baseGame,
-      scheduledDateTime: docData.scheduledDateTime,
+      scheduledDateTime: docData.scheduledDateTime ? (docData.scheduledDateTime as Timestamp | string) : undefined,
       timezone: typeof docData.timezone === 'string' ? docData.timezone : undefined,
       teamSize: (docData.teamSize as TeamSize | undefined),
       customTeamSize: typeof docData.customTeamSize === 'string' ? docData.customTeamSize : undefined,
@@ -130,7 +129,7 @@ function convertGameDoc(docData: Record<string, unknown>, id: string): Game {
 
   const completedGame: Game = {
     ...baseGame,
-    datetime: docData.datetime,
+    datetime: docData.datetime ? (docData.datetime as Timestamp | string) : undefined,
     duration: typeof docData.duration === 'number' ? docData.duration : Number(docData.duration) || 0,
     gamename: typeof docData.gamename === 'string' ? docData.gamename : String(docData.gamename || ''),
     map: typeof docData.map === 'string' ? docData.map : String(docData.map || ''),
@@ -211,7 +210,11 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
         createdByDiscordId: cleanedData.createdByDiscordId || '',
         scheduledDateTime,
         scheduledDateTimeString: cleanedData.scheduledDateTime,
-        ...(cleanedData.submittedAt ? { submittedAt: adminTimestamp.fromDate(new Date(cleanedData.submittedAt as string)) } : {}),
+        ...(cleanedData.submittedAt ? { 
+          submittedAt: cleanedData.submittedAt instanceof Timestamp 
+            ? adminTimestamp.fromDate(cleanedData.submittedAt.toDate())
+            : adminTimestamp.fromDate(new Date(cleanedData.submittedAt as string))
+        } : {}),
         status: cleanedData.status ?? 'scheduled',
         participants: cleanedData.participants || [],
         createdAt: adminTimestamp.now(),
@@ -299,7 +302,11 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
         ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
         ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
         ...(gameData.createdByDiscordId ? { createdByDiscordId: gameData.createdByDiscordId } : {}),
-        ...(gameData.submittedAt ? { submittedAt: adminTimestamp.fromDate(new Date(gameData.submittedAt)) } : {}),
+        ...(gameData.submittedAt ? { 
+          submittedAt: gameData.submittedAt instanceof Timestamp 
+            ? adminTimestamp.fromDate(gameData.submittedAt.toDate())
+            : adminTimestamp.fromDate(new Date(gameData.submittedAt))
+        } : {}),
         verified: gameData.verified ?? false,
         ...(gameData.archiveContent ? { archiveContent: gameData.archiveContent } : {}),
         createdAt: adminTimestamp.now(),
@@ -331,7 +338,7 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
 
       // Update ELO scores
       try {
-        await updateEloScores(gameData.players, gameData.category);
+        await updateEloScores(gameDocRef.id);
       } catch (eloError) {
         logger.warn('Failed to update ELO scores', { error: eloError });
       }
@@ -363,7 +370,11 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
         ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
         ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
         ...(gameData.createdByDiscordId ? { createdByDiscordId: gameData.createdByDiscordId } : {}),
-        ...(gameData.submittedAt ? { submittedAt: Timestamp.fromDate(new Date(gameData.submittedAt)) } : {}),
+        ...(gameData.submittedAt ? { 
+          submittedAt: gameData.submittedAt instanceof Timestamp 
+            ? gameData.submittedAt
+            : Timestamp.fromDate(new Date(gameData.submittedAt))
+        } : {}),
         verified: gameData.verified ?? false,
         ...(gameData.archiveContent ? { archiveContent: gameData.archiveContent } : {}),
         createdAt: Timestamp.now(),
@@ -395,7 +406,7 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
 
       // Update ELO scores
       try {
-        await updateEloScores(gameData.players, gameData.category);
+        await updateEloScores(gameDocRef.id);
       } catch (eloError) {
         logger.warn('Failed to update ELO scores', { error: eloError });
       }
@@ -459,7 +470,11 @@ export async function createGame(gameData: CreateGame): Promise<string> {
         ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
         ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
         ...(gameData.createdByDiscordId ? { createdByDiscordId: gameData.createdByDiscordId } : {}),
-        ...(gameData.submittedAt ? { submittedAt: adminTimestamp.fromDate(new Date(gameData.submittedAt)) } : {}),
+        ...(gameData.submittedAt ? { 
+          submittedAt: gameData.submittedAt instanceof Timestamp 
+            ? adminTimestamp.fromDate(gameData.submittedAt.toDate())
+            : adminTimestamp.fromDate(new Date(gameData.submittedAt))
+        } : {}),
         ...(gameData.scheduledGameId ? { scheduledGameId: gameData.scheduledGameId } : {}),
         verified: false,
         createdAt: adminTimestamp.now(),
@@ -518,7 +533,11 @@ export async function createGame(gameData: CreateGame): Promise<string> {
         ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
         ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
         ...(gameData.createdByDiscordId ? { createdByDiscordId: gameData.createdByDiscordId } : {}),
-        ...(gameData.submittedAt ? { submittedAt: Timestamp.fromDate(new Date(gameData.submittedAt)) } : {}),
+        ...(gameData.submittedAt ? { 
+          submittedAt: gameData.submittedAt instanceof Timestamp 
+            ? gameData.submittedAt
+            : Timestamp.fromDate(new Date(gameData.submittedAt))
+        } : {}),
         ...(gameData.scheduledGameId ? { scheduledGameId: gameData.scheduledGameId } : {}),
         verified: false,
         createdAt: Timestamp.now(),
@@ -661,7 +680,8 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      let gamesQuery = adminDb.collection(GAMES_COLLECTION);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let gamesQuery: any = adminDb.collection(GAMES_COLLECTION);
 
       // Apply filters
       if (startDate) {

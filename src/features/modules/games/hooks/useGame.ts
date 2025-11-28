@@ -43,6 +43,7 @@ export function useGame(id: string): UseGameResult {
 
   useEffect(() => {
     fetchGame();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return {

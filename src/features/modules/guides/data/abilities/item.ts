@@ -84,7 +84,6 @@ export const ITEM_ABILITIES: AbilityData[] = [
     description: '',
     tooltip: 'dummy spell',
     duration: 0.01,
-    castTime: 'Abilities\\Spells\\Human\\Heal\\HealTarget.mdx',
     levels: {
             "1": {
                   "manaCost": 0,
@@ -100,7 +99,6 @@ export const ITEM_ABILITIES: AbilityData[] = [
     description: '',
     tooltip: 'dummy spell',
     duration: 0.01,
-    castTime: 'Abilities\\Spells\\Human\\Heal\\HealTarget.mdx',
     levels: {
             "1": {
                   "manaCost": 0,
@@ -116,7 +114,6 @@ export const ITEM_ABILITIES: AbilityData[] = [
     description: '',
     tooltip: 'dummy spell',
     duration: 0.01,
-    castTime: 'Abilities\\Spells\\Human\\Heal\\HealTarget.mdx',
     levels: {
             "1": {
                   "manaCost": 0,
@@ -132,7 +129,6 @@ export const ITEM_ABILITIES: AbilityData[] = [
     description: '',
     tooltip: 'dummy spell',
     duration: 0.01,
-    castTime: 'Abilities\\Spells\\Human\\Heal\\HealTarget.mdx',
     levels: {
             "1": {
                   "manaCost": 0,
@@ -163,7 +159,6 @@ export const ITEM_ABILITIES: AbilityData[] = [
     description: '',
     tooltip: 'dummy spell',
     duration: 0.01,
-    castTime: 'Abilities\\Spells\\Human\\Heal\\HealTarget.mdx',
     levels: {
             "1": {
                   "manaCost": 0,
@@ -771,7 +766,6 @@ export const ITEM_ABILITIES: AbilityData[] = [
     name: 'Clay Explosion',
     category: 'item',
     description: '',
-    castTime: 'Abilities\\Weapons\\GryphonRiderMissile\\GryphonRiderMissileTarget.mdl',
   },
   {
     id: 'healing-cloak-cast',
@@ -845,7 +839,6 @@ export const ITEM_ABILITIES: AbilityData[] = [
     areaOfEffect: 350,
     hotkey: 'Q',
     targetsAllowed: 'air,enemies,ground,neutral',
-    castTime: 'Abilities\\Spells\\Orc\\AncestralSpirit\\AncestralSpiritCaster.mdx',
     levels: {
             "1": {
                   "manaCost": 0,
@@ -867,7 +860,6 @@ export const ITEM_ABILITIES: AbilityData[] = [
     areaOfEffect: 300,
     hotkey: 'W',
     targetsAllowed: 'air,enemies,ground,neutral',
-    castTime: 'Abilities\\Spells\\Items\\ResourceItems\\ResourceEffectTarget.mdx',
     levels: {
             "1": {
                   "manaCost": 0,
@@ -889,7 +881,6 @@ export const ITEM_ABILITIES: AbilityData[] = [
     areaOfEffect: 400,
     hotkey: 'E',
     targetsAllowed: 'air,enemies,structure,ground,neutral',
-    castTime: 'Abilities\\Spells\\Human\\FlameStrike\\FlameStrikeTarget.mdx',
     levels: {
             "1": {
                   "manaCost": 0,
@@ -1419,7 +1410,6 @@ export const ITEM_ABILITIES: AbilityData[] = [
     description: '',
     tooltip: 'dummy spell',
     duration: 0.01,
-    castTime: 'Abilities\\Spells\\Human\\Thunderclap\\ThunderclapCaster.mdx',
     levels: {
             "1": {
                   "manaCost": 0,

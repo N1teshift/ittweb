@@ -33,14 +33,18 @@ export function GameCard({ game }: GameCardProps) {
         </div>
 
         <div className="grid grid-cols-2 gap-2 text-sm text-gray-300 mt-3">
-          <div>
-            <span className="text-gray-500">Duration:</span>{' '}
-            <span className="text-amber-300">{formatDuration(game.duration)}</span>
-          </div>
-          <div>
-            <span className="text-gray-500">Map:</span>{' '}
-            <span className="text-amber-300">{game.map.split('\\').pop() || game.map}</span>
-          </div>
+          {game.duration && (
+            <div>
+              <span className="text-gray-500">Duration:</span>{' '}
+              <span className="text-amber-300">{formatDuration(game.duration)}</span>
+            </div>
+          )}
+          {game.map && (
+            <div>
+              <span className="text-gray-500">Map:</span>{' '}
+              <span className="text-amber-300">{game.map.split('\\').pop() || game.map}</span>
+            </div>
+          )}
         </div>
 
         {game.verified && (

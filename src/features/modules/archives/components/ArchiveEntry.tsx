@@ -9,6 +9,7 @@ import { GameDetailsSection } from './GameDetailsSection';
 import { useGame } from '@/features/modules/games/hooks/useGame';
 import { Card } from '@/features/infrastructure/shared/components/ui/Card';
 import { formatDuration, formatEloChange } from '@/features/modules/shared/utils';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import Link from 'next/link';
 
 type EntrySection = 'images' | 'video' | 'twitch' | 'replay' | 'game' | 'text';
@@ -102,12 +103,10 @@ export default function ArchiveEntry({ entry, onEdit, onDelete, canDelete, onIma
     const imageUrls: string[] =
       entry.images && entry.images.length > 0
         ? entry.images
-        : entry.mediaType === 'image' && entry.mediaUrl
-        ? [entry.mediaUrl]
         : [];
 
-    const video: string | undefined = entry.videoUrl || (entry.mediaType === 'video' ? entry.mediaUrl : undefined);
-    const replay: string | undefined = entry.replayUrl || (entry.mediaType === 'replay' ? entry.mediaUrl : undefined);
+    const video: string | undefined = entry.videoUrl;
+    const replay: string | undefined = entry.replayUrl;
 
     const order: EntrySection[] = normalizeSectionOrder(entry.sectionOrder as EntrySection[] | undefined);
 
@@ -228,9 +227,9 @@ export default function ArchiveEntry({ entry, onEdit, onDelete, canDelete, onIma
   };
 
   // Check if this is an auto-created archive entry from a scheduled game
-  // Identified by: title pattern "Game #X - ..." AND having replayUrl OR mediaType='replay'
+  // Identified by: title pattern "Game #X - ..." AND having replayUrl
   const titleMatchesPattern = /^Game #\d+/.test(entry.title);
-  const hasReplay = !!(entry.replayUrl || entry.mediaType === 'replay');
+  const hasReplay = !!entry.replayUrl;
   const isScheduledGameArchive = titleMatchesPattern && hasReplay;
   
   // If this archive entry has a gameId OR is a scheduled game archive, render it as a GameCard-style component
@@ -253,7 +252,11 @@ export default function ArchiveEntry({ entry, onEdit, onDelete, canDelete, onIma
 
     // Render as GameCard-style with archive features (hybrid design)
     // Use game data if available, otherwise use title/date info
-    const gameDate = game ? new Date(game.datetime as string) : (entry.dateInfo.singleDate ? new Date(entry.dateInfo.singleDate) : new Date(entry.createdAt));
+    const gameDate = game 
+      ? new Date(game.datetime as string) 
+      : (entry.dateInfo.singleDate 
+          ? new Date(entry.dateInfo.singleDate) 
+          : new Date(timestampToIso(entry.createdAt)));
     const formattedDate = gameDate.toLocaleDateString();
     const formattedTime = gameDate.toLocaleTimeString();
 
@@ -286,11 +289,9 @@ export default function ArchiveEntry({ entry, onEdit, onDelete, canDelete, onIma
     const imageUrls: string[] =
       entry.images && entry.images.length > 0
         ? entry.images
-        : entry.mediaType === 'image' && entry.mediaUrl
-        ? [entry.mediaUrl]
         : [];
-    const video: string | undefined = entry.videoUrl || (entry.mediaType === 'video' ? entry.mediaUrl : undefined);
-    const replay: string | undefined = entry.replayUrl || (entry.mediaType === 'replay' ? entry.mediaUrl : undefined);
+    const video: string | undefined = entry.videoUrl;
+    const replay: string | undefined = entry.replayUrl;
     const hasMedia = imageUrls.length > 0 || video || entry.twitchClipUrl || replay;
 
     return (
@@ -327,14 +328,18 @@ export default function ArchiveEntry({ entry, onEdit, onDelete, canDelete, onIma
             <>
               {/* Game Details Grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs mt-4 p-3 bg-black/30 rounded border border-amber-500/20">
-                <div>
-                  <span className="text-gray-400">Duration:</span>{' '}
-                  <span className="text-amber-300 font-medium">{formatDuration(game.duration)}</span>
-                </div>
-                <div>
-                  <span className="text-gray-400">Map:</span>{' '}
-                  <span className="text-amber-300 font-medium">{game.map.split('\\').pop() || game.map}</span>
-                </div>
+                {game.duration && (
+                  <div>
+                    <span className="text-gray-400">Duration:</span>{' '}
+                    <span className="text-amber-300 font-medium">{formatDuration(game.duration)}</span>
+                  </div>
+                )}
+                {game.map && (
+                  <div>
+                    <span className="text-gray-400">Map:</span>{' '}
+                    <span className="text-amber-300 font-medium">{typeof game.map === 'string' ? (game.map.split('\\').pop() || game.map) : game.map}</span>
+                  </div>
+                )}
                 {game.creatorName && (
                   <div>
                     <span className="text-gray-400">Creator:</span>{' '}
@@ -506,9 +511,9 @@ export default function ArchiveEntry({ entry, onEdit, onDelete, canDelete, onIma
 
           {/* Archive metadata - hybrid feature */}
           <div className="mt-4 pt-4 border-t-2 border-amber-500/30">
-            <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center justify-between text-xs"> 
               <span className="text-gray-400">
-                Added by <span className="text-amber-400/80">{entry.creatorName}</span> on {new Date(entry.createdAt).toLocaleDateString()}
+                Added by <span className="text-amber-400/80">{entry.creatorName}</span> on {new Date(timestampToIso(entry.createdAt)).toLocaleDateString()}
               </span>
               {game?.id ? (
                 <span className="text-amber-300 font-medium group-hover:text-amber-200 transition-colors flex items-center gap-1">
@@ -589,9 +594,9 @@ export default function ArchiveEntry({ entry, onEdit, onDelete, canDelete, onIma
 
       {/* Footer */}
       <div className="mt-4 pt-4 border-t border-amber-500/20">
-        <div className="flex items-center justify-between text-sm text-gray-400">
+        <div className="flex items-center justify-between text-sm text-gray-400"> 
           <span>
-            Added by {entry.author} on {new Date(entry.createdAt).toLocaleDateString()}
+            Added by {entry.creatorName} on {new Date(timestampToIso(entry.createdAt)).toLocaleDateString()}
           </span>
           <div className="flex items-center gap-3">
             {onEdit && (

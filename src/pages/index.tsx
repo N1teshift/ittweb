@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useSession, signIn } from 'next-auth/react';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
@@ -15,7 +14,6 @@ import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import type { GetStaticProps } from 'next';
 import type { Entry } from '@/types/entry';
 import type { Game, CreateScheduledGame } from '@/features/modules/games/types';
-import type { ScheduledGame } from '@/types/scheduledGame';
 import { Button } from '@/features/infrastructure/shared/components/ui';
 
 const pageNamespaces = ["common"];
@@ -33,7 +31,6 @@ type HomeProps = {
 
 export default function Home({ latestEntry, mdxSource, recentActivity }: HomeProps) {
   const { data: session, status } = useSession();
-  const router = useRouter();
   const [showEntryForm, setShowEntryForm] = useState(false);
   const [showScheduleForm, setShowScheduleForm] = useState(false);
   const [isSubmittingSchedule, setIsSubmittingSchedule] = useState(false);
@@ -524,11 +521,14 @@ export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
     });
     if (sortedActivity.filter(a => a.type === 'game' && a.data.gameState === 'scheduled').length > 0) {
       const firstScheduled = sortedActivity.find(a => a.type === 'game' && a.data.gameState === 'scheduled');
-      console.log('First scheduled game in activity:', firstScheduled ? {
-        id: firstScheduled.data.id,
-        gameId: firstScheduled.data.gameId,
-        scheduledDateTime: firstScheduled.data.scheduledDateTime,
-      } : 'none');
+      if (firstScheduled && firstScheduled.type === 'game') {
+        const gameData = firstScheduled.data as Game;
+        console.log('First scheduled game in activity:', {
+          id: gameData.id,
+          gameId: gameData.gameId,
+          scheduledDateTime: gameData.scheduledDateTime,
+        });
+      }
     }
     
     // Get latest entry (post) for display

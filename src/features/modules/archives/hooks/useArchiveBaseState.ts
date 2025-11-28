@@ -28,7 +28,7 @@ export function useArchiveBaseState(mode: 'create' | 'edit', initialEntry?: Arch
   const [currentImages, setCurrentImages] = useState<string[]>([]);
   const [sectionOrder, setSectionOrder] = useState<SectionKey[]>(normalizeSectionOrder());
   const [existingReplayUrl, setExistingReplayUrl] = useState<string>(
-    (initialEntry?.replayUrl || (initialEntry?.mediaType === 'replay' ? initialEntry?.mediaUrl : '')) || ''
+    initialEntry?.replayUrl || ''
   );
 
   useEffect(() => {
@@ -45,23 +45,23 @@ export function useArchiveBaseState(mode: 'create' | 'edit', initialEntry?: Arch
       setFormData({
         title: initialEntry.title,
         content: initialEntry.content,
-        creatorName: initialEntry.creatorName,
+        author: initialEntry.creatorName,
         entryType: (initialEntry.entryType || '') as '' | 'story' | 'changelog',
-        mediaUrl: initialEntry.videoUrl || initialEntry.mediaUrl || '',
+        mediaUrl: initialEntry.videoUrl || '',
         twitchClipUrl: initialEntry.twitchClipUrl || '',
-        mediaType: initialEntry.mediaType || (initialEntry.videoUrl ? 'video' : initialEntry.images?.length ? 'image' : initialEntry.replayUrl ? 'replay' : 'none'),
+        mediaType: (initialEntry.videoUrl ? 'video' : initialEntry.images?.length ? 'image' : initialEntry.replayUrl ? 'replay' : 'none'),
         dateType,
         singleDate,
         approximateText: initialEntry.dateInfo.approximateText || ''
       });
       const initialImages = initialEntry.images && initialEntry.images.length > 0
         ? initialEntry.images
-        : (initialEntry.mediaType === 'image' && initialEntry.mediaUrl ? [initialEntry.mediaUrl] : []);
+        : [];
       setCurrentImages(initialImages);
       const initialOrder = normalizeSectionOrder(initialEntry.sectionOrder as SectionKey[] | undefined);
       setSectionOrder(initialOrder);
       setExistingReplayUrl(
-        (initialEntry.replayUrl || (initialEntry.mediaType === 'replay' ? initialEntry.mediaUrl : '')) || ''
+        initialEntry.replayUrl || ''
       );
     }
   }, [mode, initialEntry]);

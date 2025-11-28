@@ -35,10 +35,6 @@ export function MetaPage({ pageNamespaces: _pageNamespaces }: MetaPageProps) {
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
 
-  useEffect(() => {
-    fetchMetaData();
-  }, [category, teamFormat, startDate, endDate]);
-
   const fetchMetaData = async () => {
     try {
       setLoading(true);
@@ -63,6 +59,10 @@ export function MetaPage({ pageNamespaces: _pageNamespaces }: MetaPageProps) {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchMetaData();
+  }, [category, teamFormat, startDate, endDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const resetFilters = () => {
     setCategory('');

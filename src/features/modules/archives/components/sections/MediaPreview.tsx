@@ -5,7 +5,7 @@ import TwitchClipEmbed from '../TwitchClipEmbed';
 
 interface ImageItem { key: string; url: string }
 
-type SectionKey = 'images' | 'video' | 'twitch' | 'replay' | 'text';
+type SectionKey = 'images' | 'video' | 'twitch' | 'replay' | 'game' | 'text';
 
 interface MediaPreviewProps {
   images: ImageItem[];

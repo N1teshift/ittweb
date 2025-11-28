@@ -41,7 +41,7 @@ export default function TerrainVisualizerContainer() {
       if (map) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(map));
       }
-    } catch (e) {
+    } catch {
       // ignore storage errors (quota, etc.)
     }
   }, [map]);

@@ -5,7 +5,7 @@ import DateSelector from './sections/DateSelector';
 import MediaPreview from './sections/MediaPreview';
 import FormHeader from './sections/FormHeader';
 import { validateArchiveForm } from '../utils/archiveValidation';
-import { buildDateInfo, computeEffectiveSectionOrder } from '../utils/archiveFormUtils';
+import { buildDateInfo, computeEffectiveSectionOrder, type SectionKey } from '../utils/archiveFormUtils';
 import { useArchiveBaseState } from '../hooks/useArchiveBaseState';
 import { useArchiveMedia, uploadSelectedMedia } from '../hooks/useArchiveMedia';
 import { useArchiveHandlers } from '../hooks/useArchiveHandlers';
@@ -59,7 +59,7 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
       const validationError = validateArchiveForm({
         title: formData.title,
         content: formData.content,
-        creatorName: mode === 'create' ? (defaultAuthor || '') : formData.creatorName,
+        author: mode === 'create' ? (defaultAuthor || '') : formData.author || '',
         dateType: formData.dateType,
         singleDate: formData.singleDate,
         approximateText: formData.approximateText,
@@ -92,7 +92,7 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
       const hasVideo = Boolean(formData.mediaUrl);
       const hasTwitch = Boolean(formData.twitchClipUrl);
       const hasReplay = Boolean(replayUrl || existingReplayUrl);
-      const hasGame = Boolean(entry?.linkedGameDocumentId);
+      const hasGame = Boolean(initialEntry?.linkedGameDocumentId);
       const hasText = Boolean(formData.content && formData.content.trim().length > 0);
       const effectiveSectionOrder = computeEffectiveSectionOrder(sectionOrder, { hasImages, hasVideo, hasTwitch, hasReplay, hasGame, hasText });
 
@@ -100,8 +100,7 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
         const payload: CreateArchiveEntry = {
           title: formData.title.trim(),
           content: formData.content.trim(),
-          author: (defaultAuthor || '').trim(),
-          mediaType: hasImages ? 'image' : hasVideo ? 'video' : replayFile ? 'replay' : 'none',
+          creatorName: (defaultAuthor || formData.author || '').trim(), 
           dateInfo,
           ...(formData.entryType ? { entryType: formData.entryType } : {}),
           ...(images && images.length > 0 ? { images } : {}),
@@ -119,8 +118,7 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
       const updates: Partial<CreateArchiveEntry> = {
         title: formData.title.trim(),
         content: formData.content.trim(),
-        creatorName: formData.creatorName.trim(),
-        mediaType: hasImages ? 'image' : hasVideo ? 'video' : (replayUrl || existingReplayUrl) ? 'replay' : 'none',
+        creatorName: formData.author.trim(),
         dateInfo,
         ...(images && images.length > 0 ? { images } : {}),
         ...(formData.mediaUrl ? { videoUrl: formData.mediaUrl.trim() } : { videoUrl: '' }),
@@ -225,7 +223,7 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
             twitchUrl={formData.twitchClipUrl}
             replayName={replayName}
             textPreview={formData.content}
-            sectionOrder={sectionOrder}
+            sectionOrder={sectionOrder as SectionKey[]}
             onReorderSections={handleReorderSections}
             onRemoveImage={mode === 'edit' ? handleRemoveExistingImage : undefined}
             onRemoveReplay={mode === 'edit' ? handleRemoveReplay : undefined}

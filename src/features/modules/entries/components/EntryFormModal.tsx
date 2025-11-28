@@ -1,5 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import { EntryContentType } from '@/types/entry';
 import { uploadImage } from '@/features/shared/lib/archiveService';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
@@ -113,7 +114,8 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
           body: JSON.stringify({ path: '/' }),
         });
       } catch (revalidateError) {
-        logger.warn('Failed to revalidate homepage', revalidateError instanceof Error ? revalidateError : new Error(String(revalidateError)));
+        const error = revalidateError instanceof Error ? revalidateError : new Error(String(revalidateError));
+        logger.warn('Failed to revalidate homepage', { error: error.message, stack: error.stack });
       }
       
       onSuccess();
@@ -121,6 +123,7 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
       const error = err as Error;
       logError(error, 'Failed to create entry', {
         component: 'EntryFormModal',
+        operation: 'createEntry',
         contentType,
       });
       setError(error.message || 'Failed to create entry');
@@ -214,7 +217,15 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
                 {imagePreviewUrls.length > 0 && (
                   <div className="mt-2 grid grid-cols-2 gap-2">
                     {imagePreviewUrls.map((url, i) => (
-                      <img key={i} src={url} alt={`Preview ${i + 1}`} className="w-full h-32 object-cover rounded" />
+                      <div key={i} className="relative w-full h-32 rounded overflow-hidden">
+                        <Image
+                          src={url}
+                          alt={`Preview ${i + 1}`}
+                          fill
+                          className="object-cover"
+                          unoptimized
+                        />
+                      </div>
                     ))}
                   </div>
                 )}

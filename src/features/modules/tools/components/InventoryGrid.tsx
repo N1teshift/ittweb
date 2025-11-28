@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import type { DragPayload, TrollSide } from '@/features/modules/tools/types';
 import type { ItemData } from '@/types/items';
 import { getItemIconPathFromRecord } from '@/features/modules/guides/data/items/iconUtils';
@@ -78,10 +79,12 @@ export default function InventoryGrid({
                   }}
                   title={item.name}
                 >
-                  <img
+                  <Image
                     src={getItemIconPathFromRecord(item)}
                     alt={item.name}
-                    className="w-full h-full object-cover rounded-md"
+                    fill
+                    className="object-cover rounded-md"
+                    unoptimized
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = '/icons/itt/BTNYellowHerb.png'; // fallback icon

@@ -50,6 +50,7 @@ export default function IconMapperMappingsList({
               return (
                 <div key={gameName} className="flex items-center gap-4 p-2 hover:bg-black/20 rounded">
                   {hasSpecial ? (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={`/icons/itt/${filename}`}
                       alt={gameName}

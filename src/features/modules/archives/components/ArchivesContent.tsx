@@ -93,8 +93,8 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
         id: `game-${game.id}`,
         title: `Game #${game.gameId}`,
         content: '',
-        author: 'System',
-        gameId: game.id, // Set the document ID so ArchiveEntry component can fetch full game data
+        creatorName: 'System',
+        linkedGameDocumentId: game.id, // Set the document ID so ArchiveEntry component can fetch full game data
         dateInfo: {
           type: 'single' as const,
           singleDate: timestampToIso(game.datetime),

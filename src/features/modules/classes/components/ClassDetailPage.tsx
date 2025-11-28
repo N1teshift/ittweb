@@ -17,12 +17,6 @@ export function ClassDetailPage({ pageNamespaces: _pageNamespaces }: ClassDetail
   const [error, setError] = useState<string | null>(null);
   const [category, setCategory] = useState<string>('');
 
-  useEffect(() => {
-    if (className) {
-      fetchClassDetail();
-    }
-  }, [className, category]);
-
   const fetchClassDetail = async () => {
     if (!className) return;
     
@@ -45,6 +39,12 @@ export function ClassDetailPage({ pageNamespaces: _pageNamespaces }: ClassDetail
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (className) {
+      fetchClassDetail();
+    }
+  }, [className, category]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (loading) {
     return (

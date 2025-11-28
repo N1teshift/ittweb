@@ -240,7 +240,6 @@ export const PRIEST_ABILITIES: AbilityData[] = [
     iconPath: 'btnregenerate.png',
     cooldown: 60,
     hotkey: 'S',
-    castTime: 'Models\\Abilities\\SelfPreservation.mdx',
     levels: {
             "1": {
                   "manaCost": 0,

@@ -13,6 +13,7 @@ import {
   uploadBytes, 
   getDownloadURL
 } from 'firebase/storage';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import { getFirestoreInstance, getStorageInstance } from '@/features/infrastructure/api/firebase';
 
 // Check if we're on the client side
@@ -216,7 +217,6 @@ export const getArchiveEntries = async (): Promise<ArchiveEntry[]> => {
       creatorName: data.creatorName || 'Unknown',
       createdByDiscordId: data.createdByDiscordId ?? null,
       entryType: data.entryType,
-      mediaType: data.mediaType,
       images: data.images,
       videoUrl: data.videoUrl,
       twitchClipUrl: data.twitchClipUrl,

@@ -72,8 +72,6 @@ export async function getAllArchiveEntries(): Promise<ArchiveEntry[]> {
               creatorName: data.creatorName || 'Unknown',
               createdByDiscordId: data.createdByDiscordId ?? null,
               entryType: data.entryType,
-              mediaUrl: data.mediaUrl,
-              mediaType: data.mediaType,
               images: data.images,
               videoUrl: data.videoUrl,
               twitchClipUrl: data.twitchClipUrl,

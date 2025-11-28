@@ -24,14 +24,18 @@ export function GameDetailsSection({ game }: GameDetailsSectionProps) {
             <span className="text-gray-500">Date:</span>
             <p className="text-amber-300">{gameDate.toLocaleString()}</p>
           </div>
-          <div>
-            <span className="text-gray-500">Duration:</span>
-            <p className="text-amber-300">{formatDuration(game.duration)}</p>
-          </div>
-          <div>
-            <span className="text-gray-500">Map:</span>
-            <p className="text-amber-300">{game.map.split('\\').pop() || game.map}</p>
-          </div>
+          {game.duration && (
+            <div>
+              <span className="text-gray-500">Duration:</span>
+              <p className="text-amber-300">{formatDuration(game.duration)}</p>
+            </div>
+          )}
+          {game.map && (
+            <div>
+              <span className="text-gray-500">Map:</span>
+              <p className="text-amber-300">{game.map.split('\\').pop() || game.map}</p>
+            </div>
+          )}
           <div>
             <span className="text-gray-500">Category:</span>
             <p className="text-amber-300">{game.category || 'N/A'}</p>

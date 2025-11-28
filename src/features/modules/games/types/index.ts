@@ -178,6 +178,7 @@ export interface CreateCompletedGame {
   replayFileName?: string;
   createdByDiscordId?: string | null;
   submittedAt?: Timestamp | string;
+  scheduledGameId?: number; // Link to scheduled game if this completed game was created from a scheduled game
   playerNames?: string[];
   playerCount?: number;
   verified?: boolean;

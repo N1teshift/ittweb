@@ -9,6 +9,7 @@ import { createGame } from '@/features/modules/games/lib/gameService';
 import type { CreateGame } from '@/features/modules/games/types';
 import { getUserDataByDiscordId } from '@/features/shared/lib/userDataService';
 import { isAdmin } from '@/features/shared/utils/userRoleUtils';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 
 const logger = createComponentLogger('api/scheduled-games');
 
@@ -103,7 +104,9 @@ export default async function handler(
             
             const gameRecord: CreateGame = {
               gameId: createdGame.scheduledGameId,
-              datetime: createdGame.scheduledDateTime,
+              datetime: typeof createdGame.scheduledDateTime === 'string' 
+                ? createdGame.scheduledDateTime 
+                : timestampToIso(createdGame.scheduledDateTime),
               duration: createdGame.gameLength || 1800,
               gamename: `Test Game #${createdGame.scheduledGameId}`,
               map: 'Island Troll Tribes',

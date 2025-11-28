@@ -221,7 +221,7 @@ export async function getAllPosts(includeUnpublished: boolean = false): Promise<
             createdAt: timestampToIso(data.createdAt),
             updatedAt: timestampToIso(data.updatedAt),
             createdByDiscordId: data.createdByDiscordId ?? null,
-            createdByName: data.createdByName,
+            creatorName: data.createdByName,
             published: data.published ?? true,
           });
         });
@@ -254,7 +254,7 @@ export async function getAllPosts(includeUnpublished: boolean = false): Promise<
               createdAt: timestampToIso(data.createdAt),
               updatedAt: timestampToIso(data.updatedAt),
               createdByDiscordId: data.createdByDiscordId ?? null,
-              createdByName: data.createdByName,
+              creatorName: data.createdByName,
               published: data.published ?? true,
             });
           });
@@ -298,7 +298,7 @@ export async function getAllPosts(includeUnpublished: boolean = false): Promise<
           createdAt: timestampToIso(data.createdAt),
           updatedAt: timestampToIso(data.updatedAt),
           createdByDiscordId: data.createdByDiscordId ?? null,
-          createdByName: data.createdByName,
+          creatorName: data.createdByName,
           published: data.published ?? true,
         });
       });

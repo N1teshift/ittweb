@@ -105,6 +105,10 @@ export async function getEntryById(id: string): Promise<Entry | null> {
       }
 
       const data = docSnap.data();
+      if (!data) {
+        logger.info('Entry data is undefined', { id });
+        return null;
+      }
       const dateValue = data.dateString || timestampToIso(data.date);
       
       return {
@@ -348,7 +352,7 @@ export async function updateEntry(id: string, updates: UpdateEntry): Promise<voi
   try {
     logger.info('Updating entry', { id });
 
-    const cleanedUpdates = removeUndefined(updates);
+    const cleanedUpdates = removeUndefined(updates as unknown as Record<string, unknown>);
 
     // Convert date string to Timestamp if date is being updated
     const updateData: Record<string, unknown> = {
@@ -360,7 +364,7 @@ export async function updateEntry(id: string, updates: UpdateEntry): Promise<voi
       const adminDb = getFirestoreAdmin();
       const adminTimestamp = getAdminTimestamp();
       
-      if (cleanedUpdates.date) {
+      if (cleanedUpdates.date && typeof cleanedUpdates.date === 'string') {
         updateData.date = adminTimestamp.fromDate(new Date(cleanedUpdates.date));
         updateData.dateString = cleanedUpdates.date; // Keep string version
       }
@@ -373,7 +377,7 @@ export async function updateEntry(id: string, updates: UpdateEntry): Promise<voi
       const db = getFirestoreInstance();
       const docRef = doc(db, ENTRIES_COLLECTION, id);
       
-      if (cleanedUpdates.date) {
+      if (cleanedUpdates.date && typeof cleanedUpdates.date === 'string') {
         updateData.date = Timestamp.fromDate(new Date(cleanedUpdates.date));
         updateData.dateString = cleanedUpdates.date; // Keep string version
       }

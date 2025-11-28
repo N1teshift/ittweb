@@ -110,7 +110,7 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
       // Build deletion summary message
       const counts = result.deletedCounts || {};
       const summaryLines = Object.entries(counts)
-        .filter(([_, count]) => count > 0)
+        .filter(([_, count]) => typeof count === 'number' && count > 0)
         .map(([key, count]) => `- ${key}: ${count}`)
         .join('\n');
       

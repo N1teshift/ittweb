@@ -20,7 +20,6 @@ export const BUFF_ABILITIES: AbilityData[] = [
     name: 'Armor Bonus + 2',
     category: 'buff',
     description: '',
-    castTime: 'Models\\CarapaceEffect.mdx',
   },
   {
     id: 'sustained-manacost-10-per-second-replenishes-health-to-the-master-healer-and-nearby-allies-healing-1-8-xintelligence-health-per-second-drains-mana-until-deactivated',

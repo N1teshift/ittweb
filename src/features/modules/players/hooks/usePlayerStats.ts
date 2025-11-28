@@ -52,6 +52,7 @@ export function usePlayerStats(
 
   useEffect(() => {
     fetchPlayer();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, filters?.category, filters?.startDate, filters?.endDate, filters?.includeGames]);
 
   return {
