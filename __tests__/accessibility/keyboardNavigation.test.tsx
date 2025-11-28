@@ -1,3 +1,4 @@
+/// <reference types="@testing-library/jest-dom" />
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -6,11 +7,11 @@ import {
   getInteractiveElements,
   isKeyboardFocusable,
   getFocusableElementsInOrder,
-} from '@/features/shared/utils/accessibility/helpers';
-import { logError } from '@/features/shared/utils/loggerUtils';
+} from '@/features/infrastructure/utils/accessibility/helpers';
+import { logError } from '@/features/infrastructure/utils/loggerUtils';
 
 // Mock logger
-jest.mock('@/features/shared/utils/loggerUtils');
+jest.mock('@/features/infrastructure/utils/loggerUtils');
 
 describe('Keyboard Navigation', () => {
   beforeEach(() => {
@@ -36,7 +37,7 @@ describe('Keyboard Navigation', () => {
       const interactiveElements = getInteractiveElements(container);
       expect(interactiveElements.length).toBeGreaterThan(0);
 
-      interactiveElements.forEach((element) => {
+      interactiveElements.forEach((element: HTMLElement) => {
         expect(isKeyboardFocusable(element)).toBe(true);
       });
     });

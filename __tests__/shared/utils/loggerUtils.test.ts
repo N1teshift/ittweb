@@ -1,4 +1,4 @@
-import Logger, { ErrorCategory, createComponentLogger, logError, logAndThrow } from '@/features/shared/utils/loggerUtils';
+import Logger, { ErrorCategory, createComponentLogger, logError, logAndThrow } from '@/features/infrastructure/utils/loggerUtils';
 
 describe('shared logger utils', () => {
   const originalEnv = process.env;

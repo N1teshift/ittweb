@@ -1,3 +1,4 @@
+/// <reference types="@testing-library/jest-dom" />
 import React from 'react';
 import { render } from '@testing-library/react';
 import { ActivityChart } from '@/features/modules/analytics/components/ActivityChart';
@@ -235,4 +236,5 @@ describe('Component Rendering Performance', () => {
     });
   });
 });
+
 

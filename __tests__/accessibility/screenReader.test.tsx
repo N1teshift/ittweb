@@ -1,11 +1,12 @@
+/// <reference types="@testing-library/jest-dom" />
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, beforeEach } from '@jest/globals';
-import { getScreenReaderText } from '@/features/shared/utils/accessibility/helpers';
-import { logError } from '@/features/shared/utils/loggerUtils';
+import { getScreenReaderText } from '@/features/infrastructure/utils/accessibility/helpers';
+import { logError } from '@/features/infrastructure/utils/loggerUtils';
 
 // Mock logger
-jest.mock('@/features/shared/utils/loggerUtils');
+jest.mock('@/features/infrastructure/utils/loggerUtils');
 
 describe('Screen Reader Compatibility', () => {
   beforeEach(() => {

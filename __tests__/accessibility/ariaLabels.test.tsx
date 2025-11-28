@@ -1,3 +1,4 @@
+/// <reference types="@testing-library/jest-dom" />
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -5,11 +6,11 @@ import { describe, it, expect, beforeEach } from '@jest/globals';
 import {
   getElementsWithAriaLabels,
   hasProperAriaLabel,
-} from '@/features/shared/utils/accessibility/helpers';
-import { logError } from '@/features/shared/utils/loggerUtils';
+} from '@/features/infrastructure/utils/accessibility/helpers';
+import { logError } from '@/features/infrastructure/utils/loggerUtils';
 
 // Mock logger
-jest.mock('@/features/shared/utils/loggerUtils');
+jest.mock('@/features/infrastructure/utils/loggerUtils');
 
 describe('ARIA Labels', () => {
   beforeEach(() => {
@@ -33,7 +34,7 @@ describe('ARIA Labels', () => {
 
       // Assert
       expect(elementsWithLabels.length).toBeGreaterThan(0);
-      elementsWithLabels.forEach(({ element, label }) => {
+      elementsWithLabels.forEach(({ element, label }: { element: HTMLElement; label: string | null }) => {
         expect(label).toBeTruthy();
         expect(element).toBeInTheDocument();
       });
@@ -194,7 +195,7 @@ describe('ARIA Labels', () => {
       const divButton = container.querySelector('[role="button"]')!;
       
       const buttonHasLabel = hasProperAriaLabel(buttonWithText);
-      const divHasLabel = hasProperAriaLabel(divButton);
+      const divHasLabel = hasProperAriaLabel(divButton as HTMLElement);
 
       // Assert
       expect(buttonHasLabel).toBe(true);
@@ -293,8 +294,8 @@ describe('ARIA Labels', () => {
       const customButton = container.querySelector('[role="button"]')!;
       const customLink = container.querySelector('[role="link"]')!;
       
-      const buttonHasLabel = hasProperAriaLabel(customButton);
-      const linkHasLabel = hasProperAriaLabel(customLink);
+      const buttonHasLabel = hasProperAriaLabel(customButton as HTMLElement);
+      const linkHasLabel = hasProperAriaLabel(customLink as HTMLElement);
 
       // Assert
       expect(buttonHasLabel).toBe(true);

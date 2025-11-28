@@ -15,18 +15,18 @@ jest.mock('@/features/infrastructure/logging', () => ({
   logError: jest.fn(),
 }));
 
-jest.mock('@/features/shared/utils/userRoleUtils', () => ({
+jest.mock('@/features/infrastructure/utils/userRoleUtils', () => ({
   isAdmin: jest.fn(),
   hasRole: jest.fn(),
 }));
 
-jest.mock('@/features/shared/lib/userDataService', () => ({
+jest.mock('@/features/infrastructure/lib/userDataService', () => ({
   getUserDataByDiscordId: jest.fn(),
 }));
 
 const { getServerSession } = jest.requireMock('next-auth/next');
-const { isAdmin, hasRole } = jest.requireMock('@/features/shared/utils/userRoleUtils');
-const { getUserDataByDiscordId } = jest.requireMock('@/features/shared/lib/userDataService');
+const { isAdmin, hasRole } = jest.requireMock('@/features/infrastructure/utils/userRoleUtils');
+const { getUserDataByDiscordId } = jest.requireMock('@/features/infrastructure/lib/userDataService');
 const { createComponentLogger } = jest.requireMock('@/features/infrastructure/logging');
 
 const mockGetServerSession = getServerSession;
@@ -210,7 +210,7 @@ describe('Security: Authentication & Authorization', () => {
     });
 
     it('should enforce role hierarchy correctly', () => {
-      mockHasRole.mockImplementation((userRole, requiredRole) => {
+      mockHasRole.mockImplementation((userRole: string, requiredRole: string) => {
         const roleHierarchy: Record<string, number> = {
           developer: 5,
           admin: 4,

@@ -4,11 +4,11 @@ import { describe, it, expect, beforeEach } from '@jest/globals';
 import {
   getContrastRatio,
   meetsWCAGContrast,
-} from '@/features/shared/utils/accessibility/helpers';
-import { logError } from '@/features/shared/utils/loggerUtils';
+} from '@/features/infrastructure/utils/accessibility/helpers';
+import { logError } from '@/features/infrastructure/utils/loggerUtils';
 
 // Mock logger
-jest.mock('@/features/shared/utils/loggerUtils');
+jest.mock('@/features/infrastructure/utils/loggerUtils');
 
 describe('Color Contrast', () => {
   beforeEach(() => {
