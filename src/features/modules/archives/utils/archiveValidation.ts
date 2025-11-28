@@ -8,18 +8,27 @@ export interface ArchiveFormFieldsState {
 }
 
 export function validateArchiveForm(fields: ArchiveFormFieldsState): string | null {
-  if (!fields.title.trim()) return 'Title is required';
+  const title = fields.title.trim();
+  const author = fields.author?.trim();
+  const singleDate = fields.singleDate?.trim();
+  const approximateText = fields.approximateText?.trim();
+
+  if (!title) return 'Title is required';
   // Content (Story/Memory) is now optional
-  if (!fields.author?.trim()) return 'Creator name is required';
+  if (!author) return 'Creator name is required';
 
   if (fields.dateType === 'single') {
-    if (!fields.singleDate || !fields.singleDate.trim()) {
+    if (!singleDate) {
       return 'Date is required when Date is selected';
     }
     // Validate date format: YYYY, YYYY-MM, or YYYY-MM-DD
     const datePattern = /^\d{4}(-\d{2}(-\d{2})?)?$/;
-    if (!datePattern.test(fields.singleDate.trim())) {
+    if (!datePattern.test(singleDate)) {
       return 'Date must be in format YYYY, YYYY-MM, or YYYY-MM-DD';
+    }
+  } else if (fields.dateType === 'undated') {
+    if (fields.approximateText && !approximateText) {
+      return 'Approximate time cannot be empty when provided';
     }
   }
   return null;
