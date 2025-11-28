@@ -25,6 +25,13 @@ Use this index to jump to the latest, audience-focused docs.
 - `testing-guide.md` – deeper scenarios + API calls.
 - Both docs link back to `scripts/README.md` so you always regenerate data before testing.
 
+## Workflow (`docs/workflow/`)
+- **`README.md`** – **Agent workflow system overview and quick start guide.**
+- **`agent-tasks.md`** – **Central task management file (all agents read/write here).**
+- **`communication-protocol.md`** – **How agents communicate and coordinate.**
+- **`agent-roles/`** – **Role definitions for each specialized agent (Test, Documentation, UI, API, Quality Control, etc.).**
+- **`progress/`** – **Goal tracking and agent status reports.**
+
 ## Systems (`docs/systems/`)
 - `game-stats/implementation-plan.md` – detailed breakdown of the game stats architecture.
 - `replay-parser/` – integration plan + quick start for the parser.
