@@ -57,19 +57,6 @@ export function GameLinkedArchiveEntry({
     );
   }
 
-  const gameDate = game 
-    ? new Date(
-        game.gameState === 'scheduled' && game.scheduledDateTime
-          ? timestampToIso(game.scheduledDateTime)
-          : game.datetime
-          ? timestampToIso(game.datetime)
-          : timestampToIso(game.createdAt)
-      )
-    : (entry.dateInfo.singleDate 
-        ? new Date(entry.dateInfo.singleDate) 
-        : new Date(timestampToIso(entry.createdAt)));
-  const formattedDate = gameDate.toLocaleDateString();
-  const formattedTime = gameDate.toLocaleTimeString();
 
 
   const handleTextExpandClick = (e: React.MouseEvent) => {
@@ -103,13 +90,10 @@ export function GameLinkedArchiveEntry({
                 {game ? `Game #${game.gameId}` : (gameNumber ? `Game #${gameNumber}` : entry.title)}
               </h3>
             </div>
-            <p className="text-sm text-gray-300">
-              {formattedDate} {formattedTime}
-            </p>
           </div>
-          {(game?.category || gameType) && (
+          {game && game.gameState === 'completed' && (
             <span className="px-3 py-1 text-xs bg-amber-500/30 border border-amber-400/50 rounded text-amber-300 font-medium">
-              {game?.category || gameType}
+              Completed game
             </span>
           )}
         </div>

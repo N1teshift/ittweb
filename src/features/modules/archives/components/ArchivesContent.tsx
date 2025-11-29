@@ -162,7 +162,7 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
       {!loading && (
         <div className="pb-12">
           <TimelineSection 
-            title="Timeline"
+            title=""
             entries={mergedDatedEntries}
             onEdit={isAuthenticated ? onEdit : undefined}
             onDelete={onRequestDelete}

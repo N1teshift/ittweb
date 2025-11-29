@@ -12,7 +12,7 @@ export function convertEntryToArchiveEntry(entry: Entry): ArchiveEntry {
     content: entry.content,
     creatorName: entry.creatorName,
     createdByDiscordId: entry.createdByDiscordId ?? null,
-    entryType: undefined, // Entries don't have entryType
+    entryType: entry.contentType === 'post' ? 'story' : undefined, // Map post to story, memory has no entryType
     images: entry.images,
     videoUrl: entry.videoUrl,
     twitchClipUrl: entry.twitchClipUrl,

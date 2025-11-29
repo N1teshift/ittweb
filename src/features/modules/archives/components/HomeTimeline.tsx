@@ -104,11 +104,11 @@ export default function HomeTimeline() {
         // Fetch archive entries and regular entries (posts/memories) in parallel
         const [archiveEntriesResponse, regularEntriesResponse] = await Promise.all([
           fetch('/api/archives').catch((err) => {
-            logger.error('Failed to fetch archive entries', { error: err });
+            logger.error('Failed to fetch archive entries', err instanceof Error ? err : new Error(String(err)));
             return null;
           }),
           fetch('/api/entries').catch((err) => {
-            logger.error('Failed to fetch regular entries', { error: err });
+            logger.error('Failed to fetch regular entries', err instanceof Error ? err : new Error(String(err)));
             return null;
           }),
         ]);
@@ -146,7 +146,7 @@ export default function HomeTimeline() {
         }
       } catch (err) {
         const error = err instanceof Error ? err : new Error('Unknown error loading entries');
-        logger.error('Failed to load entries', { error });
+        logger.error('Failed to load entries', error);
         if (isMounted) {
           setError('Failed to load timeline. Please try again later.');
         }

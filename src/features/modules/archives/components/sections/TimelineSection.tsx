@@ -17,9 +17,11 @@ export default function TimelineSection({ title, entries, titleClassName, onEdit
 
   return (
     <div className="mb-12">
-      <h2 className={`font-medieval-brand text-3xl mb-8 ${titleClassName ?? 'text-amber-400'}`}>
-        {title}
-      </h2>
+      {title && (
+        <h2 className={`font-medieval-brand text-3xl mb-8 ${titleClassName ?? 'text-amber-400'}`}>
+          {title}
+        </h2>
+      )}
       <div className="space-y-8">
         {entries.map((entry) => (
           <ArchiveEntry
