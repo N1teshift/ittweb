@@ -88,10 +88,7 @@ jobs:
             }
 
       - name: Create or update failure issue
-        if: |
-          github.event_name == 'workflow_run' && 
-          steps.workflow_info.outputs.workflow_conclusion == 'failure' &&
-          steps.check_issue.outputs.issue_exists == 'false'
+        if: github.event_name == 'workflow_run' && steps.workflow_info.outputs.workflow_conclusion == 'failure' && steps.check_issue.outputs.issue_exists == 'false'
         uses: actions/github-script@v7
         with:
           script: |
@@ -138,10 +135,7 @@ _Add investigation findings here..._
             });
 
       - name: Comment on existing issue
-        if: |
-          github.event_name == 'workflow_run' && 
-          steps.workflow_info.outputs.workflow_conclusion == 'failure' &&
-          steps.check_issue.outputs.issue_exists == 'true'
+        if: github.event_name == 'workflow_run' && steps.workflow_info.outputs.workflow_conclusion == 'failure' && steps.check_issue.outputs.issue_exists == 'true'
         uses: actions/github-script@v7
         with:
           script: |
