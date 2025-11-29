@@ -1,12 +1,10 @@
 import React from 'react';
 import GuideIcon from '@/features/modules/guides/components/GuideIcon';
-import { getItemIconPathFromRecord } from '@/features/modules/guides/data/items/iconUtils';
 import type { ItemCategory } from '@/types/items';
 import { useItemsDataSWR } from '@/features/modules/guides/hooks/useItemsDataSWR';
 
-// Note: We use GuideIcon with src override to leverage getItemIconPathFromRecord()
-// which checks item.iconPath first, then ICON_MAP, then default fallback.
-// This ensures we use item-specific icon paths when available.
+// Note: We use GuideIcon without src override to leverage the ICON_MAP system,
+// which provides consistent icon resolution across all pages (same as guides pages).
 
 export default function ItemsPalette() {
   const [query, setQuery] = React.useState('');
@@ -108,7 +106,7 @@ export default function ItemsPalette() {
                     }}
                     title={it.name}
                   >
-                    <GuideIcon category={it.category === 'buildings' ? 'buildings' : 'items'} name={it.name} size={64} src={getItemIconPathFromRecord(it)} />
+                    <GuideIcon category={it.category === 'buildings' ? 'buildings' : 'items'} name={it.name} size={64} />
                     <div className="text-xs font-semibold text-amber-200 break-words text-center mt-0.5 leading-tight">{it.name}</div>
                     {(it.stats?.damage || it.stats?.armor) && (
                       <div className="text-[8px] text-amber-300/80 leading-tight">

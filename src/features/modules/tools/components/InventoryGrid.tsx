@@ -1,6 +1,5 @@
 import React from 'react';
 import GuideIcon from '@/features/modules/guides/components/GuideIcon';
-import { getItemIconPathFromRecord } from '@/features/modules/guides/data/items/iconUtils';
 import type { DragPayload, TrollSide } from '@/features/modules/tools/types';
 import type { ItemData } from '@/types/items';
 
@@ -83,7 +82,6 @@ export default function InventoryGrid({
                     category={item.category === 'buildings' ? 'buildings' : 'items'}
                     name={item.name}
                     size={64}
-                    src={getItemIconPathFromRecord(item)}
                     className="object-cover rounded-md"
                   />
                 </div>

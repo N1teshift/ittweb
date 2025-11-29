@@ -15,6 +15,7 @@ let analytics: Analytics | null = null;
 
 /**
  * Initialize Firebase app (singleton pattern)
+ * Gracefully handles missing config during CI builds
  */
 export function initializeFirebaseApp(): FirebaseApp {
   if (app) {
@@ -22,10 +23,25 @@ export function initializeFirebaseApp(): FirebaseApp {
   }
 
   const config = getFirebaseClientConfig();
-  const errors = config.projectId ? [] : ['Firebase config missing'];
+  const isCI = process.env.CI === 'true';
   
-  if (errors.length > 0) {
-    throw new Error(`Firebase configuration error: ${errors.join(', ')}`);
+  // During CI builds, create a minimal stub config if missing (just to allow build to complete)
+  if (!config.projectId) {
+    if (isCI) {
+      logger.warn('Firebase config missing during CI build - using stub config for build');
+      // Create minimal stub config to allow build to complete
+      const stubConfig = {
+        apiKey: 'stub-api-key',
+        authDomain: 'stub.firebaseapp.com',
+        projectId: 'stub-project',
+        storageBucket: 'stub-project.appspot.com',
+        messagingSenderId: '123456789',
+        appId: 'stub-app-id',
+      };
+      app = initializeApp(stubConfig);
+      return app;
+    }
+    throw new Error(`Firebase configuration error: Firebase config missing`);
   }
 
   // Check if Firebase is already initialized
@@ -89,11 +105,14 @@ export async function getAnalyticsInstance(): Promise<Analytics | null> {
   return null;
 }
 
-// Initialize on import (client-side only)
-if (typeof window !== 'undefined') {
+// Initialize on import (client-side only, and only if config exists)
+if (typeof window !== 'undefined' && !process.env.CI) {
   try {
-    initializeFirebaseApp();
-    getAnalyticsInstance();
+    const config = getFirebaseClientConfig();
+    if (config.projectId) {
+      initializeFirebaseApp();
+      getAnalyticsInstance();
+    }
   } catch (error) {
     logger.error('Firebase initialization error', 
       error instanceof Error ? error : new Error(String(error))
