@@ -14,13 +14,16 @@ jobs:
   monitor-workflows:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       issues: write
       actions: read
       
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Get workflow run information
         id: workflow_info
@@ -167,7 +170,7 @@ This appears to be a recurring issue. Please investigate.`;
         id: status_report
         if: always()
         run: |
-          mkdir -p .workflow/progress/workflow-status
+          mkdir -p /tmp/workflow-status
           
           TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
           DATE=$(date -u +"%Y-%m-%d")
@@ -179,9 +182,10 @@ This appears to be a recurring issue. Please investigate.`;
             WORKFLOW_URL="${{ steps.workflow_info.outputs.workflow_url }}"
             COMMIT_SHA="${{ steps.workflow_info.outputs.commit_sha }}"
             
-            STATUS_FILE=".workflow/progress/workflow-status/${WORKFLOW_NAME,,}-status.md"
+            STATUS_FILE="/tmp/workflow-status/${WORKFLOW_NAME,,}-status.md"
+            STATUS_FILE_NAME="${WORKFLOW_NAME,,}-status.md"
             
-            # Create or update status file
+            # Create or update status file in temp location
             cat > "$STATUS_FILE" << EOF
 # ${WORKFLOW_NAME} Workflow Status
 
@@ -211,7 +215,8 @@ This appears to be a recurring issue. Please investigate.`;
 EOF
           else
             # Scheduled or manual run - generate summary
-            STATUS_FILE=".workflow/progress/workflow-status/overview.md"
+            STATUS_FILE="/tmp/workflow-status/overview.md"
+            STATUS_FILE_NAME="overview.md"
             cat > "$STATUS_FILE" << EOF
 # Workflow Status Overview
 
@@ -237,6 +242,7 @@ EOF
           fi
           
           echo "status_file=$STATUS_FILE" >> $GITHUB_OUTPUT
+          echo "status_file_name=$STATUS_FILE_NAME" >> $GITHUB_OUTPUT
 
       - name: Create workflow summary
         if: github.event_name == 'workflow_run'
@@ -262,5 +268,31 @@ EOF
           if [ "$WORKFLOW_CONCLUSION" = "failure" ]; then
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "⚠️ A GitHub issue has been created or updated for this failure." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Commit and push status files
+        if: always() && steps.status_report.outputs.status_file
+        run: |
+          # Configure git
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Ensure we're on main branch
+          git fetch origin main
+          git checkout main
+          
+          # Copy status files from temp location to repository
+          mkdir -p .workflow/progress/workflow-status
+          cp /tmp/workflow-status/*.md .workflow/progress/workflow-status/ 2>/dev/null || true
+          
+          # Add and commit status files
+          git add .workflow/progress/workflow-status/*.md
+          
+          # Commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: Update workflow status files [skip ci]"
+            git push origin main
           fi
 
