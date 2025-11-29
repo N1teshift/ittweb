@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { EloChart } from '../EloChart';
 import type { EloHistoryDataPoint } from '../../types';
 
@@ -29,7 +29,7 @@ jest.mock('@/features/infrastructure/components/ui/Card', () => ({
 }));
 
 describe('EloChart', () => {
-  it('should render ELO history chart', () => {
+  it('should render ELO history chart', async () => {
     // Arrange
     const data: EloHistoryDataPoint[] = [
       { date: '2024-01-01', elo: 1000 },
@@ -40,7 +40,9 @@ describe('EloChart', () => {
     render(<EloChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('line-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('line-chart')).toBeInTheDocument();
+    });
     expect(screen.getByTestId('responsive-container')).toBeInTheDocument();
   });
 
@@ -55,7 +57,7 @@ describe('EloChart', () => {
     expect(screen.getByText('No ELO history available')).toBeInTheDocument();
   });
 
-  it('should handle many data points', () => {
+  it('should handle many data points', async () => {
     // Arrange
     const data: EloHistoryDataPoint[] = Array.from({ length: 1000 }, (_, i) => ({
       date: `2024-01-${String(i + 1).padStart(2, '0')}`,
@@ -66,7 +68,9 @@ describe('EloChart', () => {
     render(<EloChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('line-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('line-chart')).toBeInTheDocument();
+    });
   });
 
   it('should handle missing data', () => {

@@ -10,12 +10,12 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
-import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { Entry, CreateEntry, UpdateEntry } from '@/types/entry';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { getDocument } from '@/features/infrastructure/api/firebase/firestoreHelpers';
 import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { createTimestampFactoryAsync } from '@/features/infrastructure/utils/timestampUtils';
 import {
   transformEntryDoc,
   prepareEntryDataForFirestore,
@@ -36,22 +36,16 @@ export async function createEntry(entryData: CreateEntry): Promise<string> {
   try {
     logger.info('Creating entry', { contentType: entryData.contentType, title: entryData.title });
 
+    const timestampFactory = await createTimestampFactoryAsync();
+    const firestoreData = prepareEntryDataForFirestore(entryData, timestampFactory);
+
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const AdminTimestamp = getAdminTimestamp();
-      const firestoreData = prepareEntryDataForFirestore(entryData, {
-        fromDate: AdminTimestamp.fromDate.bind(AdminTimestamp) as (date: Date) => Timestamp,
-        now: AdminTimestamp.now.bind(AdminTimestamp) as () => Timestamp,
-      });
       const docRef = await adminDb.collection(ENTRIES_COLLECTION).add(firestoreData);
       logger.info('Entry created', { id: docRef.id, contentType: entryData.contentType });
       return docRef.id;
     } else {
       const db = getFirestoreInstance();
-      const firestoreData = prepareEntryDataForFirestore(entryData, {
-        fromDate: Timestamp.fromDate.bind(Timestamp),
-        now: Timestamp.now.bind(Timestamp),
-      });
       const docRef = await addDoc(collection(db, ENTRIES_COLLECTION), firestoreData);
       logger.info('Entry created', { id: docRef.id, contentType: entryData.contentType });
       return docRef.id;
@@ -72,18 +66,18 @@ export async function createEntry(entryData: CreateEntry): Promise<string> {
  */
 export async function getEntryById(id: string): Promise<Entry | null> {
   try {
-    logger.info('Fetching entry by ID', { id });
+    logger.debug('Fetching entry by ID', { id });
 
     const docSnap = await getDocument(ENTRIES_COLLECTION, id);
 
     if (!docSnap || !docSnap.exists) {
-      logger.info('Entry not found', { id });
+      logger.debug('Entry not found', { id });
       return null;
     }
 
     const data = docSnap.data();
     if (!data) {
-      logger.info('Entry data is undefined', { id });
+      logger.debug('Entry data is undefined', { id });
       return null;
     }
 
@@ -105,7 +99,7 @@ export async function getEntryById(id: string): Promise<Entry | null> {
  */
 export async function getAllEntries(contentType?: 'post' | 'memory'): Promise<Entry[]> {
   try {
-    logger.info('Fetching all entries', { contentType });
+    logger.debug('Fetching all entries', { contentType });
 
     let entries: Entry[] = [];
 
@@ -137,7 +131,7 @@ export async function getAllEntries(contentType?: 'post' | 'memory'): Promise<En
         // If index is still building, fall back to fetching all and filtering in memory
         const firestoreError = error as { code?: number; message?: string };
         if (firestoreError?.code === 9 || firestoreError?.message?.includes('index is currently building')) {
-          logger.info('Index still building, falling back to in-memory filtering');
+          logger.debug('Index still building, falling back to in-memory filtering');
           
           const querySnapshot = await adminDb.collection(ENTRIES_COLLECTION).get();
           const docs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
@@ -176,7 +170,7 @@ export async function getAllEntries(contentType?: 'post' | 'memory'): Promise<En
       entries = docs.map((docSnap) => transformEntryDoc(docSnap.data()!, docSnap.id));
     }
 
-    logger.info('Entries fetched', { count: entries.length });
+    logger.debug('Entries fetched', { count: entries.length });
     return entries;
   } catch (error) {
     const err = error as Error;
@@ -215,21 +209,15 @@ export async function updateEntry(id: string, updates: UpdateEntry): Promise<voi
 
     const cleanedUpdates = removeUndefined(updates as unknown as Record<string, unknown>);
 
+    const timestampFactory = await createTimestampFactoryAsync();
+    const updateData = prepareEntryUpdateData(cleanedUpdates, timestampFactory);
+
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const AdminTimestamp = getAdminTimestamp();
-      const updateData = prepareEntryUpdateData(cleanedUpdates, {
-        fromDate: AdminTimestamp.fromDate.bind(AdminTimestamp) as (date: Date) => Timestamp,
-        now: AdminTimestamp.now.bind(AdminTimestamp) as () => Timestamp,
-      });
       await adminDb.collection(ENTRIES_COLLECTION).doc(id).update(updateData);
     } else {
       const db = getFirestoreInstance();
       const docRef = doc(db, ENTRIES_COLLECTION, id);
-      const updateData = prepareEntryUpdateData(cleanedUpdates, {
-        fromDate: Timestamp.fromDate.bind(Timestamp),
-        now: Timestamp.now.bind(Timestamp),
-      });
       await updateDoc(docRef, updateData);
     }
 
@@ -253,19 +241,15 @@ export async function deleteEntry(id: string): Promise<void> {
   try {
     logger.info('Deleting entry', { id });
 
+    const timestampFactory = await createTimestampFactoryAsync();
+    const deleteData = prepareDeleteData(timestampFactory);
+
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const AdminTimestamp = getAdminTimestamp();
-      const deleteData = prepareDeleteData({
-        now: AdminTimestamp.now.bind(AdminTimestamp) as () => Timestamp,
-      });
       await adminDb.collection(ENTRIES_COLLECTION).doc(id).update(deleteData);
     } else {
       const db = getFirestoreInstance();
       const docRef = doc(db, ENTRIES_COLLECTION, id);
-      const deleteData = prepareDeleteData({
-        now: Timestamp.now.bind(Timestamp),
-      });
       await updateDoc(docRef, deleteData);
     }
 

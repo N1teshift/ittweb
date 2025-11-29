@@ -14,12 +14,12 @@
 - `icon-mapper.types` - Icon mapper type definitions
 
 ### Hooks
-- `useIconMapperData` - Icon mapper data management
+- `useIconMapperData` - Icon mapper data management (in `useIconMapperData.ts`)
 
 ## Usage
 
 ```typescript
-import { useIconMapperData } from '@/features/modules/tools';
+import { useIconMapperData } from '@/features/modules/tools/useIconMapperData';
 import { mapIconId } from '@/features/modules/tools/icon-mapper.utils';
 
 // Use icon mapper hook

@@ -55,6 +55,7 @@ export function DateRangeFilter({
               variant="ghost"
               size="sm"
               onClick={() => handlePreset(preset)}
+              className="min-h-[44px] md:min-h-0"
             >
               {preset.label}
             </Button>
@@ -70,7 +71,7 @@ export function DateRangeFilter({
               selectsStart
               startDate={startDate || undefined}
               endDate={endDate || undefined}
-              className="w-full px-3 py-2 bg-black/40 border border-amber-500/30 rounded text-amber-300 focus:outline-none focus:border-amber-400"
+              className="w-full px-3 py-3 md:py-2 bg-black/40 border border-amber-500/30 rounded text-amber-300 focus:outline-none focus:border-amber-400 min-h-[44px] md:min-h-0"
               dateFormat="yyyy-MM-dd"
             />
           </div>
@@ -83,7 +84,7 @@ export function DateRangeFilter({
               startDate={startDate || undefined}
               endDate={endDate || undefined}
               minDate={startDate || undefined}
-              className="w-full px-3 py-2 bg-black/40 border border-amber-500/30 rounded text-amber-300 focus:outline-none focus:border-amber-400"
+              className="w-full px-3 py-3 md:py-2 bg-black/40 border border-amber-500/30 rounded text-amber-300 focus:outline-none focus:border-amber-400 min-h-[44px] md:min-h-0"
               dateFormat="yyyy-MM-dd"
             />
           </div>

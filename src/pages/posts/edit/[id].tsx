@@ -7,6 +7,7 @@ import { getPostById } from '@/features/modules/blog/lib/postService';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 import EditPostForm from '@/features/modules/blog/components/EditPostForm';
 import type { PostFormState } from '@/features/modules/blog/hooks/useNewPostForm';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 
 type EditPostPageProps = {
   postId: string;
@@ -17,32 +18,59 @@ type EditPostPageProps = {
 export default function EditPostPage({ postId, initialPost, canEdit }: EditPostPageProps) {
   if (!canEdit) {
     return (
-      <>
-        <Head>
-          <title>Edit Post | Island Troll Tribes</title>
-        </Head>
-        <div className="min-h-[calc(100vh-8rem)]">
-          <PageHero
-            title="Edit Post"
-            description="Update an existing post"
-          />
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-            <div className="rounded-xl border border-red-500/30 bg-red-900/20 p-6 backdrop-blur">
-              <p className="text-red-200">
-                You do not have permission to edit this post.
-              </p>
+      <ErrorBoundary>
+        <>
+          <Head>
+            <title>Edit Post | Island Troll Tribes</title>
+          </Head>
+          <div className="min-h-[calc(100vh-8rem)]">
+            <PageHero
+              title="Edit Post"
+              description="Update an existing post"
+            />
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+              <div className="rounded-xl border border-red-500/30 bg-red-900/20 p-6 backdrop-blur">
+                <p className="text-red-200">
+                  You do not have permission to edit this post.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </>
+        </>
+      </ErrorBoundary>
     );
   }
 
   if (!initialPost) {
     return (
+      <ErrorBoundary>
+        <>
+          <Head>
+            <title>Edit Post | Island Troll Tribes</title>
+          </Head>
+          <div className="min-h-[calc(100vh-8rem)]">
+            <PageHero
+              title="Edit Post"
+              description="Update an existing post"
+            />
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+              <div className="rounded-xl border border-amber-500/30 bg-black/30 p-6 backdrop-blur">
+                <p className="text-gray-200">
+                  Post not found.
+                </p>
+              </div>
+            </div>
+          </div>
+        </>
+      </ErrorBoundary>
+    );
+  }
+
+  return (
+    <ErrorBoundary>
       <>
         <Head>
-          <title>Edit Post | Island Troll Tribes</title>
+          <title>Edit Post: {initialPost.title} | Island Troll Tribes</title>
         </Head>
         <div className="min-h-[calc(100vh-8rem)]">
           <PageHero
@@ -50,32 +78,11 @@ export default function EditPostPage({ postId, initialPost, canEdit }: EditPostP
             description="Update an existing post"
           />
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-            <div className="rounded-xl border border-amber-500/30 bg-black/30 p-6 backdrop-blur">
-              <p className="text-gray-200">
-                Post not found.
-              </p>
-            </div>
+            <EditPostForm postId={postId} initialPost={initialPost} />
           </div>
         </div>
       </>
-    );
-  }
-
-  return (
-    <>
-      <Head>
-        <title>Edit Post: {initialPost.title} | Island Troll Tribes</title>
-      </Head>
-      <div className="min-h-[calc(100vh-8rem)]">
-        <PageHero
-          title="Edit Post"
-          description="Update an existing post"
-        />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-          <EditPostForm postId={postId} initialPost={initialPost} />
-        </div>
-      </div>
-    </>
+    </ErrorBoundary>
   );
 }
 
@@ -108,7 +115,12 @@ export const getServerSideProps: GetServerSideProps<EditPostPageProps> = async (
         
         canEdit = userIsAdmin || userIsAuthor;
       } catch (error) {
-        console.error('Failed to check permissions:', error);
+        const { logError } = await import('@/features/infrastructure/logging');
+        logError(error as Error, 'Failed to check permissions', {
+          component: 'posts/edit/[id]',
+          operation: 'getServerSideProps',
+          postId,
+        });
       }
     }
 
@@ -127,7 +139,12 @@ export const getServerSideProps: GetServerSideProps<EditPostPageProps> = async (
       },
     };
   } catch (error) {
-    console.error('Failed to load post:', error);
+    const { logError } = await import('@/features/infrastructure/logging');
+    logError(error as Error, 'Failed to load post', {
+      component: 'posts/edit/[id]',
+      operation: 'getServerSideProps',
+      postId,
+    });
     return {
       props: {
         postId,

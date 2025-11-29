@@ -10,7 +10,7 @@ export function validateString(
   fieldName: string,
   minLength: number = 1,
   maxLength?: number
-): string | null {
+): string | string | null {
   if (typeof value !== 'string') {
     return `${fieldName} must be a string`;
   }
@@ -24,7 +24,7 @@ export function validateString(
     return `${fieldName} must be at most ${maxLength} characters`;
   }
   
-  return null;
+  return trimmed; // Return the validated string value (not null)
 }
 
 /**

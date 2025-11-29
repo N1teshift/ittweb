@@ -9,6 +9,7 @@ import GameDeleteDialog from '@/features/modules/scheduled-games/components/Game
 import UploadReplayModal from '@/features/modules/scheduled-games/components/UploadReplayModal';
 import { Logger } from '@/features/infrastructure/logging';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 import type { GameWithPlayers } from '@/features/modules/games/types';
 
 export default function GameDetailPage() {
@@ -216,11 +217,9 @@ export default function GameDetailPage() {
 
   const handleUploadReplaySuccess = async () => {
     setUploadingReplayGame(null);
-    await refetch?.();
-    // Navigate to the updated game page (it will now be completed)
-    if (game) {
-      router.push(`/games/${game.id}`);
-    }
+    // Force a full page refresh to get the updated game data
+    // This ensures we get fresh data from the server, bypassing any cache
+    router.reload();
   };
 
   const handleUploadReplayClose = () => {
@@ -255,6 +254,7 @@ export default function GameDetailPage() {
   const userIsParticipant = isUserParticipant(game);
 
   return (
+    <ErrorBoundary>
     <div className="container mx-auto px-4 py-8">
       {errorMessage && (
         <div className="mb-4 bg-red-900/50 border border-red-500 rounded px-4 py-2 text-red-200">
@@ -317,6 +317,7 @@ export default function GameDetailPage() {
         />
       )}
     </div>
+    </ErrorBoundary>
   );
 }
 

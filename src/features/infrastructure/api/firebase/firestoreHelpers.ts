@@ -7,7 +7,7 @@
  */
 
 import { getFirestoreInstance } from './firebaseClient';
-import { getFirestoreAdmin, isServerSide } from './admin';
+import { isServerSide } from '@/features/infrastructure/utils/serverUtils';
 import type { Firestore as AdminFirestore } from 'firebase-admin/firestore';
 import type { Firestore as ClientFirestore } from 'firebase/firestore';
 
@@ -18,12 +18,20 @@ import type { Firestore as ClientFirestore } from 'firebase/firestore';
  * @param clientFn - Function to execute with client SDK (receives db instance)
  * @returns Result from the executed function
  */
+// Cache the admin module to avoid repeated imports
+let cachedAdminModule: { getFirestoreAdmin: () => AdminFirestore } | null = null;
+
 export async function withFirestore<T>(
   serverFn: (adminDb: AdminFirestore) => Promise<T>,
   clientFn: (db: ClientFirestore) => Promise<T>
 ): Promise<T> {
   if (isServerSide()) {
-    const adminDb = getFirestoreAdmin();
+    // Dynamic import to prevent firebase-admin from being bundled on client-side
+    // Use ES module dynamic import instead of require() for better compatibility
+    if (!cachedAdminModule) {
+      cachedAdminModule = await import('./admin');
+    }
+    const adminDb = cachedAdminModule.getFirestoreAdmin();
     return serverFn(adminDb);
   } else {
     const db = getFirestoreInstance();

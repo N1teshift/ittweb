@@ -1,6 +1,8 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
-import { saveUserData } from "@/features/infrastructure/lib/userDataService";
+import { createComponentLogger, logError } from "@/features/infrastructure/logging";
+
+const nextAuthLogger = createComponentLogger('nextauth');
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -22,26 +24,29 @@ export const authOptions: NextAuthOptions = {
   debug: process.env.NODE_ENV === 'development',
   events: {
     async signIn(message) {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        console.log('[NextAuth signIn]', message);
-      }
+      // Use logger for sign-in events (debug level)
+      nextAuthLogger.debug('User signed in', { message });
       // User data is saved in the JWT callback to ensure we have complete information
       // including the preferred name from guild nickname if available
     },
   },
   logger: {
     error(code, ...metadata) {
-      if (process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
-        console.error('[NextAuth error]', code, ...metadata);
+      // Use logger for NextAuth errors
+      const meta: Record<string, unknown> = { 
+        code: String(code),
+      };
+      if (metadata.length > 0) {
+        meta.metadata = metadata;
       }
+      nextAuthLogger.error('NextAuth error', undefined, meta);
     },
   },
   callbacks: {
     async jwt({ token, account, profile }) {
-      // On initial sign-in we have both account and profile
-      if (account && profile) {
+      try {
+        // On initial sign-in we have both account and profile
+        if (account && profile) {
         interface DiscordProfile {
           id: string;
           email?: string;
@@ -99,8 +104,10 @@ export const authOptions: NextAuthOptions = {
         }
 
         // Update user data in Firestore with complete information including preferred name
+        // Use dynamic import to avoid pulling Firebase Admin SDK into module initialization
         try {
-          await saveUserData({
+          const { saveUserDataServer } = await import("@/features/infrastructure/lib/userDataService.server");
+          await saveUserDataServer({
             discordId: discordProfile.id || discordAccount.providerAccountId,
             email: discordProfile.email || profile.email,
             name: profile.name,
@@ -113,28 +120,44 @@ export const authOptions: NextAuthOptions = {
         } catch (error) {
           // Log error but don't fail the auth process
           // Always log errors to help with debugging
-          // eslint-disable-next-line no-console
-          console.error('[NextAuth JWT] Failed to update user data:', error);
-          if (error instanceof Error) {
-            // eslint-disable-next-line no-console
-            console.error('[NextAuth JWT] Error details:', {
-              message: error.message,
-              stack: error.stack,
-              discordId: discordProfile.id || discordAccount.providerAccountId,
-            });
-          }
+          logError(error as Error, 'Failed to update user data in JWT callback', {
+            component: 'nextauth',
+            operation: 'jwt',
+            discordId: discordProfile.id || discordAccount.providerAccountId,
+          });
         }
       }
       return token;
+      } catch (error) {
+        // Log error but return token to prevent auth failure
+        logError(error as Error, 'Failed to process JWT callback', {
+          component: 'nextauth',
+          operation: 'jwt',
+        });
+        return token;
+      }
     },
     async session({ session, token }) {
-      // Expose Discord ID and ensure session.user fields reflect our JWT
-      session.discordId = token.discordId;
-      if (session.user) {
-        session.user.name = (token.name as string | undefined) || session.user.name || 'User';
-        session.user.image = (token.picture as string | undefined) || session.user.image || undefined;
+      try {
+        // Expose Discord ID and ensure session.user fields reflect our JWT
+        session.discordId = token.discordId;
+        if (session.user) {
+          session.user.name = (token.name as string | undefined) || session.user.name || 'User';
+          session.user.image = (token.picture as string | undefined) || session.user.image || undefined;
+        }
+        return session;
+      } catch (error) {
+        // Log error but return session with fallback values
+        logError(error as Error, 'Failed to process session callback', {
+          component: 'nextauth',
+          operation: 'session',
+        });
+        // Return minimal valid session to prevent auth failure
+        if (session.user) {
+          session.user.name = session.user.name || 'User';
+        }
+        return session;
       }
-      return session;
     },
   },
 };

@@ -5,7 +5,7 @@
 
 import { Timestamp } from 'firebase/firestore';
 import type { Entry, CreateEntry } from '@/types/entry';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso, type TimestampFactory } from '@/features/infrastructure/utils/timestampUtils';
 import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
 
 /**
@@ -39,10 +39,7 @@ export function transformEntryDoc(data: Record<string, unknown>, docId: string):
  */
 export function prepareEntryDataForFirestore(
   entryData: CreateEntry,
-  timestampFactory: {
-    fromDate: (date: Date) => Timestamp | unknown;
-    now: () => Timestamp | unknown;
-  }
+  timestampFactory: TimestampFactory
 ): Record<string, unknown> {
   const cleanedData = removeUndefined(entryData as unknown as Record<string, unknown>);
   
@@ -69,10 +66,7 @@ export function prepareEntryDataForFirestore(
  */
 export function prepareEntryUpdateData(
   updates: Record<string, unknown>,
-  timestampFactory: {
-    fromDate: (date: Date) => Timestamp | unknown;
-    now: () => Timestamp | unknown;
-  }
+  timestampFactory: TimestampFactory
 ): Record<string, unknown> {
   const updateData: Record<string, unknown> = {
     ...updates,
@@ -92,9 +86,7 @@ export function prepareEntryUpdateData(
  * Prepare soft delete data for Firestore storage
  */
 export function prepareDeleteData(
-  timestampFactory: {
-    now: () => Timestamp | unknown;
-  }
+  timestampFactory: TimestampFactory
 ): Record<string, unknown> {
   const now = timestampFactory.now();
   return {

@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Timestamp } from 'firebase/firestore';
 import { Card } from '@/features/infrastructure/components/ui/Card';
+import { EmptyState } from '@/features/infrastructure/components/ui';
 import { usePlayerStats } from '../hooks/usePlayerStats';
 import type { PlayerSearchFilters } from '../types';
 
@@ -37,7 +38,7 @@ export function PlayerProfile({ name, filters }: PlayerProfileProps) {
   return (
     <div className="space-y-6">
       <Card variant="medieval" className="p-6">
-        <h1 className="text-3xl font-bold text-amber-400 mb-4">{player.name}</h1>
+        <h1 className="text-2xl md:text-4xl font-bold text-amber-400 mb-4">{player.name}</h1>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
           <div>
             <span className="text-gray-500">Total Games:</span>
@@ -104,7 +105,7 @@ export function PlayerProfile({ name, filters }: PlayerProfileProps) {
         </Card>
       )}
 
-      {player.recentGames && player.recentGames.length > 0 && (
+      {player.recentGames && player.recentGames.length > 0 ? (
         <Card variant="medieval" className="p-6">
           <h2 className="text-xl font-semibold text-amber-400 mb-4">Recent Games</h2>
           <div className="space-y-2">
@@ -124,6 +125,11 @@ export function PlayerProfile({ name, filters }: PlayerProfileProps) {
             ))}
           </div>
         </Card>
+      ) : player.totalGames === 0 && (
+        <EmptyState
+          title="No Games Played"
+          message={`${player.name} hasn't played any games yet.`}
+        />
       )}
     </div>
   );

@@ -7,7 +7,7 @@ import SimulationPanel from '@/features/modules/tools/components/SimulationPanel
 import type { TrollLoadout, TrollSide, DragPayload } from '@/features/modules/tools/types';
 import { BASE_TROLL_CLASS_SLUGS } from '@/features/modules/guides/data/units/classes';
 import type { ItemData } from '@/types/items';
-import { useItemsData } from '@/features/modules/guides/hooks/useItemsData';
+import { useItemsDataSWR } from '@/features/modules/guides/hooks/useItemsDataSWR';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
@@ -16,7 +16,7 @@ const DEFAULT_LEVEL = 1;
 const MAX_LEVEL = 60;
 
 export default function DuelSimulator() {
-  const { items: allItems, isLoading: itemsLoading, error: itemsError } = useItemsData();
+  const { items: allItems, isLoading: itemsLoading, error: itemsError } = useItemsDataSWR();
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -92,7 +92,7 @@ export default function DuelSimulator() {
 
   return (
     <div className="min-h-[calc(100vh-8rem)] px-4 md:px-8 py-8 md:py-10">
-        <h1 className="font-medieval-brand text-4xl md:text-5xl mb-6 text-center">Duel Simulator</h1>
+        <h1 className="font-medieval-brand text-2xl md:text-4xl mb-6 text-center">Duel Simulator</h1>
 
         <div className="grid grid-cols-1 xl:grid-cols-[1fr_minmax(320px,420px)_1fr] gap-6 items-start">
           {/* Simulation */}

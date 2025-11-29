@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { PageHero } from '@/features/infrastructure/components';
+import { PageHero, ErrorBoundary } from '@/features/infrastructure/components';
 import { Card } from '@/features/infrastructure/components/ui/Card';
 import { ClassSelectionChart, ClassWinRateChart } from '@/features/modules/analytics/components';
 import LoadingScreen from '@/features/infrastructure/components/ui/LoadingScreen';
@@ -78,10 +78,18 @@ export default function ClassStatisticsPage() {
     : null;
 
   return (
-    <div className="min-h-[calc(100vh-8rem)]">
-      <PageHero title="Class Statistics" description="View class performance and popularity" />
-      
-      <div className="container mx-auto px-4 py-8">
+    <ErrorBoundary>
+      <div className="min-h-[calc(100vh-8rem)]">
+        <PageHero title="Class Statistics" description="View class performance and popularity" />
+        
+        <div className="container mx-auto px-4 py-8">
+          {/* Help Text */}
+          <Card variant="medieval" className="p-4 mb-6 bg-amber-500/10 border-amber-500/30">
+            <p className="text-sm text-gray-300">
+              <span className="text-amber-400 font-semibold">💡 Tip:</span> This page shows statistics for all troll classes across all recorded games. 
+              Click on any class card below to view detailed statistics including win rates, top players, and performance trends.
+            </p>
+          </Card>
         {/* Summary Statistics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <Card variant="medieval" className="p-6">
@@ -151,8 +159,9 @@ export default function ClassStatisticsPage() {
             </div>
           </Card>
         )}
+        </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 }
 

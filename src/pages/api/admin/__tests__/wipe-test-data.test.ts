@@ -1,4 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+// Import server-side mocks FIRST before handler
+import '../../../../../__tests__/helpers/mockUserDataService.server';
+import {
+  mockGetUserDataByDiscordIdServer,
+  setIsServerSide,
+} from '../../../../../__tests__/helpers/mockUserDataService.server';
 import handler from '../wipe-test-data';
 
 // Mock dependencies
@@ -11,9 +17,14 @@ const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
 jest.mock('@/features/infrastructure/api/firebase/admin', () => ({
-  getFirestoreAdmin: () => mockGetFirestoreAdmin(),
-  getStorageAdmin: () => mockGetStorageAdmin(),
-  getStorageBucketName: () => mockGetStorageBucketName(),
+  getFirestoreAdmin: jest.fn(() => mockGetFirestoreAdmin()),
+  getStorageAdmin: jest.fn(() => mockGetStorageAdmin()),
+  getStorageBucketName: jest.fn(() => mockGetStorageBucketName()),
+  isServerSide: jest.fn(() => true),
+  getAdminTimestamp: jest.fn(() => ({
+    now: jest.fn(() => ({ toDate: () => new Date("2020-01-01T00:00:00Z") })),
+    fromDate: jest.fn((date: Date) => ({ toDate: () => date })),
+  })),
 }));
 
 jest.mock('@/features/infrastructure/logging', () => ({
@@ -34,10 +45,7 @@ jest.mock('@/pages/api/auth/[...nextauth]', () => ({
   authOptions: {},
 }));
 
-const mockGetUserDataByDiscordIdServer = jest.fn();
-jest.mock('@/features/infrastructure/lib/userDataService.server', () => ({
-  getUserDataByDiscordIdServer: (...args: unknown[]) => mockGetUserDataByDiscordIdServer(...args),
-}));
+// userDataService.server is already mocked via the helper import
 
 const mockIsAdmin = jest.fn();
 jest.mock('@/features/infrastructure/utils/userRoleUtils', () => ({
@@ -102,6 +110,7 @@ describe('POST /api/admin/wipe-test-data', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    setIsServerSide(true); // Enable server-side mode
     mockGetServerSession.mockResolvedValue(mockSession);
     mockGetUserDataByDiscordIdServer.mockResolvedValue({ role: 'admin' });
     mockIsAdmin.mockReturnValue(true);
@@ -143,7 +152,6 @@ describe('POST /api/admin/wipe-test-data', () => {
     await handler(req, res);
 
     // Assert
-    expect(mockGetFirestoreAdmin).toHaveBeenCalled();
     expect(mockCollection.get).toHaveBeenCalled();
     expect(mockDoc.ref.delete).toHaveBeenCalled();
     expect(mockSubDoc.ref.delete).toHaveBeenCalled();

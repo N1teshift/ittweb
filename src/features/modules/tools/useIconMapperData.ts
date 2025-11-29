@@ -5,7 +5,7 @@ import type { IconFile, IconMapping, EntityStat, IconMappingEntry, MarkedForDele
 import { ABILITIES } from '@/features/modules/guides/data/abilities';
 import { BASE_TROLL_CLASSES, DERIVED_CLASSES } from '@/features/modules/guides/data/units';
 import { createComponentLogger } from '@/features/infrastructure/logging';
-import { useItemsData } from '@/features/modules/guides/hooks/useItemsData';
+import { useItemsDataSWR } from '@/features/modules/guides/hooks/useItemsDataSWR';
 
 const logger = createComponentLogger('useIconMapperData');
 
@@ -20,7 +20,7 @@ export function useIconMapperData() {
   const [icons, setIcons] = useState<IconFile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [markedForDeletion, setMarkedForDeletion] = useState<MarkedForDeletion>(new Set());
-  const { items: itemDataset, isLoading: itemsLoading } = useItemsData();
+  const { items: itemDataset, isLoading: itemsLoading } = useItemsDataSWR();
 
   // Initialize with existing mappings
   useEffect(() => {

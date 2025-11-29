@@ -95,9 +95,13 @@ All API endpoints are documented with request/response formats, authentication r
 - `testing-guide.md` – deeper scenarios + API calls.
 - Both docs link back to `scripts/README.md` so you always regenerate data before testing.
 
+**Database Setup:**
+- `FIRESTORE_INDEXES.md` (in `docs/`) – **CRITICAL**: Complete Firestore index configuration guide. Required for database queries to work properly.
+
 ## Systems (`docs/systems/`)
 - `game-stats/implementation-plan.md` – detailed breakdown of the game stats architecture.
 - `replay-parser/` – integration plan + quick start for the parser.
+- `timestamp-time-management.md` – comprehensive guide to timestamp handling, standardization patterns, and best practices for Firestore timestamps.
 - `scripts/` – icon mapping, extractor guides, plus an `archive/` folder for historical write-ups. All active scripts now live in `scripts/data/`.
 - `/meta` (`src/pages/meta.tsx`) – live analytics dashboard backed by `src/features/modules/analytics`.
 
@@ -134,6 +138,7 @@ All API endpoints are documented with request/response formats, authentication r
 - **`DOCUMENTATION_STYLE.md`** – **Single source of truth for documentation preferences and standards**
 - `DOCUMENTATION_PLAN.md` – Documentation strategy and templates (reference document, not task list)
 - `DOCUMENTATION_AUDIT.md` – Complete documentation inventory (reference document, not task list)
+- **`DOCUMENTATION_REVIEW_PLAN.md`** – Archived (review complete, see `.workflow/progress/documentation-agent/review-findings.md`)
 
 _Tip: start with `product/` when you want to impress someone, drop into `operations/` when you need to run/test, browse `api/` for API endpoints, check `src/features/modules/` for module docs, and browse `systems/` when you need the full picture._
 

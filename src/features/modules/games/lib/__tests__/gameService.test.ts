@@ -53,6 +53,11 @@ jest.mock('../eloCalculator', () => ({
   updateEloScores: jest.fn(),
 }));
 
+const mockGetGames = jest.fn();
+jest.mock('../gameService.read', () => ({
+  getGames: (...args: unknown[]) => mockGetGames(...args),
+}));
+
 const { mockGetDoc, mockGetDocs } = jest.requireMock('firebase/firestore');
 const { collection, doc, addDoc, updateDoc, deleteDoc, query, orderBy, where, limit, Timestamp } = jest.requireMock('firebase/firestore');
 const { getFirestoreInstance } = jest.requireMock('@/features/infrastructure/api/firebase');
@@ -64,8 +69,9 @@ import * as gameService from '../gameService';
 describe('gameService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    // Default to server-side for most tests
     const mockFn = isServerSide as unknown as jest.Mock | undefined;
-    mockFn?.mockReturnValue?.(false);
+    mockFn?.mockReturnValue?.(true);
   });
 
   describe('createCompletedGame', () => {
@@ -97,20 +103,16 @@ describe('gameService', () => {
 
     it('throws when duplicate gameId exists', async () => {
       // Arrange
-      const mockExistingGame = {
-        id: 'existing-game',
-        data: () => ({
+      (isServerSide as jest.Mock).mockReturnValue(true);
+      mockGetGames.mockResolvedValue({ 
+        games: [{
+          id: 'existing-game',
           gameId: 1,
           gameState: 'completed',
           datetime: Timestamp.now(),
           isDeleted: false,
           createdAt: Timestamp.now(),
-        }),
-      };
-      mockGetDocs.mockResolvedValue({
-        empty: false,
-        docs: [mockExistingGame],
-        forEach: (fn: (doc: unknown) => void) => [mockExistingGame].forEach(fn),
+        }] 
       });
 
       // Act & Assert
@@ -130,16 +132,19 @@ describe('gameService', () => {
     });
 
     it('creates a completed game successfully', async () => {
-      // Arrange
-      mockGetDocs.mockResolvedValue({
-        empty: true,
-        docs: [],
-        forEach: jest.fn(),
-      });
+      // Arrange - Ensure server-side mode for this test
+      (isServerSide as jest.Mock).mockReturnValue(true);
+      mockGetGames.mockResolvedValue({ games: [] });
+      
       const mockGameRef = { id: 'game-123', collection: jest.fn() };
-      const mockPlayersCollection = { add: jest.fn() };
+      const mockPlayersCollection = { add: jest.fn().mockResolvedValue({}) };
       mockGameRef.collection.mockReturnValue(mockPlayersCollection);
-      (addDoc as jest.Mock).mockResolvedValue(mockGameRef);
+      
+      // Mock Firebase Admin collection().add() chain
+      const mockAdd = jest.fn().mockResolvedValue(mockGameRef);
+      const mockCollection = jest.fn().mockReturnValue({ add: mockAdd });
+      (getFirestoreAdmin as jest.Mock).mockReturnValue({ collection: mockCollection });
+      
       (updateEloScores as jest.Mock).mockResolvedValue(undefined);
 
       // Act
@@ -159,7 +164,7 @@ describe('gameService', () => {
 
       // Assert
       expect(result).toBe('game-123');
-      expect(addDoc).toHaveBeenCalled();
+      expect(mockAdd).toHaveBeenCalled();
       expect(updateEloScores).toHaveBeenCalledWith('game-123');
     });
   });
@@ -186,14 +191,38 @@ describe('gameService', () => {
     });
 
     it('generates next gameId when not provided', async () => {
-      // Arrange
-      mockGetDocs.mockResolvedValueOnce({
+      // Arrange - Ensure server-side mode for this test
+      (isServerSide as jest.Mock).mockReturnValue(true);
+      
+      // Mock Firebase Admin query chain for getNextGameId: collection().orderBy().limit().get()
+      const mockQueryGet = jest.fn().mockResolvedValue({
         empty: false,
-        docs: [{ data: () => ({ gameId: 5 }) }],
-        forEach: jest.fn(),
+        forEach: (fn: (doc: unknown) => void) => {
+          fn({ data: () => ({ gameId: 5 }) });
+        },
       });
+      const mockQueryLimit = jest.fn().mockReturnValue({ get: mockQueryGet });
+      const mockQueryOrderBy = jest.fn().mockReturnValue({ limit: mockQueryLimit });
+      const mockCollectionQuery = jest.fn().mockReturnValue({ orderBy: mockQueryOrderBy });
+      
+      // Mock Firebase Admin collection().add() for createScheduledGame
       const mockGameRef = { id: 'scheduled-game-123' };
-      (addDoc as jest.Mock).mockResolvedValue(mockGameRef);
+      const mockAdd = jest.fn().mockResolvedValue(mockGameRef);
+      const mockCollectionAdd = jest.fn().mockReturnValue({ add: mockAdd });
+      
+      // Mock getFirestoreAdmin to return collection that supports both query and add
+      (getFirestoreAdmin as jest.Mock).mockReturnValue({ 
+        collection: jest.fn().mockImplementation((collectionName: string) => {
+          if (collectionName === 'games') {
+            // Return mock that supports both query (for getNextGameId) and add (for createScheduledGame)
+            return {
+              orderBy: mockQueryOrderBy,
+              add: mockAdd,
+            };
+          }
+          return { add: mockAdd };
+        }),
+      });
 
       // Act
       await gameService.createScheduledGame({
@@ -206,8 +235,8 @@ describe('gameService', () => {
       });
 
       // Assert
-      expect(addDoc).toHaveBeenCalled();
-      const callArgs = (addDoc as jest.Mock).mock.calls[0][1];
+      expect(mockAdd).toHaveBeenCalled();
+      const callArgs = mockAdd.mock.calls[0][0];
       expect(callArgs.gameId).toBe(6);
     });
   });
@@ -268,17 +297,28 @@ describe('gameService', () => {
   });
 
   describe('getGames', () => {
+    beforeEach(() => {
+      (isServerSide as jest.Mock).mockReturnValue(true);
+    });
+
     it('returns games filtered by gameState', async () => {
-      // Arrange
-      const mockGames = [
+      // Arrange - Mock Firebase Admin query chain: collection().where().where().orderBy().limit().get()
+      const mockDocs = [
         { id: 'g1', data: () => ({ gameId: 1, gameState: 'completed', datetime: Timestamp.now(), isDeleted: false, createdAt: Timestamp.now() }) },
         { id: 'g2', data: () => ({ gameId: 2, gameState: 'completed', datetime: Timestamp.now(), isDeleted: false, createdAt: Timestamp.now() }) },
       ];
-      mockGetDocs.mockResolvedValue({
+      const mockQueryGet = jest.fn().mockResolvedValue({
         empty: false,
-        docs: mockGames,
-        forEach: (fn: (doc: unknown) => void) => mockGames.forEach(fn),
+        forEach: (fn: (doc: { id: string; data: () => Record<string, unknown> }) => void) => {
+          mockDocs.forEach(doc => fn(doc));
+        },
       });
+      const mockQueryLimit = jest.fn().mockReturnValue({ get: mockQueryGet });
+      const mockQueryOrderBy = jest.fn().mockReturnValue({ limit: mockQueryLimit });
+      const mockQueryWhere2 = jest.fn().mockReturnValue({ orderBy: mockQueryOrderBy });
+      const mockQueryWhere1 = jest.fn().mockReturnValue({ where: mockQueryWhere2 });
+      const mockCollection = jest.fn().mockReturnValue({ where: mockQueryWhere1 });
+      (getFirestoreAdmin as jest.Mock).mockReturnValue({ collection: mockCollection });
 
       // Act
       const result = await gameService.getGames({ gameState: 'completed', limit: 20 });
@@ -289,15 +329,23 @@ describe('gameService', () => {
     });
 
     it('filters games by category', async () => {
-      // Arrange
-      const mockGames = [
+      // Arrange - Mock Firebase Admin query chain with category filter
+      const mockDocs = [
         { id: 'g1', data: () => ({ gameId: 1, gameState: 'completed', category: 'ranked', datetime: Timestamp.now(), isDeleted: false, createdAt: Timestamp.now() }) },
       ];
-      mockGetDocs.mockResolvedValue({
+      const mockQueryGet = jest.fn().mockResolvedValue({
         empty: false,
-        docs: mockGames,
-        forEach: (fn: (doc: unknown) => void) => mockGames.forEach(fn),
+        forEach: (fn: (doc: { id: string; data: () => Record<string, unknown> }) => void) => {
+          mockDocs.forEach(doc => fn(doc));
+        },
       });
+      const mockQueryLimit = jest.fn().mockReturnValue({ get: mockQueryGet });
+      const mockQueryOrderBy = jest.fn().mockReturnValue({ limit: mockQueryLimit });
+      const mockQueryWhere3 = jest.fn().mockReturnValue({ orderBy: mockQueryOrderBy });
+      const mockQueryWhere2 = jest.fn().mockReturnValue({ where: mockQueryWhere3 });
+      const mockQueryWhere1 = jest.fn().mockReturnValue({ where: mockQueryWhere2 });
+      const mockCollection = jest.fn().mockReturnValue({ where: mockQueryWhere1 });
+      (getFirestoreAdmin as jest.Mock).mockReturnValue({ collection: mockCollection });
 
       // Act
       const result = await gameService.getGames({ gameState: 'completed', category: 'ranked', limit: 20 });
@@ -308,15 +356,22 @@ describe('gameService', () => {
     });
 
     it('filters games by gameId', async () => {
-      // Arrange
-      const mockGames = [
+      // Arrange - Mock Firebase Admin query chain with gameId filter
+      const mockDocs = [
         { id: 'g1', data: () => ({ gameId: 42, gameState: 'completed', datetime: Timestamp.now(), isDeleted: false, createdAt: Timestamp.now() }) },
       ];
-      mockGetDocs.mockResolvedValue({
+      const mockQueryGet = jest.fn().mockResolvedValue({
         empty: false,
-        docs: mockGames,
-        forEach: (fn: (doc: unknown) => void) => mockGames.forEach(fn),
+        forEach: (fn: (doc: { id: string; data: () => Record<string, unknown> }) => void) => {
+          mockDocs.forEach(doc => fn(doc));
+        },
       });
+      const mockQueryLimit = jest.fn().mockReturnValue({ get: mockQueryGet });
+      const mockQueryOrderBy = jest.fn().mockReturnValue({ limit: mockQueryLimit });
+      const mockQueryWhere2 = jest.fn().mockReturnValue({ orderBy: mockQueryOrderBy });
+      const mockQueryWhere1 = jest.fn().mockReturnValue({ where: mockQueryWhere2 });
+      const mockCollection = jest.fn().mockReturnValue({ where: mockQueryWhere1 });
+      (getFirestoreAdmin as jest.Mock).mockReturnValue({ collection: mockCollection });
 
       // Act
       const result = await gameService.getGames({ gameId: 42, limit: 20 });
@@ -327,16 +382,23 @@ describe('gameService', () => {
     });
 
     it('respects limit parameter', async () => {
-      // Arrange
-      const mockGames = Array.from({ length: 10 }, (_, i) => ({
+      // Arrange - Mock Firebase Admin query chain
+      const mockDocs = Array.from({ length: 5 }, (_, i) => ({
         id: `g${i}`,
         data: () => ({ gameId: i, gameState: 'completed', datetime: Timestamp.now(), isDeleted: false, createdAt: Timestamp.now() }),
       }));
-      mockGetDocs.mockResolvedValue({
+      const mockQueryGet = jest.fn().mockResolvedValue({
         empty: false,
-        docs: mockGames.slice(0, 5),
-        forEach: (fn: (doc: unknown) => void) => mockGames.slice(0, 5).forEach(fn),
+        forEach: (fn: (doc: { id: string; data: () => Record<string, unknown> }) => void) => {
+          mockDocs.forEach(doc => fn(doc));
+        },
       });
+      const mockQueryLimit = jest.fn().mockReturnValue({ get: mockQueryGet });
+      const mockQueryOrderBy = jest.fn().mockReturnValue({ limit: mockQueryLimit });
+      const mockQueryWhere2 = jest.fn().mockReturnValue({ orderBy: mockQueryOrderBy });
+      const mockQueryWhere1 = jest.fn().mockReturnValue({ where: mockQueryWhere2 });
+      const mockCollection = jest.fn().mockReturnValue({ where: mockQueryWhere1 });
+      (getFirestoreAdmin as jest.Mock).mockReturnValue({ collection: mockCollection });
 
       // Act
       const result = await gameService.getGames({ gameState: 'completed', limit: 5 });
@@ -347,9 +409,16 @@ describe('gameService', () => {
   });
 
   describe('updateGame', () => {
+    beforeEach(() => {
+      (isServerSide as jest.Mock).mockReturnValue(true);
+    });
+
     it('updates game successfully', async () => {
-      // Arrange
-      (updateDoc as jest.Mock).mockResolvedValue(undefined);
+      // Arrange - Mock Firebase Admin update chain: collection().doc().update()
+      const mockUpdate = jest.fn().mockResolvedValue(undefined);
+      const mockDoc = jest.fn().mockReturnValue({ update: mockUpdate });
+      const mockCollection = jest.fn().mockReturnValue({ doc: mockDoc });
+      (getFirestoreAdmin as jest.Mock).mockReturnValue({ collection: mockCollection });
       (updateEloScores as jest.Mock).mockResolvedValue(undefined);
 
       // Act
@@ -359,20 +428,25 @@ describe('gameService', () => {
       });
 
       // Assert
-      expect(updateDoc).toHaveBeenCalled();
+      expect(mockDoc).toHaveBeenCalledWith('game-123');
+      expect(mockUpdate).toHaveBeenCalled();
     });
 
     it('recalculates ELO when players are updated', async () => {
-      // Arrange
-      (updateDoc as jest.Mock).mockResolvedValue(undefined);
+      // Arrange - Mock Firebase Admin update chain: collection().doc().update()
+      const mockUpdate = jest.fn().mockResolvedValue(undefined);
+      const mockDoc = jest.fn().mockReturnValue({ update: mockUpdate });
+      const mockCollection = jest.fn().mockReturnValue({ doc: mockDoc });
+      (getFirestoreAdmin as jest.Mock).mockReturnValue({ collection: mockCollection });
       (updateEloScores as jest.Mock).mockResolvedValue(undefined);
 
       // Act
       await gameService.updateGame('game-123', {
-        // UpdateGame doesn't accept players directly
-        // Players are managed separately
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } as any);
+        players: [
+          { name: 'Player1', pid: 0, flag: 'winner' },
+          { name: 'Player2', pid: 1, flag: 'loser' },
+        ],
+      } as Parameters<typeof gameService.updateGame>[1]);
 
       // Assert
       expect(updateEloScores).toHaveBeenCalledWith('game-123');

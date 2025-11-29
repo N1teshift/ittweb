@@ -129,6 +129,12 @@ export default createGetPostHandler<GameListResponse | { id: string }>(
   {
     requireAuth: false, // GET is public, POST will check auth manually
     logRequests: true,
+    // Cache for 2 minutes - games list changes as new games are added
+    cacheControl: {
+      public: true,
+      maxAge: 120,
+      mustRevalidate: true,
+    },
   }
 );
 

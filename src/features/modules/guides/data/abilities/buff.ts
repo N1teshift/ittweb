@@ -26,7 +26,7 @@ export const BUFF_ABILITIES: AbilityData[] = [
     category: 'buff',
     description: '',
     tooltip: '|cffFFD700Sustained manacost:|r |cff7DBEF110|r per second |n|nReplenishes health to the Master Healer and nearby allies, healing |cff1FBF001|r + |cff1FBF008%|rx|cff00EAFFIntelligence|r health per second. |nDrains mana until deactivated.',
-    iconPath: 'BTNHolyBolt.png',
+    iconPath: 'btnholybolt.png',
     manaCost: 20,
     cooldown: 5,
     areaOfEffect: 1,
@@ -45,7 +45,7 @@ export const BUFF_ABILITIES: AbilityData[] = [
     category: 'buff',
     description: '',
     tooltip: 'While in Dream World, Dreamwalker deals additional magic damage to enemies equal to |cffFF02020.1|rx|cff00EAFFIntelligence|r with every attack.\nDamage and manacost is doubled at lvl |cFFFFCC004|r\nCosts |cff7DBEF10.1|rx|cff00EAFFIntelligence|r mana.',
-    iconPath: 'BTNShamanAdept.png',
+    iconPath: 'btnshamanadept.png',
     areaOfEffect: 1,
     hotkey: 'D',
     levels: {
@@ -74,7 +74,7 @@ export const BUFF_ABILITIES: AbilityData[] = [
     category: 'buff',
     description: '',
     tooltip: 'When a thief decides that physical strength and speed are the key to thievery, he become an Escape Artist. The Escape Artist is adept at using pure physical power to escape from enemies. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cff1FBF00Easy|r',
-    iconPath: 'BTNDarkTroll.png',
+    iconPath: 'btndarktroll.png',
     hotkey: 'Q',
   },
   {
@@ -83,7 +83,7 @@ export const BUFF_ABILITIES: AbilityData[] = [
     category: 'buff',
     description: '',
     tooltip: 'The Assassin has combined the physical strength with the evasion magic, he has alot of escaping spells,but also the ability to backstab enemy for a big burst of damage.|cff7DBEF1\n\nDifficulty: |r|cffFF0202Hard|r',
-    iconPath: 'BTNDarkTrollTrapper.png',
+    iconPath: 'btndarktrolltrapper.png',
     hotkey: 'E',
   },
   {

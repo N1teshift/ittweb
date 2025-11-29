@@ -9,9 +9,9 @@ export type AbilityCategory =
   | 'gatherer' 
   | 'item'
   | 'building'
-  | 'auradummy'
   | 'bonushandler'
   | 'buff'
+  | 'auradummy'
   | 'unknown';
 
 export type AbilityData = {
@@ -19,6 +19,8 @@ export type AbilityData = {
   name: string;
   category: AbilityCategory;
   classRequirement?: string;
+  availableToClasses?: string[]; // Classes that can use this ability (from extraction scripts)
+  spellbook?: string; // Spellbook this ability belongs to (from extraction scripts)
   description: string;
   tooltip?: string;
   iconPath?: string;
@@ -28,30 +30,25 @@ export type AbilityData = {
   duration?: number;
   damage?: string;
   effects?: string[];
-  // Targeting & effects
+  // Fields extracted from game data (war3map.w3a and Wurst source files)
   areaOfEffect?: number;
   maxTargets?: number;
-  targetsAllowed?: string;
-  // Usage
   hotkey?: string;
-  castTime?: number | string;
-  // Class relationships
-  availableToClasses?: string[];
-  spellbook?: 'hero' | 'normal' | string;
-  // Visual effects
-  visualEffects?: unknown;
-  // Level-specific data
-  levels?: {
-    [level: string]: {
-      damage?: number | string;
-      manaCost?: number;
-      cooldown?: number;
-      range?: number;
-      areaOfEffect?: number;
-      duration?: number;
-      [key: string]: unknown;
-    };
+  targetsAllowed?: string;
+  castTime?: number | string; // Can be a number (seconds) or string (model path from extraction)
+  visualEffects?: {
+    attachmentPoints?: (string | number)[];
+    attachmentTarget?: string;
+    [key: string]: unknown; // Allow other visual effect properties
   };
-  // Allow additional properties
-  [key: string]: unknown;
+  // Level-specific data (keys are level numbers as strings, e.g., "1", "2")
+  levels?: Record<string, {
+    manaCost?: number;
+    cooldown?: number;
+    duration?: number;
+    range?: number;
+    damage?: string;
+    areaOfEffect?: number;
+    [key: string]: unknown; // Allow other level-specific properties
+  }>;
 };

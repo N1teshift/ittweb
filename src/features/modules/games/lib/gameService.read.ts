@@ -11,7 +11,7 @@ import {
   QueryConstraint,
 } from 'firebase/firestore';
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
-import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import type { 
   Game, 
@@ -122,6 +122,8 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
+      const { createTimestampFactoryAsync } = await import('@/features/infrastructure/utils/timestampUtils');
+      const timestampFactory = await createTimestampFactoryAsync();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let gamesQuery: any = adminDb.collection(GAMES_COLLECTION);
 
@@ -135,10 +137,10 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
         if (gameState === 'scheduled') {
           // For scheduled games, filter by scheduledDateTime
           if (startDate) {
-            gamesQuery = gamesQuery.where('scheduledDateTime', '>=', getAdminTimestamp().fromDate(new Date(startDate)));
+            gamesQuery = gamesQuery.where('scheduledDateTime', '>=', timestampFactory.fromDate(new Date(startDate)));
           }
           if (endDate) {
-            gamesQuery = gamesQuery.where('scheduledDateTime', '<=', getAdminTimestamp().fromDate(new Date(endDate)));
+            gamesQuery = gamesQuery.where('scheduledDateTime', '<=', timestampFactory.fromDate(new Date(endDate)));
           }
           if (gameId !== undefined) {
             gamesQuery = gamesQuery.where('gameId', '==', gameId);
@@ -150,10 +152,10 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
         } else if (gameState === 'completed') {
           // For completed games, filter by datetime
           if (startDate) {
-            gamesQuery = gamesQuery.where('datetime', '>=', getAdminTimestamp().fromDate(new Date(startDate)));
+            gamesQuery = gamesQuery.where('datetime', '>=', timestampFactory.fromDate(new Date(startDate)));
           }
           if (endDate) {
-            gamesQuery = gamesQuery.where('datetime', '<=', getAdminTimestamp().fromDate(new Date(endDate)));
+            gamesQuery = gamesQuery.where('datetime', '<=', timestampFactory.fromDate(new Date(endDate)));
           }
           if (category) {
             gamesQuery = gamesQuery.where('category', '==', category);

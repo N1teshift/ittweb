@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { getDerivedClassBySlug, SUBCLASS_SLUGS, DerivedClassData } from '@/features/modules/guides/data/units/derivedClasses';
 import { getClassBySlug } from '@/features/modules/guides/data/units/classes';
@@ -28,6 +29,7 @@ export default function SubclassDetail({ cls }: Props) {
   const parent = getClassBySlug(cls.parentSlug);
   const msOffset = getMoveSpeedOffset('sub');
   return (
+    <ErrorBoundary>
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6 space-x-4">
           <Link href="/guides/troll-classes" className="text-amber-400 hover:text-amber-300">← Troll Classes Overview</Link>
@@ -53,6 +55,7 @@ export default function SubclassDetail({ cls }: Props) {
           perLevelMsBonus={MOVESPEED_PER_LEVEL}
         />
       </div>
+    </ErrorBoundary>
   );
 }
 

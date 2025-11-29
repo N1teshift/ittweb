@@ -4,14 +4,16 @@ Player statistics and profile endpoints.
 
 ## `GET /api/players`
 
-List all players.
+List all players with cursor-based pagination.
 
 **Query Parameters**:
-- `limit` (number, optional) - Maximum number of players to return (default: 100, max: 100)
+- `limit` (number, optional) - Maximum number of players to return (default: 50)
+- `lastPlayerName` (string, optional) - Cursor for pagination (player name to start after)
 
 **Example Request**:
 ```
 GET /api/players?limit=50
+GET /api/players?limit=50&lastPlayerName=Player50
 ```
 
 **Response**:
@@ -22,7 +24,7 @@ GET /api/players?limit=50
 }
 ```
 
-**Note**: The default limit was reduced from 500 to 100 for better initial load performance. Full pagination support is planned for future implementation.
+**Pagination**: The endpoint supports cursor-based pagination using `lastPlayerName`. To get the next page, use the name of the last player from the previous response as the `lastPlayerName` parameter.
 
 ## `GET /api/players/[name]`
 

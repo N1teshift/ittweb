@@ -177,8 +177,8 @@ export default createPostHandler<{ gameId: string; message: string }>(
     const playerCount = parsedGameData.players.length;
 
     // Update game document
-    await gameRef.update({
-      gameState: 'completed',
+    const updateData = {
+      gameState: 'completed' as const,
       datetime: adminTimestamp.fromDate(new Date(parsedGameData.datetime)),
       duration: parsedGameData.duration,
       gamename: parsedGameData.gamename,
@@ -194,7 +194,51 @@ export default createPostHandler<{ gameId: string; message: string }>(
       // Keep scheduled fields for history
       // scheduledDateTime is already in the document
       // participants array is already in the document
+    };
+
+    logger.debug('Updating game to completed state', {
+      gameId,
+      updateData: {
+        ...updateData,
+        datetime: parsedGameData.datetime, // Log the string version for debugging
+      },
     });
+
+    try {
+      await gameRef.update(updateData);
+      logger.info('Game state updated to completed', { gameId });
+      
+      // Verify the update succeeded
+      const updatedGameSnap = await gameRef.get();
+      if (!updatedGameSnap.exists) {
+        throw new Error('Game document does not exist after update');
+      }
+      const updatedGameData = updatedGameSnap.data();
+      if (updatedGameData?.gameState !== 'completed') {
+        logger.error('Game state update verification failed', undefined, {
+          gameId,
+          expected: 'completed',
+          actual: updatedGameData?.gameState,
+          updateData: {
+            gameState: updateData.gameState,
+          },
+        });
+        throw new Error(`Game state update failed: expected 'completed', got '${updatedGameData?.gameState}'`);
+      }
+      logger.info('Game state update verified', { gameId, gameState: updatedGameData.gameState });
+    } catch (updateError) {
+      const err = updateError as Error;
+      logger.error('Failed to update game state to completed', err, {
+        component: 'api/games/[id]/upload-replay',
+        operation: 'updateGameState',
+        gameId,
+        updateData: {
+          gameState: updateData.gameState,
+          datetime: parsedGameData.datetime,
+        },
+      });
+      throw new Error(`Failed to update game state: ${err.message}`);
+    }
 
     // Add players to subcollection (clear existing players first if any)
     const playersCollection = gameRef.collection('players');

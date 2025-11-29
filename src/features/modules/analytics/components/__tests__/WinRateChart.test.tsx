@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { WinRateChart } from '../WinRateChart';
 import type { WinRateData } from '../../types';
 
@@ -29,7 +29,7 @@ jest.mock('@/features/infrastructure/components/ui/Card', () => ({
 }));
 
 describe('WinRateChart', () => {
-  it('should render win rate pie chart', () => {
+  it('should render win rate pie chart', async () => {
     // Arrange
     const data: WinRateData = { wins: 10, losses: 5, draws: 2 };
 
@@ -37,11 +37,13 @@ describe('WinRateChart', () => {
     render(<WinRateChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
+    });
     expect(screen.getByTestId('responsive-container')).toBeInTheDocument();
   });
 
-  it('should calculate percentages correctly', () => {
+  it('should calculate percentages correctly', async () => {
     // Arrange
     const data: WinRateData = { wins: 10, losses: 5, draws: 5 };
 
@@ -49,10 +51,12 @@ describe('WinRateChart', () => {
     render(<WinRateChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
+    });
   });
 
-  it('should handle zero wins', () => {
+  it('should handle zero wins', async () => {
     // Arrange
     const data: WinRateData = { wins: 0, losses: 5, draws: 0 };
 
@@ -60,10 +64,12 @@ describe('WinRateChart', () => {
     render(<WinRateChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
+    });
   });
 
-  it('should handle all wins', () => {
+  it('should handle all wins', async () => {
     // Arrange
     const data: WinRateData = { wins: 10, losses: 0, draws: 0 };
 
@@ -71,7 +77,9 @@ describe('WinRateChart', () => {
     render(<WinRateChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
+    });
   });
 
   it('should handle no data', () => {
@@ -85,7 +93,7 @@ describe('WinRateChart', () => {
     expect(screen.getByText('No win rate data available')).toBeInTheDocument();
   });
 
-  it('should handle equal rates', () => {
+  it('should handle equal rates', async () => {
     // Arrange
     const data: WinRateData = { wins: 5, losses: 5, draws: 5 };
 
@@ -93,10 +101,12 @@ describe('WinRateChart', () => {
     render(<WinRateChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
+    });
   });
 
-  it('should handle missing categories', () => {
+  it('should handle missing categories', async () => {
     // Arrange
     const data: WinRateData = { wins: 10, losses: 0, draws: 0 };
 
@@ -104,7 +114,9 @@ describe('WinRateChart', () => {
     render(<WinRateChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
+    });
   });
 
   it('should display custom title', () => {

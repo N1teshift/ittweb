@@ -345,32 +345,40 @@ describe('playerService', () => {
         { id: 'p2', data: () => ({ name: 'Player2', categories: {}, createdAt: Timestamp.now(), updatedAt: Timestamp.now() }) },
       ];
       mockGetDocs.mockResolvedValue({
+        docs: mockPlayers,
         forEach: (fn: (doc: unknown) => void) => mockPlayers.forEach(fn),
+        empty: false,
       });
 
       // Act
       const result = await getAllPlayers(10);
 
       // Assert
-      expect(result).toHaveLength(2);
-      expect(result[0].name).toBe('Player1');
+      expect(result.players).toHaveLength(2);
+      expect(result.players[0].name).toBe('Player1');
+      expect(result.hasMore).toBe(false);
     });
 
     it('respects limit parameter', async () => {
       // Arrange
-      const mockPlayers = Array.from({ length: 20 }, (_, i) => ({
+      // Create 6 players (limit 5 + 1) to test hasMore logic
+      const mockPlayers = Array.from({ length: 6 }, (_, i) => ({
         id: `p${i}`,
         data: () => ({ name: `Player${i}`, categories: {}, createdAt: Timestamp.now(), updatedAt: Timestamp.now() }),
       }));
       mockGetDocs.mockResolvedValue({
+        docs: mockPlayers,
         forEach: (fn: (doc: unknown) => void) => mockPlayers.forEach(fn),
+        empty: false,
       });
 
       // Act
       const result = await getAllPlayers(5);
 
       // Assert
-      expect(result).toHaveLength(5);
+      expect(result.players).toHaveLength(5);
+      // hasMore should be true because we fetched 6 docs (limit 5 + 1) and 6 > 5
+      expect(result.hasMore).toBe(true);
     });
   });
 
@@ -392,7 +400,9 @@ describe('playerService', () => {
         { id: 'p2', data: () => ({ name: 'AliceSmith' }) },
       ];
       mockGetDocs.mockResolvedValue({
+        docs: mockPlayers,
         forEach: (fn: (doc: unknown) => void) => mockPlayers.forEach(fn),
+        empty: false,
       });
 
       // Act
@@ -409,7 +419,9 @@ describe('playerService', () => {
         { id: 'p1', data: () => ({ name: 'Alice' }) },
       ];
       mockGetDocs.mockResolvedValue({
+        docs: mockPlayers,
         forEach: (fn: (doc: unknown) => void) => mockPlayers.forEach(fn),
+        empty: false,
       });
 
       // Act

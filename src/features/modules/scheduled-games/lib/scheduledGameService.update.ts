@@ -1,8 +1,9 @@
-import { doc, updateDoc, Timestamp } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
-import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { CreateScheduledGame } from '@/types/scheduledGame';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createTimestampFactoryAsync } from '@/features/infrastructure/utils/timestampUtils';
 
 const GAMES_COLLECTION = 'games'; // Unified games collection (scheduled and completed)
 const logger = createComponentLogger('scheduledGameService');
@@ -43,14 +44,9 @@ export async function updateScheduledGame(
       if (isNaN(date.getTime())) {
         throw new Error(`Invalid scheduledDateTime: ${updates.scheduledDateTime}`);
       }
-      if (isServerSide()) {
-        const adminTimestamp = getAdminTimestamp();
-        updateData.scheduledDateTime = adminTimestamp.fromDate(date);
-        updateData.scheduledDateTimeString = updates.scheduledDateTime;
-      } else {
-        updateData.scheduledDateTime = Timestamp.fromDate(date);
-        updateData.scheduledDateTimeString = updates.scheduledDateTime;
-      }
+      const timestampFactory = await createTimestampFactoryAsync();
+      updateData.scheduledDateTime = timestampFactory.fromDate(date);
+      updateData.scheduledDateTimeString = updates.scheduledDateTime;
     }
     
     // Handle other optional fields from CreateScheduledGame (only if they're strings/numbers, not Timestamps)
@@ -72,12 +68,8 @@ export async function updateScheduledGame(
         if (isNaN(date.getTime())) {
           throw new Error(`Invalid submittedAt: ${updates.submittedAt}`);
         }
-        if (isServerSide()) {
-          const adminTimestamp = getAdminTimestamp();
-          updateData.submittedAt = adminTimestamp.fromDate(date);
-        } else {
-          updateData.submittedAt = Timestamp.fromDate(date);
-        }
+        const timestampFactory = await createTimestampFactoryAsync();
+        updateData.submittedAt = timestampFactory.fromDate(date);
       } else {
         // If it's already a Timestamp, use it directly
         updateData.submittedAt = updates.submittedAt;
@@ -90,22 +82,20 @@ export async function updateScheduledGame(
       return;
     }
 
+    const timestampFactory = await createTimestampFactoryAsync();
+    
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const adminTimestamp = getAdminTimestamp();
-      
-      // Update in unified games collection
       await adminDb.collection(GAMES_COLLECTION).doc(id).update({
         ...updateData,
-        updatedAt: adminTimestamp.now(),
+        updatedAt: timestampFactory.now(),
       });
     } else {
       const db = getFirestoreInstance();
       const docRef = doc(db, GAMES_COLLECTION, id);
-      
       await updateDoc(docRef, {
         ...updateData,
-        updatedAt: Timestamp.now(),
+        updatedAt: timestampFactory.now(),
       });
     }
 

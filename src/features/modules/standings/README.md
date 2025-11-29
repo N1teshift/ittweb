@@ -24,7 +24,7 @@
 ## Usage
 
 ```typescript
-import { useStandings } from '@/features/modules/standings';
+import { useStandings } from '@/features/modules/standings/hooks/useStandings';
 import { getStandings } from '@/features/modules/standings/lib/standingsService';
 
 // Fetch standings with hook

@@ -1,43 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { PageHero } from '@/features/infrastructure/components';
 import { Card } from '@/features/infrastructure/components/ui/Card';
-import type { ClassStats } from '../../analytics/types';
+import { useClassesData } from '../hooks/useClassesData';
 
 interface ClassesPageProps {
   pageNamespaces: string[];
 }
 
 export function ClassesPage({ pageNamespaces: _pageNamespaces }: ClassesPageProps) {
-  const [classStats, setClassStats] = useState<ClassStats[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [category, setCategory] = useState<string>('');
-
-  const fetchClassStats = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const url = category 
-        ? `/api/classes?category=${encodeURIComponent(category)}`
-        : '/api/classes';
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error('Failed to load class statistics');
-      }
-      const result = await response.json();
-      const statsData = result.data || result;
-      setClassStats(Array.isArray(statsData) ? statsData : []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load class statistics');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchClassStats();
-  }, [category]); // eslint-disable-line react-hooks/exhaustive-deps
+  const { classes: classStats, isLoading: loading, error } = useClassesData(category || undefined);
 
   if (loading) {
     return (
@@ -61,7 +34,7 @@ export function ClassesPage({ pageNamespaces: _pageNamespaces }: ClassesPageProp
         <PageHero title="Class Statistics" description="View statistics for each troll class" />
         <div className="container mx-auto px-4 py-8">
           <Card variant="medieval" className="p-8">
-            <p className="text-red-400">Error: {error}</p>
+            <p className="text-red-400">Error: {error instanceof Error ? error.message : String(error)}</p>
           </Card>
         </div>
       </div>

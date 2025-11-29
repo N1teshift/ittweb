@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { BASE_TROLL_CLASS_SLUGS, getClassBySlug, TrollClassData } from '@/features/modules/guides/data/units/classes';
 import { getSubclassesByParentSlug, getSupersByParentSlug } from '@/features/modules/guides/data/units/derivedClasses';
@@ -92,7 +93,6 @@ function AbilityCard({ ability }: { ability: AbilityData }) {
       category="abilities" 
       name={ability.name} 
       size={48}
-      src={ability.iconPath ? `/icons/itt/${ability.iconPath}` : undefined}
     />
   );
 
@@ -115,6 +115,7 @@ export default function TrollClassDetail({ cls }: Props) {
   const abilities = getAbilitiesByClass(cls.slug);
   const msOffset = getMoveSpeedOffset('base');
   return (
+    <ErrorBoundary>
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6">
           <Link href="/guides/troll-classes" className="text-amber-400 hover:text-amber-300">← Troll Classes Overview</Link>
@@ -189,6 +190,7 @@ export default function TrollClassDetail({ cls }: Props) {
           </section>
         )}
     </div>
+    </ErrorBoundary>
   );
 }
 

@@ -9,9 +9,19 @@
 - `GameCard` - Card component for individual game display
 - `GameDetail` - Detailed game view with player information
 
+### Filter Components (in `shared/components/`)
+- `GameFiltersComponent` - Main filter UI component combining all filter types
+- `PlayerFilter` - Filter games by player name
+- `TeamFormatFilter` - Filter games by team format (e.g., "4v4", "3v3")
+- `DateRangeFilter` - Filter games by date range (shared component)
+
 ### Hooks
 - `useGames` - Fetch and filter games list
 - `useGame` - Fetch single game by ID
+- `useGameFilters` - Manage game filters with URL sync and localStorage persistence
+  - Syncs filters with URL query parameters
+  - Persists filters to localStorage
+  - Provides `filters`, `setFilters`, `updateFilter`, `resetFilters`, `hasActiveFilters`, and `activeFilterCount`
 
 ### Services
 - `gameService` - CRUD operations for games (split into focused modules: create, read, update, delete, participation, utils)
@@ -40,7 +50,7 @@ All functions are still available via the main `gameService` import for backward
 ## Usage
 
 ```typescript
-import { useGames } from '@/features/modules/games';
+import { useGames } from '@/features/modules/games/hooks/useGames';
 import { createGame } from '@/features/modules/games/lib/gameService';
 
 // Fetch games with filters
@@ -58,6 +68,18 @@ const newGame = await createGame({
     { name: 'Player2', team: 1, result: 'win', elo: 1500 }
   ]
 });
+
+// Use game filters with URL sync and localStorage
+import { useGameFilters } from '@/features/modules/games/hooks/useGameFilters';
+import { GameFiltersComponent } from '@/features/modules/shared/components';
+
+const { filters, setFilters, resetFilters, hasActiveFilters, activeFilterCount } = useGameFilters();
+
+<GameFiltersComponent
+  filters={filters}
+  onFiltersChange={setFilters}
+  onReset={resetFilters}
+/>
 ```
 
 ## API Routes

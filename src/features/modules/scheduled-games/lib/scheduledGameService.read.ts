@@ -34,9 +34,11 @@ export async function getAllScheduledGames(includePast: boolean = false, include
       
       try {
         logger.debug('Querying unified games collection for scheduled games');
+        // Use Index 1 for efficient sorting: isDeleted (Asc), gameState (Asc), scheduledDateTime (Asc)
         const gamesQuerySnapshot = await adminDb.collection(GAMES_COLLECTION)
           .where('gameState', '==', 'scheduled')
           .where('isDeleted', '==', false)
+          .orderBy('scheduledDateTime', 'asc')
           .get();
         
         logger.debug('Found scheduled games in games collection', { count: gamesQuerySnapshot.size });
@@ -52,12 +54,37 @@ export async function getAllScheduledGames(includePast: boolean = false, include
         
         logger.debug('Added scheduled games from unified games collection', { count: gamesQuerySnapshot.size });
       } catch (gamesCollectionError) {
-        logger.warn('Failed to query games collection for scheduled games', { 
-          error: gamesCollectionError instanceof Error ? gamesCollectionError.message : String(gamesCollectionError) 
-        });
+        // If index is missing, fall back to fetching all and sorting in memory
+        const firestoreError = gamesCollectionError as { code?: string; message?: string };
+        if (firestoreError?.code === 'failed-precondition' || firestoreError?.message?.includes('index')) {
+          logger.warn('Index missing for scheduled games query, using fallback', {
+            error: gamesCollectionError instanceof Error ? gamesCollectionError.message : String(gamesCollectionError)
+          });
+          
+          // Fallback: fetch without orderBy, sort in memory
+          const fallbackSnapshot = await adminDb.collection(GAMES_COLLECTION)
+            .where('gameState', '==', 'scheduled')
+            .where('isDeleted', '==', false)
+            .get();
+          
+          fallbackSnapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            const scheduledDateTime = (data.scheduledDateTimeString as string) || timestampToIso(data.scheduledDateTime);
+            
+            if (shouldIncludeGame(data, scheduledDateTime, includePast, includeArchived)) {
+              games.push(convertGameDataToScheduledGame(docSnap.id, data));
+            }
+          });
+        } else {
+          logger.warn('Failed to query games collection for scheduled games', { 
+            error: gamesCollectionError instanceof Error ? gamesCollectionError.message : String(gamesCollectionError) 
+          });
+        }
       }
       
-      // Final sort by scheduled date (ascending - upcoming first)
+      // Sort by scheduled date (ascending - upcoming first)
+      // Note: Results from index-based query are already sorted, but we sort anyway
+      // to ensure correctness if fallback was used or if filtering changed order
       games.sort((a, b) => {
         const dateA = new Date(timestampToIso(a.scheduledDateTime)).getTime();
         const dateB = new Date(timestampToIso(b.scheduledDateTime)).getTime();

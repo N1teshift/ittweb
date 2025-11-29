@@ -9,8 +9,8 @@ import {
 } from '../validators';
 
 describe('validateString', () => {
-  it('should return null for valid non-empty string', () => {
-    expect(validateString('hello', 'field')).toBeNull();
+  it('should return validated string for valid non-empty string', () => {
+    expect(validateString('hello', 'field')).toBe('hello');
   });
 
   it('should return error for non-string value', () => {
@@ -31,24 +31,24 @@ describe('validateString', () => {
   });
 
   it('should accept trimmed string that meets minLength', () => {
-    expect(validateString('  hello  ', 'field')).toBeNull();
+    expect(validateString('  hello  ', 'field')).toBe('hello');
   });
 
   it('should enforce minLength', () => {
     expect(validateString('ab', 'field', 3)).toBe('field must be at least 3 character(s)');
-    expect(validateString('abc', 'field', 3)).toBeNull();
+    expect(validateString('abc', 'field', 3)).toBe('abc');
   });
 
   it('should enforce maxLength', () => {
     expect(validateString('hello', 'field', 1, 3)).toBe('field must be at most 3 characters');
-    expect(validateString('hi', 'field', 1, 3)).toBeNull();
-    expect(validateString('abc', 'field', 1, 3)).toBeNull();
+    expect(validateString('hi', 'field', 1, 3)).toBe('hi');
+    expect(validateString('abc', 'field', 1, 3)).toBe('abc');
   });
 
   it('should handle minLength and maxLength together', () => {
     expect(validateString('a', 'field', 2, 5)).toBe('field must be at least 2 character(s)');
     expect(validateString('abcdef', 'field', 2, 5)).toBe('field must be at most 5 characters');
-    expect(validateString('abc', 'field', 2, 5)).toBeNull();
+    expect(validateString('abc', 'field', 2, 5)).toBe('abc');
   });
 });
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useModalAccessibility } from '@/features/infrastructure/hooks/useModalAccessibility';
 
 interface PostDeleteDialogProps {
   isOpen: boolean;
@@ -17,18 +18,31 @@ export default function PostDeleteDialog({
   onConfirm,
   onCancel,
 }: PostDeleteDialogProps) {
+  const modalRef = useModalAccessibility({
+    isOpen,
+    onClose: onCancel,
+    trapFocus: true,
+    focusOnOpen: true,
+  });
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+    <div 
+      ref={modalRef}
+      className="fixed inset-0 z-50 flex items-center justify-center px-4" 
+      role="dialog" 
+      aria-modal="true" 
+      aria-labelledby="delete-dialog-title"
+    >
       <div 
         className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
         aria-hidden="true"
         onClick={onCancel}
       />
-      <div className="relative w-full max-w-md rounded-lg border border-amber-500/40 bg-gray-900/95 backdrop-blur-md p-6 shadow-2xl">
+      <div className="relative w-full max-w-md rounded-lg border border-amber-500/40 bg-gray-900/95 backdrop-blur-md p-6 shadow-2xl animate-scale-in">
         <div className="mb-4">
-          <h3 className="text-2xl font-semibold text-white font-medieval">Delete Post?</h3>
+          <h3 id="delete-dialog-title" className="text-2xl font-semibold text-white font-medieval">Delete Post?</h3>
           <p className="mt-2 text-sm text-gray-300">
             {postTitle
               ? `"${postTitle}" will be permanently deleted. This action cannot be undone.`

@@ -40,56 +40,86 @@ When linking between collections, use these standardized field names:
 
 ## Collection Schemas
 
-### 1. `scheduledGames` Collection
+### 1. `games` Collection (Unified - Scheduled and Completed Games)
+
+**⚠️ IMPORTANT**: The `games` collection uses a **unified design** that stores both scheduled and completed games in a single collection. Use the `gameState` field to distinguish between game types.
 
 **Standardized Schema:**
 ```typescript
-interface ScheduledGame {
+interface Game {
   // Document Identity
   id: string; // Firestore document ID
   
-  // Core Fields
-  scheduledGameId: number; // Unique numeric ID for scheduled games
-  scheduledDateTime: Timestamp | string; // ISO 8601 string in UTC or Timestamp
-  scheduledDateTimeString: string; // ISO 8601 string (for querying)
-  timezone: string; // IANA timezone identifier (e.g., 'America/New_York')
-  teamSize: TeamSize; // '1v1' | '2v2' | '3v3' | '4v4' | '5v5' | '6v6' | 'custom'
-  customTeamSize?: string; // Only used when teamSize is 'custom'
-  gameType: GameType; // 'elo' | 'normal'
-  gameVersion?: string; // Game version (e.g., 'v3.28')
-  gameLength?: number; // Game length in seconds
-  modes: GameMode[]; // Array of game modes
-  participants: GameParticipant[]; // Array of users who joined
-  status: 'scheduled' | 'ongoing' | 'awaiting_replay' | 'archived' | 'cancelled';
+  // Core Identity Fields
+  gameId: number; // Unique numeric ID (shared by scheduled and completed games)
+  gameState: 'scheduled' | 'completed'; // REQUIRED: Distinguishes game type
   
-  // Standardized Creator Fields (REQUIRED)
-  creatorName: string;
-  createdByDiscordId: string;
-  
-  // Standardized Timestamp Fields (REQUIRED)
-  createdAt: Timestamp | string;
-  updatedAt: Timestamp | string;
-  submittedAt?: Timestamp | string;
-  
-  // Standardized Link Fields (OPTIONAL)
-  linkedGameDocumentId?: string; // Link to Game document when replay is uploaded
-  linkedArchiveDocumentId?: string; // Link to ArchiveEntry document when archived
-  
-  // Soft Delete (OPTIONAL)
+  // Common Fields (Both Scheduled and Completed)
+  creatorName: string; // REQUIRED
+  createdByDiscordId: string; // REQUIRED
+  createdAt: Timestamp | string; // REQUIRED
+  updatedAt: Timestamp | string; // REQUIRED
   isDeleted?: boolean;
   deletedAt?: Timestamp | string | null;
+  
+  // Scheduled Game Fields (when gameState === 'scheduled')
+  scheduledDateTime?: Timestamp | string; // ISO 8601 string in UTC or Timestamp
+  scheduledDateTimeString?: string; // ISO 8601 string (for querying)
+  timezone?: string; // IANA timezone identifier (e.g., 'America/New_York')
+  teamSize?: TeamSize; // '1v1' | '2v2' | '3v3' | '4v4' | '5v5' | '6v6' | 'custom'
+  customTeamSize?: string; // Only used when teamSize is 'custom'
+  gameType?: GameType; // 'elo' | 'normal'
+  gameVersion?: string; // Game version (e.g., 'v3.28')
+  gameLength?: number; // Game length in seconds
+  modes?: GameMode[]; // Array of game modes
+  participants?: GameParticipant[]; // Array of users who joined
+  status?: 'scheduled' | 'ongoing' | 'awaiting_replay' | 'archived' | 'cancelled';
+  
+  // Completed Game Fields (when gameState === 'completed')
+  datetime?: Timestamp | string; // Game completion date/time
+  duration?: number; // Game duration in seconds
+  gamename?: string; // Game name
+  map?: string; // Map name
+  category?: string; // Game category
+  players?: GamePlayer[]; // Players in the completed game
+  replayUrl?: string; // Replay file URL
+  
+  // Standardized Link Fields (OPTIONAL)
+  linkedGameDocumentId?: string; // Link to related Game document (for scheduled→completed linking)
+  linkedArchiveDocumentId?: string; // Link to ArchiveEntry document
+  
+  // Optional Timestamps
+  submittedAt?: Timestamp | string;
 }
 ```
 
 **Field Requirements:**
-- `creatorName` and `createdByDiscordId` are REQUIRED and MUST be set when creating a document
-- `createdAt` and `updatedAt` are REQUIRED and MUST be set automatically
-- `scheduledDateTime` MUST be stored as a Firestore Timestamp, but can be read as either Timestamp or ISO string
-- `scheduledDateTimeString` MUST be stored as an ISO 8601 string for querying purposes
+- `gameState` is REQUIRED and MUST be either `'scheduled'` or `'completed'`
+- `gameId` is REQUIRED and MUST be a unique numeric identifier
+- `creatorName` and `createdByDiscordId` are REQUIRED for all games
+- `createdAt` and `updatedAt` are REQUIRED for all games
+- Scheduled games MUST include: `scheduledDateTime`, `scheduledDateTimeString`, `timezone`, `teamSize`, `gameType`
+- Completed games MUST include: `datetime`, `players`
+
+**Querying:**
+```typescript
+// Get scheduled games
+const scheduled = await db.collection('games')
+  .where('gameState', '==', 'scheduled')
+  .where('isDeleted', '==', false)
+  .get();
+
+// Get completed games
+const completed = await db.collection('games')
+  .where('gameState', '==', 'completed')
+  .where('isDeleted', '==', false)
+  .get();
+```
 
 **❌ FORBIDDEN:**
-- Do NOT use `scheduledByName` or `scheduledByDiscordId`
-- Do NOT use `gameId` or `archiveId` (use `linkedGameDocumentId` and `linkedArchiveDocumentId`)
+- Do NOT use separate `scheduledGames` collection (deprecated)
+- Do NOT use `scheduledByName` or `scheduledByDiscordId` (use `creatorName` and `createdByDiscordId`)
+- Do NOT use `archiveId` (use `linkedArchiveDocumentId`)
 - Do NOT add migration/fallback code for old field names
 
 ---
@@ -137,64 +167,11 @@ interface ArchiveEntry {
 - Do NOT use `author` or `createdByName`
 - Do NOT add migration/fallback code for old field names
 
----
-
-### 3. `games` Collection
-
-**Standardized Schema:**
-```typescript
-interface Game {
-  // Document Identity
-  id: string; // Firestore document ID
-  
-  // Core Fields
-  gameId: number; // Original game ID from replay (numeric, unique)
-  datetime: Timestamp | string; // When the game was played
-  duration: number; // Game duration in seconds
-  gamename: string;
-  map: string;
-  category?: GameCategory;
-  replayUrl?: string;
-  replayFileName?: string;
-  verified: boolean;
-  // ... player fields ...
-  
-  // Standardized Creator Fields (REQUIRED)
-  creatorName: string; // Game creator name (from replay)
-  createdByDiscordId?: string | null; // Discord ID of submitter
-  
-  // Standardized Timestamp Fields (REQUIRED)
-  createdAt: Timestamp | string;
-  updatedAt: Timestamp | string;
-  submittedAt?: Timestamp | string; // When game was submitted
-  
-  // Standardized Link Fields (OPTIONAL)
-  scheduledGameId?: number; // Links to ScheduledGame.scheduledGameId (numeric)
-  
-  // Legacy Field (from replay file format)
-  ownername: string; // Legacy field: typically same as creatorName (from replay file)
-  
-  // Soft Delete (OPTIONAL)
-  isDeleted?: boolean;
-  deletedAt?: Timestamp | string | null;
-}
-```
-
-**Field Requirements:**
-- `creatorName` is REQUIRED (standardized field)
-- `ownername` is REQUIRED (legacy field from replay file, typically same as creatorName)
-- `createdByDiscordId` is OPTIONAL but recommended
-- `createdAt` and `updatedAt` are REQUIRED
-
-**Note on `ownername`:**
-- This is a legacy field from the replay file format
-- It typically contains the same value as `creatorName` (the game creator from the replay)
-- It's kept for backward compatibility with the replay file structure
-- In new code, prefer using `creatorName` as the standardized field
-
-**❌ FORBIDDEN:**
-- Do NOT use `creatorname` (lowercase) or `submittedBy`
-- Do NOT add migration/fallback code for old field names
+**Note on Completed Games:**
+- When `gameState === 'completed'`, the game document represents a completed game with replay data
+- Completed games include fields like `datetime`, `duration`, `gamename`, `map`, `category`, `players`, `replayUrl`
+- The `ownername` field (legacy from replay file format) may be present but should not be used in new code - use `creatorName` instead
+- Completed games can be linked to scheduled games via `linkedGameDocumentId` (when a scheduled game is completed)
 
 ---
 

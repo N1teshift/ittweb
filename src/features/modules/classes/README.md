@@ -11,7 +11,7 @@
 ## Usage
 
 ```typescript
-import { ClassesPage, ClassDetailPage } from '@/features/modules/classes';
+import { ClassesPage, ClassDetailPage } from '@/features/modules/classes/components';
 
 // Use in pages
 <ClassesPage />

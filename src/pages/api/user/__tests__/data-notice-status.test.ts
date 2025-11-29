@@ -1,16 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+// Import server-side mocks FIRST before handler
+import '../../../../../__tests__/helpers/mockUserDataService.server';
+import {
+  mockGetUserDataByDiscordIdServer,
+  setIsServerSide,
+} from '../../../../../__tests__/helpers/mockUserDataService.server';
 import handler from '../data-notice-status';
 
 // Mock dependencies
-const mockGetUserDataByDiscordId = jest.fn();
 const mockInfo = jest.fn();
 const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
-
-jest.mock('@/features/infrastructure/lib/userDataService', () => ({
-  getUserDataByDiscordId: (...args: unknown[]) => mockGetUserDataByDiscordId(...args),
-}));
 
 jest.mock('@/features/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
@@ -54,12 +55,13 @@ describe('GET /api/user/data-notice-status', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    setIsServerSide(true); // Enable server-side mode
     mockGetServerSession.mockResolvedValue(mockSession);
   });
 
   it('returns accepted status when user has accepted notice', async () => {
     // Arrange
-    mockGetUserDataByDiscordId.mockResolvedValue({
+    mockGetUserDataByDiscordIdServer.mockResolvedValue({
       dataCollectionNoticeAccepted: true,
     });
     const req = createRequest();
@@ -69,7 +71,7 @@ describe('GET /api/user/data-notice-status', () => {
     await handler(req, res);
 
     // Assert
-    expect(mockGetUserDataByDiscordId).toHaveBeenCalledWith('discord123');
+    expect(mockGetUserDataByDiscordIdServer).toHaveBeenCalledWith('discord123');
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,
@@ -79,7 +81,7 @@ describe('GET /api/user/data-notice-status', () => {
 
   it('returns not accepted status when user has not accepted notice', async () => {
     // Arrange
-    mockGetUserDataByDiscordId.mockResolvedValue({
+    mockGetUserDataByDiscordIdServer.mockResolvedValue({
       dataCollectionNoticeAccepted: false,
     });
     const req = createRequest();
@@ -98,7 +100,7 @@ describe('GET /api/user/data-notice-status', () => {
 
   it('returns not accepted status when userData is null', async () => {
     // Arrange
-    mockGetUserDataByDiscordId.mockResolvedValue(null);
+    mockGetUserDataByDiscordIdServer.mockResolvedValue(null);
     const req = createRequest();
     const res = createResponse();
 
@@ -115,7 +117,7 @@ describe('GET /api/user/data-notice-status', () => {
 
   it('returns not accepted status when dataCollectionNoticeAccepted is undefined', async () => {
     // Arrange
-    mockGetUserDataByDiscordId.mockResolvedValue({
+    mockGetUserDataByDiscordIdServer.mockResolvedValue({
       // No dataCollectionNoticeAccepted field
     });
     const req = createRequest();
@@ -149,7 +151,7 @@ describe('GET /api/user/data-notice-status', () => {
         error: 'Authentication required',
       })
     );
-    expect(mockGetUserDataByDiscordId).not.toHaveBeenCalled();
+    expect(mockGetUserDataByDiscordIdServer).not.toHaveBeenCalled();
   });
 
   it('handles missing discordId in session', async () => {
@@ -166,14 +168,14 @@ describe('GET /api/user/data-notice-status', () => {
 
     // Assert
     // The handler uses session.discordId || '', so it will call with empty string
-    expect(mockGetUserDataByDiscordId).toHaveBeenCalledWith('');
+    expect(mockGetUserDataByDiscordIdServer).toHaveBeenCalledWith('');
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
   it('handles error from getUserDataByDiscordId', async () => {
     // Arrange
     const error = new Error('Database error');
-    mockGetUserDataByDiscordId.mockRejectedValue(error);
+    mockGetUserDataByDiscordIdServer.mockRejectedValue(error);
     const req = createRequest();
     const res = createResponse();
 

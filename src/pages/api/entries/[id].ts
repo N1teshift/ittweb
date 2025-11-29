@@ -65,6 +65,12 @@ export default createApiHandler<Entry | { success: boolean }>(
     methods: ['GET', 'PUT', 'PATCH', 'DELETE'],
     requireAuth: false, // GET is public, others check auth manually
     logRequests: true,
+    // Cache for 2 minutes - entries may be updated
+    cacheControl: {
+      public: true,
+      maxAge: 120,
+      mustRevalidate: true,
+    },
   }
 );
 

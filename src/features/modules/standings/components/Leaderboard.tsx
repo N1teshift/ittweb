@@ -1,9 +1,9 @@
 import React from 'react';
-import Link from 'next/link';
 import { Card } from '@/features/infrastructure/components/ui/Card';
 import LoadingScreen from '@/features/infrastructure/components/ui/LoadingScreen';
 import { EmptyState } from '@/features/infrastructure/components/ui';
 import { useStandings } from '../hooks/useStandings';
+import { LeaderboardRow } from './LeaderboardRow';
 import type { StandingsFilters } from '../types';
 
 interface LeaderboardProps {
@@ -34,49 +34,34 @@ export function Leaderboard({ filters = {} }: LeaderboardProps) {
   }
 
   return (
-    <Card variant="medieval" className="p-6">
-      <table 
-        className="w-full" 
-        role="table" 
-        aria-label="Player standings leaderboard"
-      >
-        <thead>
-          <tr className="border-b border-amber-500/30">
-            <th scope="col" className="text-left py-2 px-4 text-amber-400">Rank</th>
-            <th scope="col" className="text-left py-2 px-4 text-amber-400">Player</th>
-            <th scope="col" className="text-right py-2 px-4 text-amber-400">ELO</th>
-            <th scope="col" className="text-right py-2 px-4 text-amber-400">Wins</th>
-            <th scope="col" className="text-right py-2 px-4 text-amber-400">Losses</th>
-            <th scope="col" className="text-right py-2 px-4 text-amber-400">Win Rate</th>
-            <th scope="col" className="text-right py-2 px-4 text-amber-400">Games</th>
-          </tr>
-        </thead>
-        <tbody>
-          {standings.map((entry) => (
-            <tr key={entry.name} className="border-b border-amber-500/10 hover:bg-amber-500/5">
-              <td className="py-3 px-4 text-gray-300 font-semibold">#{entry.rank}</td>
-              <td className="py-3 px-4">
-                <Link
-                  href={`/players/${encodeURIComponent(entry.name)}`}
-                  className="text-amber-300 hover:text-amber-200"
-                  aria-label={`View ${entry.name}'s profile`}
-                >
-                  {entry.name}
-                </Link>
-              </td>
-              <td className="py-3 px-4 text-right text-amber-400 font-semibold">
-                {Math.round(entry.score)}
-              </td>
-              <td className="py-3 px-4 text-right text-green-400">{entry.wins}</td>
-              <td className="py-3 px-4 text-right text-red-400">{entry.losses}</td>
-              <td className="py-3 px-4 text-right text-gray-300">
-                {entry.winRate.toFixed(1)}%
-              </td>
-              <td className="py-3 px-4 text-right text-gray-400">{entry.games}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <Card variant="medieval" className="p-4 md:p-6">
+      {/* Mobile: Horizontal scroll wrapper */}
+      <div className="overflow-x-auto -mx-4 md:mx-0">
+        <div className="inline-block min-w-full align-middle px-4 md:px-0">
+          <table 
+            className="w-full min-w-[640px] md:min-w-0" 
+            role="table" 
+            aria-label="Player standings leaderboard"
+          >
+            <thead>
+              <tr className="border-b border-amber-500/30">
+                <th scope="col" className="text-left py-2 px-2 md:px-4 text-amber-400 text-sm md:text-base">Rank</th>
+                <th scope="col" className="text-left py-2 px-2 md:px-4 text-amber-400 text-sm md:text-base">Player</th>
+                <th scope="col" className="text-right py-2 px-2 md:px-4 text-amber-400 text-sm md:text-base">ELO</th>
+                <th scope="col" className="text-right py-2 px-2 md:px-4 text-amber-400 text-sm md:text-base hidden sm:table-cell">Wins</th>
+                <th scope="col" className="text-right py-2 px-2 md:px-4 text-amber-400 text-sm md:text-base hidden sm:table-cell">Losses</th>
+                <th scope="col" className="text-right py-2 px-2 md:px-4 text-amber-400 text-sm md:text-base">Win Rate</th>
+                <th scope="col" className="text-right py-2 px-2 md:px-4 text-amber-400 text-sm md:text-base hidden md:table-cell">Games</th>
+              </tr>
+            </thead>
+            <tbody>
+              {standings.map((entry) => (
+                <LeaderboardRow key={entry.name} entry={entry} />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </Card>
   );
 }

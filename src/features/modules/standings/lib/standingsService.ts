@@ -64,6 +64,7 @@ export async function getStandings(filters: StandingsFilters = {}): Promise<Stan
 
 /**
  * Optimized standings query using denormalized playerCategoryStats collection
+ * Uses Firestore index for primary sorting (score), then sorts by winRate/wins in memory
  */
 async function getStandingsOptimized(
   category: string,
@@ -71,50 +72,118 @@ async function getStandingsOptimized(
   page: number,
   pageLimit: number
 ): Promise<StandingsResponse> {
+  // Calculate fetch limit: fetch more than needed to account for secondary sorting
+  // We fetch 3x the page limit to ensure we have enough data after secondary sorting
+  const fetchLimit = Math.max(pageLimit * 3, 100); // Minimum 100 to ensure good coverage
+  
   if (isServerSide()) {
     const adminDb = getFirestoreAdmin();
     
-    // Query denormalized collection with filters
-    const standingsQuery = adminDb
-      .collection(PLAYER_CATEGORY_STATS_COLLECTION)
-      .where('category', '==', category)
-      .where('games', '>=', minGames);
+    try {
+      // Query with Firestore sorting by score (uses Index 10)
+      // This significantly reduces the dataset we need to process
+      const standingsQuery = adminDb
+        .collection(PLAYER_CATEGORY_STATS_COLLECTION)
+        .where('category', '==', category)
+        .where('games', '>=', minGames)
+        .orderBy('score', 'desc')
+        .limit(fetchLimit);
 
-    // First, get total count for pagination
-    const totalSnapshot = await standingsQuery.get();
-    const total = totalSnapshot.size;
+      // Get total count for pagination (separate query without limit)
+      const totalQuery = adminDb
+        .collection(PLAYER_CATEGORY_STATS_COLLECTION)
+        .where('category', '==', category)
+        .where('games', '>=', minGames);
+      const totalSnapshot = await totalQuery.get();
+      const total = totalSnapshot.size;
 
-    // Fetch all results for sorting (Firestore can't sort by multiple fields efficiently)
-    // TODO: Optimize further with composite index for multi-field sorting
-    const snapshot = await standingsQuery.get();
-    
-    const standings: StandingsEntry[] = [];
-    snapshot.forEach((doc) => {
-      const entry = createStandingsEntryFromOptimized(doc.data(), doc.id);
-      standings.push(entry);
-    });
-    
-    return processStandingsEntries(standings, page, pageLimit, total);
+      // Fetch limited results sorted by score
+      const snapshot = await standingsQuery.get();
+      
+      const standings: StandingsEntry[] = [];
+      snapshot.forEach((doc) => {
+        const entry = createStandingsEntryFromOptimized(doc.data(), doc.id);
+        standings.push(entry);
+      });
+      
+      // Process with multi-field sorting (score, winRate, wins) in memory
+      return processStandingsEntries(standings, page, pageLimit, total);
+    } catch (error) {
+      // If index is missing or query fails, fall back to fetching all
+      const firestoreError = error as { code?: string; message?: string };
+      if (firestoreError?.code === 'failed-precondition' || firestoreError?.message?.includes('index')) {
+        logger.warn('Index missing for standings query, using fallback', { category });
+        
+        // Fallback: fetch all without orderBy
+        const fallbackQuery = adminDb
+          .collection(PLAYER_CATEGORY_STATS_COLLECTION)
+          .where('category', '==', category)
+          .where('games', '>=', minGames);
+        
+        const totalSnapshot = await fallbackQuery.get();
+        const total = totalSnapshot.size;
+        const snapshot = await fallbackQuery.get();
+        
+        const standings: StandingsEntry[] = [];
+        snapshot.forEach((doc) => {
+          const entry = createStandingsEntryFromOptimized(doc.data(), doc.id);
+          standings.push(entry);
+        });
+        
+        return processStandingsEntries(standings, page, pageLimit, total);
+      }
+      throw error;
+    }
   } else {
     const db = getFirestoreInstance();
     
-    // Query denormalized collection with filters
-    const standingsQuery = query(
-      collection(db, PLAYER_CATEGORY_STATS_COLLECTION),
-      where('category', '==', category),
-      where('games', '>=', minGames)
-    );
+    try {
+      // Query with Firestore sorting by score (uses Index 10)
+      const standingsQuery = query(
+        collection(db, PLAYER_CATEGORY_STATS_COLLECTION),
+        where('category', '==', category),
+        where('games', '>=', minGames),
+        orderBy('score', 'desc'),
+        limit(fetchLimit)
+      );
 
-    // Get all results for sorting
-    const snapshot = await getDocs(standingsQuery);
-    
-    const standings: StandingsEntry[] = [];
-    snapshot.forEach((doc) => {
-      const entry = createStandingsEntryFromOptimized(doc.data(), doc.id);
-      standings.push(entry);
-    });
-    
-    return processStandingsEntries(standings, page, pageLimit, standings.length);
+      // Fetch limited results sorted by score
+      const snapshot = await getDocs(standingsQuery);
+      
+      const standings: StandingsEntry[] = [];
+      snapshot.forEach((doc) => {
+        const entry = createStandingsEntryFromOptimized(doc.data(), doc.id);
+        standings.push(entry);
+      });
+      
+      // Process with multi-field sorting (score, winRate, wins) in memory
+      // Note: Total count is approximate (based on fetched results)
+      return processStandingsEntries(standings, page, pageLimit, standings.length);
+    } catch (error) {
+      // If index is missing or query fails, fall back to fetching all
+      const firestoreError = error as { code?: string; message?: string };
+      if (firestoreError?.code === 'failed-precondition' || firestoreError?.message?.includes('index')) {
+        logger.warn('Index missing for standings query, using fallback', { category });
+        
+        // Fallback: fetch all without orderBy
+        const fallbackQuery = query(
+          collection(db, PLAYER_CATEGORY_STATS_COLLECTION),
+          where('category', '==', category),
+          where('games', '>=', minGames)
+        );
+        
+        const snapshot = await getDocs(fallbackQuery);
+        
+        const standings: StandingsEntry[] = [];
+        snapshot.forEach((doc) => {
+          const entry = createStandingsEntryFromOptimized(doc.data(), doc.id);
+          standings.push(entry);
+        });
+        
+        return processStandingsEntries(standings, page, pageLimit, standings.length);
+      }
+      throw error;
+    }
   }
 }
 

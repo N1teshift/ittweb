@@ -1,16 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+// Import server-side mocks FIRST before handler
+import '../../../../../__tests__/helpers/mockUserDataService.server';
+import {
+  mockDeleteUserDataServer,
+  setIsServerSide,
+} from '../../../../../__tests__/helpers/mockUserDataService.server';
 import handler from '../delete';
 
 // Mock dependencies
-const mockDeleteUserData = jest.fn();
 const mockInfo = jest.fn();
 const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
-
-jest.mock('@/features/infrastructure/lib/userDataService', () => ({
-  deleteUserData: (...args: unknown[]) => mockDeleteUserData(...args),
-}));
 
 jest.mock('@/features/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
@@ -54,8 +55,9 @@ describe('POST /api/user/delete', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    setIsServerSide(true); // Enable server-side mode
     mockGetServerSession.mockResolvedValue(mockSession);
-    mockDeleteUserData.mockResolvedValue(undefined);
+    mockDeleteUserDataServer.mockResolvedValue(undefined);
   });
 
   it('deletes user account successfully', async () => {
@@ -67,7 +69,7 @@ describe('POST /api/user/delete', () => {
     await handler(req, res);
 
     // Assert
-    expect(mockDeleteUserData).toHaveBeenCalledWith('discord123');
+    expect(mockDeleteUserDataServer).toHaveBeenCalledWith('discord123');
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,
@@ -95,7 +97,7 @@ describe('POST /api/user/delete', () => {
         error: 'Authentication required',
       })
     );
-    expect(mockDeleteUserData).not.toHaveBeenCalled();
+    expect(mockDeleteUserDataServer).not.toHaveBeenCalled();
   });
 
   it('handles missing discordId in session', async () => {
@@ -112,14 +114,14 @@ describe('POST /api/user/delete', () => {
 
     // Assert
     // The handler uses session.discordId || '', so it will call with empty string
-    expect(mockDeleteUserData).toHaveBeenCalledWith('');
+    expect(mockDeleteUserDataServer).toHaveBeenCalledWith('');
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
   it('handles error from deleteUserData', async () => {
     // Arrange
     const error = new Error('Database error');
-    mockDeleteUserData.mockRejectedValue(error);
+    mockDeleteUserDataServer.mockRejectedValue(error);
     const req = createRequest();
     const res = createResponse();
 

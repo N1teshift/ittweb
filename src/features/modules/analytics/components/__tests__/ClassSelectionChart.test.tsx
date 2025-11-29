@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { ClassSelectionChart } from '../ClassSelectionChart';
 import type { ClassSelectionData } from '../../types';
 
@@ -29,7 +29,7 @@ jest.mock('@/features/infrastructure/components/ui/Card', () => ({
 }));
 
 describe('ClassSelectionChart', () => {
-  it('should render class selection data', () => {
+  it('should render class selection data', async () => {
     // Arrange
     const data: ClassSelectionData[] = [
       { className: 'warrior', count: 10 },
@@ -40,7 +40,9 @@ describe('ClassSelectionChart', () => {
     render(<ClassSelectionChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('pie-chart')).toBeInTheDocument();
+    });
     expect(screen.getByTestId('responsive-container')).toBeInTheDocument();
   });
 
@@ -55,7 +57,7 @@ describe('ClassSelectionChart', () => {
     expect(screen.getByText('No class selection data available')).toBeInTheDocument();
   });
 
-  it('should handle many classes', () => {
+  it('should handle many classes', async () => {
     // Arrange
     const data: ClassSelectionData[] = Array.from({ length: 20 }, (_, i) => ({
       className: `class${i}`,

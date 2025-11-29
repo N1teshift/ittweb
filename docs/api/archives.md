@@ -40,12 +40,25 @@ Create archive entry. **Requires authentication.**
 ```typescript
 {
   title: string;
-  description?: string;
-  linkedGameDocumentId?: string;
-  linkedArchiveDocumentId?: string;
-  mediaUrl?: string;
-  mediaType?: 'youtube' | 'twitch';
-  // ... other fields
+  content: string;
+  contentType: 'post' | 'memory';
+  date: string; // ISO date string
+  creatorName?: string; // Auto-filled from session if not provided
+  createdByDiscordId?: string; // Auto-filled from session if not provided
+  entryType?: 'story' | 'changelog';
+  images?: string[];
+  videoUrl?: string; // YouTube video URL
+  twitchClipUrl?: string; // Twitch clip URL
+  replayUrl?: string; // Replay file URL
+  linkedGameDocumentId?: string; // Link to Game document
+  sectionOrder?: Array<'images' | 'video' | 'twitch' | 'replay' | 'game' | 'text'>;
+  dateInfo?: {
+    type: 'single' | 'interval' | 'undated';
+    singleDate?: string;
+    startDate?: string;
+    endDate?: string;
+    approximateText?: string;
+  };
 }
 ```
 

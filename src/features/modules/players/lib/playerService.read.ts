@@ -12,6 +12,8 @@ import {
   query,
   where,
   orderBy,
+  limit as limitQuery,
+  startAfter,
 } from 'firebase/firestore';
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
@@ -126,21 +128,39 @@ export async function getPlayerStats(
 }
 
 /**
- * Get all players with basic stats
+ * Get all players with basic stats (with pagination support)
  */
-export async function getAllPlayers(limit: number = 100): Promise<PlayerStats[]> {
+export async function getAllPlayers(
+  limit: number = 50,
+  lastPlayerName?: string
+): Promise<{ players: PlayerStats[]; hasMore: boolean; lastPlayerName: string | null }> {
   try {
-    logger.info('Fetching all players', { limit });
+    logger.info('Fetching all players', { limit, lastPlayerName });
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const snapshot = await adminDb.collection(PLAYER_STATS_COLLECTION)
+      let adminQuery = adminDb.collection(PLAYER_STATS_COLLECTION)
         .orderBy('name')
-        .limit(limit)
-        .get();
+        .limit(limit + 1); // Fetch one extra to check if there are more
+
+      // Apply cursor if provided
+      if (lastPlayerName) {
+        const lastDocSnapshot = await adminDb.collection(PLAYER_STATS_COLLECTION)
+          .where('name', '==', lastPlayerName)
+          .limit(1)
+          .get();
+        
+        if (!lastDocSnapshot.empty) {
+          adminQuery = adminQuery.startAfter(lastDocSnapshot.docs[0]);
+        }
+      }
+
+      const snapshot = await adminQuery.get();
+      const hasMore = snapshot.docs.length > limit;
+      const docsToProcess = hasMore ? snapshot.docs.slice(0, limit) : snapshot.docs;
 
       const players: PlayerStats[] = [];
-      snapshot.forEach((doc) => {
+      docsToProcess.forEach((doc) => {
         const data = doc.data();
         const categories = data.categories || {};
         players.push({
@@ -155,18 +175,46 @@ export async function getAllPlayers(limit: number = 100): Promise<PlayerStats[]>
         });
       });
 
-      return players;
+      const newLastPlayerName = players.length > 0 ? players[players.length - 1].name : null;
+
+      return {
+        players,
+        hasMore,
+        lastPlayerName: newLastPlayerName,
+      };
     } else {
       const db = getFirestoreInstance();
-      const playersQuery = query(
+      
+      let playersQuery = query(
         collection(db, PLAYER_STATS_COLLECTION),
         orderBy('name'),
-        // limit(limit) // Firestore requires orderBy before limit
+        limitQuery(limit + 1), // Fetch one extra to check if there are more
       );
 
+      // Apply cursor if provided
+      if (lastPlayerName) {
+        const lastDocQuery = query(
+          collection(db, PLAYER_STATS_COLLECTION),
+          where('name', '==', lastPlayerName),
+          limitQuery(1),
+        );
+        const lastDocSnapshot = await getDocs(lastDocQuery);
+        if (!lastDocSnapshot.empty) {
+          playersQuery = query(
+            collection(db, PLAYER_STATS_COLLECTION),
+            orderBy('name'),
+            startAfter(lastDocSnapshot.docs[0]),
+            limitQuery(limit + 1),
+          );
+        }
+      }
+
       const snapshot = await getDocs(playersQuery);
+      const hasMore = snapshot.docs.length > limit;
+      const docsToProcess = hasMore ? snapshot.docs.slice(0, limit) : snapshot.docs;
+
       const players: PlayerStats[] = [];
-      snapshot.forEach((doc) => {
+      docsToProcess.forEach((doc) => {
         const data = doc.data();
         const categories = data.categories || {};
         players.push({
@@ -181,13 +229,21 @@ export async function getAllPlayers(limit: number = 100): Promise<PlayerStats[]>
         });
       });
 
-      return players.slice(0, limit);
+      const newLastPlayerName = players.length > 0 ? players[players.length - 1].name : null;
+
+      return {
+        players,
+        hasMore,
+        lastPlayerName: newLastPlayerName,
+      };
     }
   } catch (error) {
     const err = error as Error;
     logError(err, 'Failed to get all players', {
       component: 'playerService.read',
       operation: 'getAllPlayers',
+      limit,
+      lastPlayerName,
     });
     throw err;
   }

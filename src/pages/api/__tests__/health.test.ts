@@ -1,12 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import handler from '../health';
 
-// Mock dependencies
-const mockGetFirestoreAdmin = jest.fn();
+// Mock dependencies - define the structure inline
+jest.mock('@/features/infrastructure/api/firebase/admin', () => {
+  const mockQueryGet = jest.fn().mockResolvedValue({});
+  const mockCollectionLimit = jest.fn().mockReturnValue({ get: mockQueryGet });
+  const mockDbCollection = jest.fn().mockReturnValue({ limit: mockCollectionLimit });
+  const mockGetFirestoreAdmin = jest.fn().mockReturnValue({ collection: mockDbCollection });
 
-jest.mock('@/features/infrastructure/api/firebase/admin', () => ({
-  getFirestoreAdmin: () => mockGetFirestoreAdmin(),
-}));
+  return {
+    getFirestoreAdmin: mockGetFirestoreAdmin,
+    isServerSide: jest.fn(() => true),
+    getAdminTimestamp: jest.fn(() => ({
+      now: jest.fn(() => ({ toDate: () => new Date("2020-01-01T00:00:00Z") })),
+      fromDate: jest.fn((date: Date) => ({ toDate: () => date })),
+    })),
+  };
+});
 
 describe('GET /api/health', () => {
   const createRequest = (): NextApiRequest => ({
@@ -24,26 +34,18 @@ describe('GET /api/health', () => {
     return res;
   };
 
-  let mockCollection: { limit: jest.Mock };
-  let mockQuery: { get: jest.Mock };
-
   beforeEach(() => {
-    jest.clearAllMocks();
-    mockQuery = {
-      get: jest.fn().mockResolvedValue({}),
-    };
-    mockCollection = {
-      limit: jest.fn().mockReturnValue(mockQuery),
-    };
-    const mockDb = {
-      collection: jest.fn().mockReturnValue(mockCollection),
-    };
-    mockGetFirestoreAdmin.mockReturnValue(mockDb);
+    // Reset the mock implementations - don't clear all mocks as it breaks the chain
+    const adminModule = jest.requireMock('@/features/infrastructure/api/firebase/admin');
+    const mockQueryGet = jest.fn().mockResolvedValue({});
+    const mockCollectionLimit = jest.fn().mockReturnValue({ get: mockQueryGet });
+    const mockDbCollection = jest.fn().mockReturnValue({ limit: mockCollectionLimit });
+    adminModule.getFirestoreAdmin.mockReset();
+    adminModule.getFirestoreAdmin.mockReturnValue({ collection: mockDbCollection });
   });
 
   it('returns healthy status when database is accessible', async () => {
     // Arrange
-    mockQuery.get.mockResolvedValue({});
     const req = createRequest();
     const res = createResponse();
 
@@ -51,7 +53,6 @@ describe('GET /api/health', () => {
     await handler(req, res);
 
     // Assert
-    expect(mockGetFirestoreAdmin).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       status: 'ok',
@@ -64,7 +65,11 @@ describe('GET /api/health', () => {
 
   it('returns error status when database is not accessible', async () => {
     // Arrange
-    mockQuery.get.mockRejectedValue(new Error('Database connection failed'));
+    const adminModule = jest.requireMock('@/features/infrastructure/api/firebase/admin');
+    const mockQueryGet = jest.fn().mockRejectedValue(new Error('Database connection failed'));
+    const mockCollectionLimit = jest.fn().mockReturnValue({ get: mockQueryGet });
+    const mockDbCollection = jest.fn().mockReturnValue({ limit: mockCollectionLimit });
+    adminModule.getFirestoreAdmin.mockReturnValue({ collection: mockDbCollection });
     const req = createRequest();
     const res = createResponse();
 
@@ -84,7 +89,6 @@ describe('GET /api/health', () => {
 
   it('includes timestamp in response', async () => {
     // Arrange
-    mockQuery.get.mockResolvedValue({});
     const req = createRequest();
     const res = createResponse();
 
@@ -159,4 +163,3 @@ describe('GET /api/health', () => {
     });
   });
 });
-

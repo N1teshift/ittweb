@@ -101,6 +101,12 @@ export default createApiHandler<Post | { success: boolean }>(
     methods: ['GET', 'PUT', 'PATCH', 'DELETE'],
     requireAuth: false, // GET is public, others check auth manually
     logRequests: true,
+    // Cache for 10 minutes - posts don't change frequently
+    cacheControl: {
+      public: true,
+      maxAge: 600,
+      mustRevalidate: true,
+    },
   }
 );
 

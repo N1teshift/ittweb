@@ -119,7 +119,32 @@ describe('updateEloScores', () => {
 });
 
 describe('recalculateFromGame', () => {
-  it('throws a not implemented error', async () => {
-    await expect(recalculateFromGame('game-1')).rejects.toThrow('Not yet fully implemented');
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('throws error when game not found', async () => {
+    mockGetGameById.mockResolvedValue(null);
+    await expect(recalculateFromGame('game-1')).rejects.toThrow('Game not found or invalid: game-1');
+  });
+
+  it('throws error when game is invalid (insufficient players)', async () => {
+    mockGetGameById.mockResolvedValue({
+      id: 'game-1',
+      players: [{ name: 'Solo', flag: 'winner' }], // Only 1 player
+    });
+    await expect(recalculateFromGame('game-1')).rejects.toThrow('Game not found or invalid: game-1');
+  });
+
+  it('throws error when game is not completed', async () => {
+    mockGetGameById.mockResolvedValue({
+      id: 'game-1',
+      gameState: 'scheduled',
+      players: [
+        { name: 'Alice', flag: 'winner' },
+        { name: 'Bob', flag: 'loser' },
+      ],
+    });
+    await expect(recalculateFromGame('game-1')).rejects.toThrow('Can only recalculate ELO for completed games');
   });
 });

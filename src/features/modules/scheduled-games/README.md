@@ -13,7 +13,7 @@
 - `ScheduledGameFilters` - Filter scheduled games
 
 ### Services
-- `scheduledGameService` - Scheduled game CRUD operations
+- `scheduledGameService` - Scheduled game CRUD operations (split into focused modules: create, read, update, delete, participation, utils)
   - `getAllScheduledGames()` - Get all scheduled games
   - `getScheduledGameById()` - Get single scheduled game
   - `createScheduledGame()` - Create new scheduled game
@@ -22,13 +22,25 @@
   - `joinScheduledGame()` - Join a scheduled game
   - `leaveScheduledGame()` - Leave a scheduled game
 
+**Note**: `scheduledGameService` has been split into multiple focused modules for maintainability:
+- `scheduledGameService.ts` - Main entry point (re-exports all functions)
+- `scheduledGameService.create.ts` - Create operations
+- `scheduledGameService.read.ts` - Read operations
+- `scheduledGameService.read.helpers.ts` - Read helper functions (data conversion, filtering)
+- `scheduledGameService.update.ts` - Update operations
+- `scheduledGameService.delete.ts` - Delete operations
+- `scheduledGameService.participation.ts` - Join/leave game operations
+- `scheduledGameService.utils.ts` - Helper functions
+
+All functions are still available via the main `scheduledGameService` import for backward compatibility.
+
 ### Utils
 - `timezoneUtils` - Timezone conversion utilities
 
 ## Usage
 
 ```typescript
-import { getAllScheduledGames, createScheduledGame } from '@/features/modules/scheduled-games';
+import { getAllScheduledGames, createScheduledGame } from '@/features/modules/scheduled-games/lib/scheduledGameService';
 
 // Get all scheduled games
 const games = await getAllScheduledGames(true, false); // includePast, includeArchived
@@ -52,10 +64,10 @@ const game = await createScheduledGame({
 - `DELETE /api/scheduled-games/[id]` - Delete scheduled game (authenticated)
 - `POST /api/scheduled-games/[id]/join` - Join scheduled game (authenticated)
 - `POST /api/scheduled-games/[id]/leave` - Leave scheduled game (authenticated)
-- `POST /api/scheduled-games/[id]/upload-replay` - Upload replay file (authenticated)
+- `POST /api/games/[id]/upload-replay` - Upload replay file for a scheduled game and convert it to completed (authenticated)
 
 ## Related Documentation
 
-- [Firestore Collections Schema](../../../../docs/schemas/firestore-collections.md#scheduledgames-collection)
+- [Firestore Collections Schema](../../../../docs/schemas/firestore-collections.md#games-collection-unified---scheduled-and-completed-games) - Scheduled games are stored in the unified `games` collection with `gameState: 'scheduled'`
 
 

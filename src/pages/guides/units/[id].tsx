@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { ALL_UNITS, getUnitById, UnitData } from '@/features/modules/guides/data/units/allUnits';
@@ -14,7 +15,7 @@ const pageNamespaces = ["common"];
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: ALL_UNITS.map((unit) => ({ 
-      params: { id: encodeURIComponent(unit.id) } 
+      params: { id: unit.id } 
     })),
     fallback: false,
   };
@@ -58,18 +59,16 @@ export default function UnitDetailPage({ unit }: Props) {
   const itemId = router.query.itemId as string | undefined;
   const item = itemId ? getItemById(itemId) : null;
 
-  const icon = unit.iconPath ? (
+  const icon = (
     <GuideIcon 
       category="units" 
       name={unit.name} 
       size={64}
-      src={`/icons/itt/${unit.iconPath}`}
     />
-  ) : (
-    <GuideIcon category="units" name={unit.name} size={64} />
   );
 
   return (
+    <ErrorBoundary>
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6 space-x-4">
           {fromItem && item ? (
@@ -90,7 +89,7 @@ export default function UnitDetailPage({ unit }: Props) {
             {icon}
           </div>
           <div className="flex-1">
-            <h1 className="font-medieval-brand text-4xl md:text-5xl mb-2 text-amber-400">{unit.name}</h1>
+            <h1 className="font-medieval-brand text-2xl md:text-4xl mb-2 text-amber-400">{unit.name}</h1>
             <div className="flex flex-wrap gap-2 mb-3">
               <span className="text-xs bg-gray-500/20 text-gray-300 px-2 py-1 rounded capitalize">
                 {typeDisplayNames[unit.type] || unit.type}
@@ -204,6 +203,7 @@ export default function UnitDetailPage({ unit }: Props) {
           )}
         </div>
       </div>
+    </ErrorBoundary>
   );
 }
 

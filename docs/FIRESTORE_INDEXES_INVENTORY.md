@@ -3,7 +3,7 @@
 **Last Updated**: 2025-01-15  
 **Purpose**: Complete inventory of all Firestore queries requiring indexes, their current status, and priority
 
-> **Reference**: See [COMPLETE_INDEX_REFERENCE.md](./COMPLETE_INDEX_REFERENCE.md) for detailed index specifications and [FIRESTORE_INDEXES.md](./FIRESTORE_INDEXES.md) for creation instructions.
+> **Reference**: See [FIRESTORE_INDEXES.md](./FIRESTORE_INDEXES.md) for complete index reference and creation instructions.
 
 ---
 
@@ -326,7 +326,6 @@ The following queries have fallback logic to handle missing indexes:
 
 ## Related Documentation
 
-- [COMPLETE_INDEX_REFERENCE.md](./COMPLETE_INDEX_REFERENCE.md) - Detailed index specifications
-- [FIRESTORE_INDEXES.md](./FIRESTORE_INDEXES.md) - Step-by-step index creation guide
+- [FIRESTORE_INDEXES.md](./FIRESTORE_INDEXES.md) - Complete index reference and step-by-step creation guide
 - [FIRESTORE_INDEXES_EXPLAINED.md](./FIRESTORE_INDEXES_EXPLAINED.md) - Understanding how indexes work
 

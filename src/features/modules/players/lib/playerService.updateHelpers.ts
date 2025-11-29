@@ -7,6 +7,7 @@ import { Timestamp } from 'firebase/firestore';
 import type { CategoryStats } from '../types';
 import type { GamePlayer } from '../../games/types';
 import { STARTING_ELO } from '../../games/lib/eloCalculator';
+import type { TimestampFactory } from '@/features/infrastructure/utils/timestampUtils';
 
 /**
  * Calculate initial category stats for a new player
@@ -53,12 +54,12 @@ export function updatePeakElo(
   categoryStats: CategoryStats,
   eloAfter: number,
   gameDatetime: Date,
-  timestampFactory: (date: Date) => Timestamp
+  timestampFactory: TimestampFactory
 ): void {
   const currentPeakElo = categoryStats.peakElo || STARTING_ELO;
   if (eloAfter > currentPeakElo) {
     categoryStats.peakElo = eloAfter;
-    categoryStats.peakEloDate = timestampFactory(gameDatetime);
+    categoryStats.peakEloDate = timestampFactory.fromDate(gameDatetime);
   }
 }
 
@@ -85,10 +86,7 @@ export function createNewPlayerDocumentData(
   category: string,
   categoryStats: CategoryStats,
   gameDatetime: Date,
-  timestampFactory: {
-    fromDate: (date: Date) => Timestamp;
-    now: () => Timestamp;
-  }
+  timestampFactory: TimestampFactory
 ): Record<string, unknown> {
   const categories: { [key: string]: CategoryStats } = {};
   categories[category] = categoryStats;
@@ -112,10 +110,7 @@ export function createUpdatedPlayerDocumentData(
   categories: { [key: string]: CategoryStats },
   totalGames: number,
   gameDatetime: Date,
-  timestampFactory: {
-    fromDate: (date: Date) => Timestamp;
-    now: () => Timestamp;
-  }
+  timestampFactory: TimestampFactory
 ): Record<string, unknown> {
   return {
     name: playerName,
@@ -158,10 +153,7 @@ export async function processPlayerStatsUpdate(
   gameDatetime: Date,
   normalizedName: string,
   existingData: Record<string, unknown> | null,
-  timestampFactory: {
-    fromDate: (date: Date) => Timestamp;
-    now: () => Timestamp;
-  },
+  timestampFactory: TimestampFactory,
   firestoreOps: {
     setDoc: (data: Record<string, unknown>) => Promise<void>;
     updateDoc: (data: Record<string, unknown>) => Promise<void>;
@@ -213,7 +205,7 @@ export async function processPlayerStatsUpdate(
     );
 
     // Update peak ELO
-    updatePeakElo(categoryStats, eloAfter, gameDatetime, timestampFactory.fromDate.bind(timestampFactory));
+    updatePeakElo(categoryStats, eloAfter, gameDatetime, timestampFactory);
 
     categories[category] = categoryStats;
 

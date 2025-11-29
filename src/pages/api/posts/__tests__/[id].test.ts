@@ -1,11 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+// Import server-side mocks FIRST before handler
+import '../../../../../__tests__/helpers/mockUserDataService.server';
+import {
+  mockGetUserDataByDiscordIdServer,
+  setIsServerSide,
+} from '../../../../../__tests__/helpers/mockUserDataService.server';
 import handler from '../[id]';
 
 // Mock dependencies
 const mockGetPostById = jest.fn();
 const mockUpdatePost = jest.fn();
 const mockDeletePost = jest.fn();
-const mockGetUserDataByDiscordId = jest.fn();
 const mockIsAdmin = jest.fn();
 const mockInfo = jest.fn();
 const mockError = jest.fn();
@@ -16,10 +21,6 @@ jest.mock('@/features/modules/blog/lib/postService', () => ({
   getPostById: (...args: unknown[]) => mockGetPostById(...args),
   updatePost: (...args: unknown[]) => mockUpdatePost(...args),
   deletePost: (...args: unknown[]) => mockDeletePost(...args),
-}));
-
-jest.mock('@/features/infrastructure/lib/userDataService', () => ({
-  getUserDataByDiscordId: (...args: unknown[]) => mockGetUserDataByDiscordId(...args),
 }));
 
 jest.mock('@/features/infrastructure/utils/userRoleUtils', () => ({
@@ -203,9 +204,10 @@ describe('PUT /api/posts/[id]', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    setIsServerSide(true); // Enable server-side mode
     mockGetServerSession.mockResolvedValue(mockSession);
     mockGetPostById.mockResolvedValue(mockPost);
-    mockGetUserDataByDiscordId.mockResolvedValue({ role: 'user' });
+    mockGetUserDataByDiscordIdServer.mockResolvedValue({ role: 'user' });
     mockIsAdmin.mockReturnValue(false);
     mockUpdatePost.mockResolvedValue(undefined);
   });
@@ -382,9 +384,10 @@ describe('PATCH /api/posts/[id]', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    setIsServerSide(true); // Enable server-side mode
     mockGetServerSession.mockResolvedValue(mockSession);
     mockGetPostById.mockResolvedValue(mockPost);
-    mockGetUserDataByDiscordId.mockResolvedValue({ role: 'user' });
+    mockGetUserDataByDiscordIdServer.mockResolvedValue({ role: 'user' });
     mockIsAdmin.mockReturnValue(false);
     mockUpdatePost.mockResolvedValue(undefined);
   });
@@ -439,9 +442,10 @@ describe('DELETE /api/posts/[id]', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    setIsServerSide(true); // Enable server-side mode
     mockGetServerSession.mockResolvedValue(mockSession);
     mockGetPostById.mockResolvedValue(mockPost);
-    mockGetUserDataByDiscordId.mockResolvedValue({ role: 'user' });
+    mockGetUserDataByDiscordIdServer.mockResolvedValue({ role: 'user' });
     mockIsAdmin.mockReturnValue(false);
     mockDeletePost.mockResolvedValue(undefined);
   });

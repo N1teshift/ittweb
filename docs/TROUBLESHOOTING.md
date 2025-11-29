@@ -328,6 +328,50 @@ logError(error, 'Operation failed', {
 
 Check logs for these details when debugging.
 
+## Browser Console Issues
+
+### Third-Party Script Errors (Suppressed in Development)
+
+**Symptoms**: Console shows errors/warnings from third-party scripts:
+- `Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://googleads.g.doubleclick.net/pagead/id`
+- `Cookie "__Secure-YEC" has been rejected because it is in a cross-site context`
+
+**Explanation**: 
+These errors are **harmless** and don't affect functionality. They occur because:
+- YouTube embeds try to load Google Ads tracking scripts
+- Browser security policies block cross-site tracking cookies
+- Third-party tracking scripts are blocked by CSP or browser settings
+
+**Solutions** (Already Implemented):
+
+1. **Privacy-Enhanced YouTube Embeds**: 
+   - YouTube embeds use `youtube-nocookie.com` domain (privacy-enhanced mode)
+   - Tracking parameters are disabled (`enablejsapi=0`, `rel=0`, etc.)
+   - This reduces tracking attempts and associated errors
+
+2. **Console Error Filtering** (Development Only):
+   - Known third-party errors are automatically filtered in development
+   - Production logs remain unfiltered for debugging
+   - Filtered errors/warnings include:
+     - Google Ads CORS errors (`googleads.g.doubleclick.net`)
+     - YouTube cookie warnings (`__Secure-YEC`, `LAST_RESULT_ENTRY_KEY`)
+     - Feature Policy warnings (deprecated API, harmless)
+     - CSP warnings about unknown directives (`require-trusted-types-for`)
+     - YouTube third-party context warnings (expected behavior)
+     - "Unreachable code after return statement" from minified YouTube scripts
+
+3. **CSP Headers**:
+   - Content Security Policy explicitly blocks unwanted tracking domains
+   - `googleads.g.doubleclick.net` is not in allowed connect-src
+   - This prevents tracking scripts from loading
+
+**Note**: These errors are expected behavior when blocking third-party tracking. The suppression is for developer experience only - functionality is not affected.
+
+**To See All Errors**:
+- Production builds show all errors (filtering is development-only)
+- Check browser DevTools Network tab for blocked requests
+- Review CSP violations in browser console if needed
+
 ## Related Documentation
 
 - [Environment Setup](./ENVIRONMENT_SETUP.md)

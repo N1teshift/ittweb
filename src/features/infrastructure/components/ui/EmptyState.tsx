@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card } from './Card';
+import { Button } from './Button';
 
 interface EmptyStateProps {
   title?: string;
@@ -33,17 +34,14 @@ export function EmptyState({
         {message}
       </p>
       {action && (
-        <button
+        <Button
           onClick={action.onClick}
-          className={`px-6 py-2 rounded border transition-colors ${
-            action.variant === 'secondary'
-              ? 'bg-gray-700 hover:bg-gray-600 text-white border-gray-600'
-              : 'bg-amber-600 hover:bg-amber-500 text-white border-amber-500'
-          }`}
+          variant={action.variant === 'secondary' ? 'ghost' : 'amber'}
           aria-label={action.label}
+          className="mt-4"
         >
           {action.label}
-        </button>
+        </Button>
       )}
     </Card>
   );

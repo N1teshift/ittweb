@@ -17,6 +17,12 @@ export default createGetHandler<{ accepted: boolean }>(
   {
     requireAuth: true,
     logRequests: true,
+    // Private cache - user-specific data should not be cached publicly
+    cacheControl: {
+      private: true,
+      maxAge: 60,
+      mustRevalidate: true,
+    },
   }
 );
 

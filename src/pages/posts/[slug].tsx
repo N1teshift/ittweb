@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button } from '@/features/infrastructure/components/ui';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 
 const pageNamespaces = ["common"];
 
@@ -93,52 +94,54 @@ export default function PostPage({ title, date, author, postId, content, canEdit
   };
 
   return (
-    <div className="flex justify-center min-h-[calc(100vh-8rem)]">
-      <div className="w-full px-6 py-12 max-w-4xl">
-        <div className="flex items-center justify-between mb-6">
-          <Link 
-            href="/" 
-            className="inline-flex items-center text-amber-400 hover:text-amber-300 transition-colors"
-          >
-            ← Back to Home
-          </Link>
-          
-          {(canEdit || canDelete) && (
-            <div className="flex items-center gap-3">
-              {canEdit && (
-                <Button
-                  onClick={() => router.push(`/posts/edit/${postId}`)}
-                  className="text-sm"
-                >
-                  Edit
-                </Button>
-              )}
-              {canDelete && (
-                <Button
-                  onClick={handleDeleteClick}
-                  disabled={isDeleting}
-                  className="text-sm bg-red-600 hover:bg-red-700"
-                >
-                  Delete
-                </Button>
-              )}
-            </div>
-          )}
+    <ErrorBoundary>
+      <div className="flex justify-center min-h-[calc(100vh-8rem)]">
+        <div className="w-full px-6 py-12 max-w-4xl">
+          <div className="flex items-center justify-between mb-6">
+            <Link 
+              href="/" 
+              className="inline-flex items-center text-amber-400 hover:text-amber-300 transition-colors"
+            >
+              ← Back to Home
+            </Link>
+            
+            {(canEdit || canDelete) && (
+              <div className="flex items-center gap-3">
+                {canEdit && (
+                  <Button
+                    onClick={() => router.push(`/posts/edit/${postId}`)}
+                    className="text-sm"
+                  >
+                    Edit
+                  </Button>
+                )}
+                {canDelete && (
+                  <Button
+                    onClick={handleDeleteClick}
+                    disabled={isDeleting}
+                    className="text-sm bg-red-600 hover:bg-red-700"
+                  >
+                    Delete
+                  </Button>
+                )}
+              </div>
+            )}
+          </div>
+          <BlogPost title={title} date={formatDate(date)} author={author}>
+            <MDXRemote {...content} />
+          </BlogPost>
         </div>
-        <BlogPost title={title} date={formatDate(date)} author={author}>
-          <MDXRemote {...content} />
-        </BlogPost>
-      </div>
 
-      <PostDeleteDialog
-        isOpen={showDeleteDialog}
-        postTitle={title}
-        isLoading={isDeleting}
-        error={deleteError}
-        onConfirm={handleDeleteConfirm}
-        onCancel={handleDeleteCancel}
-      />
-    </div>
+        <PostDeleteDialog
+          isOpen={showDeleteDialog}
+          postTitle={title}
+          isLoading={isDeleting}
+          error={deleteError}
+          onConfirm={handleDeleteConfirm}
+          onCancel={handleDeleteCancel}
+        />
+      </div>
+    </ErrorBoundary>
   );
 }
 

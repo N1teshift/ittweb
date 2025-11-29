@@ -3,6 +3,9 @@ import { getFirestore, Firestore } from "firebase/firestore";
 import { getStorage, FirebaseStorage } from "firebase/storage";
 import { getAnalytics, isSupported, Analytics } from "firebase/analytics";
 import { getFirebaseClientConfig } from './config';
+import { createComponentLogger } from '@/features/infrastructure/logging';
+
+const logger = createComponentLogger('firebase.client');
 
 // Initialize Firebase
 let app: FirebaseApp | null = null;
@@ -78,7 +81,9 @@ export async function getAnalyticsInstance(): Promise<Analytics | null> {
       return analytics;
     }
   } catch (error) {
-    console.warn('Analytics initialization failed:', error);
+    logger.warn('Analytics initialization failed', { 
+      error: error instanceof Error ? error.message : String(error) 
+    });
   }
 
   return null;
@@ -90,7 +95,9 @@ if (typeof window !== 'undefined') {
     initializeFirebaseApp();
     getAnalyticsInstance();
   } catch (error) {
-    console.error('Firebase initialization error:', error);
+    logger.error('Firebase initialization error', 
+      error instanceof Error ? error : new Error(String(error))
+    );
   }
 }
 

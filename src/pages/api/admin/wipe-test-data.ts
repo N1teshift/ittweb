@@ -19,23 +19,21 @@ export default createPostHandler<{ success: boolean; message: string; deletedCou
     const adminDb = getFirestoreAdmin();
     const deletedCounts: Record<string, number> = {};
 
-    logger.info('Starting complete data wipe', { discordId: session.discordId });
+    logger.info('Starting test data wipe', { discordId: session.discordId });
 
-    // 1. Delete ALL Firestore collections (except userData)
-    const collections = await adminDb.listCollections();
-    const collectionsToDelete = collections.filter(c => c.id !== 'userData');
-    logger.info('Found collections to delete', { 
-      total: collections.length, 
-      toDelete: collectionsToDelete.length,
-      skipped: ['userData'],
-      collections: collectionsToDelete.map(c => c.id) 
+    // Explicitly define which collections to delete
+    const COLLECTIONS_TO_DELETE = ['games', 'playerStats', 'playerCategoryStats'] as const;
+    
+    logger.info('Collections to delete', { 
+      collections: COLLECTIONS_TO_DELETE
     });
 
-    for (const collection of collectionsToDelete) {
-      const collectionName = collection.id;
+    // 1. Delete specified Firestore collections
+    for (const collectionName of COLLECTIONS_TO_DELETE) {
       let collectionCount = 0;
 
       try {
+        const collection = adminDb.collection(collectionName);
         const snapshot = await collection.get();
         
         // Handle collections with subcollections (like games with players)
@@ -82,15 +80,16 @@ export default createPostHandler<{ success: boolean; message: string; deletedCou
       }
     }
 
-    // 2. Delete ALL files from Firebase Storage
+    // 2. Delete files from Firebase Storage - only the games folder
     const storage = getStorageAdmin();
     const bucketName = getStorageBucketName();
     const bucket = bucketName ? storage.bucket(bucketName) : storage.bucket();
     
     let storageFileCount = 0;
     try {
-      const [files] = await bucket.getFiles();
-      logger.info('Found files in storage to delete', { count: files.length });
+      // Only get files in the games/ folder
+      const [files] = await bucket.getFiles({ prefix: 'games/' });
+      logger.info('Found files in games/ folder to delete', { count: files.length });
       
       const fileDeletionPromises = files.map(async (file) => {
         try {
@@ -106,7 +105,7 @@ export default createPostHandler<{ success: boolean; message: string; deletedCou
 
       await Promise.all(fileDeletionPromises);
       deletedCounts.storageFiles = storageFileCount;
-      logger.info('Deleted storage files', { count: storageFileCount });
+      logger.info('Deleted storage files from games/ folder', { count: storageFileCount });
     } catch (error) {
       logger.warn('Failed to delete storage files', {
         error: error instanceof Error ? error.message : String(error),
@@ -116,6 +115,8 @@ export default createPostHandler<{ success: boolean; message: string; deletedCou
     logger.info('Test data wipe completed', {
       discordId: session.discordId,
       deletedCounts,
+      collectionsDeleted: COLLECTIONS_TO_DELETE,
+      storageFolderDeleted: 'games/'
     });
 
     return {

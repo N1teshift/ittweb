@@ -1,5 +1,6 @@
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
 import { Logger } from '@/features/infrastructure/logging';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import type { GetStaticProps } from 'next';
 
@@ -25,6 +26,7 @@ export default function Guides() {
   }
 
   return (
+    <ErrorBoundary>
     <div className="min-h-[calc(100vh-8rem)]">
       <div className="text-center max-w-2xl mx-auto px-6 py-12">
         {/* Main Heading */}
@@ -63,6 +65,7 @@ export default function Guides() {
         </div>
       </div>
     </div>
+    </ErrorBoundary>
   );
 }
 

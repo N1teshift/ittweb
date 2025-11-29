@@ -365,23 +365,43 @@ When a query fails due to a missing index, Firestore provides a link in the erro
 
 ---
 
-## Quick Reference: All Indexes in One Place
+## Complete Index Reference
 
-For convenience, here's a table of all indexes:
+> **Note**: Index numbering (Index 1, Index 10, etc.) is for documentation reference only. The order you create indexes in Firebase Console doesn't matter - only the field order within each index matters.
 
-| Index | Collection | Fields (in order) | Purpose |
-|-------|-----------|-------------------|---------|
-| 1 | `games` | `isDeleted` (Asc), `gameState` (Asc), `scheduledDateTime` (Asc) | Scheduled games list |
-| 2 | `games` | `isDeleted` (Asc), `gameState` (Asc), `scheduledDateTime` (Asc) | Scheduled games with date filter (uses Index 1) |
-| 3 | `games` | `isDeleted` (Asc), `gameState` (Asc), `datetime` (Desc) | Completed games list |
-| 4 | `games` | `isDeleted` (Asc), `gameState` (Asc), `category` (Asc), `datetime` (Desc) | Completed games by category |
-| 5 | `games` | `isDeleted` (Asc), `gameState` (Asc), `datetime` (Desc) | Completed games with date filter (uses Index 3) |
-| 6 | `games` | `isDeleted` (Asc), `createdAt` (Desc) | All games (no gameState filter) |
-| 7 | `posts` | `published` (Asc), `date` (Desc) | Published posts list |
-| 8 | `entries` | `isDeleted` (Asc), `date` (Desc) | All entries list |
-| 9 | `entries` | `isDeleted` (Asc), `contentType` (Asc), `date` (Desc) | Entries by content type |
-| 10 | `playerCategoryStats` | `category` (Asc), `games` (Asc), `score` (Desc) | Standings by category (optimized) |
-| 11 | `playerCategoryStats` | `category` (Asc), `games` (Desc), `score` (Desc) | Standings sorted by games (optional) |
+### Quick Reference Table
+
+| Index | Collection | Fields (in order) | Purpose | Priority |
+|-------|-----------|-------------------|---------|----------|
+| 1 | `games` | `isDeleted` (Asc), `gameState` (Asc), `scheduledDateTime` (Asc) | Scheduled games list | Required |
+| 2 | `games` | `isDeleted` (Asc), `gameState` (Asc), `scheduledDateTime` (Asc) | Scheduled games with date filter (uses Index 1) | Required |
+| 3 | `games` | `isDeleted` (Asc), `gameState` (Asc), `datetime` (Desc) | Completed games list | Required |
+| 4 | `games` | `isDeleted` (Asc), `gameState` (Asc), `category` (Asc), `datetime` (Desc) | Completed games by category | Required |
+| 5 | `games` | `gameId` (Desc) | Next game ID generation | Recommended |
+| 6 | `games` | `gameState` (Asc), `gameId` (Desc) | Next scheduled game ID | Required |
+| 7 | `games` | `isDeleted` (Asc), `gameState` (Asc), `datetime` (Desc) | Completed games with date filter (uses Index 3) | Required |
+| 8 | `games` | `isDeleted` (Asc), `createdAt` (Desc) | All games (no gameState filter) | Optional |
+| 9 | `posts` | `published` (Asc), `date` (Desc) | Published posts list | Required |
+| 10 | `playerCategoryStats` | `category` (Asc), `games` (Asc), `score` (Desc) | Standings by category (optimized) | Required |
+| 11 | `playerCategoryStats` | `category` (Asc), `games` (Desc), `score` (Desc) | Standings sorted by games (optional) | Optional |
+| 12 | `entries` | `isDeleted` (Asc), `date` (Desc) | All entries list | Optional |
+| 13 | `entries` | `isDeleted` (Asc), `contentType` (Asc), `date` (Desc) | Entries by content type | Optional |
+
+### Field Order Rules
+
+**⚠️ CRITICAL**: When creating indexes, the field order must match exactly as listed above.
+
+**Firestore Index Rules**:
+1. **Equality filters** (`==`) come first
+2. **Range filters** (`>=`, `<=`, `>`, `<`) come after equality
+3. **OrderBy fields** come last
+
+**Example for Index 10:**
+- ✅ Correct: `category` (equality) → `games` (range) → `score` (orderBy)
+- ❌ Wrong: `games` → `category` → `score`
+- ❌ Wrong: `score` → `category` → `games`
+
+The order in the table above is the exact order you must add fields in Firebase Console.
 
 ## Verifying Indexes Are Working
 
@@ -431,6 +451,12 @@ For convenience, here's a table of all indexes:
 - They use storage space (usually minimal)
 - Each document field in an index uses about 1KB
 - Monitor index count and storage in Firebase Console
+
+## Related Documentation
+
+- [FIRESTORE_INDEXES_EXPLAINED.md](./FIRESTORE_INDEXES_EXPLAINED.md) - Understanding how indexes work
+- [FIRESTORE_INDEXES_INVENTORY.md](./FIRESTORE_INDEXES_INVENTORY.md) - Current index status and inventory
+- [FIRESTORE_INDEXES_SETUP_GUIDE.md](./FIRESTORE_INDEXES_SETUP_GUIDE.md) - Step-by-step setup instructions
 
 ## Additional Resources
 

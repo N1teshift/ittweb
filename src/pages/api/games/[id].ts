@@ -93,6 +93,12 @@ export default createApiHandler(
     methods: ['GET', 'PUT', 'DELETE'],
     requireAuth: false, // GET is public, PUT/DELETE check auth manually (mixed-method route)
     logRequests: true,
+    // Cache for 2 minutes - game details may be updated
+    cacheControl: {
+      public: true,
+      maxAge: 120,
+      mustRevalidate: true,
+    },
   }
 );
 

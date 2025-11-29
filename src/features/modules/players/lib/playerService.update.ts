@@ -12,7 +12,8 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
-import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
+import { createTimestampFactoryAsync } from '@/features/infrastructure/utils/timestampUtils';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import { upsertPlayerCategoryStats } from '../../standings/lib/playerCategoryStatsService';
@@ -41,9 +42,10 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
     const gameDatetimeString = timestampToIso(game.datetime);
     const gameDatetime = new Date(gameDatetimeString);
 
+    const timestampFactory = await createTimestampFactoryAsync();
+    
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const adminTimestamp = getAdminTimestamp();
 
       for (const player of game.players) {
         const normalizedName = normalizePlayerName(player.name);
@@ -56,10 +58,7 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
           gameDatetime,
           normalizedName,
           playerDoc.exists ? (playerDoc.data() as Record<string, unknown>) : null,
-          {
-            fromDate: adminTimestamp.fromDate.bind(adminTimestamp) as (date: Date) => Timestamp,
-            now: adminTimestamp.now.bind(adminTimestamp) as () => Timestamp,
-          },
+          timestampFactory,
           {
             setDoc: async (data: Record<string, unknown>) => {
               await playerRef.set(data);
@@ -85,10 +84,7 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
           gameDatetime,
           normalizedName,
           playerDoc.exists() ? playerDoc.data() : null,
-          {
-            fromDate: Timestamp.fromDate.bind(Timestamp),
-            now: Timestamp.now.bind(Timestamp),
-          },
+          timestampFactory,
           {
             setDoc: async (data: Record<string, unknown>) => {
               await setDoc(playerRef, data);

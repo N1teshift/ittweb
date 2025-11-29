@@ -23,28 +23,46 @@ export default async function handler(req, res) {
 }
 ```
 
-### Using createApiHandler
+### Using createApiHandler (Recommended)
 
 ```typescript
-import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/features/infrastructure/auth';
+import { createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
 
-export default createApiHandler(
-  async (req) => {
-    // ⚠️ requireAuth option is not yet implemented
-    // Authentication must be checked manually:
-    const session = await getServerSession(req, res, authOptions);
-    if (!session) {
-      throw new Error('Authentication required');
-    }
+export default createPostHandler(
+  async (req, res, context) => {
+    // Session is guaranteed to be available when requireAuth: true
+    const session = requireSession(context);
+    
+    // Use session data
+    const userId = session.discordId;
     
     // Handler logic
   },
   {
-    methods: ['POST'],
-    requireAuth: false, // ⚠️ Currently not implemented - check authentication manually
+    requireAuth: true, // Automatically checks authentication
     logRequests: true,
+  }
+);
+```
+
+**How it works:**
+- `requireAuth: true` automatically checks authentication
+- Returns `401 Unauthorized` if not authenticated
+- Session is available via `requireSession(context)` helper
+- No need to manually check authentication
+
+**Admin Access:**
+```typescript
+export default createPostHandler(
+  async (req, res, context) => {
+    const session = requireSession(context);
+    // User is guaranteed to be admin when requireAdmin: true
+    // ... admin-only operations
+  },
+  {
+    requireAuth: true,
+    requireAdmin: true, // Also checks admin role
+    // Returns 403 Forbidden if not admin
   }
 );
 ```

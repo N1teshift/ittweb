@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { GameLengthChart } from '../GameLengthChart';
 import type { GameLengthDataPoint } from '../../types';
 
@@ -28,7 +28,7 @@ jest.mock('@/features/infrastructure/components/ui/Card', () => ({
 }));
 
 describe('GameLengthChart', () => {
-  it('should render game length distribution', () => {
+  it('should render game length distribution', async () => {
     // Arrange
     const data: GameLengthDataPoint[] = [
       { date: '2024-01-01', averageDuration: 30 },
@@ -39,7 +39,9 @@ describe('GameLengthChart', () => {
     render(<GameLengthChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    });
     expect(screen.getByTestId('responsive-container')).toBeInTheDocument();
   });
 
@@ -54,7 +56,7 @@ describe('GameLengthChart', () => {
     expect(screen.getByText('No game length data available')).toBeInTheDocument();
   });
 
-  it('should handle very short games', () => {
+  it('should handle very short games', async () => {
     // Arrange
     const data: GameLengthDataPoint[] = [
       { date: '2024-01-01', averageDuration: 0.5 },
@@ -64,10 +66,12 @@ describe('GameLengthChart', () => {
     render(<GameLengthChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    });
   });
 
-  it('should handle very long games', () => {
+  it('should handle very long games', async () => {
     // Arrange
     const data: GameLengthDataPoint[] = [
       { date: '2024-01-01', averageDuration: 300 },
@@ -77,7 +81,9 @@ describe('GameLengthChart', () => {
     render(<GameLengthChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    });
   });
 
   it('should handle missing durations', () => {
@@ -93,7 +99,7 @@ describe('GameLengthChart', () => {
     expect(screen.getByText('No game length data available')).toBeInTheDocument();
   });
 
-  it('should handle very varied lengths', () => {
+  it('should handle very varied lengths', async () => {
     // Arrange
     const data: GameLengthDataPoint[] = Array.from({ length: 100 }, (_, i) => ({
       date: `2024-01-${String(i + 1).padStart(2, '0')}`,
@@ -104,10 +110,12 @@ describe('GameLengthChart', () => {
     render(<GameLengthChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    });
   });
 
-  it('should display custom title', () => {
+  it('should display custom title', async () => {
     // Arrange
     const data: GameLengthDataPoint[] = [{ date: '2024-01-01', averageDuration: 30 }];
 

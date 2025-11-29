@@ -160,6 +160,7 @@ describe('POST /api/games/[id]/upload-replay', () => {
 
     // Setup game mock
     mockGetGameById.mockResolvedValue(mockScheduledGame);
+    mockUpdateEloScores.mockResolvedValue(undefined);
 
     // Setup replay parser mock
     mockParseReplayFile.mockResolvedValue(mockParsedReplay);
@@ -496,6 +497,8 @@ describe('POST /api/games/[id]/upload-replay', () => {
   it('handles error when ELO update fails (logs but does not fail request)', async () => {
     // Arrange
     const eloError = new Error('ELO update failed');
+    // Ensure mockUpdateEloScores is reset and set to reject
+    mockUpdateEloScores.mockReset();
     mockUpdateEloScores.mockRejectedValue(eloError);
     const req = createRequest('game-123');
     const res = createResponse();
@@ -504,7 +507,7 @@ describe('POST /api/games/[id]/upload-replay', () => {
     await handler(req, res);
 
     // Assert
-    expect(mockUpdateEloScores).toHaveBeenCalled();
+    expect(mockUpdateEloScores).toHaveBeenCalledWith('game-123');
     expect(mockWarn).toHaveBeenCalledWith(
       'Failed to update ELO scores',
       expect.objectContaining({

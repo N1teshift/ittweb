@@ -1,11 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+// Import server-side mocks FIRST before handler
+import '../../../../../__tests__/helpers/mockUserDataService.server';
+import {
+  mockGetUserDataByDiscordIdServer,
+  setIsServerSide,
+} from '../../../../../__tests__/helpers/mockUserDataService.server';
 import handler from '../index';
 
 // Mock dependencies
 const mockGetGames = jest.fn();
 const mockCreateScheduledGame = jest.fn();
 const mockCreateCompletedGame = jest.fn();
-const mockGetUserDataByDiscordId = jest.fn();
 const mockIsAdmin = jest.fn();
 const mockInfo = jest.fn();
 const mockError = jest.fn();
@@ -16,10 +21,6 @@ jest.mock('@/features/modules/games/lib/gameService', () => ({
   getGames: (...args: unknown[]) => mockGetGames(...args),
   createScheduledGame: (...args: unknown[]) => mockCreateScheduledGame(...args),
   createCompletedGame: (...args: unknown[]) => mockCreateCompletedGame(...args),
-}));
-
-jest.mock('@/features/infrastructure/lib/userDataService', () => ({
-  getUserDataByDiscordId: (...args: unknown[]) => mockGetUserDataByDiscordId(...args),
 }));
 
 jest.mock('@/features/infrastructure/utils/userRoleUtils', () => ({
@@ -319,10 +320,11 @@ describe('POST /api/games', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    setIsServerSide(true); // Enable server-side mode
     mockGetServerSession.mockResolvedValue(mockSession);
     mockCreateScheduledGame.mockResolvedValue('game-id-123');
     mockCreateCompletedGame.mockResolvedValue('game-id-456');
-    mockGetUserDataByDiscordId.mockResolvedValue({ role: 'user' });
+    mockGetUserDataByDiscordIdServer.mockResolvedValue({ role: 'user' });
     mockIsAdmin.mockReturnValue(false);
   });
 
@@ -824,7 +826,7 @@ describe('POST /api/games', () => {
 
     it('handles errors from getUserDataByDiscordId', async () => {
       // Arrange
-      mockGetUserDataByDiscordId.mockRejectedValue(new Error('User data error'));
+      mockGetUserDataByDiscordIdServer.mockRejectedValue(new Error('User data error'));
       const pastDate = new Date();
       pastDate.setDate(pastDate.getDate() - 1);
       const gameData = {

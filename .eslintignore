@@ -1,0 +1,21 @@
+# Ignore test files - tests should not block production builds
+**/__tests__/**
+**/*.test.ts
+**/*.test.tsx
+**/*.test.js
+**/*.test.jsx
+**/*.spec.ts
+**/*.spec.tsx
+**/*.spec.js
+**/*.spec.jsx
+
+# Ignore build artifacts
+.next
+out
+build
+node_modules
+
+# Ignore config files that might have different linting needs
+*.config.js
+*.config.ts
+

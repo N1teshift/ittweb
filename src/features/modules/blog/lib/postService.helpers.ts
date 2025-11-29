@@ -5,7 +5,7 @@
 
 import { Timestamp } from 'firebase/firestore';
 import type { Post, CreatePost } from '@/types/post';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso, type TimestampFactory } from '@/features/infrastructure/utils/timestampUtils';
 import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
 
 /**
@@ -36,10 +36,7 @@ export function transformPostDoc(data: Record<string, unknown>, docId: string): 
  */
 export function preparePostDataForFirestore(
   postData: CreatePost,
-  timestampFactory: {
-    fromDate: (date: Date) => Timestamp;
-    now: () => Timestamp;
-  }
+  timestampFactory: TimestampFactory
 ): Record<string, unknown> {
   const cleanedData = removeUndefined(postData as unknown as Record<string, unknown>);
   
@@ -65,10 +62,7 @@ export function preparePostDataForFirestore(
  */
 export function preparePostUpdateData(
   updates: Partial<CreatePost>,
-  timestampFactory: {
-    fromDate: (date: Date) => Timestamp;
-    now: () => Timestamp;
-  }
+  timestampFactory: TimestampFactory
 ): Record<string, unknown> {
   const cleanedUpdates = removeUndefined(updates as unknown as Record<string, unknown>);
   const updateData: Record<string, unknown> = {

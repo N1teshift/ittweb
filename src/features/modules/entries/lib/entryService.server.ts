@@ -12,7 +12,7 @@ const ENTRIES_COLLECTION = 'entries';
  */
 export async function getAllEntriesServer(contentType?: 'post' | 'memory'): Promise<Entry[]> {
   try {
-    logger.info('Fetching all entries', { contentType });
+    logger.debug('Fetching all entries', { contentType });
 
     const entries: Entry[] = [];
 
@@ -72,7 +72,7 @@ export async function getAllEntriesServer(contentType?: 'post' | 'memory'): Prom
           });
         });
         
-        logger.info('Entries fetched from query', { count: entries.length });
+        logger.debug('Entries fetched from query', { count: entries.length });
       } catch (error: unknown) {
         // If index is still building or query fails, fall back to fetching all and filtering in memory
         const firestoreError = error as { code?: number; message?: string };
@@ -136,11 +136,11 @@ export async function getAllEntriesServer(contentType?: 'post' | 'memory'): Prom
           return dateB - dateA; // Descending order
         });
         
-        logger.info('Entries fetched from fallback', { count: entries.length });
+        logger.debug('Entries fetched from fallback', { count: entries.length });
       }
     }
 
-    logger.info('Entries fetched', { count: entries.length });
+    logger.debug('Entries fetched', { count: entries.length });
     return entries;
   } catch (error) {
     const err = error as Error;

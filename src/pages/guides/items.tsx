@@ -1,4 +1,5 @@
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState, useMemo, useEffect } from 'react';
@@ -96,7 +97,6 @@ function ItemCard({ item, category }: { item: ItemData; category?: ItemCategory 
           category="units"
           name={craftedAtBuilding.name}
           size={32}
-          src={craftedAtBuilding.iconPath ? `/icons/itt/${craftedAtBuilding.iconPath}` : undefined}
         />
       </button>
     </IconWithTooltip>
@@ -120,7 +120,6 @@ function ItemCard({ item, category }: { item: ItemData; category?: ItemCategory 
             category={ingredientItem.category === 'buildings' ? 'buildings' : 'items'}
             name={ingredientItem.name}
             size={32}
-            src={ingredientItem.iconPath ? `/icons/itt/${ingredientItem.iconPath}` : undefined}
           />
         </button>
       </IconWithTooltip>
@@ -141,10 +140,9 @@ function ItemCard({ item, category }: { item: ItemData; category?: ItemCategory 
 
   const icon = (
     <GuideIcon 
-      category="items" 
+      category={item.category === 'buildings' ? 'buildings' : 'items'} 
       name={item.name} 
       size={48}
-      src={item.iconPath ? `/icons/itt/${item.iconPath}` : undefined}
     />
   );
 
@@ -307,12 +305,13 @@ export default function ItemsPage() {
 
   if (!hasItemData) {
     return (
+      <ErrorBoundary>
       <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-5xl mx-auto">
         <div className="mb-6">
           <Link href="/guides" className="text-amber-400 hover:text-amber-300">← Back to Guides</Link>
         </div>
 
-        <h1 className="font-medieval-brand text-4xl md:text-5xl mb-4">Items</h1>
+        <h1 className="font-medieval-brand text-2xl md:text-4xl mb-4">Items</h1>
         <p className="text-gray-300 mb-6">Item data has not been generated yet.</p>
 
         <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-6 text-amber-100">
@@ -323,17 +322,19 @@ export default function ItemsPage() {
           </p>
         </div>
       </div>
+      </ErrorBoundary>
     );
   }
 
   return (
+    <ErrorBoundary>
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-7xl mx-auto">
         <div className="mb-6">
           <Link href="/guides" className="text-amber-400 hover:text-amber-300">← Back to Guides</Link>
         </div>
 
         <div className="mb-8">
-          <h1 className="font-medieval-brand text-4xl md:text-5xl mb-4">Items</h1>
+          <h1 className="font-medieval-brand text-2xl md:text-4xl mb-4">Items</h1>
           <p className="text-gray-300 mb-6 text-lg leading-relaxed">
             Comprehensive catalog of all items available in Island Troll Tribes. 
             From basic materials to powerful artifacts, weapons, and buildings.
@@ -439,5 +440,6 @@ export default function ItemsPage() {
           </div>
         )}
       </div>
+    </ErrorBoundary>
   );
 }

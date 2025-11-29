@@ -1,6 +1,10 @@
 import type { NextApiRequest } from 'next';
 import { TextDecoder, TextEncoder } from 'util';
 
+// Import server-side mocks FIRST before handlers
+import '../helpers/mockUserDataService.server';
+import { setIsServerSide } from '../helpers/mockUserDataService.server';
+
 // Polyfill missing encoders for some dependencies
 if (!(global as any).TextEncoder) {
   (global as any).TextEncoder = TextEncoder;
@@ -163,6 +167,7 @@ const runHandler = async (handler: Function, req: NextApiRequest) => {
 
 beforeEach(() => {
   jest.clearAllMocks();
+  setIsServerSide(true);
 });
 
 describe('Games API', () => {

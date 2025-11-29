@@ -5,6 +5,7 @@ export { default as PageHero } from './PageHero';
 export { default as GitHubButton } from './GitHubButton';
 export { default as DiscordButton } from './DiscordButton';
 export { default as DataCollectionNotice } from './DataCollectionNotice';
+export { ErrorBoundary } from './ErrorBoundary';
 
 // Re-export UI components
 export * from './ui';

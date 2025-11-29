@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Link from 'next/link';
 import { Card } from '@/features/infrastructure/components/ui/Card';
 import { formatDuration } from '../../shared/utils';
@@ -24,33 +24,43 @@ function parseDate(value: string | undefined): Date | null {
   return null;
 }
 
-export function GameCard({ game }: GameCardProps) {
-  const isScheduled = game.gameState === 'scheduled';
-  
-  // Parse scheduled date - prefer scheduledDateTimeString, fallback to converting scheduledDateTime
-  const scheduledDate = isScheduled && game.scheduledDateTime
-    ? parseDate(game.scheduledDateTimeString || timestampToIso(game.scheduledDateTime))
-    : null;
-  
-  // Parse completed game date
-  const completedDate = !isScheduled && game.datetime
-    ? parseDate(timestampToIso(game.datetime))
-    : null;
-  
-  const gameDate = scheduledDate || completedDate;
-  const formattedDate = gameDate ? gameDate.toLocaleDateString() : 'TBD';
-  const formattedTime = gameDate ? gameDate.toLocaleTimeString() : '';
+function GameCardComponent({ game }: GameCardProps) {
+  // Memoize date calculations
+  const { formattedDate, formattedTime } = useMemo(() => {
+    const isScheduled = game.gameState === 'scheduled';
+    
+    // Parse scheduled date - prefer scheduledDateTimeString, fallback to converting scheduledDateTime
+    const scheduledDate = isScheduled && game.scheduledDateTime
+      ? parseDate(game.scheduledDateTimeString || timestampToIso(game.scheduledDateTime))
+      : null;
+    
+    // Parse completed game date
+    const completedDate = !isScheduled && game.datetime
+      ? parseDate(timestampToIso(game.datetime))
+      : null;
+    
+    const gameDate = scheduledDate || completedDate;
+    return {
+      formattedDate: gameDate ? gameDate.toLocaleDateString() : 'TBD',
+      formattedTime: gameDate ? gameDate.toLocaleTimeString() : '',
+    };
+  }, [game.gameState, game.scheduledDateTime, game.scheduledDateTimeString, game.datetime]);
+
+  // Memoize formatted map name
+  const mapName = useMemo(() => {
+    return game.map ? (game.map.split('\\').pop() || game.map) : null;
+  }, [game.map]);
 
   return (
     <Card variant="medieval" className="p-4 hover:border-amber-400/70 transition-colors">
       <Link href={`/games/${game.id}`} className="block">
         <div className="flex justify-between items-start mb-2">
           <div>
-            <h3 className="text-lg font-semibold text-amber-400 mb-1">
+            <h3 className="text-xl font-semibold text-amber-400 mb-1">
               Game #{game.gameId}
             </h3>
             <p className="text-sm text-gray-400">
-              {formattedDate} {formattedTime}
+              {formattedDate} {formattedTime && formattedTime}
             </p>
           </div>
           {game.category && (
@@ -67,10 +77,10 @@ export function GameCard({ game }: GameCardProps) {
               <span className="text-amber-300">{formatDuration(game.duration)}</span>
             </div>
           )}
-          {game.map && (
+          {mapName && (
             <div>
               <span className="text-gray-500">Map:</span>{' '}
-              <span className="text-amber-300">{game.map.split('\\').pop() || game.map}</span>
+              <span className="text-amber-300">{mapName}</span>
             </div>
           )}
         </div>
@@ -82,4 +92,7 @@ export function GameCard({ game }: GameCardProps) {
     </Card>
   );
 }
+
+// Memoize component to prevent unnecessary re-renders when props haven't changed
+export const GameCard = React.memo(GameCardComponent);
 

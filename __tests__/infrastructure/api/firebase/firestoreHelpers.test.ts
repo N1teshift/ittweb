@@ -6,13 +6,16 @@ const mockGetDoc = jest.fn();
 const mockCollection = jest.fn();
 const mockGetDocs = jest.fn();
 
+jest.mock('@/features/infrastructure/utils/serverUtils', () => ({
+  isServerSide: (...args: unknown[]) => mockIsServerSide(...args),
+}));
+
 jest.mock('@/features/infrastructure/api/firebase/firebaseClient', () => ({
   getFirestoreInstance: (...args: unknown[]) => mockGetFirestoreInstance(...args),
 }));
 
 jest.mock('@/features/infrastructure/api/firebase/admin', () => ({
   getFirestoreAdmin: (...args: unknown[]) => mockGetFirestoreAdmin(...args),
-  isServerSide: (...args: unknown[]) => mockIsServerSide(...args),
 }));
 
 jest.mock('firebase/firestore', () => ({

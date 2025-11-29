@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { ActivityChart } from '../ActivityChart';
 import type { ActivityDataPoint } from '../../types';
 
@@ -28,7 +28,7 @@ jest.mock('@/features/infrastructure/components/ui/Card', () => ({
 }));
 
 describe('ActivityChart', () => {
-  it('should render chart with activity data', () => {
+  it('should render chart with activity data', async () => {
     // Arrange
     const data: ActivityDataPoint[] = [
       { date: '2024-01-01', games: 5 },
@@ -39,7 +39,9 @@ describe('ActivityChart', () => {
     render(<ActivityChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    });
     expect(screen.getByTestId('responsive-container')).toBeInTheDocument();
   });
 
@@ -65,7 +67,7 @@ describe('ActivityChart', () => {
     expect(screen.getByText('No activity data available')).toBeInTheDocument();
   });
 
-  it('should handle many data points', () => {
+  it('should handle many data points', async () => {
     // Arrange
     const data: ActivityDataPoint[] = Array.from({ length: 100 }, (_, i) => ({
       date: `2024-01-${String(i + 1).padStart(2, '0')}`,
@@ -76,7 +78,9 @@ describe('ActivityChart', () => {
     render(<ActivityChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    });
   });
 
   it('should display custom title', () => {
@@ -90,19 +94,23 @@ describe('ActivityChart', () => {
     expect(screen.getByText('Custom Title')).toBeInTheDocument();
   });
 
-  it('should handle date range changes', () => {
+  it('should handle date range changes', async () => {
     // Arrange
     const data1: ActivityDataPoint[] = [{ date: '2024-01-01', games: 5 }];
     const data2: ActivityDataPoint[] = [{ date: '2024-01-02', games: 10 }];
 
     // Act
     const { rerender } = render(<ActivityChart data={data1} />);
-    expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    });
 
     rerender(<ActivityChart data={data2} />);
 
     // Assert
-    expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    });
   });
 });
 

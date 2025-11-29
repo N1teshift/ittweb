@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { PageHero } from '@/features/infrastructure/components';
+import { PageHero, ErrorBoundary } from '@/features/infrastructure/components';
 import { Card } from '@/features/infrastructure/components/ui/Card';
 import { ClassWinRateChart } from '@/features/modules/analytics/components';
 import LoadingScreen from '@/features/infrastructure/components/ui/LoadingScreen';
@@ -85,13 +85,14 @@ export default function ClassDetailPage() {
   const displayName = classStat.id.charAt(0).toUpperCase() + classStat.id.slice(1);
 
   return (
-    <div className="min-h-[calc(100vh-8rem)]">
-      <PageHero 
-        title={`${displayName} Statistics`} 
-        description="View detailed statistics for this class" 
-      />
-      
-      <div className="container mx-auto px-4 py-8 space-y-6">
+    <ErrorBoundary>
+      <div className="min-h-[calc(100vh-8rem)]">
+        <PageHero 
+          title={`${displayName} Statistics`} 
+          description="View detailed statistics for this class" 
+        />
+        
+        <div className="container mx-auto px-4 py-8 space-y-6">
         {/* Back Link */}
         <Link href="/analytics/classes" className="text-amber-400 hover:text-amber-300 inline-block">
           ← Back to Class Statistics
@@ -207,8 +208,9 @@ export default function ClassDetailPage() {
             <strong className="text-amber-400">Note:</strong> Game history and trends over time features are planned for future implementation.
           </p>
         </Card>
+        </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 }
 

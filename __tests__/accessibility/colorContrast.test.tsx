@@ -1,14 +1,21 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { describe, it, expect, beforeEach } from '@jest/globals';
+
+// Mock logger - must be before importing helpers
+const mockLogError = jest.fn();
+jest.mock('@/features/infrastructure/logging', () => {
+  const actual = jest.requireActual('@/features/infrastructure/logging');
+  return {
+    ...actual,
+    logError: (...args: unknown[]) => mockLogError(...args),
+  };
+});
+
 import {
   getContrastRatio,
   meetsWCAGContrast,
 } from '@/features/infrastructure/utils/accessibility/helpers';
-import { logError } from '@/features/infrastructure/utils/loggerUtils';
-
-// Mock logger
-jest.mock('@/features/infrastructure/utils/loggerUtils');
 
 describe('Color Contrast', () => {
   beforeEach(() => {
@@ -273,13 +280,24 @@ describe('Color Contrast', () => {
       // Arrange
       const invalidForeground = 'invalid-color';
       const background = '#FFFFFF';
+      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
 
       // Act
       const ratio = getContrastRatio(invalidForeground, background);
 
       // Assert
       expect(ratio).toBe(0);
-      expect(logError).toHaveBeenCalled();
+      // Verify that an error was logged (logError calls console.error via Logger.error)
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        expect.stringContaining('[ERROR] Failed to calculate color contrast'),
+        expect.objectContaining({
+          component: 'accessibilityHelpers',
+          operation: 'getContrastRatio',
+          error: expect.stringContaining('Unsupported color format'),
+        })
+      );
+      
+      consoleErrorSpy.mockRestore();
     });
 
     it('should handle missing color values', () => {

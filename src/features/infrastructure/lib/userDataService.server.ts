@@ -10,7 +10,7 @@
  * For client-side usage, use functions from userDataService.ts
  */
 
-import { getFirestoreAdmin, getAdminTimestamp, isServerSide } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { UserData, CreateUserData } from '@/types/userData';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 
@@ -100,11 +100,13 @@ export async function saveUserDataServer(userData: CreateUserData): Promise<void
     
     // Remove undefined values before saving (Firestore doesn't allow undefined)
     const cleanedUserData = removeUndefined(userData as unknown as Record<string, unknown>);
-    const timestamp = getAdminTimestamp();
+    const { createAdminTimestampFactoryAsync } = await import('@/features/infrastructure/utils/timestampUtils');
+    const timestampFactory = await createAdminTimestampFactoryAsync();
+    const now = timestampFactory.now();
     const userDataWithTimestamps = {
       ...cleanedUserData,
-      updatedAt: timestamp,
-      lastLoginAt: timestamp,
+      updatedAt: now,
+      lastLoginAt: now,
     };
 
     if (docSnap.exists) {
@@ -118,7 +120,7 @@ export async function saveUserDataServer(userData: CreateUserData): Promise<void
       // User doesn't exist, create new document
       await docRef.set({
         ...userDataWithTimestamps,
-        createdAt: timestamp,
+        createdAt: now,
       });
       logger.info('User data created (server-side)', { 
         discordId: userData.discordId,
@@ -154,9 +156,11 @@ export async function updateDataCollectionNoticeAcceptanceServer(
     const adminDb = getFirestoreAdmin();
     const docRef = adminDb.collection(USER_DATA_COLLECTION).doc(discordId);
     
+    const { createAdminTimestampFactoryAsync } = await import('@/features/infrastructure/utils/timestampUtils');
+    const timestampFactory = await createAdminTimestampFactoryAsync();
     await docRef.update({
       dataCollectionNoticeAccepted: accepted,
-      updatedAt: getAdminTimestamp(),
+      updatedAt: timestampFactory.now(),
     });
 
     logger.info('Data collection notice acceptance updated (server-side)', { discordId, accepted });

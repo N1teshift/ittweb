@@ -1,6 +1,13 @@
+// This file is server-only and should never be imported in client-side code
+// Note: We use webpack externals configuration instead of 'server-only' package
+// because 'server-only' is designed for App Router, not Pages Router
+
 import { initializeApp, getApps, cert, App } from 'firebase-admin/app';
 import { getFirestore, Firestore, Timestamp as AdminTimestamp } from 'firebase-admin/firestore';
 import { getStorage, Storage } from 'firebase-admin/storage';
+import { createComponentLogger } from '@/features/infrastructure/logging';
+
+const logger = createComponentLogger('firebase.admin');
 
 let adminApp: App | null = null;
 let adminDb: Firestore | null = null;
@@ -46,7 +53,9 @@ export function initializeFirebaseAdmin(): App {
       });
       return adminApp;
     } catch (error) {
-      console.error('Failed to initialize Firebase Admin with service account:', error);
+      logger.warn('Failed to initialize Firebase Admin with service account, falling back to Application Default Credentials', { 
+        error: error instanceof Error ? error.message : String(error) 
+      });
       // Fall through to Application Default Credentials
     }
   }
@@ -103,11 +112,16 @@ export function getStorageBucketName(): string | undefined {
   return storageBucketName;
 }
 
+// Import isServerSide from serverUtils to avoid circular dependencies
+import { isServerSide as checkServerSide } from '@/features/infrastructure/utils/serverUtils';
+
 /**
  * Check if we're running on the server
+ * Re-exported from serverUtils for backward compatibility
+ * @deprecated Import directly from '@/features/infrastructure/utils/serverUtils' instead
  */
 export function isServerSide(): boolean {
-  return typeof window === 'undefined';
+  return checkServerSide();
 }
 
 /**

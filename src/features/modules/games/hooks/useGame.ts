@@ -24,7 +24,11 @@ export function useGame(id: string): UseGameResult {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/games/${id}`);
+      // Add cache-busting timestamp to ensure fresh data after updates
+      const cacheBuster = `?t=${Date.now()}`;
+      const response = await fetch(`/api/games/${id}${cacheBuster}`, {
+        cache: 'no-store', // Force fresh fetch, bypass browser cache
+      });
       if (!response.ok) {
         throw new Error(`Failed to fetch game: ${response.statusText}`);
       }

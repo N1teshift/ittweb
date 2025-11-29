@@ -30,6 +30,12 @@ export default createApiHandler(
     methods: ['GET'],
     requireAuth: false,
     logRequests: true,
+    // Cache for 1 minute - comparison data is expensive to compute
+    cacheControl: {
+      public: true,
+      maxAge: 60,
+      mustRevalidate: true,
+    },
   }
 );
 

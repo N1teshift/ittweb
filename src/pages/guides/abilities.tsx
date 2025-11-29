@@ -1,4 +1,5 @@
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { useState } from 'react';
 import { ABILITIES, ABILITY_CATEGORIES, AbilityCategory, AbilityData, getAbilitiesByCategory, searchAbilities } from '@/features/modules/guides/data/abilities';
@@ -64,7 +65,6 @@ function AbilityCard({ ability }: { ability: AbilityData }) {
       category="abilities" 
       name={ability.name} 
       size={48}
-      src={ability.iconPath ? `/icons/itt/${ability.iconPath}` : undefined}
     />
   );
 
@@ -93,7 +93,7 @@ export default function AbilitiesPage() {
           <Link href="/guides" className="text-amber-400 hover:text-amber-300">← Back to Guides</Link>
         </div>
 
-        <h1 className="font-medieval-brand text-4xl md:text-5xl mb-4">Abilities</h1>
+        <h1 className="font-medieval-brand text-2xl md:text-4xl mb-4">Abilities</h1>
         <p className="text-gray-300 mb-6">Ability data has not been generated yet.</p>
 
         <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-6 text-amber-100">
@@ -122,12 +122,13 @@ export default function AbilitiesPage() {
   const categories = Object.keys(ABILITY_CATEGORIES) as AbilityCategory[];
 
   return (
+    <ErrorBoundary>
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-7xl mx-auto">
         <div className="mb-6">
           <Link href="/guides" className="text-amber-400 hover:text-amber-300">← Back to Guides</Link>
         </div>
 
-        <h1 className="font-medieval-brand text-4xl md:text-5xl mb-6">Abilities</h1>
+        <h1 className="font-medieval-brand text-2xl md:text-4xl mb-6">Abilities</h1>
         <p className="text-gray-300 mb-8">A comprehensive list of all abilities in Island Troll Tribes, organized by category and class.</p>
 
         {/* Search and Filter Controls */}
@@ -193,6 +194,7 @@ export default function AbilitiesPage() {
           </div>
         )}
       </div>
+    </ErrorBoundary>
   );
 }
 

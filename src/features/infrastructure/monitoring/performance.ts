@@ -5,6 +5,10 @@
  * Integrates with Firebase Performance Monitoring if available.
  */
 
+import { createComponentLogger } from '@/features/infrastructure/logging';
+
+const logger = createComponentLogger('performance');
+
 export interface PerformanceMetric {
   name: string;
   value: number;
@@ -53,11 +57,39 @@ export function initializePerformanceMonitoring(): void {
 }
 
 /**
+ * Check if a PerformanceObserver entry type is supported
+ * Returns true if supported, false if explicitly not supported, undefined if unknown (older browsers)
+ */
+function isEntryTypeSupported(entryType: string): boolean | undefined {
+  if (typeof window === 'undefined' || !('PerformanceObserver' in window)) {
+    return false;
+  }
+
+  // Check if supportedEntryTypes is available (modern browsers)
+  if (
+    'supportedEntryTypes' in PerformanceObserver &&
+    Array.isArray(PerformanceObserver.supportedEntryTypes)
+  ) {
+    // Explicitly check - if in the list, it's supported; if not, it's not supported
+    return PerformanceObserver.supportedEntryTypes.includes(entryType);
+  }
+
+  // For older browsers without supportedEntryTypes property, we can't know ahead of time
+  // Return undefined to allow try/catch fallback
+  return undefined;
+}
+
+/**
  * Track Core Web Vitals (LCP, FID, CLS)
  */
 function trackCoreWebVitals(): void {
+  if (typeof window === 'undefined' || !('PerformanceObserver' in window)) {
+    return;
+  }
+
   // Largest Contentful Paint (LCP)
-  if ('PerformanceObserver' in window) {
+  const lcpSupport = isEntryTypeSupported('largest-contentful-paint');
+  if (lcpSupport !== false) {
     try {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
@@ -70,12 +102,13 @@ function trackCoreWebVitals(): void {
       });
       observer.observe({ entryTypes: ['largest-contentful-paint'] });
     } catch (e) {
-      console.warn('[Performance] LCP tracking not supported:', e);
+      // Silently fail if not supported - this is expected in some browsers
     }
   }
 
   // First Input Delay (FID)
-  if ('PerformanceObserver' in window) {
+  const fidSupport = isEntryTypeSupported('first-input');
+  if (fidSupport !== false) {
     try {
       const observer = new PerformanceObserver((list) => {
         const entries = list.getEntries();
@@ -89,12 +122,13 @@ function trackCoreWebVitals(): void {
       });
       observer.observe({ entryTypes: ['first-input'] });
     } catch (e) {
-      console.warn('[Performance] FID tracking not supported:', e);
+      // Silently fail if not supported - this is expected in some browsers
     }
   }
 
   // Cumulative Layout Shift (CLS)
-  if ('PerformanceObserver' in window) {
+  const clsSupport = isEntryTypeSupported('layout-shift');
+  if (clsSupport !== false) {
     try {
       let clsValue = 0;
       const observer = new PerformanceObserver((list) => {
@@ -109,7 +143,7 @@ function trackCoreWebVitals(): void {
       });
       observer.observe({ entryTypes: ['layout-shift'] });
     } catch (e) {
-      console.warn('[Performance] CLS tracking not supported:', e);
+      // Silently fail if not supported - this is expected in some browsers
     }
   }
 }
@@ -125,10 +159,8 @@ export function reportMetric(name: string, value: number, unit: string = 'ms'): 
     timestamp: Date.now(),
   };
 
-  // Log to console in development
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`[Performance] ${name}: ${value}${unit}`);
-  }
+  // Log performance metrics at debug level
+  logger.debug(`Performance metric: ${name}`, { value, unit });
 
   // Send to Firebase Performance if enabled
   if (isFirebasePerfEnabled && firebasePerf) {
@@ -137,7 +169,9 @@ export function reportMetric(name: string, value: number, unit: string = 'ms'): 
       trace.setMetric(unit, value);
       trace.stop();
     } catch (e) {
-      console.warn(`[Performance] Failed to send ${name} to Firebase:`, e);
+      logger.warn(`Failed to send ${name} to Firebase Performance`, { 
+        error: e instanceof Error ? e.message : String(e) 
+      });
     }
   }
 

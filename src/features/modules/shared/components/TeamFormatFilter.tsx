@@ -24,6 +24,7 @@ export function TeamFormatFilter({
             variant={value === undefined ? 'amber' : 'ghost'}
             size="sm"
             onClick={() => onChange(undefined)}
+            className="min-h-[44px] md:min-h-0"
           >
             All Formats
           </Button>
@@ -33,6 +34,7 @@ export function TeamFormatFilter({
               variant={value === format ? 'amber' : 'ghost'}
               size="sm"
               onClick={() => onChange(value === format ? undefined : format)}
+              className="min-h-[44px] md:min-h-0"
             >
               {format}
             </Button>

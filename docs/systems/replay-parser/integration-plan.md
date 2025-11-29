@@ -17,33 +17,24 @@ This plan outlines the integration of:
 
 ### 1.1 Database Schema Updates
 
-#### Update `scheduledGames` Collection
-Add fields to link scheduled games to actual game results:
-
-```typescript
-interface ScheduledGame {
-  // ... existing fields ...
-  status: 'scheduled' | 'completed' | 'cancelled';
-  
-  // NEW: Link to actual game result
-  gameId?: string;              // Reference to games/{gameId}
-  gameResultId?: string;        // Reference to games collection document ID
-  replayUrl?: string;            // Replay file URL (if uploaded)
-  completedAt?: Timestamp;      // When game was completed
-  completedByDiscordId?: string; // Who marked it as completed
-}
-```
-
-#### Update `games` Collection
-Add field to link back to scheduled game:
+#### Unified Games Collection (Current Implementation)
+The system uses a unified `games` collection with `gameState` field:
 
 ```typescript
 interface Game {
   // ... existing fields ...
-  scheduledGameId?: string;     // Reference to scheduledGames/{id}
-  linkedFromScheduled?: boolean; // Flag indicating this came from a scheduled game
+  gameState: 'scheduled' | 'completed';  // Unified collection approach
+  scheduledGameId?: number;     // Numeric scheduled game ID
+  scheduledDateTime?: Timestamp; // When game was scheduled
+  participants?: Array<{...}>;  // Scheduled game participants
+  datetime?: Timestamp;         // When game was actually played (completed games)
+  players?: Array<{...}>;       // Game players (completed games)
+  replayUrl?: string;          // Replay file URL (if uploaded)
+  // ... other fields ...
 }
 ```
+
+**Note:** The current implementation uses a unified `games` collection rather than separate `scheduledGames` and `games` collections. When a replay is uploaded, the same document is updated from `gameState: 'scheduled'` to `gameState: 'completed'`.
 
 ### 1.2 Integration Points
 
@@ -99,10 +90,10 @@ When creating a game (via replay or manual):
 ### 2.2 Parser Service Structure
 
 ```
-src/features/ittweb/games/
+src/features/modules/games/
 ├── lib/
-│   ├── replayParser.ts        # Main parser service
-│   ├── w3mmdParser.ts         # W3MMD-specific data extraction
+│   ├── replayParser.ts        # Main parser service (already exists)
+│   ├── w3mmdUtils.ts         # W3MMD-specific utilities (already exists)
 │   └── replayValidator.ts     # Validate replay file
 ```
 
@@ -116,8 +107,8 @@ interface ParsedGameData {
   duration: number;            // Game duration in seconds
   gamename: string;           // Game name
   map: string;                 // Map name
-  creatorname: string;         // Creator name
-  ownername: string;           // Owner name
+  creatorName: string;         // Creator name (standardized field)
+  createdByDiscordId?: string; // Creator Discord ID (standardized field)
 }
 ```
 
@@ -151,7 +142,7 @@ interface ParsedPlayerData {
 ### 2.4 Parser Implementation
 
 ```typescript
-// src/features/ittweb/games/lib/replayParser.ts
+// src/features/modules/games/lib/replayParser.ts (already exists)
 
 export interface ParseReplayResult {
   game: ParsedGameData;
@@ -242,7 +233,7 @@ Body: {
 
 #### A. Replay Upload Form Component
 ```typescript
-// src/features/ittweb/games/components/ReplayUploadForm.tsx
+// src/features/modules/games/components/ReplayUploadForm.tsx
 interface ReplayUploadFormProps {
   scheduledGameId?: string;    // Optional: Link to scheduled game
   onSuccess: (gameId: string) => void;

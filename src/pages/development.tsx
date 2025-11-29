@@ -27,7 +27,7 @@ export default function Development() {
   return (
     <div className="min-h-[calc(100vh-8rem)]">
       <div className="max-w-3xl w-full mx-auto px-6 py-12">
-        <h1 className="font-medieval-brand text-4xl md:text-5xl mb-6 text-center">Development</h1>
+        <h1 className="font-medieval-brand text-2xl md:text-4xl mb-6 text-center">Development</h1>
 
         <div className="space-y-6">
           {/* Map Development Section */}

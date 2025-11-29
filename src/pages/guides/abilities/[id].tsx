@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { AbilityData } from '@/features/modules/guides/data/abilities';
@@ -34,6 +35,7 @@ export default function AbilityDetail({ ability }: Props) {
   const item = itemId ? getItemById(itemId) : null;
 
   return (
+    <ErrorBoundary>
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6 space-x-4">
           {fromItem && item ? (
@@ -53,7 +55,7 @@ export default function AbilityDetail({ ability }: Props) {
 
         <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
           <div className="flex items-start justify-between mb-2">
-            <h1 className="font-medieval-brand text-3xl md:text-4xl text-amber-400">
+            <h1 className="font-medieval-brand text-2xl md:text-4xl text-amber-400">
               <ColoredText text={ability.name} />
             </h1>
             <div className="flex gap-2">
@@ -213,5 +215,6 @@ export default function AbilityDetail({ ability }: Props) {
           )}
         </div>
       </div>
+    </ErrorBoundary>
   );
 }

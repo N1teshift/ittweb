@@ -140,7 +140,7 @@ export function PlayerFilter({
               }}
               onFocus={() => setShowAlliesSuggestions(true)}
               placeholder={placeholder}
-              className="w-full px-3 py-2 bg-black/40 border border-amber-500/30 rounded text-amber-300 focus:outline-none focus:border-amber-400"
+              className="w-full px-3 py-3 md:py-2 bg-black/40 border border-amber-500/30 rounded text-amber-300 focus:outline-none focus:border-amber-400 min-h-[44px] md:min-h-0"
             />
             {showAlliesSuggestions && alliesSuggestions.length > 0 && (
               <div
@@ -152,7 +152,7 @@ export function PlayerFilter({
                     key={name}
                     type="button"
                     onClick={() => addAlly(name)}
-                    className="w-full text-left px-3 py-2 text-amber-300 hover:bg-amber-500/20 focus:bg-amber-500/20 focus:outline-none"
+                    className="w-full text-left px-3 py-3 md:py-2 text-amber-300 hover:bg-amber-500/20 focus:bg-amber-500/20 focus:outline-none min-h-[44px] md:min-h-0"
                   >
                     {name}
                   </button>
@@ -171,7 +171,7 @@ export function PlayerFilter({
                   <button
                     type="button"
                     onClick={() => removeAlly(name)}
-                    className="hover:text-green-100 focus:outline-none"
+                    className="hover:text-green-100 focus:outline-none min-w-[32px] min-h-[32px] flex items-center justify-center"
                     aria-label={`Remove ${name} from allies`}
                   >
                     ×
@@ -196,7 +196,7 @@ export function PlayerFilter({
               }}
               onFocus={() => setShowEnemiesSuggestions(true)}
               placeholder={placeholder}
-              className="w-full px-3 py-2 bg-black/40 border border-amber-500/30 rounded text-amber-300 focus:outline-none focus:border-amber-400"
+              className="w-full px-3 py-3 md:py-2 bg-black/40 border border-amber-500/30 rounded text-amber-300 focus:outline-none focus:border-amber-400 min-h-[44px] md:min-h-0"
             />
             {showEnemiesSuggestions && enemiesSuggestions.length > 0 && (
               <div
@@ -208,7 +208,7 @@ export function PlayerFilter({
                     key={name}
                     type="button"
                     onClick={() => addEnemy(name)}
-                    className="w-full text-left px-3 py-2 text-amber-300 hover:bg-amber-500/20 focus:bg-amber-500/20 focus:outline-none"
+                    className="w-full text-left px-3 py-3 md:py-2 text-amber-300 hover:bg-amber-500/20 focus:bg-amber-500/20 focus:outline-none min-h-[44px] md:min-h-0"
                   >
                     {name}
                   </button>
@@ -227,7 +227,7 @@ export function PlayerFilter({
                   <button
                     type="button"
                     onClick={() => removeEnemy(name)}
-                    className="hover:text-red-100 focus:outline-none"
+                    className="hover:text-red-100 focus:outline-none min-w-[32px] min-h-[32px] flex items-center justify-center"
                     aria-label={`Remove ${name} from enemies`}
                   >
                     ×

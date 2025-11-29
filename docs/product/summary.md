@@ -1,7 +1,8 @@
 # Game Statistics System - Final Implementation Summary
 
 **Status:** ✅ **CORE FUNCTIONALITY COMPLETE**  
-**Date:** 2025-01-XX
+**Build Status:** ✅ **STABLE** - Project builds successfully on Vercel  
+**Date:** 2025-01-15
 
 ## 🎉 What's Been Implemented
 
@@ -177,13 +178,13 @@ src/pages/
 ```typescript
 POST /api/games
 {
+  "gameState": "completed",
   "gameId": 12345,
   "datetime": "2025-01-15T10:00:00Z",
   "duration": 1800,
   "gamename": "Test Game",
   "map": "Island Troll Tribes",
-  "creatorname": "Creator",
-  "ownername": "Owner",
+  "creatorName": "Creator",
   "category": "1v1",
   "players": [
     { "name": "Player1", "pid": 0, "flag": "winner" },
@@ -191,6 +192,8 @@ POST /api/games
   ]
 }
 ```
+
+**Note**: This endpoint requires authentication. The `creatorName` and `createdByDiscordId` fields are automatically filled from the session if not provided.
 
 ### View Games
 - Navigate to `/games` to see all games

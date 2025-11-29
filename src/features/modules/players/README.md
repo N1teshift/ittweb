@@ -13,8 +13,8 @@
 - `PlayerComparison` - Compare multiple players side-by-side
 
 ### Hooks
-- `usePlayerStats` - Fetch player statistics by name
-- `usePlayerComparison` - Player comparison state management hook (extracted from PlayersPage)
+- `usePlayerStats` - Fetch player statistics by name (in `hooks/usePlayerStats.ts`)
+- `usePlayerComparison` - Player comparison state management hook (in `components/usePlayerComparison.ts`)
 
 ### Services
 - `playerService` - Player statistics operations
@@ -22,6 +22,7 @@
   - `searchPlayers()` - Search players by name
   - `comparePlayers()` - Compare multiple players
   - `normalizePlayerName()` - Normalize player names
+  - `getPlayersPaginated()` - Get paginated list of players (cursor-based pagination using player name)
 
 ### Types
 - `PlayerStats` - Complete player statistics
@@ -32,7 +33,7 @@
 ## Usage
 
 ```typescript
-import { usePlayerStats } from '@/features/modules/players';
+import { usePlayerStats } from '@/features/modules/players/hooks/usePlayerStats';
 import { searchPlayers, comparePlayers } from '@/features/modules/players/lib/playerService';
 
 // Fetch player stats
@@ -47,10 +48,14 @@ const comparison = await comparePlayers(['Player1', 'Player2']);
 
 ## API Routes
 
-- `GET /api/players` - List all players
+- `GET /api/players` - List players with pagination (supports `limit` and `lastPlayerName` query parameters)
 - `GET /api/players/[name]` - Get player statistics
 - `GET /api/players/search?q=query` - Search players
 - `GET /api/players/compare?players=name1,name2` - Compare players
+
+**Pagination**: The `/api/players` endpoint supports cursor-based pagination:
+- `limit` (number, optional) - Number of players to return (default: 50)
+- `lastPlayerName` (string, optional) - Cursor for pagination (player name to start after)
 
 ## Related Documentation
 

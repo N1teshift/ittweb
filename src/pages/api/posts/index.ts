@@ -49,16 +49,26 @@ export default createGetPostHandler<Post[] | { id: string }>(
   {
     requireAuth: false, // GET is public, POST uses requireSession helper
     logRequests: true,
+    // Cache for 10 minutes - posts don't change frequently
+    cacheControl: {
+      public: true,
+      maxAge: 600,
+      mustRevalidate: true,
+    },
     validateBody: (body: unknown) => {
       // Only validate POST requests (GET requests don't have body)
       if (body && typeof body === 'object' && body !== null) {
         const requiredError = validateRequiredFields(body, ['title', 'content', 'slug', 'date']);
         if (requiredError) return requiredError;
         const bodyObj = body as { title?: unknown; slug?: unknown };
-        const titleError = validateString(bodyObj.title, 'title', 1);
-        if (titleError) return titleError;
-        const slugError = validateString(bodyObj.slug, 'slug', 1);
-        if (slugError) return slugError;
+        const titleResult = validateString(bodyObj.title, 'title', 1);
+        if (typeof titleResult === 'string' && titleResult.startsWith('title must be')) {
+          return titleResult;
+        }
+        const slugResult = validateString(bodyObj.slug, 'slug', 1);
+        if (typeof slugResult === 'string' && slugResult.startsWith('slug must be')) {
+          return slugResult;
+        }
       }
       return true;
     },

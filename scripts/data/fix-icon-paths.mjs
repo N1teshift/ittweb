@@ -90,6 +90,7 @@ function calculateSimilarity(str1, str2) {
 
 /**
  * Find the correct icon filename for a given iconPath using multiple strategies
+ * Always returns lowercase filename (standardized format)
  */
 function findIconFile(iconPath, iconMap, searchIndex) {
   if (!iconPath) return null;
@@ -98,16 +99,17 @@ function findIconFile(iconPath, iconMap, searchIndex) {
   const filename = path.basename(iconPath);
   const lowerFilename = filename.toLowerCase();
   if (iconMap.has(lowerFilename)) {
-    return iconMap.get(lowerFilename);
+    // Return lowercase version (standardize all paths)
+    return lowerFilename;
   }
   
   // Strategy 2: Match by basename (without extension)
   const normalized = normalizeIconPath(iconPath);
   if (normalized && searchIndex.has(normalized)) {
     const candidates = searchIndex.get(normalized);
-    // Return the first match (usually there's only one)
+    // Return the first match in lowercase (usually there's only one)
     if (candidates.length > 0) {
-      return candidates[0];
+      return candidates[0].toLowerCase();
     }
   }
   
@@ -118,7 +120,7 @@ function findIconFile(iconPath, iconMap, searchIndex) {
     if (withoutBtn !== normalized && searchIndex.has(withoutBtn)) {
       const candidates = searchIndex.get(withoutBtn);
       if (candidates.length > 0) {
-        return candidates[0];
+        return candidates[0].toLowerCase();
       }
     }
     // Try adding btn prefix
@@ -126,7 +128,7 @@ function findIconFile(iconPath, iconMap, searchIndex) {
     if (withBtn !== normalized && searchIndex.has(withBtn)) {
       const candidates = searchIndex.get(withBtn);
       if (candidates.length > 0) {
-        return candidates[0];
+        return candidates[0].toLowerCase();
       }
     }
   }
@@ -152,7 +154,7 @@ function findIconFile(iconPath, iconMap, searchIndex) {
     if (searchIndex.has(variant)) {
       const candidates = searchIndex.get(variant);
       if (candidates.length > 0) {
-        return candidates[0];
+        return candidates[0].toLowerCase();
       }
     }
   }
@@ -164,7 +166,7 @@ function findIconFile(iconPath, iconMap, searchIndex) {
       const basenameBase = basename.replace(/\d+$/, '');
       if (basenameBase === baseMatch.replace(/weapon/g, 'armor') || 
           basenameBase === baseMatch.replace(/armor/g, 'weapon')) {
-        return filenames[0];
+        return filenames[0].toLowerCase();
       }
     }
   }
@@ -190,7 +192,7 @@ function findIconFile(iconPath, iconMap, searchIndex) {
     }
     
     if (bestMatch) {
-      return bestMatch;
+      return bestMatch.toLowerCase();
     }
   }
   
@@ -224,34 +226,38 @@ function fixIconPathsInFile(filePath, iconMap, searchIndex) {
     // Skip if already using fallback
     if (iconPath === FALLBACK_ICON) continue;
     
-    // Normalize path: remove subdirectories since all icons are in flat directory
-    const normalizedPath = path.basename(iconPath);
-    const lowerNormalized = normalizedPath.toLowerCase();
+    // Normalize path: remove subdirectories and convert to lowercase
+    // All icon paths should be lowercase filenames only (no subdirectories)
+    const normalizedPath = path.basename(iconPath).toLowerCase();
+    const lowerNormalized = normalizedPath;
     
-    // Always check iconMap first to get the correct casing (Windows FS is case-insensitive)
+    // Always check iconMap first to get the actual filename (for existence check)
     let actualFile = null;
     if (iconMap.has(lowerNormalized)) {
       actualFile = iconMap.get(lowerNormalized);
     }
     
-    // Check if file exists with correct casing
+    // Check if file exists
     const fullPathWithCorrectCasing = actualFile ? path.join(ICONS_DIR, actualFile) : null;
-    const fullPathOriginal = path.join(ICONS_DIR, iconPath);
     const fullPathNormalized = path.join(ICONS_DIR, normalizedPath);
     
-    // Check existence
+    // Check existence (case-insensitive on Windows, but we want lowercase)
     const exists = actualFile ? fs.existsSync(fullPathWithCorrectCasing) : 
-                   (fs.existsSync(fullPathOriginal) || fs.existsSync(fullPathNormalized));
+                   fs.existsSync(fullPathNormalized);
     
-    // If we found the file in iconMap with different casing, fix it
-    if (actualFile && actualFile !== normalizedPath) {
-      const replacement = `iconPath: ${quote}${actualFile}${quote}`;
+    // Always normalize to lowercase filename only (standardize all paths)
+    // Check if current path needs normalization (has subdirectories or wrong case)
+    const needsNormalization = iconPath !== normalizedPath;
+    
+    if (needsNormalization) {
+      // Normalize to lowercase filename only
+      const replacement = `iconPath: ${quote}${normalizedPath}${quote}`;
       const before = content.substring(0, match.index);
       const after = content.substring(match.index + fullMatch.length);
       content = before + replacement + after;
       fixed++;
-      console.log(`  Fixed casing: ${iconPath} -> ${actualFile}`);
-      continue; // Skip to next match
+      console.log(`  Normalized: ${iconPath} -> ${normalizedPath}`);
+      continue;
     }
     
     if (!exists) {
@@ -259,8 +265,8 @@ function fixIconPathsInFile(filePath, iconMap, searchIndex) {
       const foundIcon = findIconFile(iconPath, iconMap, searchIndex);
       
       if (foundIcon) {
-        // Replace with found icon
-        const newIconPath = foundIcon;
+        // Replace with found icon (convert to lowercase)
+        const newIconPath = foundIcon.toLowerCase();
         const replacement = `iconPath: ${quote}${newIconPath}${quote}`;
         // Replace from the end to maintain positions
         const before = content.substring(0, match.index);
@@ -278,14 +284,6 @@ function fixIconPathsInFile(filePath, iconMap, searchIndex) {
         notFound++;
         console.log(`  Not found, using fallback: ${iconPath} -> ${FALLBACK_ICON}`);
       }
-    } else if (normalizedPath !== iconPath) {
-      // File exists but path has subdirectories - normalize it
-      const replacement = `iconPath: ${quote}${normalizedPath}${quote}`;
-      const before = content.substring(0, match.index);
-      const after = content.substring(match.index + fullMatch.length);
-      content = before + replacement + after;
-      fixed++;
-      console.log(`  Normalized path: ${iconPath} -> ${normalizedPath}`);
     }
   }
   

@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Tooltip } from '@/features/infrastructure/components/ui';
 import { formatDuration, formatEloChange } from '../../shared/utils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { GameWithPlayers } from '../types';
@@ -179,12 +180,14 @@ export function GameDetail({
         {isScheduled && (canEdit || canDelete || canLeave || canUploadReplay) && (
           <div className="mt-4 pt-4 border-t border-amber-500/20 flex flex-wrap gap-3">
             {canUploadReplay && (
-              <button
-                onClick={() => onUploadReplay(game)}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded transition-colors"
-              >
-                Upload Replay
-              </button>
+              <Tooltip content="Upload the .w3g replay file from your Warcraft 3 game to automatically extract game data and complete the game record">
+                <button
+                  onClick={() => onUploadReplay(game)}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded transition-colors"
+                >
+                  Upload Replay
+                </button>
+              </Tooltip>
             )}
             {canEdit && onEdit && (
               <button

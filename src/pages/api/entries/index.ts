@@ -49,6 +49,12 @@ export default createGetPostHandler<Entry[] | { id: string }>(
   {
     requireAuth: false, // GET is public, POST uses context.session check
     logRequests: true,
+    // Cache for 2 minutes - entries may be added/updated
+    cacheControl: {
+      public: true,
+      maxAge: 120,
+      mustRevalidate: true,
+    },
     validateBody: (body) => {
       // Only validate POST requests (GET requests don't have body)
       if (body && typeof body === 'object') {
@@ -62,8 +68,11 @@ export default createGetPostHandler<Entry[] | { id: string }>(
         if (contentTypeResult === null || (typeof contentTypeResult === 'string' && !allowedContentTypes.includes(contentTypeResult as typeof allowedContentTypes[number]))) {
           return contentTypeResult || 'contentType must be a string';
         }
-        const titleError = validateString(bodyObj.title, 'title', 1);
-        if (titleError) return titleError;
+        const titleResult = validateString(bodyObj.title, 'title', 1);
+        if (typeof titleResult === 'string' && titleResult.startsWith('title must be')) {
+          return titleResult; // It's an error message
+        }
+        // Otherwise it's the validated value, continue
       }
       return true;
     },

@@ -29,6 +29,7 @@ describe('infrastructure logger', () => {
 
   it('logs info in development but suppresses debug by default', () => {
     (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+    process.env.LOG_LEVEL = 'info';
 
     Logger.debug('debug message');
     Logger.info('info message');
@@ -79,6 +80,7 @@ describe('infrastructure logger', () => {
 
   it('formats log messages with consistent structure', () => {
     (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+    process.env.LOG_LEVEL = 'info';
 
     Logger.info('test message');
     Logger.warn('warning message');
@@ -91,6 +93,7 @@ describe('infrastructure logger', () => {
 
   it('formats log messages with metadata', () => {
     (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+    process.env.LOG_LEVEL = 'info';
 
     Logger.info('test message', { key: 'value', count: 42 });
     Logger.warn('warning message', { userId: '123' });
@@ -103,6 +106,7 @@ describe('infrastructure logger', () => {
 
   it('handles special characters in log messages', () => {
     (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+    process.env.LOG_LEVEL = 'info';
 
     Logger.info('Message with "quotes" and \'apostrophes\'');
     Logger.warn('Message with\nnewlines\tand\ttabs');
@@ -115,6 +119,7 @@ describe('infrastructure logger', () => {
 
   it('handles multiline messages', () => {
     (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+    process.env.LOG_LEVEL = 'info';
     const multilineMessage = 'Line 1\nLine 2\nLine 3';
 
     Logger.info(multilineMessage);

@@ -11,11 +11,11 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
-import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { Post, CreatePost } from '@/types/post';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { createTimestampFactoryAsync } from '@/features/infrastructure/utils/timestampUtils';
 import {
   transformPostDoc,
   preparePostDataForFirestore,
@@ -36,22 +36,16 @@ export async function createPost(postData: CreatePost): Promise<string> {
   try {
     logger.info('Creating post', { slug: postData.slug, title: postData.title });
 
+    const timestampFactory = await createTimestampFactoryAsync();
+    const firestoreData = preparePostDataForFirestore(postData, timestampFactory);
+
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const AdminTimestamp = getAdminTimestamp();
-      const firestoreData = preparePostDataForFirestore(postData, {
-        fromDate: AdminTimestamp.fromDate.bind(AdminTimestamp) as (date: Date) => Timestamp,
-        now: AdminTimestamp.now.bind(AdminTimestamp) as () => Timestamp,
-      });
       const docRef = await adminDb.collection(POSTS_COLLECTION).add(firestoreData);
       logger.info('Post created', { id: docRef.id, slug: postData.slug });
       return docRef.id;
     } else {
       const db = getFirestoreInstance();
-      const firestoreData = preparePostDataForFirestore(postData, {
-        fromDate: Timestamp.fromDate.bind(Timestamp),
-        now: Timestamp.now.bind(Timestamp),
-      });
       const docRef = await addDoc(collection(db, POSTS_COLLECTION), firestoreData);
       logger.info('Post created', { id: docRef.id, slug: postData.slug });
       return docRef.id;
@@ -246,21 +240,15 @@ export async function updatePost(id: string, updates: Partial<CreatePost>): Prom
   try {
     logger.info('Updating post', { id });
 
+    const timestampFactory = await createTimestampFactoryAsync();
+    const updateData = preparePostUpdateData(updates, timestampFactory);
+
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const AdminTimestamp = getAdminTimestamp();
-      const updateData = preparePostUpdateData(updates, {
-        fromDate: AdminTimestamp.fromDate.bind(AdminTimestamp) as (date: Date) => Timestamp,
-        now: AdminTimestamp.now.bind(AdminTimestamp) as () => Timestamp,
-      });
       await adminDb.collection(POSTS_COLLECTION).doc(id).update(updateData);
     } else {
       const db = getFirestoreInstance();
       const docRef = doc(db, POSTS_COLLECTION, id);
-      const updateData = preparePostUpdateData(updates, {
-        fromDate: Timestamp.fromDate.bind(Timestamp),
-        now: Timestamp.now.bind(Timestamp),
-      });
       await updateDoc(docRef, updateData);
     }
 

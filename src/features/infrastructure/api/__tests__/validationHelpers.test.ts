@@ -225,13 +225,13 @@ describe('Validator creators', () => {
     it('creates validator with min length', () => {
       const validator = createStringValidator(5);
       expect(validator('test', 'field')).toContain('at least');
-      expect(validator('testing', 'field')).toBeNull();
+      expect(validator('testing', 'field')).toBe('testing'); // Returns validated string
     });
 
     it('creates validator with max length', () => {
       const validator = createStringValidator(1, 10);
       expect(validator('this is too long', 'field')).toContain('at most');
-      expect(validator('short', 'field')).toBeNull();
+      expect(validator('short', 'field')).toBe('short'); // Returns validated string
     });
   });
 

@@ -1,12 +1,12 @@
 import {
   doc,
   updateDoc,
-  Timestamp,
 } from 'firebase/firestore';
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
-import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
+import { createTimestampFactoryAsync } from '@/features/infrastructure/utils/timestampUtils';
 import type { UpdateGame } from '../types';
 import { updateEloScores } from './eloCalculator';
 
@@ -22,18 +22,17 @@ export async function updateGame(id: string, updates: UpdateGame): Promise<void>
 
     const cleanedUpdates = removeUndefined(updates as unknown as Record<string, unknown>);
     const updateData: Record<string, unknown> = { ...cleanedUpdates };
+    const timestampFactory = await createTimestampFactoryAsync();
+
+    if (cleanedUpdates.datetime) {
+      updateData.datetime = timestampFactory.fromDate(new Date(cleanedUpdates.datetime as string));
+    }
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const adminTimestamp = getAdminTimestamp();
-
-      if (cleanedUpdates.datetime) {
-        updateData.datetime = adminTimestamp.fromDate(new Date(cleanedUpdates.datetime as string));
-      }
-
       await adminDb.collection(GAMES_COLLECTION).doc(id).update({
         ...updateData,
-        updatedAt: adminTimestamp.now(),
+        updatedAt: timestampFactory.now(),
       });
 
       // Recalculate ELO if game result changed
@@ -43,14 +42,9 @@ export async function updateGame(id: string, updates: UpdateGame): Promise<void>
     } else {
       const db = getFirestoreInstance();
       const docRef = doc(db, GAMES_COLLECTION, id);
-
-      if (cleanedUpdates.datetime) {
-        updateData.datetime = Timestamp.fromDate(new Date(cleanedUpdates.datetime as string));
-      }
-
       await updateDoc(docRef, {
         ...updateData,
-        updatedAt: Timestamp.now(),
+        updatedAt: timestampFactory.now(),
       });
 
       // Recalculate ELO if game result changed

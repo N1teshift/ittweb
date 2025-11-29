@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Leaderboard } from '@/features/modules/standings/components/Leaderboard';
 import { CategorySelector } from '@/features/modules/standings/components/CategorySelector';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 import type { StandingsFilters } from '@/features/modules/standings/types';
 
 export default function StandingsPage() {
@@ -12,8 +13,9 @@ export default function StandingsPage() {
   };
 
   return (
+    <ErrorBoundary>
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-amber-400 mb-6">Leaderboard</h1>
+      <h1 className="text-2xl md:text-4xl font-bold text-amber-400 mb-4 md:mb-6">Leaderboard</h1>
       
       <div className="mb-6">
         <CategorySelector value={category} onChange={setCategory} />
@@ -21,6 +23,7 @@ export default function StandingsPage() {
 
       <Leaderboard filters={filters} />
     </div>
+    </ErrorBoundary>
   );
 }
 

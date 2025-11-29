@@ -66,7 +66,7 @@ describe('GET /api/players', () => {
     await handler(req, res);
 
     // Assert
-    expect(mockGetAllPlayers).toHaveBeenCalledWith(100); // Default limit
+    expect(mockGetAllPlayers).toHaveBeenCalledWith(50, undefined); // Default limit is 50, not 100
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,
@@ -83,7 +83,7 @@ describe('GET /api/players', () => {
     await handler(req, res);
 
     // Assert
-    expect(mockGetAllPlayers).toHaveBeenCalledWith(50);
+    expect(mockGetAllPlayers).toHaveBeenCalledWith(50, undefined);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,
@@ -155,7 +155,7 @@ describe('GET /api/players', () => {
 
     // Assert
     // parseInt('invalid', 10) returns NaN, which should be handled
-    expect(mockGetAllPlayers).toHaveBeenCalledWith(NaN);
+    expect(mockGetAllPlayers).toHaveBeenCalledWith(NaN, undefined);
     // The service should handle NaN, but if it doesn't, we'll get an error
     // For now, we'll just verify the call was made
   });

@@ -2,14 +2,14 @@ import React from 'react';
 import GuideIcon from '@/features/modules/guides/components/GuideIcon';
 import { getItemIconPathFromRecord } from '@/features/modules/guides/data/items/iconUtils';
 import type { ItemCategory } from '@/types/items';
-import { useItemsData } from '@/features/modules/guides/hooks/useItemsData';
+import { useItemsDataSWR } from '@/features/modules/guides/hooks/useItemsDataSWR';
 
 export default function ItemsPalette() {
   const [query, setQuery] = React.useState('');
   const [category, setCategory] = React.useState<ItemCategory | 'all'>('all');
   const [collapsed, setCollapsed] = React.useState(false);
   const contentId = React.useId();
-  const { items, isLoading, error } = useItemsData();
+  const { items, isLoading, error } = useItemsDataSWR();
 
   const categories: { key: ItemCategory | 'all'; label: string }[] = [
     { key: 'all', label: 'All' },

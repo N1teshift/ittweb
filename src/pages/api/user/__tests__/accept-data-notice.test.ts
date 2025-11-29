@@ -1,16 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+// Import server-side mocks FIRST before handler
+import '../../../../../__tests__/helpers/mockUserDataService.server';
+import {
+  mockUpdateDataCollectionNoticeAcceptanceServer,
+  setIsServerSide,
+} from '../../../../../__tests__/helpers/mockUserDataService.server';
 import handler from '../accept-data-notice';
 
 // Mock dependencies
-const mockUpdateDataCollectionNoticeAcceptance = jest.fn();
 const mockInfo = jest.fn();
 const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
-
-jest.mock('@/features/infrastructure/lib/userDataService', () => ({
-  updateDataCollectionNoticeAcceptance: (...args: unknown[]) => mockUpdateDataCollectionNoticeAcceptance(...args),
-}));
 
 jest.mock('@/features/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
@@ -54,8 +55,9 @@ describe('POST /api/user/accept-data-notice', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    setIsServerSide(true); // Enable server-side mode
     mockGetServerSession.mockResolvedValue(mockSession);
-    mockUpdateDataCollectionNoticeAcceptance.mockResolvedValue(undefined);
+    mockUpdateDataCollectionNoticeAcceptanceServer.mockResolvedValue(undefined);
   });
 
   it('accepts data collection notice successfully', async () => {
@@ -67,7 +69,7 @@ describe('POST /api/user/accept-data-notice', () => {
     await handler(req, res);
 
     // Assert
-    expect(mockUpdateDataCollectionNoticeAcceptance).toHaveBeenCalledWith('discord123', true);
+    expect(mockUpdateDataCollectionNoticeAcceptanceServer).toHaveBeenCalledWith('discord123', true);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,
@@ -92,7 +94,7 @@ describe('POST /api/user/accept-data-notice', () => {
         error: 'Authentication required',
       })
     );
-    expect(mockUpdateDataCollectionNoticeAcceptance).not.toHaveBeenCalled();
+    expect(mockUpdateDataCollectionNoticeAcceptanceServer).not.toHaveBeenCalled();
   });
 
   it('handles missing discordId in session', async () => {
@@ -109,14 +111,14 @@ describe('POST /api/user/accept-data-notice', () => {
 
     // Assert
     // The handler uses session.discordId || '', so it will call with empty string
-    expect(mockUpdateDataCollectionNoticeAcceptance).toHaveBeenCalledWith('', true);
+    expect(mockUpdateDataCollectionNoticeAcceptanceServer).toHaveBeenCalledWith('', true);
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
   it('handles error from updateDataCollectionNoticeAcceptance', async () => {
     // Arrange
     const error = new Error('Database error');
-    mockUpdateDataCollectionNoticeAcceptance.mockRejectedValue(error);
+    mockUpdateDataCollectionNoticeAcceptanceServer.mockRejectedValue(error);
     const req = createRequest();
     const res = createResponse();
 

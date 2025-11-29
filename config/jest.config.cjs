@@ -15,11 +15,21 @@ const config = {
     "^@/types/(.*)$": "<rootDir>/src/types/$1",
     "^@/utils/(.*)$": "<rootDir>/src/utils/$1",
     "^@/config/(.*)$": "<rootDir>/src/config/$1",
+    "^@/__tests__/(.*)$": "<rootDir>/__tests__/$1",
     "\\.(css|less|scss|sass)$": "identity-obj-proxy",
   },
   setupFilesAfterEnv: ["<rootDir>/config/jest.setup.cjs"],
   testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
-  testPathIgnorePatterns: ["/node_modules/", "/.next/", "/build/", "/out/", "/external/"],
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "/.next/",
+    "/build/",
+    "/out/",
+    "/external/",
+    "/tmp/",
+    "/__tests__/helpers/",
+    "\\.d\\.ts$",
+  ],
   collectCoverageFrom: [
     "src/**/*.{js,jsx,ts,tsx}",
     "!src/**/*.d.ts",
@@ -36,6 +46,9 @@ const config = {
     },
   },
   testTimeout: 10000,
+  transformIgnorePatterns: [
+    "node_modules/(?!(jose|@panva/hkdf|oidc-token-hash|oauth4webapi|@panva/oauth4webapi)/)",
+  ],
 };
 
 module.exports = createJestConfig(config);

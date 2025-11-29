@@ -4,7 +4,7 @@
  * This mapping is automatically generated from extracted ability data.
  * The raw IDs are the first 4 characters of full ability IDs stored in items.
  * 
- * Generated: 2025-11-28T15:33:54.024Z
+ * Generated: 2025-11-29T17:54:24.322Z
  * Total mappings: 953
  */
 

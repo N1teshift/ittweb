@@ -1,5 +1,6 @@
 import React, { useState, FormEvent } from 'react';
 import type { Game } from '@/features/modules/games/types';
+import { useModalAccessibility } from '@/features/infrastructure/hooks/useModalAccessibility';
 
 interface ApiResponse {
   success?: boolean;
@@ -21,6 +22,13 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
   const [status, setStatus] = useState<'idle' | 'uploading' | 'parsing' | 'processing'>('idle');
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const modalRef = useModalAccessibility({
+    isOpen: true,
+    onClose,
+    trapFocus: true,
+    focusOnOpen: true,
+  });
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -77,13 +85,25 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-gray-900 border border-amber-500/30 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+    <div 
+      ref={modalRef}
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="upload-replay-title"
+    >
+      <div className="bg-gray-900 border border-amber-500/30 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto animate-scale-in">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-medieval-brand text-amber-400">Upload Replay</h2>
+          <div>
+            <h2 id="upload-replay-title" className="text-2xl font-medieval-brand text-amber-400">Upload Replay</h2>
+            <p className="text-sm text-gray-400 mt-1">
+              Upload a .w3g replay file to automatically extract game data. The replay will be parsed to extract players, stats, and results.
+            </p>
+          </div>
           <button
             onClick={onClose}
             disabled={submitting}
+            aria-label="Close upload replay modal"
             className="text-gray-400 hover:text-white transition-colors disabled:opacity-50"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -147,6 +167,7 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
               type="button"
               onClick={onClose}
               disabled={submitting}
+              aria-label="Cancel uploading replay"
               className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded disabled:opacity-50"
             >
               Cancel

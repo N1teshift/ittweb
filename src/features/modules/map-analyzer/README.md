@@ -31,7 +31,7 @@
 ## Usage
 
 ```typescript
-import { MapContainer, TerrainVisualizer } from '@/features/modules/map-analyzer';
+import { MapContainer, TerrainVisualizer } from '@/features/modules/map-analyzer/components';
 import { parseMapFile } from '@/features/modules/map-analyzer/utils/mapUtils';
 
 // Parse map file

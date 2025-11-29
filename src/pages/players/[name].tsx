@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { PlayerProfile } from '@/features/modules/players/components/PlayerProfile';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 
 export default function PlayerPage() {
   const router = useRouter();
@@ -8,16 +9,20 @@ export default function PlayerPage() {
 
   if (!name || typeof name !== 'string') {
     return (
+      <ErrorBoundary>
       <div className="container mx-auto px-4 py-8">
         <p className="text-red-400">Invalid player name</p>
       </div>
+      </ErrorBoundary>
     );
   }
 
   return (
+    <ErrorBoundary>
     <div className="container mx-auto px-4 py-8">
       <PlayerProfile name={name} />
     </div>
+    </ErrorBoundary>
   );
 }
 

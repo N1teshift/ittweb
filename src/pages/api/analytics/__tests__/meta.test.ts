@@ -1,6 +1,32 @@
-import type { NextApiRequest } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { createMockRequest, createMockResponse } from '../../../../../test-utils/mockNext';
-import handlerMeta from '../meta';
+import type { ApiResponse } from '@/features/infrastructure/api/routeHandlers';
+
+// Mock routeHandlers BEFORE importing handler to prevent NextAuth/jose import
+jest.mock('@/features/infrastructure/api/routeHandlers', () => ({
+  createApiHandler: <T,>(handler: (req: NextApiRequest, res: NextApiResponse<ApiResponse<T>>, context?: { session: unknown }) => Promise<T>, options?: { methods?: string[] }) => {
+    return async (req: NextApiRequest, res: NextApiResponse<ApiResponse<T>>) => {
+      // Check allowed methods from options
+      const allowedMethods = options?.methods || ['GET'];
+      if (req.method && !allowedMethods.includes(req.method)) {
+        return res.status(405).json({
+          success: false,
+          error: `Method ${req.method} not allowed. Allowed methods: ${allowedMethods.join(', ')}`,
+        });
+      }
+      try {
+        const result = await handler(req, res, { session: null });
+        res.status(200).json({ success: true, data: result });
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        res.status(500).json({ success: false, error: errorMessage });
+      }
+    };
+  },
+  createGetHandler: <T,>(handler: (req: NextApiRequest, res: NextApiResponse<ApiResponse<T>>, context?: { session: unknown }) => Promise<T>, options?: { methods?: string[] }) => {
+    return jest.requireMock<typeof import('@/features/infrastructure/api/routeHandlers')>('@/features/infrastructure/api/routeHandlers').createApiHandler(handler, { ...options, methods: ['GET'] });
+  },
+}));
 
 jest.mock('@/features/modules/analytics/lib/analyticsService', () => ({
   getActivityData: jest.fn(),
@@ -19,6 +45,8 @@ jest.mock('@/features/infrastructure/logging', () => ({
   })),
   logError: jest.fn(),
 }));
+
+import handlerMeta from '../meta';
 
 const analyticsService = jest.requireMock('@/features/modules/analytics/lib/analyticsService');
 
@@ -58,7 +86,7 @@ describe('GET /api/analytics/meta', () => {
 
     // Assert
     expect(status).toHaveBeenCalledWith(200);
-    expect(json).toHaveBeenCalledWith(mockData);
+    expect(json).toHaveBeenCalledWith({ success: true, data: mockData });
   });
 
   it('should aggregate data correctly', async () => {
@@ -80,11 +108,13 @@ describe('GET /api/analytics/meta', () => {
     // Assert
     expect(status).toHaveBeenCalledWith(200);
     const responseData = (json as jest.Mock).mock.calls[0][0];
-    expect(responseData).toHaveProperty('activity');
-    expect(responseData).toHaveProperty('gameLength');
-    expect(responseData).toHaveProperty('playerActivity');
-    expect(responseData).toHaveProperty('classSelection');
-    expect(responseData).toHaveProperty('classWinRates');
+    expect(responseData).toHaveProperty('success', true);
+    expect(responseData).toHaveProperty('data');
+    expect(responseData.data).toHaveProperty('activity');
+    expect(responseData.data).toHaveProperty('gameLength');
+    expect(responseData.data).toHaveProperty('playerActivity');
+    expect(responseData.data).toHaveProperty('classSelection');
+    expect(responseData.data).toHaveProperty('classWinRates');
   });
 
   it('should handle empty database', async () => {
@@ -106,8 +136,8 @@ describe('GET /api/analytics/meta', () => {
     // Assert
     expect(status).toHaveBeenCalledWith(200);
     const responseData = (json as jest.Mock).mock.calls[0][0];
-    expect(responseData.activity).toEqual([]);
-    expect(responseData.gameLength).toEqual([]);
+    expect(responseData.data.activity).toEqual([]);
+    expect(responseData.data.gameLength).toEqual([]);
   });
 
   it('should filter by category', async () => {

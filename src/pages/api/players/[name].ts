@@ -31,6 +31,12 @@ export default createApiHandler(
     methods: ['GET'],
     requireAuth: false,
     logRequests: true,
+    // Cache for 2 minutes - player stats update as games are played
+    cacheControl: {
+      public: true,
+      maxAge: 120,
+      mustRevalidate: true,
+    },
   }
 );
 

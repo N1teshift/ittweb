@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { PlayerActivityChart } from '../PlayerActivityChart';
 import type { PlayerActivityDataPoint } from '../../types';
 
@@ -28,7 +28,7 @@ jest.mock('@/features/infrastructure/components/ui/Card', () => ({
 }));
 
 describe('PlayerActivityChart', () => {
-  it('should render player activity over time', () => {
+  it('should render player activity over time', async () => {
     // Arrange
     const data: PlayerActivityDataPoint[] = [
       { date: '2024-01-01', players: 10 },
@@ -39,7 +39,9 @@ describe('PlayerActivityChart', () => {
     render(<PlayerActivityChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    });
     expect(screen.getByTestId('responsive-container')).toBeInTheDocument();
   });
 
@@ -54,7 +56,7 @@ describe('PlayerActivityChart', () => {
     expect(screen.getByText('No player activity data available')).toBeInTheDocument();
   });
 
-  it('should handle many players', () => {
+  it('should handle many players', async () => {
     // Arrange
     const data: PlayerActivityDataPoint[] = Array.from({ length: 12 }, (_, i) => ({
       date: `2024-${String(i + 1).padStart(2, '0')}-01`,
@@ -65,7 +67,9 @@ describe('PlayerActivityChart', () => {
     render(<PlayerActivityChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    });
   });
 
   it('should handle missing data', () => {

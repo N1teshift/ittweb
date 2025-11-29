@@ -86,7 +86,8 @@ export function escapeString(str) {
 
 /**
  * Convert Windows path to icon path format
- * Normalizes paths and converts .blp to .png
+ * Normalizes paths: removes all subdirectories, converts to lowercase, converts .blp to .png
+ * Returns only the filename (e.g., "pasbtnelunesblessing.png")
  */
 export function convertIconPath(iconPath) {
   if (!iconPath) return undefined;
@@ -94,11 +95,11 @@ export function convertIconPath(iconPath) {
   // Convert Windows backslashes to forward slashes
   let converted = iconPath.replace(/\\/g, '/');
   
-  // Remove "ReplaceableTextures/CommandButtons/" prefix if present
-  converted = converted.replace(/^ReplaceableTextures\/CommandButtons\//i, '');
+  // Extract only the filename (remove all subdirectories)
+  const filename = converted.split('/').pop();
   
-  // Remove .blp extension and add .png
-  converted = converted.replace(/\.blp$/i, '.png');
+  // Remove .blp extension and add .png, then convert to lowercase
+  converted = filename.replace(/\.blp$/i, '.png').toLowerCase();
   
   return converted;
 }

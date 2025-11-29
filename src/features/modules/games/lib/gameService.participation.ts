@@ -2,11 +2,11 @@ import {
   doc,
   getDoc,
   updateDoc,
-  Timestamp,
 } from 'firebase/firestore';
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
-import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createTimestampFactoryAsync } from '@/features/infrastructure/utils/timestampUtils';
 import type { GameParticipant } from '../types';
 
 const GAMES_COLLECTION = 'games';
@@ -23,72 +23,61 @@ export async function joinGame(
   try {
     // Reduced logging verbosity
 
+    const timestampFactory = await createTimestampFactoryAsync();
+    
+    let gameData: Record<string, unknown> | undefined;
+    
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const adminTimestamp = getAdminTimestamp();
       const gameRef = adminDb.collection(GAMES_COLLECTION).doc(gameId);
-      
-      // Get current game data
       const gameDoc = await gameRef.get();
       if (!gameDoc.exists) {
         throw new Error('Game not found');
       }
-      
-      const gameData = gameDoc.data();
-      if (gameData?.gameState !== 'scheduled') {
-        throw new Error('Can only join scheduled games');
-      }
-      
-      const participants = (gameData?.participants || []) as GameParticipant[];
-      
-      // Check if user is already a participant
-      if (participants.some(p => p.discordId === discordId)) {
-        throw new Error('User is already a participant');
-      }
-      
-      // Add user to participants
-      participants.push({
-        discordId,
-        name,
-        joinedAt: new Date().toISOString(),
-      });
-      
-      await gameRef.update({
-        participants,
-        updatedAt: adminTimestamp.now(),
-      });
+      gameData = gameDoc.data();
     } else {
       const db = getFirestoreInstance();
       const gameRef = doc(db, GAMES_COLLECTION, gameId);
-      
-      // Get current game data
       const gameDoc = await getDoc(gameRef);
       if (!gameDoc.exists()) {
         throw new Error('Game not found');
       }
-      
-      const gameData = gameDoc.data();
-      if (gameData?.gameState !== 'scheduled') {
-        throw new Error('Can only join scheduled games');
-      }
-      
-      const participants = (gameData?.participants || []) as GameParticipant[];
-      
-      // Check if user is already a participant
-      if (participants.some(p => p.discordId === discordId)) {
-        throw new Error('User is already a participant');
-      }
-      
-      // Add user to participants
-      participants.push({
-        discordId,
-        name,
-        joinedAt: new Date().toISOString(),
+      gameData = gameDoc.data();
+    }
+    
+    if (gameData?.gameState !== 'scheduled') {
+      throw new Error('Can only join scheduled games');
+    }
+    
+    const participants = (gameData?.participants || []) as GameParticipant[];
+    
+    // Check if user is already a participant
+    if (participants.some(p => p.discordId === discordId)) {
+      throw new Error('User is already a participant');
+    }
+    
+    // Add user to participants
+    participants.push({
+      discordId,
+      name,
+      joinedAt: new Date().toISOString(),
+    });
+    
+    const now = timestampFactory.now();
+    
+    if (isServerSide()) {
+      const adminDb = getFirestoreAdmin();
+      const gameRef = adminDb.collection(GAMES_COLLECTION).doc(gameId);
+      await gameRef.update({
+        participants,
+        updatedAt: now,
       });
-      
+    } else {
+      const db = getFirestoreInstance();
+      const gameRef = doc(db, GAMES_COLLECTION, gameId);
       await updateDoc(gameRef, {
         participants,
-        updatedAt: Timestamp.now(),
+        updatedAt: now,
       });
     }
 
@@ -115,54 +104,50 @@ export async function leaveGame(
   try {
     // Reduced logging verbosity
 
+    const timestampFactory = await createTimestampFactoryAsync();
+    
+    let gameData: Record<string, unknown> | undefined;
+    
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const adminTimestamp = getAdminTimestamp();
       const gameRef = adminDb.collection(GAMES_COLLECTION).doc(gameId);
-      
-      // Get current game data
       const gameDoc = await gameRef.get();
       if (!gameDoc.exists) {
         throw new Error('Game not found');
       }
-      
-      const gameData = gameDoc.data();
-      if (gameData?.gameState !== 'scheduled') {
-        throw new Error('Can only leave scheduled games');
-      }
-      
-      const participants = (gameData?.participants || []) as GameParticipant[];
-      
-      // Remove user from participants
-      const updatedParticipants = participants.filter(p => p.discordId !== discordId);
-      
-      await gameRef.update({
-        participants: updatedParticipants,
-        updatedAt: adminTimestamp.now(),
-      });
+      gameData = gameDoc.data();
     } else {
       const db = getFirestoreInstance();
       const gameRef = doc(db, GAMES_COLLECTION, gameId);
-      
-      // Get current game data
       const gameDoc = await getDoc(gameRef);
       if (!gameDoc.exists()) {
         throw new Error('Game not found');
       }
-      
-      const gameData = gameDoc.data();
-      if (gameData?.gameState !== 'scheduled') {
-        throw new Error('Can only leave scheduled games');
-      }
-      
-      const participants = (gameData?.participants || []) as GameParticipant[];
-      
-      // Remove user from participants
-      const updatedParticipants = participants.filter(p => p.discordId !== discordId);
-      
+      gameData = gameDoc.data();
+    }
+    
+    if (gameData?.gameState !== 'scheduled') {
+      throw new Error('Can only leave scheduled games');
+    }
+    
+    const participants = (gameData?.participants || []) as GameParticipant[];
+    const updatedParticipants = participants.filter(p => p.discordId !== discordId);
+    
+    const now = timestampFactory.now();
+    
+    if (isServerSide()) {
+      const adminDb = getFirestoreAdmin();
+      const gameRef = adminDb.collection(GAMES_COLLECTION).doc(gameId);
+      await gameRef.update({
+        participants: updatedParticipants,
+        updatedAt: now,
+      });
+    } else {
+      const db = getFirestoreInstance();
+      const gameRef = doc(db, GAMES_COLLECTION, gameId);
       await updateDoc(gameRef, {
         participants: updatedParticipants,
-        updatedAt: Timestamp.now(),
+        updatedAt: now,
       });
     }
 

@@ -7,7 +7,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     ({ className = '', variant = 'default', ...props }, ref) => {
 
-        const baseStyles = "rounded-lg border transition-all";
+        const baseStyles = "rounded-lg border transition-all duration-200";
 
         const variants = {
             default: "bg-white border-gray-200 text-gray-900 shadow-sm",

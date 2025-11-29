@@ -11,9 +11,11 @@ import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
 import Head from "next/head";
 import { useEffect } from "react";
+import { SWRConfig } from "swr";
 import Layout from "@/features/infrastructure/components/Layout";
 import { Logger } from "@/features/infrastructure/logging";
 import { initializeErrorTracking, initializePerformanceMonitoring } from "@/features/infrastructure/monitoring";
+import { swrConfig } from "@/features/infrastructure/lib/swrConfig";
 
 // Initialize logging
 if (typeof window !== 'undefined') {
@@ -51,6 +53,52 @@ function App({ Component, pageProps }: AppProps) {
         if (typeof window !== 'undefined') {
             initializeErrorTracking();
             initializePerformanceMonitoring();
+            
+            // Filter known third-party script errors in development
+            // These errors are harmless but clutter the console
+            if (process.env.NODE_ENV === 'development') {
+                const originalError = console.error;
+                const originalWarn = console.warn;
+                
+                // Patterns for errors/warnings to suppress
+                const suppressPatterns = [
+                    // Google Ads tracking errors
+                    /Cross-Origin Request Blocked.*googleads\.g\.doubleclick\.net/i,
+                    /googleads\.g\.doubleclick\.net/i,
+                    /doubleclick\.net/i,
+                    // YouTube cookie warnings
+                    /Cookie.*__Secure-YEC.*has been rejected/i,
+                    /Cookie.*LAST_RESULT_ENTRY_KEY.*will soon be rejected/i,
+                    /Cookie.*will soon be rejected.*Partitioned/i,
+                    // Feature Policy warnings (deprecated API, harmless)
+                    /Feature Policy: Skipping unsupported feature name/i,
+                    // CSP warnings about unknown directives (harmless)
+                    /Content-Security-Policy: Couldn't process unknown directive/i,
+                    /require-trusted-types-for/i,
+                    // YouTube third-party context warnings (expected behavior)
+                    /Partitioned cookie or storage access was provided.*youtube/i,
+                    // Unreachable code warnings from minified third-party scripts (YouTube's minified code)
+                    /unreachable code after return statement/i,
+                    // YouTube script files (minified code warnings)
+                    /9bXBegwkXqu77ttg1H2zNptqxcGE6xDjLfnManLdL_4\.js/i,
+                ];
+                
+                console.error = (...args: unknown[]) => {
+                    const message = args.join(' ');
+                    const shouldSuppress = suppressPatterns.some(pattern => pattern.test(message));
+                    if (!shouldSuppress) {
+                        originalError.apply(console, args);
+                    }
+                };
+                
+                console.warn = (...args: unknown[]) => {
+                    const message = args.join(' ');
+                    const shouldSuppress = suppressPatterns.some(pattern => pattern.test(message));
+                    if (!shouldSuppress) {
+                        originalWarn.apply(console, args);
+                    }
+                };
+            }
         }
     }, []);
     
@@ -59,11 +107,13 @@ function App({ Component, pageProps }: AppProps) {
             <Head>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
             </Head>
-            <SessionProvider session={extendedProps?.session}>
-                <Layout pageTranslationNamespaces={translationNamespaces}>
-                    <Component {...pageProps} />
-                </Layout>
-            </SessionProvider>
+            <SWRConfig value={swrConfig}>
+                <SessionProvider session={extendedProps?.session}>
+                    <Layout pageTranslationNamespaces={translationNamespaces}>
+                        <Component {...pageProps} />
+                    </Layout>
+                </SessionProvider>
+            </SWRConfig>
         </>
     );
 }

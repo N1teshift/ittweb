@@ -13,6 +13,19 @@ interface GameListProps {
 export function GameList({ filters = {} }: GameListProps) {
   const { games, loading, error } = useGames(filters);
 
+  // Check if any filters are active (excluding pagination filters)
+  const hasActiveFilters = Boolean(
+    filters.gameState ||
+    filters.startDate ||
+    filters.endDate ||
+    filters.category ||
+    filters.player ||
+    filters.ally ||
+    filters.enemy ||
+    filters.teamFormat ||
+    filters.gameId
+  );
+
   if (loading) {
     return <LoadingScreen message="Loading games..." />;
   }
@@ -28,7 +41,10 @@ export function GameList({ filters = {} }: GameListProps) {
   if (games.length === 0) {
     return (
       <EmptyState 
-        message="No games found"
+        message={hasActiveFilters 
+          ? "No games match your filters. Try adjusting your search criteria."
+          : "No games found"
+        }
       />
     );
   }

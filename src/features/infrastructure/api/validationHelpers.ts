@@ -93,11 +93,13 @@ export function validateApiRequest<T extends Record<string, unknown>>(
     // Run validator if provided
     if (field.validator) {
       const result = field.validator(value, field.name);
-      if (typeof result === 'string') {
+      // Check if result is an error message (starts with field name + " must be")
+      if (typeof result === 'string' && result.startsWith(field.name + ' must be')) {
         errors.push(result);
       } else if (result === null) {
         errors.push(`${field.name} is invalid`);
       } else {
+        // Valid value (string, number, Date, boolean, etc.)
         validated[field.name] = result;
       }
     } else {

@@ -9,12 +9,17 @@
 
 ### Services
 - `entryService` - Entry CRUD operations
+  - `createEntry()` - Create new entry
+  - `getEntryById()` - Get entry by ID
+  - `updateEntry()` - Update entry
+  - `deleteEntry()` - Delete entry
 - `entryService.server` - Server-side entry operations
+  - `getAllEntriesServer()` - Get all entries (server-side only, uses Admin SDK)
 
 ## Usage
 
 ```typescript
-import { EntryFormModal } from '@/features/modules/entries';
+import { EntryFormModal } from '@/features/modules/entries/components/EntryFormModal';
 import { createEntry } from '@/features/modules/entries/lib/entryService';
 
 // Use entry form

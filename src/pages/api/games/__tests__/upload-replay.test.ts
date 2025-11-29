@@ -24,12 +24,40 @@ jest.mock('@/features/modules/games/lib/replayParser', () => ({
   parseReplayFile: (...args: unknown[]) => mockParseReplayFile(...args),
 }));
 
-jest.mock('@/features/infrastructure/api/firebase/admin', () => ({
-  getFirestoreAdmin: jest.fn(),
-  getAdminTimestamp: jest.fn(),
-  getStorageAdmin: jest.fn(),
-  getStorageBucketName: jest.fn(),
+const mockGetStorageAdmin = jest.fn();
+const mockGetStorageBucketName = jest.fn();
+const mockGetFirestoreAdmin = jest.fn();
+const mockGetAdminTimestamp = jest.fn();
+
+// Mock firebase-admin/storage to prevent real Cloud Storage library import
+jest.mock('firebase-admin/storage', () => ({
+  getStorage: jest.fn(() => ({
+    bucket: jest.fn(() => ({
+      file: jest.fn(() => ({
+        save: jest.fn(),
+      })),
+    })),
+  })),
 }));
+
+jest.mock('@/features/infrastructure/api/firebase/admin', () => {
+  const mockStorageAdminFn = jest.fn();
+  const mockStorageBucketNameFn = jest.fn();
+  const mockFirestoreAdminFn = jest.fn();
+  const mockAdminTimestampFn = jest.fn();
+  return {
+    getFirestoreAdmin: (...args: unknown[]) => mockFirestoreAdminFn(...args),
+    getAdminTimestamp: (...args: unknown[]) => mockAdminTimestampFn(...args),
+    getStorageAdmin: (...args: unknown[]) => mockStorageAdminFn(...args),
+    getStorageBucketName: (...args: unknown[]) => mockStorageBucketNameFn(...args),
+    isServerSide: jest.fn(() => true),
+    // Export the mock functions so they can be accessed in tests
+    __mockStorageAdmin: mockStorageAdminFn,
+    __mockStorageBucketName: mockStorageBucketNameFn,
+    __mockFirestoreAdmin: mockFirestoreAdminFn,
+    __mockAdminTimestamp: mockAdminTimestampFn,
+  };
+});
 
 jest.mock('@/features/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
@@ -143,6 +171,7 @@ describe('POST /api/games/upload-replay', () => {
     // Setup games mock
     mockGetGames.mockResolvedValue({ games: [], cursor: null });
     mockCreateCompletedGame.mockResolvedValue('created-game-id');
+    mockUpdateEloScores.mockResolvedValue(undefined);
 
     // Setup replay parser mock
     mockParseReplayFile.mockResolvedValue(mockParsedReplay);
@@ -165,24 +194,22 @@ describe('POST /api/games/upload-replay', () => {
 
     // Setup Firebase Storage mock
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { getStorageAdmin, getStorageBucketName } = require('@/features/infrastructure/api/firebase/admin');
-    getStorageBucketName.mockReturnValue('test-bucket');
+    const adminModule = require('@/features/infrastructure/api/firebase/admin') as any;
+    adminModule.__mockStorageBucketName.mockReturnValue('test-bucket');
     const mockStorage = {
       bucket: jest.fn(() => mockBucket),
     };
-    getStorageAdmin.mockReturnValue(mockStorage);
+    adminModule.__mockStorageAdmin.mockReturnValue(mockStorage);
     mockBucket.file.mockReturnValue(mockFileRef);
     mockFileRef.save.mockResolvedValue(undefined);
 
     // Setup Firestore mock
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { getFirestoreAdmin, getAdminTimestamp } = require('@/features/infrastructure/api/firebase/admin');
-    getFirestoreAdmin.mockReturnValue(mockCollection);
+    adminModule.__mockFirestoreAdmin.mockReturnValue(mockCollection);
     mockCollection.doc.mockReturnValue(mockDocRef);
     mockDocRef.update.mockResolvedValue(undefined);
 
     // Setup timestamp mock
-    getAdminTimestamp.mockReturnValue(mockTimestamp);
+    adminModule.__mockAdminTimestamp.mockReturnValue(mockTimestamp);
   });
 
   it('uploads replay and creates completed game', async () => {
@@ -517,6 +544,8 @@ describe('POST /api/games/upload-replay', () => {
   it('handles error when ELO update fails (logs but does not fail request)', async () => {
     // Arrange
     const eloError = new Error('ELO update failed');
+    // Override the default resolved mock from beforeEach to reject
+    mockUpdateEloScores.mockReset();
     mockUpdateEloScores.mockRejectedValue(eloError);
     const req = createRequest();
     const res = createResponse();
@@ -525,7 +554,9 @@ describe('POST /api/games/upload-replay', () => {
     await handler(req, res);
 
     // Assert
-    expect(mockUpdateEloScores).toHaveBeenCalled();
+    // Check that the handler succeeded despite ELO update failure
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(mockUpdateEloScores).toHaveBeenCalledWith('created-game-id');
     expect(mockWarn).toHaveBeenCalledWith(
       'Failed to update ELO scores',
       expect.objectContaining({
@@ -533,8 +564,6 @@ describe('POST /api/games/upload-replay', () => {
         error: 'ELO update failed',
       })
     );
-    // Request should still succeed
-    expect(res.status).toHaveBeenCalledWith(200);
   });
 
   it('removes temporary file after upload', async () => {

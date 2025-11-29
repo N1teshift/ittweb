@@ -21,6 +21,12 @@ export default createApiHandler(
     methods: ['GET'],
     requireAuth: false,
     logRequests: true,
+    // Cache for 5 minutes - standings update as games are played
+    cacheControl: {
+      public: true,
+      maxAge: 300,
+      mustRevalidate: true,
+    },
   }
 );
 

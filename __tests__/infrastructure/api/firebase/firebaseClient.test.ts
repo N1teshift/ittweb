@@ -42,6 +42,13 @@ describe('firebase client', () => {
     delete (global as any).window;
     jest.spyOn(console, 'error').mockImplementation(() => undefined);
     jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+    // Reset mock return values
+    mockGetApps.mockReturnValue([]);
+    mockInitializeApp.mockReturnValue({});
+    mockGetFirestore.mockReturnValue({});
+    mockGetStorage.mockReturnValue({});
+    mockGetAnalytics.mockReturnValue({});
+    mockIsSupported.mockResolvedValue(false);
   });
 
   afterAll(() => {

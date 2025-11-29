@@ -44,6 +44,8 @@ export default async function handler(
   }
 
   const statusCode = health.status === 'ok' ? 200 : 503;
+  // Health check should not be cached - it's a real-time status check
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   res.status(statusCode).json(health);
 }
 

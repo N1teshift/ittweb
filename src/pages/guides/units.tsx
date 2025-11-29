@@ -1,4 +1,5 @@
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { useState, useMemo } from 'react';
 import { ALL_UNITS, getUnitsByType, searchUnits, UnitType, UnitData } from '@/features/modules/guides/data/units/allUnits';
@@ -52,15 +53,12 @@ function UnitCard({ unit }: { unit: UnitData }) {
     variant: 'gray' as const,
   };
 
-  const icon = unit.iconPath ? (
+  const icon = (
     <GuideIcon 
       category="units" 
       name={unit.name} 
       size={48}
-      src={`/icons/itt/${unit.iconPath}`}
     />
-  ) : (
-    <GuideIcon category="units" name={unit.name} size={48} />
   );
 
   return (
@@ -111,12 +109,13 @@ export default function UnitsPage() {
 
   if (!hasUnitData) {
     return (
+      <ErrorBoundary>
       <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-5xl mx-auto">
         <div className="mb-6">
           <Link href="/guides" className="text-amber-400 hover:text-amber-300">← Back to Guides</Link>
         </div>
 
-        <h1 className="font-medieval-brand text-4xl md:text-5xl mb-4">Units</h1>
+        <h1 className="font-medieval-brand text-2xl md:text-4xl mb-4">Units</h1>
         <p className="text-gray-300 mb-6">Unit data has not been generated yet.</p>
 
         <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-6 text-amber-100">
@@ -127,18 +126,20 @@ export default function UnitsPage() {
           </p>
         </div>
       </div>
+      </ErrorBoundary>
     );
   }
 
   const totalUnits = ALL_UNITS.length;
 
   return (
+    <ErrorBoundary>
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-7xl mx-auto">
       <div className="mb-6">
         <Link href="/guides" className="text-amber-400 hover:text-amber-300">← Back to Guides</Link>
       </div>
 
-      <h1 className="font-medieval-brand text-4xl md:text-5xl mb-4">Units</h1>
+          <h1 className="font-medieval-brand text-2xl md:text-4xl mb-4">Units</h1>
       <p className="text-gray-300 mb-6">
         Browse all units in the game including trolls, animals, bosses, and more.
       </p>
@@ -210,6 +211,7 @@ export default function UnitsPage() {
         </div>
       )}
     </div>
+    </ErrorBoundary>
   );
 }
 

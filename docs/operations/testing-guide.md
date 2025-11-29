@@ -13,7 +13,7 @@ The server will start on **http://localhost:3000**
 ## 🔁 Refreshing Data Before Testing
 
 - Gameplay fixtures (units/items/abilities) come from the scripts pipeline in `scripts/data/`.
-- Run `node scripts/data/main.mjs` first if you need fresh data; see [`scripts/README.md`](../../scripts/README.md) for details.
+- Run `node scripts/data/generate-from-work.mjs` first if you need fresh data; see [`scripts/README.md`](../../scripts/README.md) for details.
 - Need to understand current script refactors? Check [`scripts/data/REFACTORING_PLAN.md`](../../scripts/data/REFACTORING_PLAN.md).
 
 ### 2. Access the Pages
@@ -48,14 +48,15 @@ You can create a game using:
 ```bash
 curl -X POST http://localhost:3000/api/games \
   -H "Content-Type: application/json" \
+  -H "Cookie: next-auth.session-token=your-session-token" \
   -d '{
+    "gameState": "completed",
     "gameId": 1001,
     "datetime": "2025-01-15T10:00:00Z",
     "duration": 1800,
     "gamename": "Test Game",
     "map": "Island Troll Tribes",
-    "creatorname": "TestCreator",
-    "ownername": "TestOwner",
+    "creatorName": "TestCreator",
     "category": "1v1",
     "players": [
       {
@@ -71,6 +72,8 @@ curl -X POST http://localhost:3000/api/games \
     ]
   }'
 ```
+
+**Note**: This endpoint requires authentication. Include your session cookie in the request, or use the web UI to create games.
 
 ### Step 2: View the Game
 
@@ -106,13 +109,13 @@ Create several more games with different players to see:
 ### Example 1: 1v1 Game
 ```json
 {
+  "gameState": "completed",
   "gameId": 1001,
   "datetime": "2025-01-15T10:00:00Z",
   "duration": 1800,
   "gamename": "1v1 Match",
   "map": "Island Troll Tribes",
-  "creatorname": "Admin",
-  "ownername": "Admin",
+  "creatorName": "Admin",
   "category": "1v1",
   "players": [
     { "name": "Alice", "pid": 0, "flag": "winner" },
@@ -124,13 +127,13 @@ Create several more games with different players to see:
 ### Example 2: 2v2 Game
 ```json
 {
+  "gameState": "completed",
   "gameId": 1002,
   "datetime": "2025-01-15T11:00:00Z",
   "duration": 2400,
   "gamename": "2v2 Match",
   "map": "Island Troll Tribes",
-  "creatorname": "Admin",
-  "ownername": "Admin",
+  "creatorName": "Admin",
   "category": "2v2",
   "players": [
     { "name": "Alice", "pid": 0, "flag": "winner" },
@@ -140,6 +143,8 @@ Create several more games with different players to see:
   ]
 }
 ```
+
+**Note**: All game creation endpoints require authentication. The `creatorName` and `createdByDiscordId` fields are automatically filled from the session if not provided.
 
 ## 🔍 Testing Checklist
 

@@ -78,16 +78,16 @@ This plan outlines the implementation of a comprehensive game statistics trackin
 - **Validation:** Zod (recommended)
 
 ### Architecture Principles
-1. **Feature-based structure** - Follow existing `src/features/ittweb/` pattern
+1. **Feature-based structure** - Follow existing `src/features/modules/` pattern
 2. **Service layer** - Business logic in `lib/` directories
 3. **Type safety** - Full TypeScript coverage
-4. **Error handling** - Use existing loggerUtils system
+4. **Error handling** - Use existing logging system
 5. **API consistency** - Use `routeHandlers.ts` pattern
 6. **Component reusability** - Shared UI components in infrastructure
 
 ### File Structure
 ```
-src/features/ittweb/
+src/features/modules/
 ├── games/
 │   ├── components/          # Game-related UI components
 │   ├── hooks/               # React hooks for games
@@ -135,8 +135,8 @@ interface Game {
   duration: number;              // Game duration in seconds
   gamename: string;              // Game name
   map: string;                   // Map name
-  creatorname: string;           // Game creator
-  ownername: string;             // Game owner
+  creatorName: string;           // Game creator (standardized field)
+  createdByDiscordId: string;   // Creator Discord ID (standardized field)
   category?: string;             // Game mode/category (e.g., "1v1", "2v2", "ffa")
   replayUrl?: string;            // URL to replay file (future)
   replayFileName?: string;       // Original replay filename
@@ -870,8 +870,8 @@ match /classStats/{classId} {
   duration: number; // seconds
   gamename: string;
   map: string;
-  creatorname: string;
-  ownername: string;
+  creatorName: string;
+  createdByDiscordId?: string;
   category?: string;
   players: Array<{
     name: string;

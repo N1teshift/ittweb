@@ -1,7 +1,8 @@
-import { doc, updateDoc, Timestamp } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
-import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createTimestampFactoryAsync } from '@/features/infrastructure/utils/timestampUtils';
 
 const GAMES_COLLECTION = 'games'; // Unified games collection (scheduled and completed)
 const logger = createComponentLogger('scheduledGameService');
@@ -13,23 +14,22 @@ export async function deleteScheduledGame(id: string): Promise<void> {
   try {
     logger.info('Deleting scheduled game', { id });
 
+    const timestampFactory = await createTimestampFactoryAsync();
+    const now = timestampFactory.now();
+    
+    const deleteData = {
+      isDeleted: true,
+      deletedAt: now,
+      updatedAt: now,
+    };
+
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      // Delete from unified games collection (soft delete)
-      await adminDb.collection(GAMES_COLLECTION).doc(id).update({
-        isDeleted: true,
-        deletedAt: getAdminTimestamp().now(),
-        updatedAt: getAdminTimestamp().now(),
-      });
+      await adminDb.collection(GAMES_COLLECTION).doc(id).update(deleteData);
     } else {
       const db = getFirestoreInstance();
       const docRef = doc(db, GAMES_COLLECTION, id);
-      // Soft delete from unified games collection
-      await updateDoc(docRef, {
-        isDeleted: true,
-        deletedAt: Timestamp.now(),
-        updatedAt: Timestamp.now(),
-      });
+      await updateDoc(docRef, deleteData);
     }
 
     logger.info('Scheduled game deleted', { id });

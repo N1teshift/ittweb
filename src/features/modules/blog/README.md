@@ -25,7 +25,7 @@
 ## Usage
 
 ```typescript
-import { useNewPostForm } from '@/features/modules/blog';
+import { useNewPostForm } from '@/features/modules/blog/hooks/useNewPostForm';
 import { createPost, getPostById } from '@/features/modules/blog/lib/postService';
 
 // Use new post form hook

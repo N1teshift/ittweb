@@ -21,6 +21,12 @@
   - Standardized API route handler utilities
   - Error handling patterns
   - Response formatting
+- **Validation Helpers** (`api/validationHelpers.ts`)
+  - Reusable validation functions for common API request patterns
+  - `validateApiRequest()` - Validate request body against a schema
+  - `validatePaginationParams()` - Validate pagination parameters
+  - `validateDateRange()` - Validate date range parameters
+  - Validator creators: `createStringValidator()`, `createIntValidator()`, `createEnumValidator()`, etc.
 
 ### Logging (`logging/`)
 - `logger.ts` - Logger implementation
@@ -29,7 +35,8 @@
 
 ### Components (`components/`)
 - **Layout Components**: `Layout`, `Header`, `Footer`, `PageHero`, `DataCollectionNotice`, `DiscordButton`, `GitHubButton`
-- **UI Components** (`components/ui/`): `Button`, `Card`, `Input`, `LoadingOverlay`, `LoadingScreen`
+- **UI Components** (`components/ui/`): `Button`, `Card`, `Input`, `LoadingOverlay`, `LoadingScreen`, `EmptyState`, `Tooltip`
+- **Skeleton Components** (`components/ui/`): `GameCardSkeleton`, `PlayerCardSkeleton`, `LeaderboardSkeleton` - Loading placeholders for async content
 
 ### Services (`lib/`)
 - `userDataService` - User data CRUD operations
@@ -86,18 +93,67 @@ logError(error, 'Operation failed', { component: 'my-component' });
 
 ### Route Handlers
 ```typescript
-import { handleApiRequest } from '@/features/infrastructure/api/routeHandlers';
+import { createApiHandler, createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
 
-export default async function handler(req, res) {
-  return handleApiRequest(req, res, {
-    GET: async () => {
-      // GET handler
-    },
-    POST: async () => {
-      // POST handler
-    }
-  });
+// Using createApiHandler (supports multiple methods)
+export default createApiHandler(
+  async (req, res, context) => {
+    // Handler logic
+    return { data: 'result' };
+  },
+  {
+    methods: ['GET', 'POST'],
+    requireAuth: false, // Set to true to require authentication
+    logRequests: true,
+  }
+);
+
+// Using createPostHandler (POST only, convenience function)
+export default createPostHandler(
+  async (req, res, context) => {
+    // Session available if requireAuth: true
+    const session = requireSession(context);
+    return { success: true };
+  },
+  {
+    requireAuth: true, // Automatically checks authentication
+    logRequests: true,
+  }
+);
+```
+
+### Validation Helpers
+```typescript
+import { validateApiRequest, createStringValidator, createEnumValidator } from '@/features/infrastructure/api/validationHelpers';
+
+// Define validation schema
+const schema = [
+  { name: 'title', required: true, validator: createStringValidator(1, 100) },
+  { name: 'category', required: true, validator: createEnumValidator(['ranked', 'casual']) },
+];
+
+// Validate request body
+const result = validateApiRequest(req.body, schema);
+if (!result.valid) {
+  return res.status(400).json({ error: result.errors?.join(', ') });
 }
+
+// Use validated data
+const { title, category } = result.data;
+```
+
+### Skeleton Components
+```typescript
+import { GameCardSkeleton, PlayerCardSkeleton, LeaderboardSkeleton } from '@/features/infrastructure/components/ui';
+
+// Show loading placeholders while data loads
+{loading && (
+  <>
+    <GameCardSkeleton />
+    <GameCardSkeleton />
+    <GameCardSkeleton />
+  </>
+)}
 ```
 
 ## Related Documentation

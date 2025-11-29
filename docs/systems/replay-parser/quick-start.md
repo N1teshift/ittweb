@@ -133,13 +133,13 @@ POST /api/games
 
 ### Existing Files to Update
 - `src/pages/api/games/index.ts` - Add replay file handling
-- `src/features/ittweb/games/lib/gameService.ts` - Add parser integration
-- `src/features/ittweb/scheduled-games/` - Add result recording
+- `src/features/modules/games/lib/gameService.ts` - Add parser integration
+- `src/features/modules/scheduled-games/` - Add result recording
 
 ### New Files to Create
-- `src/features/ittweb/games/lib/replayParser.ts` - Parser service
-- `src/features/ittweb/games/components/ReplayUploadForm.tsx` - Upload UI
-- `src/features/ittweb/games/lib/w3mmdParser.ts` - W3MMD extraction
+- `src/features/modules/games/lib/replayParser.ts` - Parser service (already exists)
+- `src/features/modules/games/components/ReplayUploadForm.tsx` - Upload UI
+- `src/features/modules/games/lib/w3mmdUtils.ts` - W3MMD utilities (already exists)
 
 ---
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { ClassWinRateChart } from '../ClassWinRateChart';
 import type { ClassWinRateData } from '../../types';
 
@@ -28,7 +28,7 @@ jest.mock('@/features/infrastructure/components/ui/Card', () => ({
 }));
 
 describe('ClassWinRateChart', () => {
-  it('should render class win rates', () => {
+  it('should render class win rates', async () => {
     // Arrange
     const data: ClassWinRateData[] = [
       { className: 'warrior', winRate: 60 },
@@ -39,7 +39,9 @@ describe('ClassWinRateChart', () => {
     render(<ClassWinRateChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('bar-chart')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId('bar-chart')).toBeInTheDocument();
+    });
     expect(screen.getByTestId('responsive-container')).toBeInTheDocument();
   });
 
@@ -54,7 +56,7 @@ describe('ClassWinRateChart', () => {
     expect(screen.getByText('No class win rate data available')).toBeInTheDocument();
   });
 
-  it('should handle many classes', () => {
+  it('should handle many classes', async () => {
     // Arrange
     const data: ClassWinRateData[] = Array.from({ length: 20 }, (_, i) => ({
       className: `class${i}`,

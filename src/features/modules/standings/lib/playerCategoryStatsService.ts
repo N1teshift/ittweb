@@ -9,11 +9,11 @@ import {
   doc,
   setDoc,
   deleteDoc,
-  Timestamp,
 } from 'firebase/firestore';
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
-import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createTimestampFactoryAsync } from '@/features/infrastructure/utils/timestampUtils';
 import { normalizePlayerName } from '@/features/modules/players/lib/playerService';
 import type { PlayerCategoryStats } from '../types';
 import type { GameCategory } from '../../games/types';
@@ -58,68 +58,42 @@ export async function upsertPlayerCategoryStats(
     const games = stats.wins + stats.losses + stats.draws;
     const winRate = calculateWinRate(stats.wins, games);
 
+    const timestampFactory = await createTimestampFactoryAsync();
+    const now = timestampFactory.now();
+    
+    const data: PlayerCategoryStats = {
+      id: docId,
+      playerId: normalizedPlayerId,
+      playerName,
+      category,
+      wins: stats.wins,
+      losses: stats.losses,
+      draws: stats.draws,
+      score: stats.score,
+      games,
+      winRate,
+      lastPlayed: stats.lastPlayed
+        ? timestampFactory.fromDate(stats.lastPlayed)
+        : undefined,
+      updatedAt: now,
+    };
+
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const adminTimestamp = getAdminTimestamp();
       const docRef = adminDb.collection(PLAYER_CATEGORY_STATS_COLLECTION).doc(docId);
-
-      const data: PlayerCategoryStats = {
-        id: docId,
-        playerId: normalizedPlayerId,
-        playerName,
-        category,
-        wins: stats.wins,
-        losses: stats.losses,
-        draws: stats.draws,
-        score: stats.score,
-        games,
-        winRate,
-        lastPlayed: stats.lastPlayed
-          ? adminTimestamp.fromDate(stats.lastPlayed)
-          : undefined,
-        updatedAt: adminTimestamp.now(),
-      };
-
-      // Use setDoc with merge to upsert
       await docRef.set(data, { merge: true });
-
-      logger.debug('Updated player category stats', {
-        docId,
-        playerId: normalizedPlayerId,
-        category,
-        games,
-      });
     } else {
       const db = getFirestoreInstance();
       const docRef = doc(db, PLAYER_CATEGORY_STATS_COLLECTION, docId);
-
-      const data: PlayerCategoryStats = {
-        id: docId,
-        playerId: normalizedPlayerId,
-        playerName,
-        category,
-        wins: stats.wins,
-        losses: stats.losses,
-        draws: stats.draws,
-        score: stats.score,
-        games,
-        winRate,
-        lastPlayed: stats.lastPlayed
-          ? Timestamp.fromDate(stats.lastPlayed)
-          : undefined,
-        updatedAt: Timestamp.now(),
-      };
-
-      // Use setDoc with merge to upsert
       await setDoc(docRef, data, { merge: true });
-
-      logger.debug('Updated player category stats', {
-        docId,
-        playerId: normalizedPlayerId,
-        category,
-        games,
-      });
     }
+
+    logger.debug('Updated player category stats', {
+      docId,
+      playerId: normalizedPlayerId,
+      category,
+      games,
+    });
   } catch (error) {
     const err = error as Error;
     logError(err, 'Failed to upsert player category stats', {

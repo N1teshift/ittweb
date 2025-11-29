@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { ArchiveEntry } from '@/types/archive';
 import { useGame } from '@/features/modules/games/hooks/useGame';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
@@ -13,17 +13,24 @@ interface ArchiveEntryProps {
   onImageClick?: (url: string, title: string) => void;
 }
 
-export default function ArchiveEntry({ entry, onEdit, onDelete, canDelete, onImageClick }: ArchiveEntryProps) {
+function ArchiveEntryComponent({ entry, onEdit, onDelete, canDelete, onImageClick }: ArchiveEntryProps) {
   const logger = createComponentLogger('ArchiveEntry');
   const [isExpanded, setIsExpanded] = useState(false);
   const [foundGameId, setFoundGameId] = useState<string | null>(null);
   const maxLength = 300; // Characters to show before truncating
-  const shouldTruncate = entry.content.length > maxLength;
-  const displayText = isExpanded ? entry.content : entry.content.slice(0, maxLength) + '...';
   
-  // Extract scheduled game ID from title for fallback lookup
+  // Memoize truncation logic
+  const shouldTruncate = useMemo(() => entry.content.length > maxLength, [entry.content.length, maxLength]);
+  const displayText = useMemo(
+    () => (isExpanded ? entry.content : entry.content.slice(0, maxLength) + '...'),
+    [isExpanded, entry.content, maxLength]
+  );
+
+  // Memoize scheduled game ID extraction
+  const scheduledGameId = useMemo(() => {
   const titleMatch = entry.title.match(/^Game #(\d+)/);
-  const scheduledGameId = titleMatch ? titleMatch[1] : null;
+    return titleMatch ? titleMatch[1] : null;
+  }, [entry.title]);
   
   // Fetch game data if linkedGameDocumentId is present
   const { game, loading: gameLoading, error: gameError } = useGame(entry.linkedGameDocumentId || foundGameId || '');
@@ -60,20 +67,25 @@ export default function ArchiveEntry({ entry, onEdit, onDelete, canDelete, onIma
     }
   }, [entry.linkedGameDocumentId, scheduledGameId, game, gameLoading, foundGameId, entry.id, logger]);
 
-  const handleTextExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
+  const handleTextExpand = useCallback(() => {
+    setIsExpanded((prev) => !prev);
+  }, []);
 
-  // Check if this is an auto-created archive entry from a scheduled game
-  // Identified by: title pattern "Game #X - ..." AND having replayUrl
+  // Memoize scheduled game archive detection
+  const isScheduledGameArchive = useMemo(() => {
   const titleMatchesPattern = /^Game #\d+/.test(entry.title);
   const hasReplay = !!entry.replayUrl;
-  const isScheduledGameArchive = titleMatchesPattern && hasReplay;
+    return titleMatchesPattern && hasReplay;
+  }, [entry.title, entry.replayUrl]);
   
-  // Extract game number from title if game data not available
+  // Memoize game number and type extraction
+  const { gameNumber, gameType } = useMemo(() => {
   const titleMatch2 = entry.title.match(/^Game #(\d+) - (.+)$/);
-  const gameNumber = titleMatch2 ? titleMatch2[1] : null;
-  const gameType = titleMatch2 ? titleMatch2[2] : null;
+    return {
+      gameNumber: titleMatch2 ? titleMatch2[1] : null,
+      gameType: titleMatch2 ? titleMatch2[2] : null,
+    };
+  }, [entry.title]);
   
   // If this archive entry has a gameId OR is a scheduled game archive, render it as a GameCard-style component
   if (entry.linkedGameDocumentId || isScheduledGameArchive) {
@@ -112,3 +124,7 @@ export default function ArchiveEntry({ entry, onEdit, onDelete, canDelete, onIma
     />
   );
 }
+
+// Memoize component to prevent unnecessary re-renders when props haven't changed
+const ArchiveEntry = React.memo(ArchiveEntryComponent);
+export default ArchiveEntry;

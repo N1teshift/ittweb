@@ -4,6 +4,7 @@ import { authOptions } from '../api/auth/[...nextauth]';
 import Head from 'next/head';
 import PageHero from '@/features/infrastructure/components/PageHero';
 import NewPostForm from '@/features/modules/blog/components/NewPostForm';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 
 type NewPostPageProps = {
   isAuthenticated: boolean;
@@ -12,6 +13,31 @@ type NewPostPageProps = {
 export default function NewPostPage({ isAuthenticated }: NewPostPageProps) {
   if (!isAuthenticated) {
     return (
+      <ErrorBoundary>
+        <>
+          <Head>
+            <title>Add New Post | Island Troll Tribes</title>
+          </Head>
+          <div className="min-h-[calc(100vh-8rem)]">
+            <PageHero
+              title="Add New Post"
+              description="Publish news or development updates directly to the homepage feed."
+            />
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+              <div className="rounded-xl border border-red-500/30 bg-red-900/20 p-6 backdrop-blur">
+                <p className="text-red-200">
+                  You must be logged in to create a post.
+                </p>
+              </div>
+            </div>
+          </div>
+        </>
+      </ErrorBoundary>
+    );
+  }
+
+  return (
+    <ErrorBoundary>
       <>
         <Head>
           <title>Add New Post | Island Troll Tribes</title>
@@ -22,32 +48,11 @@ export default function NewPostPage({ isAuthenticated }: NewPostPageProps) {
             description="Publish news or development updates directly to the homepage feed."
           />
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-            <div className="rounded-xl border border-red-500/30 bg-red-900/20 p-6 backdrop-blur">
-              <p className="text-red-200">
-                You must be logged in to create a post.
-              </p>
-            </div>
+            <NewPostForm />
           </div>
         </div>
       </>
-    );
-  }
-
-  return (
-    <>
-      <Head>
-        <title>Add New Post | Island Troll Tribes</title>
-      </Head>
-      <div className="min-h-[calc(100vh-8rem)]">
-        <PageHero
-          title="Add New Post"
-          description="Publish news or development updates directly to the homepage feed."
-        />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-          <NewPostForm />
-        </div>
-      </div>
-    </>
+    </ErrorBoundary>
   );
 }
 

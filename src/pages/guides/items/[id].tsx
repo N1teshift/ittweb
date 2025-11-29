@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ITEMS_DATA, getItemById } from '@/features/modules/guides/data/items';
@@ -52,13 +53,14 @@ export default function ItemDetailPage({ item }: Props) {
     : '/guides/items';
 
   return (
+    <ErrorBoundary>
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6">
           <Link href={backHref} className="text-amber-400 hover:text-amber-300">← Items Overview</Link>
         </div>
 
         <header className="mb-6">
-          <h1 className="font-medieval-brand text-4xl md:text-5xl mb-2 text-amber-400">{item.name}</h1>
+          <h1 className="font-medieval-brand text-2xl md:text-4xl mb-2 text-amber-400">{item.name}</h1>
           {item.tooltip ? (
             <div className="text-gray-300 text-lg leading-relaxed max-w-3xl">
               <ColoredText text={item.tooltip} />
@@ -230,15 +232,12 @@ export default function ItemDetailPage({ item }: Props) {
                         href={`/guides/abilities/${ability.id}?from=item&itemId=${item.id}`}
                         className="flex items-center gap-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-200 px-3 py-2 rounded transition-colors group"
                       >
-                        {ability.iconPath && (
-                          <GuideIcon
-                            category="abilities"
-                            name={ability.name}
-                            size={24}
-                            src={`/icons/itt/${ability.iconPath}`}
-                            className="group-hover:scale-110 transition-transform"
-                          />
-                        )}
+                        <GuideIcon
+                          category="abilities"
+                          name={ability.name}
+                          size={24}
+                          className="group-hover:scale-110 transition-transform"
+                        />
                         <span className="text-sm">{ability.name}</span>
                       </Link>
                     );
@@ -275,7 +274,6 @@ export default function ItemDetailPage({ item }: Props) {
                               category={ingredientItem.category === 'buildings' ? 'buildings' : 'items'}
                               name={ingredientItem.name}
                               size={48}
-                              src={ingredientItem.iconPath ? `/icons/itt/${ingredientItem.iconPath}` : undefined}
                               className="group-hover:scale-110 transition-transform"
                             />
                           </div>
@@ -310,5 +308,6 @@ export default function ItemDetailPage({ item }: Props) {
           </section>
         </div>
       </div>
+    </ErrorBoundary>
   );
 }

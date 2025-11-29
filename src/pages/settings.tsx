@@ -330,16 +330,15 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
               <div className="mb-4">
                 <h3 className="text-2xl font-semibold text-white mb-2">Wipe All Data?</h3>
                 <p className="mt-2 text-sm text-gray-300">
-                  This will permanently delete test data (user data will be preserved):
+                  This will permanently delete test data:
                 </p>
                 <ul className="mt-2 text-sm text-gray-400 list-disc list-inside space-y-1">
-                  <li>All Firestore collections (entries, games, playerStats, etc.)</li>
-                  <li>All subcollections (players, etc.)</li>
-                  <li>All files in Firebase Storage</li>
-                  <li className="text-green-400 mt-2">✓ userData collection will be preserved</li>
+                  <li>Firestore collections: games, playerStats, playerCategoryStats</li>
+                  <li>All subcollections (e.g., players subcollection under games)</li>
+                  <li>All replay files in Firebase Storage (games/ folder)</li>
                 </ul>
                 <p className="mt-3 text-sm text-red-300 font-semibold">
-                  ⚠️ This action cannot be undone. This will delete test data from your database and storage, but user accounts will remain.
+                  ⚠️ This action cannot be undone. This will delete game data, player statistics, and replay files.
                 </p>
                 {wipeError && (
                   <div className="mt-3 rounded-md border border-red-500/40 bg-red-900/20 px-3 py-2 text-sm text-red-200">

@@ -57,6 +57,7 @@ describe('shared logger utils', () => {
   describe('createComponentLogger', () => {
     it('creates logger with component name prefix', () => {
       (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+      process.env.LOG_LEVEL = 'info';
       const logger = createComponentLogger('TestComponent');
 
       logger.info('test message');
@@ -66,6 +67,7 @@ describe('shared logger utils', () => {
 
     it('creates logger with component and method name prefix', () => {
       (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+      process.env.LOG_LEVEL = 'info';
       const logger = createComponentLogger('TestComponent', 'testMethod');
 
       logger.info('test message');
@@ -75,6 +77,7 @@ describe('shared logger utils', () => {
 
     it('handles empty component name', () => {
       (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+      process.env.LOG_LEVEL = 'info';
       const logger = createComponentLogger('');
 
       logger.info('test message');
@@ -84,6 +87,7 @@ describe('shared logger utils', () => {
 
     it('handles special characters in component name', () => {
       (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+      process.env.LOG_LEVEL = 'info';
       const logger = createComponentLogger('Component-Name_123');
 
       logger.info('test message');
@@ -93,6 +97,7 @@ describe('shared logger utils', () => {
 
     it('handles unicode in component name', () => {
       (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+      process.env.LOG_LEVEL = 'info';
       const logger = createComponentLogger('组件');
 
       logger.info('test message');
@@ -103,6 +108,7 @@ describe('shared logger utils', () => {
     it('includes prefix in all log levels', () => {
       (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       process.env.ENABLE_DEBUG_LOGS = 'true';
+      process.env.LOG_LEVEL = 'info';
       const logger = createComponentLogger('TestComponent');
 
       logger.debug('debug');
@@ -269,6 +275,7 @@ describe('shared logger utils', () => {
     it('behaves differently in development vs production', () => {
       // Development mode
       (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+      process.env.LOG_LEVEL = 'info';
       Logger.debug('debug dev');
       Logger.info('info dev');
 
@@ -366,6 +373,7 @@ describe('shared logger utils', () => {
   describe('component logger edge cases', () => {
     beforeEach(() => {
       (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+      process.env.LOG_LEVEL = 'info';
     });
 
     it('handles component logger with very long component name', () => {

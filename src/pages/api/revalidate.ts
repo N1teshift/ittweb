@@ -31,7 +31,11 @@ export default createPostHandler<{ revalidated: boolean; path: string }>(
       const requiredError = validateRequiredFields(body, ['path']);
       if (requiredError) return requiredError;
       if (typeof body === 'object' && body !== null && 'path' in body) {
-        return validateString((body as { path: unknown }).path, 'path', 1) || true;
+        const pathResult = validateString((body as { path: unknown }).path, 'path', 1);
+        if (typeof pathResult === 'string' && pathResult.startsWith('path must be')) {
+          return pathResult;
+        }
+        return true;
       }
       return 'Invalid request body';
     },

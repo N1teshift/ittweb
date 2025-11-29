@@ -24,7 +24,7 @@
 - `itemIdMapper` - Item ID mapping utilities
 
 ### Hooks
-- `useItemsData` - Fetch items data
+- `useItemsData` - Fetch items data (in `hooks/useItemsData.ts`)
 
 ## Usage
 
@@ -32,7 +32,7 @@
 import { ClassIcon } from '@/features/modules/guides';
 import { getClassData } from '@/features/modules/guides/data/units/classes';
 
-// Use class icon
+// Use class icon (components are exported from module root)
 <ClassIcon className="mage" size={64} />
 
 // Get class data

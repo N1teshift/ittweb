@@ -67,10 +67,19 @@ export function convertBaseClass(unit, allUnits) {
   const subclasses = relationship?.subclasses || [];
   const superclasses = relationship?.superclass ? [relationship.superclass] : [];
   
+  // Clean up description: remove color codes and normalize
+  let description = unit.summary || unit.description || '';
+  if (description) {
+    // Remove Warcraft 3 color codes (|r, |cAARRGGBB, etc.)
+    description = description.replace(/\|r/g, '').replace(/\|[cC][0-9A-Fa-f]{8}/g, '');
+    // Normalize whitespace
+    description = description.replace(/\s+/g, ' ').trim();
+  }
+  
   return {
     slug: slug,
     name: (unit.name || '').trim(),
-    summary: unit.summary || unit.description || `${unit.name} class description coming soon.`,
+    summary: description || `${unit.name} class description coming soon.`,
     iconSrc: undefined,
     subclasses: subclasses,
     superclasses: superclasses.length > 0 ? superclasses : undefined,
@@ -96,12 +105,21 @@ export function convertDerivedClass(unit, allUnits) {
   const parentSlug = derivedInfo?.parent || 'unknown';
   const derivedType = derivedInfo?.type || (unit.type === 'superclass' ? 'super' : 'sub');
   
+  // Clean up description: remove color codes and normalize
+  let description = unit.summary || unit.description || '';
+  if (description) {
+    // Remove Warcraft 3 color codes (|r, |cAARRGGBB, etc.)
+    description = description.replace(/\|r/g, '').replace(/\|[cC][0-9A-Fa-f]{8}/g, '');
+    // Normalize whitespace
+    description = description.replace(/\s+/g, ' ').trim();
+  }
+  
   return {
     slug: slug,
     name: (unit.name || '').trim(),
     parentSlug: parentSlug,
     type: derivedType,
-    summary: unit.summary || unit.description || `${unit.name} class description coming soon.`,
+    summary: description || `${unit.name} class description coming soon.`,
     iconSrc: undefined,
     tips: unit.tips || undefined,
     growth: {

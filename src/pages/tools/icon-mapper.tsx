@@ -82,7 +82,7 @@ export default function IconMapper() {
 
   return (
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-7xl mx-auto">
-      <h1 className="font-medieval-brand text-4xl md:text-5xl mb-6">Icon Mapper</h1>
+      <h1 className="font-medieval-brand text-2xl md:text-4xl mb-6">Icon Mapper</h1>
       <p className="text-gray-300 mb-8">
         Map icon filenames to their game names. Enter the name as it appears in the game next to each icon.
       </p>

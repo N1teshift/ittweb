@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import { useModalAccessibility } from '@/features/infrastructure/hooks/useModalAccessibility';
 
 interface ImageModalProps {
   isOpen: boolean;
@@ -8,17 +9,29 @@ interface ImageModalProps {
 }
 
 export default function ImageModal({ isOpen, image, onClose }: ImageModalProps) {
+  const modalRef = useModalAccessibility({
+    isOpen: isOpen && !!image,
+    onClose,
+    trapFocus: true,
+    focusOnOpen: true,
+  });
+
   if (!isOpen || !image) return null;
 
   return (
     <div 
+      ref={modalRef}
       className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image viewer"
     >
-      <div className="relative max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center">
+      <div className="relative max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center animate-scale-in">
         {/* Close Button */}
         <button
           onClick={onClose}
+          aria-label="Close image modal"
           className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors z-10"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

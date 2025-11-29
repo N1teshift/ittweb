@@ -14,11 +14,105 @@ import path from 'path';
 import { loadJson, writeJson, slugify, getField, validateJsonStructure, validateArrayItems, logWarning } from './utils.mjs';
 import { TMP_RAW_DIR, TMP_METADATA_DIR, WORK_DIR, ROOT_DIR, ensureTmpDirs } from './paths.mjs';
 
+const WURST_UNIT_TEXT_FILE = path.join(ROOT_DIR, 'external', 'island-troll-tribes', 'wurst', 'objects', 'units', 'TrollUnitTextConstant.wurst');
+
 const EXTRACTED_DIR = TMP_RAW_DIR;
 const OUTPUT_DIR = TMP_METADATA_DIR;
 const WAR3MAP_FILE = path.join(WORK_DIR, 'war3map.j');
 
 ensureTmpDirs();
+
+/**
+ * Extract class descriptions from TrollUnitTextConstant.wurst
+ * Returns a map of class slug -> description text
+ */
+function extractClassDescriptions() {
+  const descriptions = {};
+  
+  if (!fs.existsSync(WURST_UNIT_TEXT_FILE)) {
+    logWarning(`Wurst unit text file not found: ${WURST_UNIT_TEXT_FILE}`);
+    return descriptions;
+  }
+  
+  const content = fs.readFileSync(WURST_UNIT_TEXT_FILE, 'utf-8');
+  
+  // Map TOOLTIP_* constant names to class slugs
+  const tooltipToSlug = {
+    'TOOLTIP_HUNTER': 'hunter',
+    'TOOLTIP_MAGE': 'mage',
+    'TOOLTIP_PRIEST': 'priest',
+    'TOOLTIP_BEASTMASTER': 'beastmaster',
+    'TOOLTIP_THIEF': 'thief',
+    'TOOLTIP_SCOUT': 'scout',
+    'TOOLTIP_GATHERER': 'gatherer',
+    // Subclasses
+    'TOOLTIP_WARRIOR': 'gurubashi-warrior',
+    'TOOLTIP_TRACKER': 'tracker',
+    'TOOLTIP_ELEMENTALIST': 'elementalist',
+    'TOOLTIP_DREAMWALKER': 'dreamwalker',
+    'TOOLTIP_HYPNOTIST': 'hypnotist',
+    'TOOLTIP_BOOSTER': 'booster',
+    'TOOLTIP_MASTER_HEALER': 'master-healer',
+    'TOOLTIP_SHAPESHIFTER': 'shapeshifter',
+    'TOOLTIP_DIRE_WOLF': 'dire-wolf',
+    'TOOLTIP_DIRE_BEAR': 'dire-bear',
+    'TOOLTIP_DRUID': 'druid',
+    'TOOLTIP_ESCAPE_ARTIST': 'escape-artist',
+    'TOOLTIP_ROGUE': 'rogue',
+    'TOOLTIP_CONTORTIONIST': 'contortionist',
+    'TOOLTIP_TELETHIEF': 'telethief',
+    'TOOLTIP_OBSERVER': 'observer',
+    'TOOLTIP_TRAPPER': 'trapper',
+    'TOOLTIP_RADAR_GATHERER': 'radar-gatherer',
+    'TOOLTIP_ALCHEMIST': 'alchemist',
+    'TOOLTIP_HERB_MASTER': 'herb-master',
+    // Superclasses
+    'TOOLTIP_JUGGERNAUT': 'gurubashi-champion', // Juggernaut is the superclass for Hunter
+    'TOOLTIP_DEMENTIA_MASTER': 'dementia-master',
+    'TOOLTIP_SAGE': 'sage',
+    'TOOLTIP_JUNGLE_TYRANT': 'jungle-tyrant',
+    'TOOLTIP_ASSASSIN': 'assassin',
+    'TOOLTIP_SPY': 'spy',
+    'TOOLTIP_OMNIGATHERER': 'omni-gatherer',
+  };
+  
+  // Extract each TOOLTIP_* constant
+  for (const [tooltipConst, slug] of Object.entries(tooltipToSlug)) {
+    // Match: public constant TOOLTIP_NAME = "" + "text" + "more text" + CONSTANT
+    // Constants don't have semicolons, they end with a newline before the next constant
+    // Match until the next "public constant" or end of content
+    const regex = new RegExp(
+      `public\\s+constant\\s+${tooltipConst}\\s*=\\s*([^]*?)(?=\\n\\s*public\\s+constant|$)`,
+      's'
+    );
+    
+    const match = content.match(regex);
+    if (match) {
+      let tooltipText = match[1].trim();
+      
+      // Remove string concatenation operators and quotes
+      // Handle patterns like: "" + "text" + CONSTANT + "more text"
+      tooltipText = tooltipText
+        .replace(/^""\s*\+\s*/, '') // Remove leading "" +
+        .replace(/\s*\+\s*/g, ' ') // Replace all + with space
+        .replace(/COLOR_[A-Z_]+\.toColorString\(\)/g, '') // Remove color functions
+        .replace(/\.color\([^)]+\)/g, '') // Remove .color() calls
+        .replace(/["']/g, '') // Remove quotes
+        .replace(/\s+/g, ' ') // Normalize whitespace
+        .replace(/^\s+|\s+$/g, '') // Trim
+        // Remove constants like INVENTORY_3_SLOT, DIFFICULTY_EASY, SUBCLASS_WARNING
+        .replace(/\b(INVENTORY_[0-9]_SLOT|DIFFICULTY_[A-Z]+|SUBCLASS_WARNING)\b/g, '')
+        .replace(/\s+/g, ' ') // Normalize whitespace again
+        .trim();
+      
+      if (tooltipText && tooltipText.length > 10) {
+        descriptions[slug] = tooltipText;
+      }
+    }
+  }
+  
+  return descriptions;
+}
 
 /**
  * Extract units metadata from extracted units
@@ -152,6 +246,7 @@ function extractUnitsMetadata(extractedUnits) {
       unitId: unit.id || id.toUpperCase(),
       name: name,
       type: type,
+      description: unit.description || unit.tooltip || '', // Include description/tooltip from extracted data
       growth: {
         strength: str || 1.0,
         agility: agi || 1.0,
@@ -643,9 +738,28 @@ function main() {
     }
   }
   
+  // Extract class descriptions from Wurst source
+  console.log('📝 Extracting class descriptions from Wurst source...');
+  const classDescriptions = extractClassDescriptions();
+  console.log(`✅ Extracted ${Object.keys(classDescriptions).length} class descriptions\n`);
+  
   // Extract units metadata
   console.log('👤 Extracting units metadata...');
   const unitsMetadata = extractUnitsMetadata(extractedUnits);
+  
+  // Add descriptions to units metadata
+  if (unitsMetadata.units) {
+    for (const unit of unitsMetadata.units) {
+      const slug = unit.id || slugify(unit.name || '');
+      if (classDescriptions[slug]) {
+        unit.description = classDescriptions[slug];
+      }
+    }
+  }
+  
+  // Also store descriptions separately for reference
+  unitsMetadata.classDescriptions = classDescriptions;
+  
   writeJson(path.join(OUTPUT_DIR, 'units.json'), unitsMetadata);
   console.log(`✅ Extracted ${unitsMetadata.units.length} units metadata\n`);
   

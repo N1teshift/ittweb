@@ -160,12 +160,13 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 px-4">
-      <div className="bg-gray-900 border border-amber-500/30 rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-gray-900 border border-amber-500/30 rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-scale-in">
         <div className="flex items-start justify-between mb-6">
           <div>
             <h2 className="text-2xl font-medieval-brand text-amber-400">Create Game (Manual Entry)</h2>
             <p className="text-sm text-gray-400 mt-1">
-              Creates a test game that is immediately archived and available for testing. No replay required.
+              Manually create a game record by entering game details. This is useful for testing or when a replay file is not available. 
+              The game will be immediately recorded and available in the games list.
             </p>
           </div>
           <button
@@ -419,6 +420,7 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
             <button
               type="button"
               onClick={onClose}
+              aria-label="Cancel creating game"
               className="flex-1 px-4 py-2 bg-black/40 border border-amber-500/30 text-amber-300 rounded-lg font-medium hover:bg-black/60 transition-colors"
             >
               Cancel

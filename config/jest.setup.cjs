@@ -65,6 +65,18 @@ jest.mock("@/features/infrastructure/logging", () => ({
   logError: jest.fn(),
 }));
 
+// Mock NextAuth to prevent jose ESM import issues
+jest.mock('next-auth', () => ({
+  __esModule: true,
+  default: jest.fn(),
+  getServerSession: jest.fn(),
+}));
+
+jest.mock('next-auth/next', () => ({
+  __esModule: true,
+  getServerSession: jest.fn(),
+}));
+
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: jest.fn().mockImplementation((query) => ({
