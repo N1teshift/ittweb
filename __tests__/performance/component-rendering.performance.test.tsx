@@ -28,7 +28,7 @@ jest.mock('recharts', () => ({
   Legend: () => <div data-testid="legend" />,
 }));
 
-jest.mock('@/features/infrastructure/shared/components/ui/Card', () => ({
+jest.mock('@/features/infrastructure/components/ui/Card', () => ({
   Card: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="card">{children}</div>
   ),
