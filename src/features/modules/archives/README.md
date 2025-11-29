@@ -7,7 +7,11 @@
 ### Components
 - `ArchivesContent` - Main archives page content
 - `ArchiveForm` - Create/edit archive entry form
-- `ArchiveEntry` - Display individual archive entry
+- `ArchiveEntry` - Display individual archive entry (main component, ~115 lines)
+- `ArchiveMediaSections` - Media sections display component (extracted from ArchiveEntry)
+- `GamePlayersSection` - Game players information section (extracted from ArchiveEntry)
+- `GameLinkedArchiveEntry` - Archive entry linked to a game (extracted from ArchiveEntry)
+- `NormalArchiveEntry` - Standard archive entry display (extracted from ArchiveEntry)
 - `ArchiveDeleteDialog` - Delete confirmation dialog
 - `ArchivesToolbar` - Toolbar with filters and actions
 - `GameDetailsSection` - Game details display section
@@ -23,6 +27,7 @@
 ### Utils
 - `archiveFormUtils` - Form validation and utilities
 - `archiveValidation` - Archive entry validation logic
+- `ArchiveEntryUtils` - Utility functions for archive entry operations (extracted from ArchiveEntry)
 
 ## Usage
 

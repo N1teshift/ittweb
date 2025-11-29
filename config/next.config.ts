@@ -27,6 +27,14 @@ const baseConfig: NextConfig = {
             }
             return entries;
         };
+        
+        // Ignore optional Sentry module to prevent webpack resolution errors
+        // Sentry is optional and loaded dynamically at runtime
+        config.resolve.alias = {
+            ...config.resolve.alias,
+            '@sentry/nextjs': false,
+        };
+        
         return config;
     },
     images: {

@@ -24,9 +24,12 @@ async function fetchItems(): Promise<void> {
   if (!response.ok) {
     throw new Error(`Failed to load items (status ${response.status})`);
   }
-  const data: ItemsApiResult = await response.json();
-  cachedItems = data.items;
-  cachedMeta = data.meta;
+  const apiResponse = await response.json() as { success: boolean; data: ItemsApiResult };
+  if (!apiResponse.success || !apiResponse.data) {
+    throw new Error('Invalid API response format');
+  }
+  cachedItems = apiResponse.data.items;
+  cachedMeta = apiResponse.data.meta;
 }
 
 export function useItemsData() {

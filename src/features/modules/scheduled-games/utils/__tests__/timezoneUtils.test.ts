@@ -34,9 +34,9 @@ describe('timezoneUtils', () => {
         NumberFormat: originalIntl.NumberFormat,
         PluralRules: originalIntl.PluralRules,
         RelativeTimeFormat: originalIntl.RelativeTimeFormat,
-        ListFormat: originalIntl.ListFormat,
+        ListFormat: (originalIntl as any).ListFormat,
         DisplayNames: originalIntl.DisplayNames,
-      } as typeof Intl;
+      } as unknown as typeof Intl;
 
       expect(getUserTimezone()).toBe('UTC');
 
@@ -56,7 +56,7 @@ describe('timezoneUtils', () => {
         DateTimeFormat: jest.fn().mockImplementation(() => ({
           resolvedOptions: () => ({ timeZone: 'UTC' }),
         })),
-      } as typeof Intl;
+      } as unknown as typeof Intl;
 
       const timezone = getUserTimezone();
       expect(timezone).toBe('UTC');

@@ -202,7 +202,7 @@ export function determineUnitType(unit) {
 }
 
 /**
- * Extract unit stats from raw data
+ * Extract unit stats from raw data (fallback if stats not in extractedUnit)
  */
 export function extractUnitStats(unit) {
   const raw = unit.raw || [];
@@ -219,10 +219,23 @@ export function extractUnitStats(unit) {
 }
 
 /**
+ * Calculate damage range from base and dice values
+ */
+function calculateDamageRange(damageBase, damageDice) {
+  if (damageBase === undefined && damageDice === undefined) return undefined;
+  const base = damageBase || 0;
+  const dice = damageDice || 0;
+  const min = base;
+  const max = base + dice;
+  return { min, max };
+}
+
+/**
  * Convert extracted unit to TypeScript UnitData format
  */
 export function convertUnit(extractedUnit, udirCounter, buildingsMap) {
-  const stats = extractUnitStats(extractedUnit);
+  // Use stats from extractedUnit (from enhanced extraction), fallback to extractUnitStats if needed
+  const fallbackStats = extractUnitStats(extractedUnit);
   const unitType = determineUnitType(extractedUnit);
   
   let unitName = (extractedUnit.name || '').trim();
@@ -258,6 +271,9 @@ export function convertUnit(extractedUnit, udirCounter, buildingsMap) {
     }
   }
   
+  // Calculate damage range from base and dice
+  const damageRange = calculateDamageRange(extractedUnit.damageBase, extractedUnit.damageDice);
+  
   return {
     id: unitId,
     name: unitName,
@@ -267,12 +283,47 @@ export function convertUnit(extractedUnit, udirCounter, buildingsMap) {
     race: extractedUnit.race || undefined,
     classification: extractedUnit.classification || undefined,
     type: unitType,
-    hp: stats.hp,
-    mana: stats.mana,
-    armor: stats.armor,
-    moveSpeed: stats.moveSpeed,
-    attackSpeed: stats.attackSpeed,
-    damage: stats.damage,
+    // Primary attributes
+    strength: extractedUnit.strength ?? undefined,
+    agility: extractedUnit.agility ?? undefined,
+    intelligence: extractedUnit.intelligence ?? undefined,
+    strengthPerLevel: extractedUnit.strengthPerLevel ?? undefined,
+    agilityPerLevel: extractedUnit.agilityPerLevel ?? undefined,
+    intelligencePerLevel: extractedUnit.intelligencePerLevel ?? undefined,
+    // Combat stats
+    hp: extractedUnit.hp ?? fallbackStats.hp ?? undefined,
+    mana: extractedUnit.mana ?? fallbackStats.mana ?? undefined,
+    armor: extractedUnit.armor ?? fallbackStats.armor ?? undefined,
+    damageMin: damageRange?.min ?? undefined,
+    damageMax: damageRange?.max ?? undefined,
+    attackCooldown: extractedUnit.attackCooldown ?? undefined,
+    attackRange: extractedUnit.attackRange ?? undefined,
+    acquisitionRange: extractedUnit.acquisitionRange ?? undefined,
+    attackType: extractedUnit.attackType ?? undefined,
+    defenseType: extractedUnit.defenseType ?? undefined,
+    // Movement stats
+    moveSpeed: extractedUnit.moveSpeed ?? fallbackStats.moveSpeed ?? undefined,
+    turnRate: extractedUnit.turnRate ?? undefined,
+    collisionSize: extractedUnit.collisionSize ?? undefined,
+    // Vision stats
+    sightRangeDay: extractedUnit.sightRangeDay ?? undefined,
+    sightRangeNight: extractedUnit.sightRangeNight ?? undefined,
+    // Cost/resource stats
+    goldCost: extractedUnit.goldCost ?? undefined,
+    lumberCost: extractedUnit.lumberCost ?? undefined,
+    foodCost: extractedUnit.foodCost ?? undefined,
+    buildTime: extractedUnit.buildTime ?? undefined,
+    // Abilities
+    abilities: extractedUnit.abilities ?? undefined,
+    // Classification flags
+    isBuilding: extractedUnit.isBuilding ?? undefined,
+    isFlyer: extractedUnit.isFlyer ?? undefined,
+    isWorker: extractedUnit.isWorker ?? undefined,
+    canAttack: extractedUnit.canAttack ?? undefined,
+    canHarvest: extractedUnit.canHarvest ?? undefined,
+    // Legacy fields (for backward compatibility)
+    attackSpeed: extractedUnit.attackCooldown ?? fallbackStats.attackSpeed ?? undefined,
+    damage: damageRange ? `${damageRange.min}-${damageRange.max}` : fallbackStats.damage ?? undefined,
     craftableItems: craftableItems,
   };
 }

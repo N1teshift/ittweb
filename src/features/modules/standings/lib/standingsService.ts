@@ -10,6 +10,11 @@ import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import type { StandingsEntry, StandingsResponse, StandingsFilters } from '../types';
+import {
+  createStandingsEntryFromOptimized,
+  createStandingsEntryFromLegacy,
+  processStandingsEntries,
+} from './standingsService.utils';
 
 const PLAYER_STATS_COLLECTION = 'playerStats';
 const PLAYER_CATEGORY_STATS_COLLECTION = 'playerCategoryStats';
@@ -85,41 +90,11 @@ async function getStandingsOptimized(
     
     const standings: StandingsEntry[] = [];
     snapshot.forEach((doc) => {
-      const data = doc.data();
-      standings.push({
-        rank: 0, // Will be calculated after sorting
-        name: data.playerName || data.playerId || doc.id,
-        score: data.score || 1000,
-        wins: data.wins || 0,
-        losses: data.losses || 0,
-        winRate: data.winRate || 0,
-        games: data.games || 0,
-      });
+      const entry = createStandingsEntryFromOptimized(doc.data(), doc.id);
+      standings.push(entry);
     });
     
-    // Sort by score (ELO) descending, then by win rate, then by wins
-    standings.sort((a, b) => {
-      if (b.score !== a.score) return b.score - a.score;
-      if (b.winRate !== a.winRate) return b.winRate - a.winRate;
-      return b.wins - a.wins;
-    });
-    
-    // Assign ranks
-    standings.forEach((entry, index) => {
-      entry.rank = index + 1;
-    });
-    
-    // Apply pagination
-    const startIndex = (page - 1) * pageLimit;
-    const endIndex = startIndex + pageLimit;
-    const paginatedStandings = standings.slice(startIndex, endIndex);
-    
-    return {
-      standings: paginatedStandings,
-      total,
-      page,
-      hasMore: endIndex < standings.length,
-    };
+    return processStandingsEntries(standings, page, pageLimit, total);
   } else {
     const db = getFirestoreInstance();
     
@@ -135,41 +110,11 @@ async function getStandingsOptimized(
     
     const standings: StandingsEntry[] = [];
     snapshot.forEach((doc) => {
-      const data = doc.data();
-      standings.push({
-        rank: 0,
-        name: data.playerName || data.playerId || doc.id,
-        score: data.score || 1000,
-        wins: data.wins || 0,
-        losses: data.losses || 0,
-        winRate: data.winRate || 0,
-        games: data.games || 0,
-      });
+      const entry = createStandingsEntryFromOptimized(doc.data(), doc.id);
+      standings.push(entry);
     });
     
-    // Sort by score (ELO) descending, then by win rate, then by wins
-    standings.sort((a, b) => {
-      if (b.score !== a.score) return b.score - a.score;
-      if (b.winRate !== a.winRate) return b.winRate - a.winRate;
-      return b.wins - a.wins;
-    });
-    
-    // Assign ranks
-    standings.forEach((entry, index) => {
-      entry.rank = index + 1;
-    });
-    
-    // Apply pagination
-    const startIndex = (page - 1) * pageLimit;
-    const endIndex = startIndex + pageLimit;
-    const paginatedStandings = standings.slice(startIndex, endIndex);
-    
-    return {
-      standings: paginatedStandings,
-      total: standings.length,
-      page,
-      hasMore: endIndex < standings.length,
-    };
+    return processStandingsEntries(standings, page, pageLimit, standings.length);
   }
 }
 
@@ -190,54 +135,14 @@ async function getStandingsLegacy(
     const snapshot = await adminDb.collection(PLAYER_STATS_COLLECTION).get();
     
     const standings: StandingsEntry[] = [];
-    
     snapshot.forEach((doc) => {
-      const data = doc.data();
-      const categoryStats = data.categories?.[category];
-      
-      if (!categoryStats) return;
-      
-      const games = categoryStats.wins + categoryStats.losses + categoryStats.draws;
-      if (games < minGames) return;
-      
-      const winRate = games > 0 
-        ? (categoryStats.wins / games) * 100 
-        : 0;
-      
-      standings.push({
-        rank: 0, // Will be calculated after sorting
-        name: data.name || doc.id,
-        score: categoryStats.score || 1000,
-        wins: categoryStats.wins || 0,
-        losses: categoryStats.losses || 0,
-        winRate: Math.round(winRate * 100) / 100,
-        games,
-      });
+      const entry = createStandingsEntryFromLegacy(doc.data(), doc.id, category, minGames);
+      if (entry) {
+        standings.push(entry);
+      }
     });
     
-    // Sort by score (ELO) descending, then by win rate, then by wins
-    standings.sort((a, b) => {
-      if (b.score !== a.score) return b.score - a.score;
-      if (b.winRate !== a.winRate) return b.winRate - a.winRate;
-      return b.wins - a.wins;
-    });
-    
-    // Assign ranks
-    standings.forEach((entry, index) => {
-      entry.rank = index + 1;
-    });
-    
-    // Apply pagination
-    const startIndex = (page - 1) * pageLimit;
-    const endIndex = startIndex + pageLimit;
-    const paginatedStandings = standings.slice(startIndex, endIndex);
-    
-    return {
-      standings: paginatedStandings,
-      total: standings.length,
-      page,
-      hasMore: endIndex < standings.length,
-    };
+    return processStandingsEntries(standings, page, pageLimit, standings.length);
   } else {
     const db = getFirestoreInstance();
     
@@ -245,54 +150,14 @@ async function getStandingsLegacy(
     const snapshot = await getDocs(collection(db, PLAYER_STATS_COLLECTION));
     
     const standings: StandingsEntry[] = [];
-    
     snapshot.forEach((doc) => {
-      const data = doc.data();
-      const categoryStats = data.categories?.[category];
-      
-      if (!categoryStats) return;
-      
-      const games = categoryStats.wins + categoryStats.losses + categoryStats.draws;
-      if (games < minGames) return;
-      
-      const winRate = games > 0 
-        ? (categoryStats.wins / games) * 100 
-        : 0;
-      
-      standings.push({
-        rank: 0, // Will be calculated after sorting
-        name: data.name || doc.id,
-        score: categoryStats.score || 1000,
-        wins: categoryStats.wins || 0,
-        losses: categoryStats.losses || 0,
-        winRate: Math.round(winRate * 100) / 100,
-        games,
-      });
+      const entry = createStandingsEntryFromLegacy(doc.data(), doc.id, category, minGames);
+      if (entry) {
+        standings.push(entry);
+      }
     });
     
-    // Sort by score (ELO) descending, then by win rate, then by wins
-    standings.sort((a, b) => {
-      if (b.score !== a.score) return b.score - a.score;
-      if (b.winRate !== a.winRate) return b.winRate - a.winRate;
-      return b.wins - a.wins;
-    });
-    
-    // Assign ranks
-    standings.forEach((entry, index) => {
-      entry.rank = index + 1;
-    });
-    
-    // Apply pagination
-    const startIndex = (page - 1) * pageLimit;
-    const endIndex = startIndex + pageLimit;
-    const paginatedStandings = standings.slice(startIndex, endIndex);
-    
-    return {
-      standings: paginatedStandings,
-      total: standings.length,
-      page,
-      hasMore: endIndex < standings.length,
-    };
+    return processStandingsEntries(standings, page, pageLimit, standings.length);
   }
 }
 

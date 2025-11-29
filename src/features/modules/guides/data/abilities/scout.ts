@@ -8,7 +8,7 @@ export const SCOUT_ABILITIES: AbilityData[] = [
     classRequirement: 'scout',
     description: '',
     tooltip: 'An improved better radar to locate unit around him with high precision.',
-    iconPath: 'btnspy.png',
+    iconPath: 'BTNSpy.png',
     hotkey: 'R',
     levels: {
             "1": {
@@ -23,7 +23,7 @@ export const SCOUT_ABILITIES: AbilityData[] = [
     classRequirement: 'scout',
     description: '',
     tooltip: 'Reveals an area around you, detects invisible units. Lasts |cff7DBEF18|r seconds, has |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'btnreveal.png',
+    iconPath: 'BTNReveal.png',
     cooldown: 20,
     hotkey: 'E',
     levels: {
@@ -48,7 +48,7 @@ export const SCOUT_ABILITIES: AbilityData[] = [
     classRequirement: 'scout',
     description: '',
     tooltip: 'Reveals an large area around you, detects invisible units. Lasts |cff7DBEF110|r seconds, has |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'btnreveal.png',
+    iconPath: 'BTNReveal.png',
     cooldown: 20,
     hotkey: 'E',
     levels: {
@@ -73,7 +73,7 @@ export const SCOUT_ABILITIES: AbilityData[] = [
     classRequirement: 'scout',
     description: '',
     tooltip: 'Cast multiple reveal around you and on your living clays, detects invisible units. Lasts |cff7DBEF110|r seconds, has |cff7DBEF150|r seconds cooldown.',
-    iconPath: 'btnreveal.png',
+    iconPath: 'BTNReveal.png',
     cooldown: 50,
     hotkey: 'E',
     levels: {
@@ -153,7 +153,7 @@ export const SCOUT_ABILITIES: AbilityData[] = [
     classRequirement: 'scout',
     description: '',
     tooltip: 'The Observer is adept at controlling vision. He can learn to drop wards to keep vision on an area and has a wide ranged reveal. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cff1FBF00Easy|r',
-    iconPath: 'btncancel.png',
+    iconPath: 'BTNWyvernRider.png',
     hotkey: 'Q',
   },
   {
@@ -173,7 +173,7 @@ export const SCOUT_ABILITIES: AbilityData[] = [
     classRequirement: 'scout',
     description: '',
     tooltip: 'The Spy got the best radar and reveal possible,it\'s nearly impossible to hide from him|cff7DBEF1\n\nDifficulty: |r|cff1FBF00Easy|r',
-    iconPath: 'btnforesttrolltrapper.png',
+    iconPath: 'BTNForestTrollTrapper.png',
     hotkey: 'E',
   }
 ];

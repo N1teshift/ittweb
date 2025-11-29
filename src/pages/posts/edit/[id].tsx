@@ -4,7 +4,6 @@ import { authOptions } from '../../api/auth/[...nextauth]';
 import Head from 'next/head';
 import PageHero from '@/features/infrastructure/components/PageHero';
 import { getPostById } from '@/features/modules/blog/lib/postService';
-import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 import EditPostForm from '@/features/modules/blog/components/EditPostForm';
 import type { PostFormState } from '@/features/modules/blog/hooks/useNewPostForm';
@@ -102,7 +101,8 @@ export const getServerSideProps: GetServerSideProps<EditPostPageProps> = async (
 
     if (session && session.discordId) {
       try {
-        const userData = await getUserDataByDiscordId(session.discordId);
+        const { getUserDataByDiscordIdServer } = await import('@/features/infrastructure/lib/userDataService.server');
+        const userData = await getUserDataByDiscordIdServer(session.discordId);
         const userIsAdmin = isAdmin(userData?.role);
         const userIsAuthor = post.createdByDiscordId === session.discordId;
         

@@ -26,6 +26,8 @@ npm install
 
 ### 3. Environment Variables
 
+**Note**: Environment variable validation runs automatically during build. The `scripts/validate-env.js` script checks all required environment variables and provides clear error messages if any are missing.
+
 Create a `.env.local` file in the project root:
 
 ```bash
@@ -255,6 +257,8 @@ Set these in your hosting platform (Vercel, Netlify, etc.):
 2. Add all required variables
 3. Update `NEXTAUTH_URL` to production URL
 4. Redeploy after adding variables
+
+**Note**: The build process automatically validates environment variables. If any required variables are missing, the build will fail with clear error messages indicating which variables need to be set.
 
 ### Firebase Production
 

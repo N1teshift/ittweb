@@ -251,9 +251,9 @@ export const getServerSideProps: GetServerSideProps<EntryPageProps> = async (con
 
     if (session && session.discordId) {
       try {
-        const { getUserDataByDiscordId } = await import('@/features/infrastructure/lib/userDataService');
+        const { getUserDataByDiscordIdServer } = await import('@/features/infrastructure/lib/userDataService.server');
         const { isAdmin } = await import('@/features/infrastructure/utils/userRoleUtils');
-        const userData = await getUserDataByDiscordId(session.discordId);
+        const userData = await getUserDataByDiscordIdServer(session.discordId);
         const userIsAdmin = isAdmin(userData?.role);
         const userIsAuthor = entry.createdByDiscordId === session.discordId;
         

@@ -1,14 +1,14 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { ArchiveEntry, CreateArchiveEntry } from '@/types/archive';
 import MediaSelector from './sections/MediaSelector';
 import DateSelector from './sections/DateSelector';
 import MediaPreview from './sections/MediaPreview';
 import FormHeader from './sections/FormHeader';
-import { validateArchiveForm } from '../utils/archiveValidation';
-import { buildDateInfo, computeEffectiveSectionOrder, type SectionKey } from '../utils/archiveFormUtils';
+import { type SectionKey } from '../utils/archiveFormUtils';
 import { useArchiveBaseState } from '../hooks/useArchiveBaseState';
-import { useArchiveMedia, uploadSelectedMedia } from '../hooks/useArchiveMedia';
+import { useArchiveMedia } from '../hooks/useArchiveMedia';
 import { useArchiveHandlers } from '../hooks/useArchiveHandlers';
+import { useArchiveFormSubmit } from '../hooks/useArchiveFormSubmit';
 
 interface ArchiveFormBaseProps {
   mode: 'create' | 'edit';
@@ -20,15 +20,30 @@ interface ArchiveFormBaseProps {
 }
 
 export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel, onSuccess, defaultAuthor }: ArchiveFormBaseProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
-
   const {
     formData, setFormData, imageFile, setImageFile, imageFiles, setImageFiles, replayFile, setReplayFile,
     currentImages, setCurrentImages, sectionOrder, setSectionOrder, existingReplayUrl, existingReplayName, setExistingReplayUrl,
   } = useArchiveBaseState(mode, initialEntry);
 
   const { imagePreviewUrls } = useArchiveMedia(imageFile, imageFiles);
+  
+  // Combine video URLs for the new MediaSelector (only one should be set at a time)
+  const combinedVideoUrl = formData.mediaUrl || formData.twitchClipUrl;
+
+  const { handleSubmit, isSubmitting, error, setError } = useArchiveFormSubmit({
+    mode,
+    initialEntry,
+    formData,
+    imageFile,
+    imageFiles,
+    currentImages,
+    replayFile,
+    sectionOrder,
+    existingReplayUrl,
+    defaultAuthor,
+    onSubmit,
+    onSuccess,
+  });
 
   const { 
     handleInputChange,
@@ -45,103 +60,6 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
   } = useArchiveHandlers({
     setFormData, imageFile, imageFiles, setImageFile, setImageFiles, setReplayFile, setCurrentImages, setSectionOrder, setError, setExistingReplayUrl,
   });
-  
-  // Combine video URLs for the new MediaSelector (only one should be set at a time)
-  const combinedVideoUrl = formData.mediaUrl || formData.twitchClipUrl;
-
-  // Submit
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setError('');
-
-    try {
-      const validationError = validateArchiveForm({
-        title: formData.title,
-        content: formData.content,
-        author: mode === 'create' ? (defaultAuthor || '') : formData.author || '',
-        dateType: formData.dateType,
-        singleDate: formData.singleDate,
-        approximateText: formData.approximateText,
-      });
-      if (validationError) {
-        setError(validationError);
-        return;
-      }
-
-      // Uploads - use entryId for edit mode to store files in archives/{entryId}/ structure
-      const entryId = mode === 'edit' ? initialEntry?.id : undefined;
-      const { images, replayUrl } = await uploadSelectedMedia(
-        imageFile,
-        imageFiles,
-        currentImages,
-        mode,
-        replayFile,
-        entryId,
-      );
-
-      // DateInfo
-      const dateInfo = buildDateInfo({
-        dateType: formData.dateType,
-        singleDate: formData.singleDate,
-        approximateText: formData.approximateText
-      });
-
-      // Effective order
-      const hasImages = Boolean(images && images.length > 0);
-      const hasVideo = Boolean(formData.mediaUrl);
-      const hasTwitch = Boolean(formData.twitchClipUrl);
-      const hasReplay = Boolean(replayUrl || existingReplayUrl);
-      const hasGame = Boolean(initialEntry?.linkedGameDocumentId);
-      const hasText = Boolean(formData.content && formData.content.trim().length > 0);
-      const effectiveSectionOrder = computeEffectiveSectionOrder(sectionOrder, { hasImages, hasVideo, hasTwitch, hasReplay, hasGame, hasText });
-
-      if (mode === 'create') {
-        const payload: CreateArchiveEntry = {
-          title: formData.title.trim(),
-          content: formData.content.trim(),
-          creatorName: (defaultAuthor || formData.author || '').trim(), 
-          dateInfo,
-          ...(formData.entryType ? { entryType: formData.entryType } : {}),
-          ...(images && images.length > 0 ? { images } : {}),
-          ...(formData.mediaUrl ? { videoUrl: formData.mediaUrl.trim() } : {}),
-          ...(formData.twitchClipUrl ? { twitchClipUrl: formData.twitchClipUrl.trim() } : {}),
-          ...(replayUrl ? { replayUrl } : {}),
-          sectionOrder: effectiveSectionOrder
-        };
-        await onSubmit(payload);
-        onSuccess();
-        return;
-      }
-
-      // edit
-      const updates: Partial<CreateArchiveEntry> = {
-        title: formData.title.trim(),
-        content: formData.content.trim(),
-        creatorName: formData.author.trim(),
-        dateInfo,
-        ...(images && images.length > 0 ? { images } : {}),
-        ...(formData.mediaUrl ? { videoUrl: formData.mediaUrl.trim() } : { videoUrl: '' }),
-        ...(formData.twitchClipUrl ? { twitchClipUrl: formData.twitchClipUrl.trim() } : { twitchClipUrl: '' }),
-        ...(replayUrl ? { replayUrl } : {}),
-        sectionOrder: effectiveSectionOrder
-      };
-      
-      // Only include entryType if it has a value (to avoid undefined)
-      if (formData.entryType) {
-        updates.entryType = formData.entryType;
-      } else {
-        // Set to undefined to clear existing value if any
-        updates.entryType = undefined;
-      }
-      await onSubmit(updates);
-      onSuccess();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to submit archive entry');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   const replayName = useMemo(() => (replayFile ? replayFile.name : existingReplayName), [replayFile, existingReplayName]);
 

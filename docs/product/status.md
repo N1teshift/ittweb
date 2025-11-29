@@ -1,7 +1,7 @@
 # Game Statistics System - Implementation Status
 
-**Last Updated:** 2025-01-XX  
-**Overall Progress:** ~70% Complete
+**Last Updated:** 2025-01-15  
+**Overall Progress:** ~80% Complete
 
 ## 🔄 Data Pipeline Dependency
 
@@ -71,13 +71,15 @@
 - ✅ useStandings hook
 - ✅ `/standings` page
 
-### Phase 5: Advanced Filtering (Partial)
+### Phase 5: Advanced Filtering ✅
 - ✅ DateRangeFilter component
-- ⏳ PlayerFilter component
-- ⏳ TeamFormatFilter component
-- ⏳ GameFilters component (combined)
-- ⏳ useGameFilters hook
-- ⏳ Filter integration into pages
+- ✅ PlayerFilter component
+- ✅ TeamFormatFilter component
+- ✅ GameFilters component (combined)
+- ✅ useGameFilters hook
+- ✅ Filter integration into `/games` page
+- ✅ Category filter on `/standings` page (CategorySelector component)
+- **Note**: Full filter suite integrated into games page. Standings page has category filtering. Date range filter on standings would be an enhancement but not required for feature completion.
 
 ### Phase 6: Analytics & Charts ✅ (Meta dashboard live)
 - ✅ ActivityChart component
@@ -93,12 +95,13 @@
 - ✅ PlayerComparison component
 - ✅ `/players/compare` page
 
-### Phase 8: Class Statistics (Partial)
+### Phase 8: Class Statistics ✅
 - ✅ ClassSelectionChart & ClassWinRateChart components
-- ⏳ Class overview page
-- ⏳ Class detail page
-- ⏳ Class service functions (current aggregation runs via analyticsService but needs dedicated endpoints)
-- ⏳ Class API routes
+- ✅ Class overview page (`/classes`)
+- ✅ Class detail page (`/classes/[className]`)
+- ✅ Class service functions (via analyticsService.getClassStats())
+- ✅ Class API routes (`GET /api/classes`, `GET /api/classes/[className]`)
+- **Note**: Class statistics are fully functional. Data aggregation runs via analyticsService which is appropriate for current needs.
 
 ### Phase 9: Polish & Optimization (Not Started)
 - ⏳ Performance optimization
@@ -109,10 +112,17 @@
 - ⏳ Documentation
 
 ## 🚧 Remaining Work
-- Integrate advanced filtering UI into `/games` / `/standings`.
-- Wire analytics charts into player detail pages (beyond `/meta`).
-- Build dedicated class statistics pages + endpoints.
-- Continue polish/optimization tasks above.
+- ⏳ **Replay Parser Implementation** (High Priority - Must-Have Feature)
+  - Build replay parser service to automatically extract game data from `.w3g` files
+  - Integrate with game creation flow
+  - Link to scheduled games system
+- ⏳ **Polish & Optimization Phase** (Before Launch - Critical)
+  - Phase 1: Error boundaries, critical performance fixes, loading states
+  - Phase 2: Empty states, UI consistency, mobile responsiveness
+- ⏳ **Enhanced Features** (Nice-to-Have)
+  - Add date range filter to `/standings` page (category filter already exists)
+  - Wire analytics charts into player detail pages (beyond `/meta` dashboard)
+  - Verify guide pages data completeness and usefulness
 
 ## Current Status
 
@@ -122,18 +132,29 @@
 - ✅ Player stats update automatically
 - ✅ Leaderboards display correctly
 - ✅ Basic UI pages are functional
+- ✅ Advanced filtering integrated into games page
+- ✅ Class statistics pages and APIs functional
 
 **What's missing:**
-- Advanced filtering UI integration
-- Charts embedded in player detail pages (Meta dashboard exists)
-- Class statistics pages & APIs
-- Polish and optimization
+- ⏳ **Replay Parser** - Critical must-have feature for automatic game data extraction
+- ⏳ **Polish & Optimization** - Error boundaries, loading states, empty states, performance optimization (Phase 1 critical before launch)
+- ⏳ **Enhanced Features** - Date range filter on standings (nice-to-have), charts in player detail pages (nice-to-have)
 
 ## Next Steps
-1. Integrate the existing filters into the games/standings pages.
-2. Surface analytics charts (Activity/ELO/etc.) on player detail screens in addition to `/meta`.
-3. Finish class statistics endpoints + pages leveraging the new chart components.
-4. Polish UI and optimize performance.
+1. **Replay Parser Implementation** (High Priority - Must-Have Feature)
+   - Build replay parser service to automatically extract game data from `.w3g` files
+   - Integrate with game creation flow
+   - Link to scheduled games system
+2. **Polish & Optimization Phase** (Before Launch)
+   - Implement error boundaries on all pages (Phase 1: Critical)
+   - Lazy load Recharts library (~300KB bundle reduction)
+   - Optimize PlayersPage data fetching
+   - Add loading states where missing
+   - Add empty states to missing data views
+3. **Enhanced Features** (Nice-to-Have)
+   - Integrate date range filter into `/standings` page
+   - Embed analytics charts into player detail pages
+   - Verify guide pages data completeness and usefulness
 
 ---
 

@@ -6,6 +6,14 @@ Player statistics and profile endpoints.
 
 List all players.
 
+**Query Parameters**:
+- `limit` (number, optional) - Maximum number of players to return (default: 100, max: 100)
+
+**Example Request**:
+```
+GET /api/players?limit=50
+```
+
 **Response**:
 ```typescript
 {
@@ -13,6 +21,8 @@ List all players.
   data: PlayerStats[];
 }
 ```
+
+**Note**: The default limit was reduced from 500 to 100 for better initial load performance. Full pagination support is planned for future implementation.
 
 ## `GET /api/players/[name]`
 

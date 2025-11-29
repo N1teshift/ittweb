@@ -148,7 +148,56 @@ When a query fails due to a missing index, Firestore provides a link in the erro
 
 ---
 
-#### Index 5: Completed Games - With Date Range Filter
+#### Index 5: Game ID Ordering - For Next Game ID
+**Use Case**: Getting the next available game ID by finding the highest existing gameId
+
+**Fields:**
+- `gameId` → Descending
+
+**Query Pattern:**
+```typescript
+.orderBy('gameId', 'desc')
+.limit(1)
+```
+
+**How to Create:**
+1. Collection: `games`
+2. Add field: `gameId` - Query scope: Collection, Order: Descending
+3. Click "Create"
+
+**Note**: This is a simple single-field index. Currently uses fallback logic (fetches up to 1000 games and sorts in memory) if index is missing. Creating this index improves performance for game ID generation.
+
+**Location in Code**: `src/features/modules/games/lib/gameService.utils.ts` (lines 39, 89)
+
+---
+
+#### Index 6: Scheduled Games - Game ID Ordering
+**Use Case**: Getting the next available scheduled game ID
+
+**Fields:**
+- `gameState` → Ascending
+- `gameId` → Descending
+
+**Query Pattern:**
+```typescript
+.where('gameState', '==', 'scheduled')
+.orderBy('gameId', 'desc')
+.limit(1)
+```
+
+**How to Create:**
+1. Collection: `games`
+2. Add field: `gameState` - Query scope: Collection, Order: Ascending
+3. Add field: `gameId` - Query scope: Collection, Order: Descending
+4. Click "Create"
+
+**Note**: Required for `getNextScheduledGameId()` function. Query will fail without this index (no fallback).
+
+**Location in Code**: `src/features/modules/scheduled-games/lib/scheduledGameService.ts` (lines 68, 85)
+
+---
+
+#### Index 7: Completed Games - With Date Range Filter
 **Use Case**: Filtering completed games by date range
 
 **Fields:**
@@ -169,7 +218,7 @@ When a query fails due to a missing index, Firestore provides a link in the erro
 
 ---
 
-#### Index 6: All Games - Default Ordering
+#### Index 8: All Games - Default Ordering
 **Use Case**: Listing all games when gameState is not specified
 
 **Fields:**
@@ -192,7 +241,7 @@ When a query fails due to a missing index, Firestore provides a link in the erro
 
 ### Posts Collection (`posts`)
 
-#### Index 7: Published Posts - Ordered by Date
+#### Index 9: Published Posts - Ordered by Date
 **Use Case**: Listing published posts ordered by date
 
 **Fields:**
@@ -217,7 +266,7 @@ When a query fails due to a missing index, Firestore provides a link in the erro
 
 > **New Collection (2025-01-15)**: This denormalized collection optimizes standings queries by storing category-specific player statistics as separate documents. Created for performance optimization.
 
-#### Index 1: Standings by Category - Basic Query
+#### Index 10: Standings by Category - Basic Query
 **Use Case**: Fetching standings for a category with minimum games filter
 
 **Fields:**
@@ -243,7 +292,7 @@ When a query fails due to a missing index, Firestore provides a link in the erro
 
 ---
 
-#### Index 2: Standings by Category - Alternative Sorting (Optional)
+#### Index 11: Standings by Category - Alternative Sorting (Optional)
 **Use Case**: Sorting standings by games count (for debugging or alternative views)
 
 **Fields:**
@@ -271,7 +320,7 @@ When a query fails due to a missing index, Firestore provides a link in the erro
 
 ### Entries Collection (`entries`)
 
-#### Index 8: Entries - Ordered by Date
+#### Index 12: Entries - Ordered by Date
 **Use Case**: Listing entries ordered by date
 
 **Fields:**
@@ -292,7 +341,7 @@ When a query fails due to a missing index, Firestore provides a link in the erro
 
 ---
 
-#### Index 9: Entries - By Content Type
+#### Index 13: Entries - By Content Type
 **Use Case**: Filtering entries by content type (post/memory)
 
 **Fields:**

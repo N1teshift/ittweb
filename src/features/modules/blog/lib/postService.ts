@@ -2,7 +2,6 @@ import {
   collection,
   addDoc,
   getDocs,
-  getDoc,
   updateDoc,
   deleteDoc,
   doc,
@@ -17,6 +16,14 @@ import { Post, CreatePost } from '@/types/post';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import {
+  transformPostDoc,
+  preparePostDataForFirestore,
+  preparePostUpdateData,
+  transformPostDocs,
+  sortPostsByDate,
+} from './postService.helpers';
+import { getDocument } from '@/features/infrastructure/api/firebase/firestoreHelpers';
 
 const POSTS_COLLECTION = 'posts';
 const logger = createComponentLogger('postService');
@@ -29,50 +36,17 @@ export async function createPost(postData: CreatePost): Promise<string> {
   try {
     logger.info('Creating post', { slug: postData.slug, title: postData.title });
 
-    const cleanedData = removeUndefined(postData as unknown as Record<string, unknown>);
-    
-    // Use Admin SDK on server-side, Client SDK on client-side
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
       const adminTimestamp = getAdminTimestamp();
-      
-      // Convert date string to Timestamp for proper sorting (Admin SDK)
-      const dateValue = cleanedData.date;
-      const dateTimestamp = dateValue && typeof dateValue === 'string'
-        ? adminTimestamp.fromDate(new Date(dateValue))
-        : adminTimestamp.now();
-      
-      const docRef = await adminDb.collection(POSTS_COLLECTION).add({
-        ...cleanedData,
-        creatorName: cleanedData.creatorName,
-        date: dateTimestamp, // Store as Timestamp for querying/sorting
-        dateString: cleanedData.date, // Keep string version for display
-        ...(cleanedData.submittedAt ? { submittedAt: adminTimestamp.fromDate(new Date(cleanedData.submittedAt as string)) } : {}),
-        published: cleanedData.published ?? true,
-        createdAt: adminTimestamp.now(),
-        updatedAt: adminTimestamp.now(),
-      });
+      const firestoreData = preparePostDataForFirestore(postData, adminTimestamp);
+      const docRef = await adminDb.collection(POSTS_COLLECTION).add(firestoreData);
       logger.info('Post created', { id: docRef.id, slug: postData.slug });
       return docRef.id;
     } else {
       const db = getFirestoreInstance();
-      
-      // Convert date string to Timestamp for proper sorting (Client SDK)
-      const dateValue = cleanedData.date;
-      const dateTimestamp = dateValue && typeof dateValue === 'string'
-        ? Timestamp.fromDate(new Date(dateValue))
-        : Timestamp.now();
-      
-      const docRef = await addDoc(collection(db, POSTS_COLLECTION), {
-        ...cleanedData,
-        creatorName: cleanedData.creatorName,
-        date: dateTimestamp, // Store as Timestamp for querying/sorting
-        dateString: cleanedData.date, // Keep string version for display
-        ...(cleanedData.submittedAt ? { submittedAt: Timestamp.fromDate(new Date(cleanedData.submittedAt as string)) } : {}),
-        published: cleanedData.published ?? true,
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now(),
-      });
+      const firestoreData = preparePostDataForFirestore(postData, Timestamp);
+      const docRef = await addDoc(collection(db, POSTS_COLLECTION), firestoreData);
       logger.info('Post created', { id: docRef.id, slug: postData.slug });
       return docRef.id;
     }
@@ -94,30 +68,20 @@ export async function getPostById(id: string): Promise<Post | null> {
   try {
     logger.info('Fetching post by ID', { id });
 
-    const db = getFirestoreInstance();
-    const docRef = doc(db, POSTS_COLLECTION, id);
-    const docSnap = await getDoc(docRef);
+    const docSnap = await getDocument(POSTS_COLLECTION, id);
 
-    if (!docSnap.exists()) {
+    if (!docSnap || !docSnap.exists) {
       logger.info('Post not found', { id });
       return null;
     }
 
     const data = docSnap.data();
-    return {
-      id: docSnap.id,
-      title: data.title,
-      content: data.content,
-      date: timestampToIso(data.date as Timestamp | string),
-      slug: data.slug,
-      excerpt: data.excerpt,
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt,
-      creatorName: data.creatorName || 'Unknown',
-      createdByDiscordId: data.createdByDiscordId ?? null,
-      submittedAt: data.submittedAt,
-      published: data.published ?? true,
-    };
+    if (!data) {
+      logger.info('Post data is undefined', { id });
+      return null;
+    }
+
+    return transformPostDoc(data, docSnap.id);
   } catch (error) {
     const err = error as Error;
     logError(err, 'Failed to fetch post by ID', {
@@ -152,23 +116,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 
     const docSnap = querySnapshot.docs[0];
     const data = docSnap.data();
-    // Use dateString if available (for backward compatibility), otherwise convert timestamp
-    const dateValue = data.dateString || timestampToIso(data.date as Timestamp | string);
-    
-    return {
-      id: docSnap.id,
-      title: data.title,
-      content: data.content,
-      date: dateValue,
-      slug: data.slug,
-      excerpt: data.excerpt,
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt,
-      creatorName: data.creatorName || 'Unknown',
-      createdByDiscordId: data.createdByDiscordId ?? null,
-      submittedAt: data.submittedAt,
-      published: data.published ?? true,
-    };
+    return transformPostDoc(data, docSnap.id);
   } catch (error) {
     const err = error as Error;
     logError(err, 'Failed to fetch post by slug', {
@@ -188,7 +136,7 @@ export async function getAllPosts(includeUnpublished: boolean = false): Promise<
   try {
     logger.info('Fetching all posts', { includeUnpublished });
 
-    const posts: Post[] = [];
+    let posts: Post[] = [];
 
     // Use Admin SDK on server-side, Client SDK on client-side
     if (isServerSide()) {
@@ -206,25 +154,12 @@ export async function getAllPosts(includeUnpublished: boolean = false): Promise<
         adminQuery = adminQuery.orderBy('date', 'desc') as ReturnType<ReturnType<ReturnType<typeof adminDb.collection>['where']>['orderBy']>;
         const querySnapshot = await adminQuery.get();
 
+        // Transform documents (query already filters, so no need for additional filtering)
+        const docs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
         querySnapshot.forEach((docSnap) => {
-          const data = docSnap.data();
-          // Use dateString if available (for backward compatibility), otherwise convert timestamp
-          const dateValue = data.dateString || timestampToIso(data.date);
-          
-          posts.push({
-            id: docSnap.id,
-            title: data.title,
-            content: data.content,
-            date: dateValue,
-            slug: data.slug,
-            excerpt: data.excerpt,
-            createdAt: timestampToIso(data.createdAt),
-            updatedAt: timestampToIso(data.updatedAt),
-            createdByDiscordId: data.createdByDiscordId ?? null,
-            creatorName: data.createdByName,
-            published: data.published ?? true,
-          });
+          docs.push({ data: () => docSnap.data(), id: docSnap.id });
         });
+        posts = docs.map((docSnap) => transformPostDoc(docSnap.data()!, docSnap.id));
       } catch (error: unknown) {
         // If index is still building, fall back to fetching all and filtering in memory
         const firestoreError = error as { code?: number; message?: string };
@@ -232,39 +167,16 @@ export async function getAllPosts(includeUnpublished: boolean = false): Promise<
           logger.info('Index still building, falling back to in-memory filtering');
           
           const querySnapshot = await adminDb.collection(POSTS_COLLECTION).get();
-
+          const docs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
           querySnapshot.forEach((docSnap) => {
-            const data = docSnap.data();
-            
-            // Filter unpublished posts if needed
-            if (!includeUnpublished && data.published !== true) {
-              return;
-            }
-            
-            // Use dateString if available (for backward compatibility), otherwise convert timestamp
-            const dateValue = data.dateString || timestampToIso(data.date);
-            
-            posts.push({
-              id: docSnap.id,
-              title: data.title,
-              content: data.content,
-              date: dateValue,
-              slug: data.slug,
-              excerpt: data.excerpt,
-              createdAt: timestampToIso(data.createdAt),
-              updatedAt: timestampToIso(data.updatedAt),
-              createdByDiscordId: data.createdByDiscordId ?? null,
-              creatorName: data.createdByName,
-              published: data.published ?? true,
-            });
+            docs.push({ data: () => docSnap.data(), id: docSnap.id });
           });
           
+          // Use helper to filter and transform (handles published filtering)
+          posts = transformPostDocs(docs, includeUnpublished);
+          
           // Sort by date (newest first) in memory
-          posts.sort((a, b) => {
-            const dateA = new Date(a.date).getTime();
-            const dateB = new Date(b.date).getTime();
-            return dateB - dateA; // Descending order
-          });
+          posts = sortPostsByDate(posts);
         } else {
           // Re-throw if it's a different error
           throw error;
@@ -282,26 +194,13 @@ export async function getAllPosts(includeUnpublished: boolean = false): Promise<
       }
 
       const querySnapshot = await getDocs(q);
-
+      const docs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
       querySnapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        // Use dateString if available (for backward compatibility), otherwise convert timestamp
-        const dateValue = data.dateString || timestampToIso(data.date as Timestamp | string);
-        
-        posts.push({
-          id: docSnap.id,
-          title: data.title,
-          content: data.content,
-          date: dateValue,
-          slug: data.slug,
-          excerpt: data.excerpt,
-          createdAt: timestampToIso(data.createdAt),
-          updatedAt: timestampToIso(data.updatedAt),
-          createdByDiscordId: data.createdByDiscordId ?? null,
-          creatorName: data.createdByName,
-          published: data.published ?? true,
-        });
+        docs.push({ data: () => docSnap.data(), id: docSnap.id });
       });
+      
+      // Transform documents (query already filters, so no need for additional filtering)
+      posts = docs.map((docSnap) => transformPostDoc(docSnap.data()!, docSnap.id));
     }
 
     logger.info('Posts fetched', { count: posts.length });
@@ -341,40 +240,16 @@ export async function updatePost(id: string, updates: Partial<CreatePost>): Prom
   try {
     logger.info('Updating post', { id });
 
-    const cleanedUpdates = removeUndefined(updates);
-
-    // Convert date string to Timestamp if date is being updated
-    const updateData: Record<string, unknown> = {
-      ...cleanedUpdates,
-    };
-
-    // Use Admin SDK on server-side, Client SDK on client-side
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
       const adminTimestamp = getAdminTimestamp();
-      
-      if (cleanedUpdates.date) {
-        updateData.date = adminTimestamp.fromDate(new Date(cleanedUpdates.date));
-        updateData.dateString = cleanedUpdates.date; // Keep string version
-      }
-      
-      await adminDb.collection(POSTS_COLLECTION).doc(id).update({
-        ...updateData,
-        updatedAt: adminTimestamp.now(),
-      });
+      const updateData = preparePostUpdateData(updates, adminTimestamp);
+      await adminDb.collection(POSTS_COLLECTION).doc(id).update(updateData);
     } else {
       const db = getFirestoreInstance();
       const docRef = doc(db, POSTS_COLLECTION, id);
-      
-      if (cleanedUpdates.date) {
-        updateData.date = Timestamp.fromDate(new Date(cleanedUpdates.date));
-        updateData.dateString = cleanedUpdates.date; // Keep string version
-      }
-      
-      await updateDoc(docRef, {
-        ...updateData,
-        updatedAt: Timestamp.now(),
-      });
+      const updateData = preparePostUpdateData(updates, Timestamp);
+      await updateDoc(docRef, updateData);
     }
 
     logger.info('Post updated', { id });
@@ -397,7 +272,6 @@ export async function deletePost(id: string): Promise<void> {
   try {
     logger.info('Deleting post', { id });
 
-    // Use Admin SDK on server-side, Client SDK on client-side
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
       await adminDb.collection(POSTS_COLLECTION).doc(id).delete();

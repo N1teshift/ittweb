@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { Card } from '@/features/infrastructure/components/ui/Card';
+import LoadingScreen from '@/features/infrastructure/components/ui/LoadingScreen';
+import { EmptyState } from '@/features/infrastructure/components/ui';
 import { useStandings } from '../hooks/useStandings';
 import type { StandingsFilters } from '../types';
 
@@ -12,15 +14,7 @@ export function Leaderboard({ filters = {} }: LeaderboardProps) {
   const { standings, loading, error } = useStandings(filters);
 
   if (loading) {
-    return (
-      <Card variant="medieval" className="p-8">
-        <div className="animate-pulse space-y-4">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-12 bg-amber-500/20 rounded"></div>
-          ))}
-        </div>
-      </Card>
-    );
+    return <LoadingScreen message="Loading standings..." />;
   }
 
   if (error) {
@@ -33,24 +27,28 @@ export function Leaderboard({ filters = {} }: LeaderboardProps) {
 
   if (standings.length === 0) {
     return (
-      <Card variant="medieval" className="p-8 text-center">
-        <p className="text-gray-400">No standings available</p>
-      </Card>
+      <EmptyState 
+        message="No standings available"
+      />
     );
   }
 
   return (
     <Card variant="medieval" className="p-6">
-      <table className="w-full">
+      <table 
+        className="w-full" 
+        role="table" 
+        aria-label="Player standings leaderboard"
+      >
         <thead>
           <tr className="border-b border-amber-500/30">
-            <th className="text-left py-2 px-4 text-amber-400">Rank</th>
-            <th className="text-left py-2 px-4 text-amber-400">Player</th>
-            <th className="text-right py-2 px-4 text-amber-400">ELO</th>
-            <th className="text-right py-2 px-4 text-amber-400">Wins</th>
-            <th className="text-right py-2 px-4 text-amber-400">Losses</th>
-            <th className="text-right py-2 px-4 text-amber-400">Win Rate</th>
-            <th className="text-right py-2 px-4 text-amber-400">Games</th>
+            <th scope="col" className="text-left py-2 px-4 text-amber-400">Rank</th>
+            <th scope="col" className="text-left py-2 px-4 text-amber-400">Player</th>
+            <th scope="col" className="text-right py-2 px-4 text-amber-400">ELO</th>
+            <th scope="col" className="text-right py-2 px-4 text-amber-400">Wins</th>
+            <th scope="col" className="text-right py-2 px-4 text-amber-400">Losses</th>
+            <th scope="col" className="text-right py-2 px-4 text-amber-400">Win Rate</th>
+            <th scope="col" className="text-right py-2 px-4 text-amber-400">Games</th>
           </tr>
         </thead>
         <tbody>
@@ -61,6 +59,7 @@ export function Leaderboard({ filters = {} }: LeaderboardProps) {
                 <Link
                   href={`/players/${encodeURIComponent(entry.name)}`}
                   className="text-amber-300 hover:text-amber-200"
+                  aria-label={`View ${entry.name}'s profile`}
                 >
                   {entry.name}
                 </Link>

@@ -1,6 +1,6 @@
 import type { NextApiRequest } from 'next';
 import { createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
-import { updateDataCollectionNoticeAcceptance } from '@/features/infrastructure/lib/userDataService';
+import { updateDataCollectionNoticeAcceptanceServer } from '@/features/infrastructure/lib/userDataService.server';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('api/user/accept-data-notice');
@@ -15,7 +15,7 @@ export default createPostHandler<{ success: boolean }>(
 
     logger.info('Accepting data collection notice', { discordId });
 
-    await updateDataCollectionNoticeAcceptance(discordId, true);
+    await updateDataCollectionNoticeAcceptanceServer(discordId, true);
 
     return { success: true };
   },

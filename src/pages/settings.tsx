@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
-import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
+import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';
 import { UserData, UserRole } from '@/types/userData';
 import { signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
@@ -416,7 +416,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   try {
-    const userData = await getUserDataByDiscordId(session.discordId);
+    const userData = await getUserDataByDiscordIdServer(session.discordId);
     const serializedUserData = serializeUserData(userData);
 
     return {

@@ -39,7 +39,6 @@ describe('firebase client', () => {
       NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: 'sender',
       NEXT_PUBLIC_FIREBASE_APP_ID: 'app'
     };
-    // @ts-expect-error allow overriding window
     delete (global as any).window;
     jest.spyOn(console, 'error').mockImplementation(() => undefined);
     jest.spyOn(console, 'warn').mockImplementation(() => undefined);
@@ -127,7 +126,6 @@ describe('firebase client', () => {
 
   it('returns null analytics instance on server', async () => {
     jest.resetModules();
-    // @ts-expect-error simulate server environment
     delete (global as any).window;
     const { getAnalyticsInstance } = await importModule();
     const analytics = await getAnalyticsInstance();

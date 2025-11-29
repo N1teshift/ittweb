@@ -55,8 +55,13 @@ export default createGetPostHandler<Entry[] | { id: string }>(
         const requiredError = validateRequiredFields(body, ['title', 'content', 'contentType', 'date']);
         if (requiredError) return requiredError;
         const bodyObj = body as { contentType?: unknown; title?: unknown };
-        const contentTypeError = validateEnum(bodyObj.contentType, 'contentType', ['post', 'memory'] as const);
-        if (contentTypeError) return contentTypeError;
+        const allowedContentTypes = ['post', 'memory'] as const;
+        const contentTypeResult = validateEnum(bodyObj.contentType, 'contentType', allowedContentTypes);
+        // validateEnum returns the value when valid, or an error string when invalid, or null when not a string
+        // Check if result is an error: null or a string that's not one of the allowed values
+        if (contentTypeResult === null || (typeof contentTypeResult === 'string' && !allowedContentTypes.includes(contentTypeResult as typeof allowedContentTypes[number]))) {
+          return contentTypeResult || 'contentType must be a string';
+        }
         const titleError = validateString(bodyObj.title, 'title', 1);
         if (titleError) return titleError;
       }

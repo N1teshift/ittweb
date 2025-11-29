@@ -350,12 +350,47 @@ export type UnitData = {
   race?: string;
   classification?: string;
   type: UnitType;
+  // Primary attributes
+  strength?: number;
+  agility?: number;
+  intelligence?: number;
+  strengthPerLevel?: number;
+  agilityPerLevel?: number;
+  intelligencePerLevel?: number;
+  // Combat stats
   hp?: number;
   mana?: number;
   armor?: number;
+  damageMin?: number;
+  damageMax?: number;
+  attackCooldown?: number;
+  attackRange?: number;
+  acquisitionRange?: number;
+  attackType?: 'normal' | 'pierce' | 'siege' | 'magic' | 'chaos' | 'hero' | string;
+  defenseType?: 'unarmored' | 'light' | 'medium' | 'heavy' | 'fortified' | 'hero' | string;
+  // Movement stats
   moveSpeed?: number;
+  turnRate?: number;
+  collisionSize?: number;
+  // Vision stats
+  sightRangeDay?: number;
+  sightRangeNight?: number;
+  // Cost/resource stats
+  goldCost?: number;
+  lumberCost?: number;
+  foodCost?: number;
+  buildTime?: number;
+  // Abilities
+  abilities?: string[];
+  // Classification flags
+  isBuilding?: boolean;
+  isFlyer?: boolean;
+  isWorker?: boolean;
+  canAttack?: boolean;
+  canHarvest?: boolean;
+  // Legacy fields (for backward compatibility)
   attackSpeed?: number;
-  damage?: number;
+  damage?: number | string;
   craftableItems?: string[];
 };
 
@@ -380,6 +415,26 @@ ${units.map(unit => {
     lines.push(`    classification: '${unit.classification}',`);
   }
   lines.push(`    type: '${unit.type}',`);
+  // Primary attributes
+  if (unit.strength !== undefined) {
+    lines.push(`    strength: ${unit.strength},`);
+  }
+  if (unit.agility !== undefined) {
+    lines.push(`    agility: ${unit.agility},`);
+  }
+  if (unit.intelligence !== undefined) {
+    lines.push(`    intelligence: ${unit.intelligence},`);
+  }
+  if (unit.strengthPerLevel !== undefined) {
+    lines.push(`    strengthPerLevel: ${unit.strengthPerLevel},`);
+  }
+  if (unit.agilityPerLevel !== undefined) {
+    lines.push(`    agilityPerLevel: ${unit.agilityPerLevel},`);
+  }
+  if (unit.intelligencePerLevel !== undefined) {
+    lines.push(`    intelligencePerLevel: ${unit.intelligencePerLevel},`);
+  }
+  // Combat stats
   if (unit.hp !== undefined) {
     lines.push(`    hp: ${unit.hp},`);
   }
@@ -389,14 +444,87 @@ ${units.map(unit => {
   if (unit.armor !== undefined) {
     lines.push(`    armor: ${unit.armor},`);
   }
+  if (unit.damageMin !== undefined) {
+    lines.push(`    damageMin: ${unit.damageMin},`);
+  }
+  if (unit.damageMax !== undefined) {
+    lines.push(`    damageMax: ${unit.damageMax},`);
+  }
+  if (unit.attackCooldown !== undefined) {
+    lines.push(`    attackCooldown: ${unit.attackCooldown},`);
+  }
+  if (unit.attackRange !== undefined) {
+    lines.push(`    attackRange: ${unit.attackRange},`);
+  }
+  if (unit.acquisitionRange !== undefined) {
+    lines.push(`    acquisitionRange: ${unit.acquisitionRange},`);
+  }
+  if (unit.attackType !== undefined && unit.attackType !== '') {
+    lines.push(`    attackType: '${unit.attackType}',`);
+  }
+  if (unit.defenseType !== undefined && unit.defenseType !== '') {
+    lines.push(`    defenseType: '${unit.defenseType}',`);
+  }
+  // Movement stats
   if (unit.moveSpeed !== undefined) {
     lines.push(`    moveSpeed: ${unit.moveSpeed},`);
   }
+  if (unit.turnRate !== undefined) {
+    lines.push(`    turnRate: ${unit.turnRate},`);
+  }
+  if (unit.collisionSize !== undefined) {
+    lines.push(`    collisionSize: ${unit.collisionSize},`);
+  }
+  // Vision stats
+  if (unit.sightRangeDay !== undefined) {
+    lines.push(`    sightRangeDay: ${unit.sightRangeDay},`);
+  }
+  if (unit.sightRangeNight !== undefined) {
+    lines.push(`    sightRangeNight: ${unit.sightRangeNight},`);
+  }
+  // Cost/resource stats
+  if (unit.goldCost !== undefined && unit.goldCost > 0) {
+    lines.push(`    goldCost: ${unit.goldCost},`);
+  }
+  if (unit.lumberCost !== undefined && unit.lumberCost > 0) {
+    lines.push(`    lumberCost: ${unit.lumberCost},`);
+  }
+  if (unit.foodCost !== undefined && unit.foodCost > 0) {
+    lines.push(`    foodCost: ${unit.foodCost},`);
+  }
+  if (unit.buildTime !== undefined) {
+    lines.push(`    buildTime: ${unit.buildTime},`);
+  }
+  // Abilities
+  if (unit.abilities && unit.abilities.length > 0) {
+    lines.push(`    abilities: [${unit.abilities.map(a => `'${a}'`).join(', ')}],`);
+  }
+  // Classification flags
+  if (unit.isBuilding === true) {
+    lines.push(`    isBuilding: true,`);
+  }
+  if (unit.isFlyer === true) {
+    lines.push(`    isFlyer: true,`);
+  }
+  if (unit.isWorker === true) {
+    lines.push(`    isWorker: true,`);
+  }
+  if (unit.canAttack === true) {
+    lines.push(`    canAttack: true,`);
+  }
+  if (unit.canHarvest === true) {
+    lines.push(`    canHarvest: true,`);
+  }
+  // Legacy fields (for backward compatibility)
   if (unit.attackSpeed !== undefined) {
     lines.push(`    attackSpeed: ${unit.attackSpeed},`);
   }
   if (unit.damage !== undefined) {
-    lines.push(`    damage: ${unit.damage},`);
+    if (typeof unit.damage === 'string') {
+      lines.push(`    damage: '${unit.damage}',`);
+    } else {
+      lines.push(`    damage: ${unit.damage},`);
+    }
   }
   if (unit.craftableItems && unit.craftableItems.length > 0) {
     lines.push(`    craftableItems: [${unit.craftableItems.map(item => `'${item}'`).join(', ')}],`);

@@ -13,7 +13,6 @@ import {
 import ImageModal from '@/features/modules/archives/components/sections/ImageModal';
 import { useArchivesPage, useArchivesActions } from '@/features/modules/archives/hooks';
 import { useGames } from '@/features/modules/games/hooks/useGames';
-import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
 import { UserRole } from '@/types/userData';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 import ArchiveDeleteDialog from '@/features/modules/archives/components/ArchiveDeleteDialog';
@@ -87,7 +86,12 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces: _pageNamesp
       }
 
       try {
-        const userData = await getUserDataByDiscordId(session.discordId);
+        const response = await fetch('/api/user/me');
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        const result = await response.json();
+        const userData = result.data;
         if (isMounted) {
           setUserRole(userData?.role);
         }

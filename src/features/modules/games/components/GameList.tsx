@@ -2,6 +2,8 @@ import React from 'react';
 import { useGames } from '../hooks/useGames';
 import { GameCard } from './GameCard';
 import { Card } from '@/features/infrastructure/components/ui/Card';
+import LoadingScreen from '@/features/infrastructure/components/ui/LoadingScreen';
+import { EmptyState } from '@/features/infrastructure/components/ui';
 import type { GameFilters } from '../types';
 
 interface GameListProps {
@@ -12,16 +14,7 @@ export function GameList({ filters = {} }: GameListProps) {
   const { games, loading, error } = useGames(filters);
 
   if (loading) {
-    return (
-      <div className="space-y-4">
-        {[1, 2, 3].map((i) => (
-          <Card key={i} variant="medieval" className="p-4 animate-pulse">
-            <div className="h-6 bg-amber-500/20 rounded w-1/4 mb-2"></div>
-            <div className="h-4 bg-amber-500/10 rounded w-1/2"></div>
-          </Card>
-        ))}
-      </div>
-    );
+    return <LoadingScreen message="Loading games..." />;
   }
 
   if (error) {
@@ -34,9 +27,9 @@ export function GameList({ filters = {} }: GameListProps) {
 
   if (games.length === 0) {
     return (
-      <Card variant="medieval" className="p-8 text-center">
-        <p className="text-gray-400">No games found</p>
-      </Card>
+      <EmptyState 
+        message="No games found"
+      />
     );
   }
 

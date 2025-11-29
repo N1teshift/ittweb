@@ -107,6 +107,20 @@ export function logError(
     stack: error.stack,
     ...context
   });
+
+  // Send to error tracking if available
+  if (typeof window !== 'undefined' || typeof require !== 'undefined') {
+    try {
+      // Dynamic import to avoid circular dependencies
+      const { captureError } = require('../monitoring/errorTracking');
+      captureError(error, {
+        ...context,
+        category,
+      });
+    } catch {
+      // Error tracking not available - continue with console logging only
+    }
+  }
 }
 
 export function logAndThrow(

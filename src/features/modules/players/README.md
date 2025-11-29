@@ -5,12 +5,16 @@
 ## Exports
 
 ### Components
-- `PlayersPage` - Player search and listing page
+- `PlayersPage` - Player search and listing page (main component, ~172 lines)
+- `PlayerCard` - Individual player card component (extracted from PlayersPage)
+- `PlayersActionBar` - Action bar with search and comparison controls (extracted from PlayersPage)
+- `ComparisonResults` - Side-by-side player comparison results display (extracted from PlayersPage)
 - `PlayerProfile` - Individual player profile with stats
 - `PlayerComparison` - Compare multiple players side-by-side
 
 ### Hooks
 - `usePlayerStats` - Fetch player statistics by name
+- `usePlayerComparison` - Player comparison state management hook (extracted from PlayersPage)
 
 ### Services
 - `playerService` - Player statistics operations

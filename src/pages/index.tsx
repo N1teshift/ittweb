@@ -7,7 +7,6 @@ import BlogPost from '@/features/modules/blog/components/BlogPost';
 import { MDXRemote } from 'next-mdx-remote';
 import EntryFormModal from '@/features/modules/entries/components/EntryFormModal';
 import ScheduleGameForm from '@/features/modules/scheduled-games/components/ScheduleGameForm';
-import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
@@ -52,9 +51,13 @@ export default function Home({ latestEntry, mdxSource, recentActivity }: HomePro
       }
 
       try {
-        const userData = await getUserDataByDiscordId(session.discordId);
+        const response = await fetch('/api/user/me');
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        const userData = await response.json();
         if (isMounted) {
-          setUserIsAdmin(isAdmin(userData?.role));
+          setUserIsAdmin(isAdmin(userData?.data?.role));
         }
       } catch {
         if (isMounted) {

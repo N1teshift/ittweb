@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import type { Session } from 'next-auth';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
+import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 
 /**
@@ -23,7 +23,8 @@ export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 /**
  * Handler function type for API routes
- * Session is available if requireAuth or requireAdmin is true
+ * Session is always available in context (may be null if user is not authenticated)
+ * Use requireAuth: true to enforce authentication, or check context.session manually
  */
 export type ApiHandler<T = unknown> = (
   req: NextApiRequest,
@@ -161,10 +162,13 @@ export const createApiHandler = <T = unknown>(
         }
       }
 
-      // Authentication check if requireAuth or requireAdmin is true
+      // Always fetch session (but only enforce it when requireAuth is true)
+      // This allows routes with requireAuth: false to still access session for optional auth checks
       let session: Session | null = null;
+      session = await getServerSession(req, res, authOptions);
+      
+      // Only enforce authentication if requireAuth or requireAdmin is true
       if (needsAuth) {
-        session = await getServerSession(req, res, authOptions);
         if (!session) {
           logger.warn('Unauthenticated request to protected endpoint', {
             method: req.method,
@@ -178,7 +182,7 @@ export const createApiHandler = <T = unknown>(
         
         // Admin check if required
         if (requireAdmin) {
-          const userData = await getUserDataByDiscordId(session.discordId || '');
+          const userData = await getUserDataByDiscordIdServer(session.discordId || '');
           if (!isAdmin(userData?.role)) {
             logger.warn('Unauthorized admin request', {
               method: req.method,
@@ -198,8 +202,8 @@ export const createApiHandler = <T = unknown>(
         });
       }
 
-      // Execute the handler with context (session if authenticated)
-      const context = needsAuth ? { session: session! } : { session: null };
+      // Execute the handler with context (session is always available, but may be null)
+      const context = { session };
       const result = await handler(req, res, context);
 
       // Log successful response
@@ -309,7 +313,7 @@ export async function checkResourceOwnership(
   }
 
   // Check if user is admin
-  const userData = await getUserDataByDiscordId(session.discordId);
+  const userData = await getUserDataByDiscordIdServer(session.discordId);
   if (isAdmin(userData?.role)) {
     return true;
   }

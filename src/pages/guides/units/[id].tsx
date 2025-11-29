@@ -151,7 +151,9 @@ export default function UnitDetailPage({ unit }: Props) {
 
           <section className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
             <h2 className="font-medieval-brand text-2xl mb-3">Stats</h2>
-            {(unit.hp !== undefined || unit.mana !== undefined || unit.damage !== undefined || 
+            {(unit.hp !== undefined || unit.mana !== undefined || 
+              (unit.damageMin !== undefined && unit.damageMax !== undefined) || 
+              (unit.damage !== undefined && (typeof unit.damage === 'number' ? unit.damage >= 0 : true)) ||
               unit.armor !== undefined || unit.moveSpeed !== undefined || unit.attackSpeed !== undefined) ? (
               <div className="flex flex-wrap gap-2">
                 {unit.hp !== undefined && (
@@ -160,7 +162,13 @@ export default function UnitDetailPage({ unit }: Props) {
                 {unit.mana !== undefined && (
                   <StatBadge label="Mana" value={unit.mana} colorClass="bg-purple-500/20 text-purple-200" />
                 )}
-                {unit.damage !== undefined && unit.damage >= 0 && (
+                {unit.damageMin !== undefined && unit.damageMax !== undefined ? (
+                  <StatBadge 
+                    label="Damage" 
+                    value={unit.damageMin === unit.damageMax ? unit.damageMin : `${unit.damageMin}-${unit.damageMax}`} 
+                    colorClass="bg-red-500/20 text-red-200" 
+                  />
+                ) : unit.damage !== undefined && (typeof unit.damage === 'number' ? unit.damage >= 0 : true) && (
                   <StatBadge label="Damage" value={unit.damage} colorClass="bg-red-500/20 text-red-200" />
                 )}
                 {unit.armor !== undefined && (

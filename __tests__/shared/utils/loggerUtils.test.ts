@@ -22,7 +22,7 @@ describe('shared logger utils', () => {
   });
 
   it('logs warnings in production but suppresses info', () => {
-    process.env.NODE_ENV = 'production';
+    (process.env as { NODE_ENV: string }).NODE_ENV = 'production';
 
     Logger.info('info message');
     Logger.warn('warn message');
@@ -32,7 +32,7 @@ describe('shared logger utils', () => {
   });
 
   it('creates prefixed component loggers', () => {
-    process.env.NODE_ENV = 'development';
+    (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
     const componentLogger = createComponentLogger('Shared', 'method');
 
     componentLogger.warn('careful');
@@ -41,7 +41,7 @@ describe('shared logger utils', () => {
   });
 
   it('maps errors to categories in logError', () => {
-    process.env.NODE_ENV = 'development';
+    (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
     const error = new Error('database unavailable');
 
     logError(error, 'failed db call', { component: 'Shared', operation: 'call' });
@@ -56,7 +56,7 @@ describe('shared logger utils', () => {
 
   describe('createComponentLogger', () => {
     it('creates logger with component name prefix', () => {
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       const logger = createComponentLogger('TestComponent');
 
       logger.info('test message');
@@ -65,7 +65,7 @@ describe('shared logger utils', () => {
     });
 
     it('creates logger with component and method name prefix', () => {
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       const logger = createComponentLogger('TestComponent', 'testMethod');
 
       logger.info('test message');
@@ -74,7 +74,7 @@ describe('shared logger utils', () => {
     });
 
     it('handles empty component name', () => {
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       const logger = createComponentLogger('');
 
       logger.info('test message');
@@ -83,7 +83,7 @@ describe('shared logger utils', () => {
     });
 
     it('handles special characters in component name', () => {
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       const logger = createComponentLogger('Component-Name_123');
 
       logger.info('test message');
@@ -92,7 +92,7 @@ describe('shared logger utils', () => {
     });
 
     it('handles unicode in component name', () => {
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       const logger = createComponentLogger('组件');
 
       logger.info('test message');
@@ -101,7 +101,8 @@ describe('shared logger utils', () => {
     });
 
     it('includes prefix in all log levels', () => {
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+      process.env.ENABLE_DEBUG_LOGS = 'true';
       const logger = createComponentLogger('TestComponent');
 
       logger.debug('debug');
@@ -112,13 +113,19 @@ describe('shared logger utils', () => {
       expect(console.debug).toHaveBeenCalledWith('[DEBUG] [TestComponent] debug');
       expect(console.info).toHaveBeenCalledWith('[INFO] [TestComponent] info');
       expect(console.warn).toHaveBeenCalledWith('[WARN] [TestComponent] warn');
-      expect(console.error).toHaveBeenCalled();
+      // Component logger error method calls Logger.error directly, not logError
+      expect(console.error).toHaveBeenCalledWith(
+        '[ERROR] [TestComponent] error',
+        expect.objectContaining({
+          error: 'test',
+        })
+      );
     });
   });
 
   describe('logError', () => {
     it('logs error with full context including stack trace', () => {
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       const error = new Error('test error');
 
       logError(error, 'operation failed', { component: 'Test', operation: 'TestOp', userId: '123' });
@@ -137,7 +144,7 @@ describe('shared logger utils', () => {
     });
 
     it('handles error without stack trace', () => {
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       const error = { message: 'test error' } as Error;
 
       logError(error, 'operation failed', { component: 'Test', operation: 'TestOp' });
@@ -152,7 +159,7 @@ describe('shared logger utils', () => {
     });
 
     it('categorizes validation errors correctly', () => {
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       const error = new Error('validation failed');
 
       logError(error, 'validation error', { component: 'Test', operation: 'Validate' });
@@ -166,7 +173,7 @@ describe('shared logger utils', () => {
     });
 
     it('categorizes network errors correctly', () => {
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       const error = new Error('network timeout');
 
       logError(error, 'network error', { component: 'Test', operation: 'Network' });
@@ -180,8 +187,8 @@ describe('shared logger utils', () => {
     });
 
     it('categorizes database errors correctly', () => {
-      process.env.NODE_ENV = 'development';
-      const error = new Error('firestore connection failed');
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+      const error = new Error('firestore query failed');
 
       logError(error, 'db error', { component: 'Test', operation: 'DB' });
 
@@ -194,7 +201,7 @@ describe('shared logger utils', () => {
     });
 
     it('categorizes authentication errors correctly', () => {
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       const error = new Error('unauthorized access');
 
       logError(error, 'auth error', { component: 'Test', operation: 'Auth' });
@@ -208,7 +215,7 @@ describe('shared logger utils', () => {
     });
 
     it('categorizes authorization errors correctly', () => {
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       const error = new Error('permission denied');
 
       logError(error, 'authz error', { component: 'Test', operation: 'Authz' });
@@ -222,7 +229,7 @@ describe('shared logger utils', () => {
     });
 
     it('categorizes unknown errors correctly', () => {
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       const error = new Error('something unexpected');
 
       logError(error, 'unknown error', { component: 'Test', operation: 'Unknown' });
@@ -238,7 +245,7 @@ describe('shared logger utils', () => {
 
   describe('logAndThrow', () => {
     it('logs error then rethrows it', () => {
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       const error = new Error('test error');
 
       expect(() => {
@@ -249,7 +256,7 @@ describe('shared logger utils', () => {
     });
 
     it('preserves error type when rethrowing', () => {
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       const error = new TypeError('type error');
 
       expect(() => {
@@ -261,7 +268,7 @@ describe('shared logger utils', () => {
   describe('logger behavior in different environments', () => {
     it('behaves differently in development vs production', () => {
       // Development mode
-      process.env.NODE_ENV = 'development';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
       Logger.debug('debug dev');
       Logger.info('info dev');
 
@@ -271,7 +278,7 @@ describe('shared logger utils', () => {
       jest.clearAllMocks();
 
       // Production mode
-      process.env.NODE_ENV = 'production';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'production';
       Logger.debug('debug prod');
       Logger.info('info prod');
       Logger.warn('warn prod');
@@ -282,12 +289,179 @@ describe('shared logger utils', () => {
     });
 
     it('allows debug logs in production when explicitly enabled', () => {
-      process.env.NODE_ENV = 'production';
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'production';
       process.env.ENABLE_DEBUG_LOGS = 'true';
 
       Logger.debug('debug enabled');
 
       expect(console.debug).toHaveBeenCalledWith('[DEBUG] debug enabled');
+    });
+  });
+
+  describe('error message variations', () => {
+    beforeEach(() => {
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+    });
+
+    it('categorizes errors with "invalid" keyword', () => {
+      const error = new Error('invalid input provided');
+      logError(error, 'test', { component: 'Test', operation: 'Test' });
+
+      expect(console.error).toHaveBeenCalledWith(
+        '[ERROR] test',
+        expect.objectContaining({ category: ErrorCategory.VALIDATION })
+      );
+    });
+
+    it('categorizes errors with "timeout" keyword', () => {
+      const error = new Error('request timeout occurred');
+      logError(error, 'test', { component: 'Test', operation: 'Test' });
+
+      expect(console.error).toHaveBeenCalledWith(
+        '[ERROR] test',
+        expect.objectContaining({ category: ErrorCategory.NETWORK })
+      );
+    });
+
+    it('categorizes errors with partial keyword matches', () => {
+      const error1 = new Error('validation error');
+      logError(error1, 'test', { component: 'Test', operation: 'Test' });
+      expect(console.error).toHaveBeenCalledWith(
+        '[ERROR] test',
+        expect.objectContaining({ category: ErrorCategory.VALIDATION })
+      );
+
+      jest.clearAllMocks();
+
+      const error2 = new Error('authentication required');
+      logError(error2, 'test', { component: 'Test', operation: 'Test' });
+      expect(console.error).toHaveBeenCalledWith(
+        '[ERROR] test',
+        expect.objectContaining({ category: ErrorCategory.AUTHENTICATION })
+      );
+    });
+
+    it('handles errors with very long messages', () => {
+      const longMessage = 'a'.repeat(1000) + ' validation failed ' + 'b'.repeat(1000);
+      const error = new Error(longMessage);
+      logError(error, 'test', { component: 'Test', operation: 'Test' });
+
+      expect(console.error).toHaveBeenCalledWith(
+        '[ERROR] test',
+        expect.objectContaining({ category: ErrorCategory.VALIDATION })
+      );
+    });
+
+    it('handles errors with special characters in message', () => {
+      const error = new Error('validation failed: "test" & \'example\'');
+      logError(error, 'test', { component: 'Test', operation: 'Test' });
+
+      expect(console.error).toHaveBeenCalledWith(
+        '[ERROR] test',
+        expect.objectContaining({ category: ErrorCategory.VALIDATION })
+      );
+    });
+  });
+
+  describe('component logger edge cases', () => {
+    beforeEach(() => {
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+    });
+
+    it('handles component logger with very long component name', () => {
+      const longName = 'A'.repeat(100);
+      const logger = createComponentLogger(longName);
+      logger.info('test');
+
+      expect(console.info).toHaveBeenCalledWith(
+        expect.stringContaining(`[${longName}] test`)
+      );
+    });
+
+    it('handles component logger with very long method name', () => {
+      const longMethod = 'M'.repeat(100);
+      const logger = createComponentLogger('Component', longMethod);
+      logger.info('test');
+
+      expect(console.info).toHaveBeenCalledWith(
+        expect.stringContaining(`[Component:${longMethod}] test`)
+      );
+    });
+
+    it('handles component logger with special characters in names', () => {
+      const logger = createComponentLogger('Component-Name_123', 'method-name_456');
+      logger.info('test');
+
+      expect(console.info).toHaveBeenCalledWith(
+        '[INFO] [Component-Name_123:method-name_456] test'
+      );
+    });
+
+    it('handles component logger with unicode in names', () => {
+      const logger = createComponentLogger('组件', '方法');
+      logger.info('test');
+
+      expect(console.info).toHaveBeenCalledWith(
+        '[INFO] [组件:方法] test'
+      );
+    });
+  });
+
+  describe('logError with minimal context', () => {
+    beforeEach(() => {
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+    });
+
+    it('handles context with only required fields', () => {
+      const error = new Error('test error');
+      logError(error, 'test', { component: 'Test', operation: 'Test' });
+
+      expect(console.error).toHaveBeenCalled();
+    });
+
+    it('handles context with many optional fields', () => {
+      const error = new Error('test error');
+      const context = {
+        component: 'Test',
+        operation: 'Test',
+        userId: 'user1',
+        gameId: 'game1',
+        sessionId: 'session1',
+        requestId: 'req1',
+        timestamp: Date.now(),
+        metadata: { key: 'value' },
+      };
+
+      logError(error, 'test', context);
+
+      expect(console.error).toHaveBeenCalledWith(
+        '[ERROR] test',
+        expect.objectContaining(context)
+      );
+    });
+  });
+
+  describe('logAndThrow preserves error properties', () => {
+    beforeEach(() => {
+      (process.env as { NODE_ENV: string }).NODE_ENV = 'development';
+    });
+
+    it('preserves error name', () => {
+      const error = new TypeError('type error');
+      expect(() => {
+        logAndThrow(error, 'test', { component: 'Test', operation: 'Test' });
+      }).toThrow(TypeError);
+    });
+
+    it('preserves custom error properties', () => {
+      const error = new Error('test error') as Error & { customProp?: string };
+      error.customProp = 'custom value';
+
+      try {
+        logAndThrow(error, 'test', { component: 'Test', operation: 'Test' });
+      } catch (thrown) {
+        expect((thrown as typeof error).customProp).toBe('custom value');
+      }
     });
   });
 });

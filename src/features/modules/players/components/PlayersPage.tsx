@@ -78,12 +78,7 @@ export function PlayersPage({ pageNamespaces: _pageNamespaces }: PlayersPageProp
       <div className="min-h-[calc(100vh-8rem)]">
         <PageHero title="Players" description="Browse all players and their statistics" />
         <div className="container mx-auto px-4 py-8">
-          <Card variant="medieval" className="p-8">
-            <div className="animate-pulse space-y-4">
-              <div className="h-4 bg-amber-500/20 rounded w-1/4"></div>
-              <div className="h-4 bg-amber-500/10 rounded w-1/2"></div>
-            </div>
-          </Card>
+          <LoadingScreen message="Loading players..." />
         </div>
       </div>
     );

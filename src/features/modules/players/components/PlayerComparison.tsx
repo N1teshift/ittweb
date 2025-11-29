@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { PageHero } from '@/features/infrastructure/components';
 import { Card } from '@/features/infrastructure/components/ui/Card';
+import { EmptyState } from '@/features/infrastructure/components/ui';
 import type { PlayerComparison as PlayerComparisonType, CategoryStats } from '../types';
 
 // Lazy load Recharts components to reduce initial bundle size
@@ -133,6 +134,7 @@ export function PlayerComparison({ pageNamespaces: _pageNamespaces }: PlayerComp
               <button
                 type="submit"
                 className="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded transition-colors"
+                aria-label="Compare players"
               >
                 Compare
               </button>
@@ -150,9 +152,9 @@ export function PlayerComparison({ pageNamespaces: _pageNamespaces }: PlayerComp
       <div className="min-h-[calc(100vh-8rem)]">
         <PageHero title="Compare Players" description="Compare statistics between players" />
         <div className="container mx-auto px-4 py-8">
-          <Card variant="medieval" className="p-8">
-            <p className="text-gray-400">No players found to compare.</p>
-          </Card>
+          <EmptyState 
+            message="No players found to compare."
+          />
         </div>
       </div>
     );

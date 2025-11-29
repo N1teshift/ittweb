@@ -7,7 +7,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Packs the building back into a kit.',
-    iconPath: 'btnpackbeast.png',
+    iconPath: 'BTNPackBeast.png',
     cooldown: 1,
     areaOfEffect: 0,
     hotkey: 'P',
@@ -27,7 +27,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     name: 'Mud Hut Resilience',
     category: 'building',
     description: '',
-    iconPath: 'pasbtndevotion.png',
+    iconPath: 'ReplaceableTextures/PassiveButtons/PASBTNDevotion.png',
     targetsAllowed: 'air,friend,ground,hero,invulnerable,self,vulnerable',
   },
   {
@@ -36,7 +36,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Spend mana to craft |cff1FBF00a Healing Potion.|rA dilute potion made from Athelas Seed. Instantly restores |cff1FBF00100|r Health point to a target ally.\n\n|cff7DBEF14|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'btnlesserrejuvpotion.png',
+    iconPath: 'BTNLesserRejuvPotion.png',
     cooldown: 0.25,
     hotkey: 'Q',
     levels: {
@@ -51,7 +51,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Spend mana to craft a Mana Potion, restore 80 mana to the consumer :\n\n|cff7DBEF13|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'btnpotionbluesmall.png',
+    iconPath: 'BTNPotionBlueSmall.png',
     cooldown: 0.25,
     hotkey: 'W',
     levels: {
@@ -66,7 +66,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Spend mana to craft a Disease Potion. Biological warfare! Throw at an enemy to give him  a disease. Dealing |cffFF02025|r damage per second. Last |cff7DBEF125|r seconds.\n\n|cff7DBEF15|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'btnpotiongreen.png',
+    iconPath: 'BTNPotionGreen.png',
     cooldown: 0.25,
     hotkey: 'E',
     levels: {
@@ -81,7 +81,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Spend mana to craft a |cffFE890DDrunk Potion. |rThrow this at an enemy to get them drunk, target is silenced, movement speed slowed by |cffFE890D25%|r, attack speed by |cffFE890D10%|r and has |cffFE890D50%|r chance to miss. Lasts |cff7DBEF18|r (|cff7DBEF113|r) seconds, has |cff7DBEF120|r seconds cooldown.\n\n|cff7DBEF110|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'btnlesserinvulneralbility.png',
+    iconPath: 'BTNLesserInvulneralbility.png',
     cooldown: 0.25,
     hotkey: 'R',
     levels: {
@@ -96,7 +96,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Represents the pure essence of wind. Used in crafting certain stuff. :\n\n2x |cff949596River Stem|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnorboflightning.png',
+    iconPath: 'BTNOrbOfLightning.png',
     cooldown: 0.25,
     hotkey: 'A',
     levels: {
@@ -111,7 +111,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Represents the pure essence of water. Used in crafting certain stuff. :\n\n2x |cff1BE5B8River Root|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnorboffrost.png',
+    iconPath: 'BTNOrbOfFrost.png',
     cooldown: 0.25,
     hotkey: 'S',
     levels: {
@@ -126,7 +126,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Spirit Of Darkness, dark essence used to create ominous artefact :\n\n1x |cff1BE5B8River Root|r + 1x |cff949596River Stem|r + 2x |cff1FBF00Athelas Seed|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnorbofdarkness.png',
+    iconPath: 'BTNOrbOfDarkness.png',
     cooldown: 0.25,
     hotkey: 'D',
     levels: {
@@ -171,7 +171,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Spend mana to craft an |cffBE00FEAcid Bomb. |rA bomb with nasty liquid from an unknown origin. Throw at a target to reduce their amor by |cffFF02028|r, has a small radius effect. Lasts |cff7DBEF150|r seconds, has |cff7DBEF110|r seconds cooldown.\n\n|cff7DBEF125|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'btnacidbomb.png',
+    iconPath: 'BTNAcidBomb.png',
     cooldown: 0.25,
     hotkey: 'Q',
     levels: {
@@ -186,7 +186,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Spend mana to craft a |cffFE890DBee Hive. |rCreates a Bee Hive that releases bees to sting enemies. If the bee hive is destroyed, bees stop spawning. Each bee deal 1 magic damage and last for |cff7DBEF112|r seconds, the hive spawn 1 bee every seconds. Lasts |cff7DBEF120|r seconds, has |cff7DBEF160|r seconds cooldown.\n\n|cff7DBEF16|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'btncancel.png',
+    iconPath: 'BTNCrate.png',
     cooldown: 0.25,
     hotkey: 'W',
     levels: {
@@ -201,7 +201,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Spend mana to craft an |cffFE890DAnabolic Potion. |rBoost the consumer movement speed to the max. Lasts |cff7DBEF110|r seconds, has |cff7DBEF135|r seconds cooldown.\n\n|cff7DBEF16|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'btnpotionred.png',
+    iconPath: 'BTNPotionRed.png',
     cooldown: 0.25,
     hotkey: 'E',
     levels: {
@@ -216,7 +216,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Spend mana to craft Increase the consumer attack speed by |cffFE890D20%|r and armor by |cff1FBF005|r. This potion put alot of stress on the consumer body. Lasts |cff7DBEF120|r seconds, has |cff7DBEF15|r seconds cooldown.\n\n|cff7DBEF110|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'btngreaterinvulneralbility.png',
+    iconPath: 'BTNGreaterInvulneralbility.png',
     cooldown: 0.25,
     hotkey: 'R',
     levels: {
@@ -231,7 +231,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Spend mana to craft a |cffBE00FENether Potion. |rBanish a target into the ethereal realm, target takes increased magical damage, cannot attack but can cast spells and use items. Lasts |cff7DBEF115|r (|cff7DBEF140|r) seconds, has |cff7DBEF120|r seconds cooldown.\n\n|cff7DBEF115|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'btnpotionofomniscience.png',
+    iconPath: 'BTNPotionOfOmniscience.png',
     cooldown: 0.25,
     hotkey: 'A',
     levels: {
@@ -246,7 +246,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Spend mana to craft a Cure All, remove positive/negative buff & effect on the target ally\n\n|cff7DBEF13|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'btnlesserclaritypotion.png',
+    iconPath: 'BTNLesserClarityPotion.png',
     cooldown: 0.25,
     hotkey: 'S',
     levels: {
@@ -261,7 +261,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Spend mana to craft an |cff1FBF00Anti-Magic Potion. |rCast an Anti-Magic shield on target, blocking |cff1FBF00200|r magic damage. Lasts |cff7DBEF125|r seconds, has |cff7DBEF11|r seconds cooldown.\n\n|cff7DBEF13|r mana required to craft.|cFFFFCC00\nMixing pot gains mana from melting down herbs.|r',
-    iconPath: 'btnpotionofclarity.png',
+    iconPath: 'BTNPotionOfClarity.png',
     cooldown: 0.25,
     hotkey: 'D',
     levels: {
@@ -276,7 +276,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a pair of |cffBE00FEBattle Gloves. |rIncreases wearer\'s attack speed by |cffFE890D<AM3b,DataA1,%>%|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r and a critical strike for |cffFF02021x6|r damage on a |cff7DBEF16|r second cooldown. Attacking enemies reduces the cooldown of the critical strike by |cff7DBEF11|r second.\n\n1x |cffFF0202Steel Gloves|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnimprovedunholystrength.png',
+    iconPath: 'BTNImprovedUnholyStrength.png',
     cooldown: 0.25,
     hotkey: 'Q',
     levels: {
@@ -291,7 +291,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get |cffBE00FERobe of the Magi. \n|rA robe belonging to a great magi of old\n\nIntelligence +|cff1FBF0010|r\nArmor +|cff1FBF003|r\n\n1x |cffFE890DBone Coat|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnrobeofthemagi.png',
+    iconPath: 'BTNRobeOfTheMagi.png',
     cooldown: 0.25,
     hotkey: 'W',
     levels: {
@@ -306,7 +306,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Battle Axe. A two handed axe, increase damage by 14, attack speed by|cff6495ED 20%|r\n\n1x |cffBE00FEGreater essence|r + 1x  |cffFF0202Steel Axe|r 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnorcmeleeupthree.png',
+    iconPath: 'BTNOrcMeleeUpThree.png',
     cooldown: 0.25,
     hotkey: 'E',
     levels: {
@@ -321,7 +321,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get A Battle Shield, reduce damage taken by |cffFE890D10|r, gives |cff1FBF007|r armor. Has a bash ability, silences and disarms the target. Lasts |cff7DBEF12|r seconds, has |cff7DBEF115|r seconds cooldown.\n\n1x |cffFE890DBone Shield|r + 1x |cffFE890DElk Hide|r + 1x |cffFF0202Steel Ingot|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnarcanitearmor.png',
+    iconPath: 'BTNArcaniteArmor.png',
     cooldown: 0.25,
     hotkey: 'R',
     levels: {
@@ -441,7 +441,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a pair of |cffBE00FEAnabolic Boots. |rIncreases wearer\'s movement speed by |cffFE890D<AMdw,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and all stats by |cff1FBF004|r. Also gives |cffBE00FE10%|r chance to dodge an attack.\n\n1x |cffFE890DBone Boots|r + 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnwirtsotherleg.png',
+    iconPath: 'BTNWirtsOtherLeg.png',
     cooldown: 0.25,
     hotkey: 'Q',
     levels: {
@@ -456,7 +456,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get |cffBE00FEConducting Rod. \n|rSteel rod infused with magic for better mana conductivity.\nAllows wielder to ignore basic troll magic resistance and increases all spell damage done to animals by 33%.\n+|cff1FBF0010 |rIntelligence\n+|cff1FBF003 |rArmor\n\n1x |cffFE890DIron Staff |r + 1x |cffFF0202Steel Ingot|r + 1x |cffE45AAFNether Potion|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btncancel.png',
+    iconPath: 'BTNAdvancedStrengthOfTheMoon.png',
     cooldown: 0.25,
     hotkey: 'E',
     levels: {
@@ -471,7 +471,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get A coat embedded with a protective mana layer. Increase all stats by |cff1FBF004|r, Armor by |cff1FBF00<AM2{,DataA1>|r and provides |cff00EAFF30%|r magic resistance. Can cast Anti-Magic on nearby allied heroes. Has |cff7DBEF175|r seconds cooldown.\n\n1x |cffFE890DBone Coat|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnnagaarmorup2.png',
+    iconPath: 'BTNNagaArmorUp2.png',
     cooldown: 0.25,
     hotkey: 'R',
     levels: {
@@ -486,7 +486,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get |cffBE00FEMagefist. \n|rCrafted by the most skilled sorcerers of Azeroth, Magefist radiates with an ethereal glow, resonating with the potent energies of magic.\nGrants |cff00EAFFArcane Might|r: \n+|cff1FBF001|r Strength per |cff00EAFF3 Intelligence|r\n+|cffFE890D<AM3b,DataA1,%>%|r Attack speed\n+|cff1FBF00<AM2w,DataA1>|r Armor\n+|cff1FBF00<AM6p,DataB1>|r Intelligence\n\n1x |cffFF0202Bone Gloves |r+ 1x |cffFF0202Steel Ingot|r + 1x |cffFFFC00Lesser essence|r + 1x |cffDCB9EBSpirit of Wind|r+ 1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btncancel.png',
+    iconPath: 'BTNSpellSteal.png',
     cooldown: 0.25,
     hotkey: 'A',
     levels: {
@@ -516,7 +516,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cff1FBF00Scroll of Entangling Root|r. Grants the unit the ability to cast Entangling Roots, locking the enemy in place for |cffFE890D2|r/|cffFE890D8|r seconds and dealing |cffFF02025|r damage per second. Has |cff7DBEF120|r seconds cooldown.|cffFFD700|nNote: Troll do not take damage and can still attack when affected by this spell.|r :\n\n1x |cff1FBF00Tinder|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnscrollofregenerationgreen.png',
+    iconPath: 'BTNScrollOfRegenerationGreen.png',
     cooldown: 0.25,
     hotkey: 'Q',
     levels: {
@@ -531,7 +531,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cffFE890DScroll of Stone Armor|r. Grants the unit the ability to Cast Stone armor which increases the target ally armor by |cff1FBF005|r and slows the attack speed of melee attackers by |cffFE890D15%|r for |cffFE890D2|r seconds. Lasts |cff7DBEF115|r seconds, has |cff7DBEF140|r seconds cooldown. :\n\n1x |cff949596Stone|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnscrolluber.png',
+    iconPath: 'BTNScrollUber.png',
     cooldown: 0.25,
     hotkey: 'W',
     levels: {
@@ -546,7 +546,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cffBE00FEScroll of Tsunami|r. Grants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown. :\n\n1x |cff00EAFFSpirit of Water|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnsnazzyscrollpurple.png',
+    iconPath: 'BTNSnazzyScrollPurple.png',
     cooldown: 0.25,
     hotkey: 'E',
     levels: {
@@ -561,7 +561,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cffFFFC00Scroll of Living Dead|r. Grants the unit the ability to cast Living Dead which summons two skeletal bodyguard, each sketelon deal |cffFF02027|r magic damage per hit. Lasts |cff7DBEF115|r seconds, has |cff7DBEF135|r seconds cooldown. :\n\n1x |cffFFD700Bone|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnsnazzyscroll.png',
+    iconPath: 'BTNSnazzyScroll.png',
     cooldown: 0.25,
     hotkey: 'R',
     levels: {
@@ -576,7 +576,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cffFF0202Scroll of Fire Ball|r. Grants the unit the ability to cast Fire Ball dealing |cffFF020260|r damage and stunning the target for |cffFE890D0.1|r/|cffFE890D1|r seconds. Has |cff7DBEF122|r seconds cooldown. :\n\n1x |cffFF0202Flint|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnscrollofhealing.png',
+    iconPath: 'BTNScrollOfHealing.png',
     cooldown: 0.25,
     hotkey: 'Q',
     levels: {
@@ -591,7 +591,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cff00EAFFScroll of Cyclone|r. Grants the unit the ability to cast Cyclone which tosses an enemy unit in the air for |cffFE890D5|r/|cffFE890D10|r seconds. Has |cff7DBEF135|r seconds cooldown. :\n\n1x |cffDCB9EBSpirit of Wind|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnbansheemaster.png',
+    iconPath: 'BTNBansheeMaster.png',
     cooldown: 0.25,
     hotkey: 'W',
     levels: {
@@ -606,7 +606,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cffFE890DScroll of Haste|r. Grant the unit the ability to boost its allies movement speed to the maximum. Lasts |cff7DBEF17|r seconds, has |cff7DBEF135|r seconds cooldown. :\n\n1x |cffA46F33Elk Hide Boots|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnscrollofhaste.png',
+    iconPath: 'BTNScrollOfHaste.png',
     cooldown: 0.25,
     hotkey: 'E',
     levels: {
@@ -696,7 +696,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Magic Seed. Can grow a tree, has 2 charges :\n\n1x |cff1FBF00Stick|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btncancel.png',
+    iconPath: 'BTNRoot.png',
     cooldown: 0.25,
     hotkey: 'A',
     levels: {
@@ -711,7 +711,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Spirit Ward. Can be used to revive 1 allied troll :\n\n3x |cff7DBEF1Mana Crystal|r + 1x |cff1FBF00Stick|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnabsorbmagic.png',
+    iconPath: 'BTNAbsorbMagic.png',
     cooldown: 0.25,
     hotkey: 'S',
     levels: {
@@ -726,7 +726,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Poison salve. Can be used to craft poison spear :\n\n3x |cff1FBF00Mushroom|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnhealingsalve.png',
+    iconPath: 'BTNHealingSalve.png',
     cooldown: 0.25,
     hotkey: 'Z',
     levels: {
@@ -771,7 +771,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get an Ensnare Trap. Deals few ranged damage, can net trolls & animals, good for killing hawk :\n\n1x |cff1FBF00Tinder|r + 1x |cffFFD700Bone|r + 1x |cff1FBF00Stick|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btncop.png',
+    iconPath: 'BTNCOP.png',
     cooldown: 0.25,
     hotkey: 'Q',
     levels: {
@@ -786,7 +786,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a BlowGun. Used for shooting small things. Can be loaded with thistles or bones. Drag and drops items on the blowgun to load, click and use on your own troll to unload : \n\n1x |cff1FBF00Stick|r + 1x |cffFE890DClay Ball|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnalleriaflute.png',
+    iconPath: 'BTNAlleriaFlute.png',
     cooldown: 0.25,
     hotkey: 'W',
     levels: {
@@ -816,7 +816,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get This seed will grow a Magic Palm Tree, which produces a coconut every minute: \n\n 1x |cff00EAFFMagic|r 1x |cffFFFC00Coconut|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnacorn.png',
+    iconPath: 'BTNAcorn.png',
     cooldown: 0.25,
     hotkey: 'R',
     levels: {
@@ -846,7 +846,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get an essence of Magic :\n\n2x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnmoonstone.png',
+    iconPath: 'BTNMoonStone.png',
     cooldown: 0.25,
     hotkey: 'S',
     levels: {
@@ -861,7 +861,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Poison Spear. Hurls a poisoned spear at a targeted enemy unit, dealing 15 initial damage and 15 damage every 3 seconds.Reduce attack speed by 30% and movement speed by 30%. Lasts |cff7DBEF130|r (|cff7DBEF140|r) seconds, has |cff7DBEF12|r seconds cooldown.\n\n1x |cff1FBF00Poison|r + 1x |cffFFD700Bone|r + 1x |cff949596Stone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnenvenomedspear.png',
+    iconPath: 'BTNEnvenomedSpear.png',
     cooldown: 0.25,
     hotkey: 'D',
     levels: {
@@ -876,7 +876,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Nets. Can cast net on targeted enemy, locking them down, good for hunting animals and catch enemy troll. Has 3 charges. Last 2.5(10) seconds, has 15 seconds cooldown :\n\n2x |cff1FBF00Tinder|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnensnare.png',
+    iconPath: 'BTNEnsnare.png',
     cooldown: 0.25,
     hotkey: 'Z',
     levels: {
@@ -921,7 +921,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Smoke Bomb. The skin of a banana containing the spirit of wind. When activated, the banana releases the wind and creates a smokescreen. Has 3 charges :\n\n1x |cffFFD700Banana|r 1x |cffDCB9EBSpirit of Wind|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'BTNSmokepot.png',
+    iconPath: 'BTNSmokePot.png',
     cooldown: 0.25,
     hotkey: 'Q',
     levels: {
@@ -936,7 +936,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Fire Bomb. A shell of destructible material that is highly flammable when thrown, deals 67 damage. Only damage ally/enemy buildings and trees, has 2 charges :\n\n1x |cff530080Smoke Bomb|r 1x |cffFF0202Flint|r + 1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnliquidfire.png',
+    iconPath: 'BTNLiquidFire.png',
     cooldown: 0.25,
     hotkey: 'W',
     levels: {
@@ -951,7 +951,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get an EMP. When activated, disables all towers and enemy buildings around the user for 45 seconds :\n\n2x |cff7DBEF1Mana Crystal|r + 1x |cffDCB9EBSpirit of Wind|r + 1x |cff00EAFFSpirit of Water|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnwispsplode.png',
+    iconPath: 'BTNWispSplode.png',
     cooldown: 0.25,
     hotkey: 'E',
     levels: {
@@ -966,7 +966,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Transport Ship Kit. Build a ship which allows you to travel on water :\n\n2x |cff1FBF00Stick|r + 2x |cffFE890DClay Ball|r + 2x |cffFE890DElk Hide|r|cffFF0202\n\nWarning: Transport Ship mode must be enabled to create ship|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnnightelftransport.png',
+    iconPath: 'BTNNightElfTransport.png',
     cooldown: 0.25,
     hotkey: 'R',
     levels: {
@@ -981,7 +981,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Dark thistles. Creates a special type of blowgun ammo. Instead of poisoning, dark thistles depress enemies and zap mana from them over time :\n\n1x |cff1FBF00Thistles|r 1x |cffBE00FESpirit of Darkness|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnquillspray.png',
+    iconPath: 'BTNQuillSpray.png',
     cooldown: 0.25,
     hotkey: 'A',
     levels: {
@@ -1131,7 +1131,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a pair of |cff82FF20Hydra Scale Boots. |rIncreases wearer\'s movement speed by |cffFE890D<AMdv,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r armor and all stats by |cff1FBF005|r. Also gives spell shield with |cff7DBEF1<AMdz,Cool1>|r second cooldown.\n\n2x |cff82FF20Hydra Scale|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btncancel.png',
+    iconPath: 'BTNHydraWarStomp.png',
     cooldown: 0.25,
     hotkey: 'Q',
     levels: {
@@ -1146,7 +1146,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a pair of |cff82FF20Hydra Scale Gloves. |rIncreases wearer\'s attack speed by |cffFE890D<AM3c,DataA1,%>%|r, all stats by |cff1FBF005|r and has a poisonous attack effect that lowers attack speed by |cffFFFC00<AM63,DataB1,%>%|r and movement speed by |cffFFFC00<AM63,DataC1,%>%|r and deals |cffFF0202<AM63,DataA1>|r damage per second for |cff7DBEF1<AM63,HeroDur1>|r seconds on trolls and |cff7DBEF1<AM63,Dur1>|r seconds on units. Can cast |cffFF6347Tsunami|r.|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown.\n\n2x |cff82FF20Hydra Scale|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnimprovedstrengthofthewild.png',
+    iconPath: 'BTNImprovedStrengthOfTheWild.png',
     cooldown: 0.25,
     hotkey: 'W',
     levels: {
@@ -1161,7 +1161,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cff82FF20Hydra Scale Coat. |rA coat embedded with the scale of the Great Hydra. Increase all stats by |cff1FBF002|r, Armor by |cff1FBF00<AM2|,DataA1>|r and returns |cffBE00FE35%|r melee damage received.\n\n3x |cff82FF20Hydra Scale|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnnagaarmorup3.png',
+    iconPath: 'BTNNagaArmorUp3.png',
     cooldown: 0.25,
     hotkey: 'E',
     levels: {
@@ -1176,7 +1176,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get A magic staff reinforced with iron.\n+|cff1FBF008|r Attack damage\n+|cff1FBF002|r Armor\n+|cff1FBF008|r Intelligence\n\n1x |cff1FBF00Stick|r1x 2x |cffFF0202Iron Ingot|r1x |cff7DBEF1Mana Crystal|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnwand.png',
+    iconPath: 'BTNWand.png',
     cooldown: 0.25,
     hotkey: 'Q',
     levels: {
@@ -1191,7 +1191,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Iron Spear. Deals 70 damage on target, has 60% chance of being recoverable :\n\n1x |cff1FBF00Stick|r/|cffFFD700Bone|r + 1x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnstrengthofthemoon.png',
+    iconPath: 'BTNStrengthOfTheMoon.png',
     cooldown: 0.25,
     hotkey: 'W',
     levels: {
@@ -1206,7 +1206,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Steel Spear. Deals 100 damage on target, has 60% chance of being recoverable :\n\n1x |cff1FBF00Stick|r/|cffFFD700Bone|r + 1x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnthoriumranged.png',
+    iconPath: 'BTNThoriumRanged.png',
     cooldown: 0.25,
     hotkey: 'E',
     levels: {
@@ -1221,7 +1221,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Dark Spear. Deals 40 damage and will zap 10 plus 40% of the target\'s current energy :\n\n1x |cffBE00FESpirit of Darkness|r1x |cff1FBF00Stick|r/|cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnarcaniteranged.png',
+    iconPath: 'BTNArcaniteRanged.png',
     cooldown: 0.25,
     hotkey: 'R',
     levels: {
@@ -1236,7 +1236,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get an Iron Axe. Increase damage by 9, allows tree to be cut :\n\n1x |cff1FBF00Stick|r/|cffFFD700Bone|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnorcmeleeuptwo.png',
+    iconPath: 'BTNOrcMeleeUpTwo.png',
     cooldown: 0.25,
     hotkey: 'A',
     levels: {
@@ -1251,7 +1251,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a Steel Axe. Increase damage by 12, allows tree to be cut :\n\n1x |cff1FBF00Stick|r/|cffFFD700Bone|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnspiritwalkeradepttraining.png',
+    iconPath: 'BTNSpiritWalkerAdeptTraining.png',
     cooldown: 0.25,
     hotkey: 'S',
     levels: {
@@ -1311,7 +1311,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get A Basic Shield, reduce damage taken by |cffFE890D3|r, gives |cff7DBEF110%|r magic resistance.\n\n1x |cffFE890DElk Hide|r + 2x |cff1FBF00Stick|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnsteelarmor.png',
+    iconPath: 'BTNSteelArmor.png',
     cooldown: 0.25,
     hotkey: 'Q',
     levels: {
@@ -1326,7 +1326,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get A Bone Shield, reduce damage taken by |cffFE890D5|r, gives |cff1FBF001|r armor and |cff7DBEF110%|r magic resistance.\n\n1x |cffA46F33Shield|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnimprovedunholyarmor.png',
+    iconPath: 'BTNImprovedUnholyArmor.png',
     cooldown: 0.25,
     hotkey: 'W',
     levels: {
@@ -1341,7 +1341,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get An Iron Shield, reduce damage taken by |cffFE890D7|r, gives |cff1FBF002|r armor and |cff7DBEF110%|r magic resistance.\n\n1x |cffA46F33Shield|r+ 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnhumanarmorupone.png',
+    iconPath: 'BTNHumanArmorUpOne.png',
     cooldown: 0.25,
     hotkey: 'E',
     levels: {
@@ -1356,7 +1356,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get A Steel Shield, reduce damage taken by |cffFE890D10|r, gives |cff1FBF004|r armor and |cff7DBEF110%|r magic resistance. Has a bash ability, silences and disarms the target. Lasts |cff7DBEF12|r seconds, has |cff7DBEF115|r seconds cooldown.\n\n1x |cffA46F33Shield|r+ 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnthoriumarmor.png',
+    iconPath: 'BTNThoriumArmor.png',
     cooldown: 0.25,
     hotkey: 'R',
     levels: {
@@ -1386,7 +1386,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a pair of |cff949596Iron Boots. |rIncreases wearer\'s movement speed by |cffFE890D<AMdu,DataA1>|r, intelligence by |cff00EAFF<AIi6,DataB1>|r, armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic boots transmute into the same bone/iron/steel boots.|r \n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnboots.png',
+    iconPath: 'BTNBoots.png',
     cooldown: 0.25,
     hotkey: 'W',
     levels: {
@@ -1416,7 +1416,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cffFE890DBone Gloves. |rIncreases wearer\'s attack speed by |cffFE890D<AM39,DataA1,%>%|r, damage by |cffFF0202<AItg,DataA1>|r, armor by |cff1FBF00<AM2u,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 5x |cffFFD700Bone|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btngauntletsofogrepower.png',
+    iconPath: 'BTNGauntletsOfOgrePower.png',
     cooldown: 0.25,
     hotkey: 'A',
     levels: {
@@ -1446,7 +1446,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cff00EAFFSteel Gloves. |rIncreases wearer\'s attack speed by |cffFE890D<AM3c,DataA1,%>%|r, damage by |cffFF0202<AIti,DataA1>|r, armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth.|cffFFFC00\n|nAll basic gloves transmute into the same bone/iron/steel gloves.|r\n\n1x |cffA46F33Elk Hide Boots|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnadvancedunholystrength.png',
+    iconPath: 'BTNAdvancedUnholyStrength.png',
     cooldown: 0.25,
     hotkey: 'D',
     levels: {
@@ -1476,7 +1476,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get an |cff949596Iron Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AIs4,DataC1>|r, Intelligence by |cff1FBF00<AIi6,DataB1>|r, Armor by |cff1FBF00<AM2v,DataA1>|r and provides warmth.\n\n1x |cffA46F33Elk Hide Coat|r + 2x |cffFF0202Iron Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnimprovedmoonarmor.png',
+    iconPath: 'BTNImprovedMoonArmor.png',
     cooldown: 0.25,
     hotkey: 'X',
     levels: {
@@ -1491,7 +1491,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Put those materials in the correct order to get a |cff00EAFFSteel Coat. |rA coat made from animals pelt. Increases Strength by |cff1FBF00<AMep,DataC1>|r, Intelligence by |cff1FBF00<AM6o,DataB1>|r, Armor by |cff1FBF00<AM2z,DataA1>|r and provides warmth. Can cast |cff1FBF00Cure All|r on wearer. Has |cff7DBEF190|r seconds cooldown.\n\n1x |cffA46F33Elk Hide Coat|r + 2x |cffFF0202Steel Ingot|r\n\nThis Quick Make ability will attempt to craft the item, including all intermediary ingridients.',
-    iconPath: 'btnadvancedmoonarmor.png',
+    iconPath: 'BTNAdvancedMoonArmor.png',
     cooldown: 0.25,
     hotkey: 'C',
     levels: {
@@ -1506,7 +1506,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Pick up the following materials in the correct order or click on this once they\'re in your inventory to get a Camp Fire Kit. A handy dandy kit for starting a fire, can be used to cook meat, heat yourself up or burn buildings, might burn your own buildings too :\n\n1x |cff1FBF00Tinder|r + 1x |cffFF0202Flint|r + 1x |cff1FBF00Stick|r\n\nIf you do not have enough inventory to craft to pick all items, you can use the craft master 5000 at the center of the map. This Quick Make ability will find the nearest material and craft the said building, material have to be either on the ground just next to the unit or inside its inventory. For more information abouts item, type |cffFFD700-recipes|r, all the items are listed there.',
-    iconPath: 'btnfire.png',
+    iconPath: 'BTNFire.png',
     cooldown: 0.25,
     hotkey: 'Q',
     levels: {
@@ -1536,7 +1536,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Pick up the following materials in the correct order or click on this once they\'re in your inventory to get a Mud Hut Kit. A kit used to build a Mud Hut, a very good place to sleep, also has an armor aura :\n\n4x |cffFE890DClay Ball|r\n\nIf you do not have enough inventory to craft to pick all items, you can use the craft master 5000 at the center of the map. This Quick Make ability will find the nearest material and craft the said building, material have to be either on the ground just next to the unit or inside its inventory. For more information abouts item, type |cffFFD700-recipes|r, all the items are listed there.',
-    iconPath: 'btncancel.png',
+    iconPath: 'BTNGoldMine.png',
     cooldown: 0.25,
     hotkey: 'R',
     levels: {
@@ -1551,7 +1551,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Pick up the following materials in the correct order or click on this once they\'re in your inventory to get A Forge Kit. A kit used to build a Forge, a place to craft ingots and basic weapons :\n\n1x |cffFF0202Flint|r 3x |cff949596Stone|r\n\nIf you do not have enough inventory to craft to pick all items, you can use the craft master 5000 at the center of the map. This Quick Make ability will find the nearest material and craft the said building, material have to be either on the ground just next to the unit or inside its inventory. For more information abouts item, type |cffFFD700-recipes|r, all the items are listed there.',
-    iconPath: 'btnforge.png',
+    iconPath: 'BTNForge.png',
     cooldown: 0.25,
     hotkey: 'E',
     levels: {
@@ -1581,7 +1581,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Pick up the following materials in the correct order or click on this once they\'re in your inventory to get a Mixing Pot Kit. A kit used to build a Mixing Pot, can be used to create powerful items and materials by mixing herbs :\n\n1x |cff1FBF00Stick|r + 3x |cffFE890DClay Ball|r\n\nIf you do not have enough inventory to craft to pick all items, you can use the craft master 5000 at the center of the map. This Quick Make ability will find the nearest material and craft the said building, material have to be either on the ground just next to the unit or inside its inventory. For more information abouts item, type |cffFFD700-recipes|r, all the items are listed there.',
-    iconPath: 'btncancel.png',
+    iconPath: 'BTNSacrificialPit.png',
     cooldown: 0.25,
     hotkey: 'D',
     levels: {
@@ -1596,7 +1596,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Pick up the following materials in the correct order or click on this once they\'re in your inventory to get a Witch Doctors Hut Kit. A kit used to build a Witch Doctors Hut, a place where you can craft magical items :\n\n1x |cff1FBF00Stick|r + 1x |cff7DBEF1Mana Crystal|r + 1x |cff1FBF00Stick|r + 1x |cff7DBEF1Mana Crystal|r + 1x |cff1FBF00Stick|r\n\nIf you do not have enough inventory to craft to pick all items, you can use the craft master 5000 at the center of the map. This Quick Make ability will find the nearest material and craft the said building, material have to be either on the ground just next to the unit or inside its inventory. For more information abouts item, type |cffFFD700-recipes|r, all the items are listed there.',
-    iconPath: 'btnvoodoolounge.png',
+    iconPath: 'BTNVoodooLounge.png',
     cooldown: 0.25,
     hotkey: 'F',
     levels: {
@@ -1611,7 +1611,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Pick up the following materials in the correct order or click on this once they\'re in your inventory to get a Tannery Kit. A kit used to build a Tannery, a place where you can craft armor and cloth from hides :\n\n2x |cff1FBF00Stick|r + 2x |cff949596Stone|r + 1x |cffFE890DClay Ball|r\n\nIf you do not have enough inventory to craft to pick all items, you can use the craft master 5000 at the center of the map. This Quick Make ability will find the nearest material and craft the said building, material have to be either on the ground just next to the unit or inside its inventory. For more information abouts item, type |cffFFD700-recipes|r, all the items are listed there.',
-    iconPath: 'btnpigfarm.png',
+    iconPath: 'BTNPigFarm.png',
     cooldown: 0.25,
     hotkey: 'Z',
     levels: {
@@ -1626,7 +1626,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Pick up the following materials in the correct order or click on this once they\'re in your inventory to get a Omnitower Kit. A kit used to build an Omnitower, a tower dealing small amount of damage, can use activable items like spear, scroll or blowgun :\n\n1x |cff949596Stone|r + 3x |cff1FBF00Stick|r\n\nIf you do not have enough inventory to craft to pick all items, you can use the craft master 5000 at the center of the map. This Quick Make ability will find the nearest material and craft the said building, material have to be either on the ground just next to the unit or inside its inventory. For more information abouts item, type |cffFFD700-recipes|r, all the items are listed there.',
-    iconPath: 'btnorctower.png',
+    iconPath: 'BTNOrcTower.png',
     cooldown: 0.25,
     hotkey: 'X',
     levels: {
@@ -1656,7 +1656,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Pick up the following materials in the correct order or click on this once they\'re in your inventory to get a Teleport Beacon Kit. A kit used to build a Teleport Beacon, can be used to blink yourself on the other side of the beacon :\n\n2x |cff949596Stone|r + 1x |cff7DBEF1Mana Crystal|r + 1x |cff1FBF00Stick|r\n\nIf you do not have enough inventory to craft to pick all items, you can use the craft master 5000 at the center of the map. This Quick Make ability will find the nearest material and craft the said building, material have to be either on the ground just next to the unit or inside its inventory. For more information abouts item, type |cffFFD700-recipes|r, all the items are listed there.',
-    iconPath: 'btnenergytower.png',
+    iconPath: 'BTNEnergyTower.png',
     cooldown: 0.25,
     hotkey: 'C',
     levels: {
@@ -1671,7 +1671,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Find and melt a River Root in |cff7DBEF1900|r radius, granting |cff7DBEF13|r mana to Mixing Pot.',
-    iconPath: 'btnwandofneutralization.png',
+    iconPath: 'BTNWandOfNeutralization.png',
     cooldown: 0.5,
     hotkey: 'W',
     levels: {
@@ -1716,7 +1716,7 @@ export const BUILDING_ABILITIES: AbilityData[] = [
     category: 'building',
     description: '',
     tooltip: 'Find and melt every herb in |cff7DBEF1900|r radius, including athelas, spirits and essences.',
-    iconPath: 'btndizzy.png',
+    iconPath: 'BTNDizzy.png',
     cooldown: 0.5,
     hotkey: 'X',
     levels: {

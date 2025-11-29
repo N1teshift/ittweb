@@ -13,6 +13,10 @@
   - `admin.ts` - Firebase Admin SDK setup
   - `config.ts` - Firebase configuration
   - `firebaseClient.ts` - Client-side Firebase setup
+  - `firestoreHelpers.ts` - Helper utilities for server/client Firestore operations
+    - `withFirestore()` - Abstract server/client Firestore routing
+    - `getDocument()` - Get single document (server/client aware)
+    - `getCollectionSnapshot()` - Get collection snapshot (server/client aware)
 - **Route Handlers** (`api/routeHandlers.ts`)
   - Standardized API route handler utilities
   - Error handling patterns
@@ -57,12 +61,17 @@ const session = await getServerSession(req, res, authOptions);
 ```typescript
 import { getFirestoreAdmin } from '@/features/infrastructure/api/firebase/admin';
 import { db } from '@/features/infrastructure/api/firebase/firebaseClient';
+import { getDocument, getCollectionSnapshot } from '@/features/infrastructure/api/firebase/firestoreHelpers';
 
 // Server-side
 const adminDb = getFirestoreAdmin();
 
 // Client-side
 const doc = await db.collection('games').doc('id').get();
+
+// Using helpers (server/client aware)
+const gameDoc = await getDocument('games', 'game-id');
+const gamesSnapshot = await getCollectionSnapshot('games');
 ```
 
 ### Logging

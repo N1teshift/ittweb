@@ -1,0 +1,59 @@
+# Gitleaks configuration for ITT Web
+# Scans for accidentally committed secrets
+
+title = "ITT Web Secrets Detection"
+
+[extend]
+# Use default rules
+useDefault = true
+
+# Additional custom rules
+[[rules]]
+id = "ittweb-firebase-service-account"
+description = "Firebase Service Account Key"
+regex = '''"type"\s*:\s*"service_account"'''
+tags = ["firebase", "service-account", "credentials"]
+
+[[rules]]
+id = "ittweb-nextauth-secret"
+description = "NextAuth Secret Key"
+regex = '''NEXTAUTH_SECRET\s*=\s*['"][^'"]{32,}['"]'''
+tags = ["nextauth", "secret", "auth"]
+
+[[rules]]
+id = "ittweb-discord-secret"
+description = "Discord Client Secret"
+regex = '''DISCORD_CLIENT_SECRET\s*=\s*['"][^'"]{32,}['"]'''
+tags = ["discord", "oauth", "secret"]
+
+# Allowlist patterns (files that may contain false positives)
+[allowlist]
+description = "Allowlist for known safe files"
+paths = [
+  '''\.env\.example''',
+  '''\.env\.local\.example''',
+  '''docs/.*''',
+  '''\.workflow/.*''',
+  '''\.github/workflows/.*''',
+  '''\.gitleaks\.toml''',
+  '''README\.md''',
+  '''\.gitignore''',
+]
+
+# Ignore test files and mocks
+[[allowlist.paths]]
+regex = '''__tests__/.*'''
+reason = "Test files may contain example secrets"
+
+[[allowlist.paths]]
+regex = '''__mocks__/.*'''
+reason = "Mock files may contain example secrets"
+
+[[allowlist.paths]]
+regex = '''\.test\.(ts|tsx|js|jsx)$'''
+reason = "Test files may contain example secrets"
+
+[[allowlist.paths]]
+regex = '''\.spec\.(ts|tsx|js|jsx)$'''
+reason = "Test files may contain example secrets"
+

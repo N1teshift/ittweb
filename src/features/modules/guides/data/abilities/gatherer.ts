@@ -8,7 +8,7 @@ export const GATHERER_ABILITIES: AbilityData[] = [
     classRequirement: 'gatherer',
     description: '',
     tooltip: 'The Gatherer can create consumable items not available to other classes. Click here to see the recipes.',
-    iconPath: 'btnbarrel.png',
+    iconPath: 'BTNBarrel.png',
     cooldown: 90,
     hotkey: 'W',
     levels: {
@@ -24,7 +24,7 @@ export const GATHERER_ABILITIES: AbilityData[] = [
     classRequirement: 'gatherer',
     description: '',
     tooltip: 'Slot 1: Mushroom |nSlot 2: Stone |nCreates a salve that grants the target ally <A0ED,DataB1> bonus armor for <A0ED,DataA1> seconds.',
-    iconPath: 'btncancel.png',
+    iconPath: 'BTNRockGolem.png',
     range: 1,
     levels: {
             "1": {
@@ -39,7 +39,7 @@ export const GATHERER_ABILITIES: AbilityData[] = [
     classRequirement: 'gatherer',
     description: '',
     tooltip: 'Slot 1: Mushroom |nSlot 2: Tinder |nSlot 3: River Root |nCreates a salve with 2 uses that heals for <A0EG,DataA1> over <A0EG,HeroDur1> seconds.',
-    iconPath: 'btnhealingsalve.png',
+    iconPath: 'BTNHealingSalve.png',
     range: 1,
     levels: {
             "1": {
@@ -54,7 +54,7 @@ export const GATHERER_ABILITIES: AbilityData[] = [
     classRequirement: 'gatherer',
     description: '',
     tooltip: 'Slot 1: Mushroom |nSlot 2: Athelas Seed |nSlot 3: Athelas Seed |nCreates a salve that sleeps target enemy troll for <A0DH,HeroDur1> seconds.',
-    iconPath: 'pasbtnelunesblessing.png',
+    iconPath: 'ReplaceableTextures/PassiveButtons/PASBTNElunesBlessing.png',
     range: 1,
     levels: {
             "1": {
@@ -69,7 +69,7 @@ export const GATHERER_ABILITIES: AbilityData[] = [
     classRequirement: 'gatherer',
     description: '',
     tooltip: 'Slot 1: Mushroom |nSlot 2: Thistles |nCreates a salve that slows target enemy non-troll\'s movement speed by <A0EE,DataA1,%>% and attack speed by <A0EE,DataB1,%>% for <A0EE,Dur1> seconds.',
-    iconPath: 'btnvialempty.png',
+    iconPath: 'BTNVialEmpty.png',
     range: 1,
     levels: {
             "1": {
@@ -84,7 +84,7 @@ export const GATHERER_ABILITIES: AbilityData[] = [
     classRequirement: 'gatherer',
     description: '',
     tooltip: 'Slot 1: Mushroom |nSlot 2: Tinder |nSlot 3: River Stem |nCreates a salve with 2 uses that buffs the user\'s movement speed by <A0EF,DataA1,%>% for <A0EF,Dur1> seconds.',
-    iconPath: 'btnpotionred.png',
+    iconPath: 'BTNPotionRed.png',
     range: 1,
     levels: {
             "1": {
@@ -99,7 +99,7 @@ export const GATHERER_ABILITIES: AbilityData[] = [
     classRequirement: 'gatherer',
     description: '',
     tooltip: 'Pings all nearby tinder in the minimap and reveals them for a short duration. Ignores items near enemies.',
-    iconPath: 'btnshimmerweed.png',
+    iconPath: 'BTNShimmerWeed.png',
     manaCost: 15,
     cooldown: 50,
     hotkey: 'Q',
@@ -125,7 +125,7 @@ export const GATHERER_ABILITIES: AbilityData[] = [
     classRequirement: 'gatherer',
     description: '',
     tooltip: 'Pings all nearby sticks in the minimap and reveals them for a short duration. Ignores items near enemies.',
-    iconPath: 'btnnaturetouchgrow.png',
+    iconPath: 'BTNNatureTouchGrow.png',
     manaCost: 15,
     cooldown: 50,
     hotkey: 'W',
@@ -177,7 +177,7 @@ export const GATHERER_ABILITIES: AbilityData[] = [
     classRequirement: 'gatherer',
     description: '',
     tooltip: 'Pings all nearby clay balls in the minimap and reveals them for a short duration. Ignores items near enemies.',
-    iconPath: 'btnthunderlizardegg.png',
+    iconPath: 'BTNThunderLizardEgg.png',
     manaCost: 15,
     cooldown: 50,
     hotkey: 'R',
@@ -203,7 +203,7 @@ export const GATHERER_ABILITIES: AbilityData[] = [
     classRequirement: 'gatherer',
     description: '',
     tooltip: 'Pings all nearby flints in the minimap and reveals them for a short duration. Ignores items near enemies.',
-    iconPath: 'btnstaffofsanctuary.png',
+    iconPath: 'BTNStaffOfSanctuary.png',
     manaCost: 15,
     cooldown: 50,
     hotkey: 'A',
@@ -229,7 +229,7 @@ export const GATHERER_ABILITIES: AbilityData[] = [
     classRequirement: 'gatherer',
     description: '',
     tooltip: 'Pings all nearby stones in the minimap and reveals them for a short duration. Ignores items near enemies.',
-    iconPath: 'btngolemstormbolt.png',
+    iconPath: 'BTNGolemStormBolt.png',
     manaCost: 15,
     cooldown: 50,
     hotkey: 'S',
@@ -255,7 +255,7 @@ export const GATHERER_ABILITIES: AbilityData[] = [
     classRequirement: 'gatherer',
     description: '',
     tooltip: 'Pings all nearby mana crystals in the minimap and reveals them for a short duration. Ignores items near enemies.',
-    iconPath: 'btnmanastone.png',
+    iconPath: 'BTNManaStone.png',
     manaCost: 15,
     cooldown: 50,
     hotkey: 'D',
@@ -281,7 +281,7 @@ export const GATHERER_ABILITIES: AbilityData[] = [
     classRequirement: 'gatherer',
     description: '',
     tooltip: 'Teleports items in the area around the gatherer right to him. Has |cffFE890D900|r range and |cff7DBEF1120|r seconds cooldown. |cffFFD700Note : Items near an ally campfire won\'t be warped, you don\'t want to mess up your base, do you?|r',
-    iconPath: 'btnneutralmanashield.png',
+    iconPath: 'BTNNeutralManaShield.png',
     manaCost: 30,
     cooldown: 120,
     hotkey: 'E',

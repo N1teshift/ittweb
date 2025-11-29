@@ -8,7 +8,6 @@ import EditGameForm from '@/features/modules/scheduled-games/components/EditGame
 import GameDeleteDialog from '@/features/modules/scheduled-games/components/GameDeleteDialog';
 import UploadReplayModal from '@/features/modules/scheduled-games/components/UploadReplayModal';
 import { Logger } from '@/features/infrastructure/logging';
-import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 import type { GameWithPlayers } from '@/features/modules/games/types';
 
@@ -39,7 +38,12 @@ export default function GameDetailPage() {
       }
 
       try {
-        const userData = await getUserDataByDiscordId(session.discordId);
+        const response = await fetch('/api/user/me');
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        const result = await response.json();
+        const userData = result.data;
         if (isMounted) {
           setUserIsAdmin(isAdmin(userData?.role));
         }

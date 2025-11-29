@@ -315,6 +315,84 @@ function extractUnits() {
         const icon = getField('uico') || '';
         const description = getField('ides') || '';
         
+        // Extract primary attributes
+        const strength = getField('ustr');
+        const agility = getField('uagi');
+        const intelligence = getField('uint');
+        const strengthPerLevel = getField('ustg');
+        const agilityPerLevel = getField('uagp');
+        const intelligencePerLevel = getField('uinp');
+        
+        // Extract combat stats
+        const hp = getField('uhpm') || getField('uhpr');
+        const mana = getField('umpm') || getField('umpr');
+        const armor = getField('udef');
+        const damageBase = getField('ua1b');
+        const damageDice = getField('ua1d');
+        const attackCooldown = getField('ua1c');
+        const attackRange = getField('ua1r');
+        const acquisitionRange = getField('uacq');
+        const attackType = getField('ua1t');
+        const defenseType = getField('udty');
+        
+        // Extract movement stats
+        const moveSpeed = getField('umvs');
+        const turnRate = getField('umvr');
+        const collisionSize = getField('ucol');
+        
+        // Extract vision stats
+        const sightRangeDay = getField('usid');
+        const sightRangeNight = getField('usin');
+        
+        // Extract cost/resource stats
+        const goldCost = getField('ugol');
+        const lumberCost = getField('ulum');
+        const foodCost = getField('ufoo');
+        const buildTime = getField('ubld');
+        
+        // Extract abilities
+        const abilities = getField('uabi') || '';
+        const ability1 = getField('uag1') || '';
+        const ability2 = getField('uag2') || '';
+        const ability3 = getField('uag3') || '';
+        const ability4 = getField('uag4') || '';
+        const ability5 = getField('uag5') || '';
+        const ability6 = getField('uag6') || '';
+        
+        // Parse abilities list (comma-separated or individual slots)
+        const abilitiesList = [];
+        if (typeof abilities === 'string' && abilities.trim()) {
+          abilitiesList.push(...abilities.split(',').map(a => a.trim()).filter(Boolean));
+        }
+        [ability1, ability2, ability3, ability4, ability5, ability6].forEach(abil => {
+          if (abil && !abilitiesList.includes(abil)) {
+            abilitiesList.push(abil);
+          }
+        });
+        
+        // Extract classification flags
+        const isBuilding = getField('ubdg') === 1;
+        const isFlyer = getField('ufma') !== 0;
+        const isWorker = getField('uapw') === 1;
+        const canAttack = getField('uap') === 1;
+        const canHarvest = getField('uhar') === 1;
+        
+        // Helper to parse numeric values safely
+        const parseNumber = (value) => {
+          if (value === undefined || value === null || value === '') return undefined;
+          if (typeof value === 'number') return value;
+          const parsed = parseFloat(value);
+          return isNaN(parsed) ? undefined : parsed;
+        };
+        
+        // Helper to parse integer values
+        const parseIntValue = (value) => {
+          if (value === undefined || value === null || value === '') return undefined;
+          if (typeof value === 'number') return Math.floor(value);
+          const parsed = parseInt(value, 10);
+          return isNaN(parsed) ? undefined : parsed;
+        };
+        
         return {
           id,
           name: typeof name === 'string' ? name : '',
@@ -323,6 +401,45 @@ function extractUnits() {
           icon: typeof icon === 'string' ? icon : '',
           race: getField('urac') || '',
           classification: getField('utyp') || '',
+          // Primary attributes
+          strength: parseNumber(strength),
+          agility: parseNumber(agility),
+          intelligence: parseNumber(intelligence),
+          strengthPerLevel: parseNumber(strengthPerLevel),
+          agilityPerLevel: parseNumber(agilityPerLevel),
+          intelligencePerLevel: parseNumber(intelligencePerLevel),
+          // Combat stats
+          hp: parseNumber(hp),
+          mana: parseNumber(mana),
+          armor: parseNumber(armor),
+          damageBase: parseNumber(damageBase),
+          damageDice: parseNumber(damageDice),
+          attackCooldown: parseNumber(attackCooldown),
+          attackRange: parseNumber(attackRange),
+          acquisitionRange: parseNumber(acquisitionRange),
+          attackType: typeof attackType === 'string' ? attackType : undefined,
+          defenseType: typeof defenseType === 'string' ? defenseType : undefined,
+          // Movement stats
+          moveSpeed: parseNumber(moveSpeed),
+          turnRate: parseNumber(turnRate),
+          collisionSize: parseNumber(collisionSize),
+          // Vision stats
+          sightRangeDay: parseIntValue(sightRangeDay),
+          sightRangeNight: parseIntValue(sightRangeNight),
+          // Cost/resource stats
+          goldCost: parseIntValue(goldCost),
+          lumberCost: parseIntValue(lumberCost),
+          foodCost: parseNumber(foodCost),
+          buildTime: parseNumber(buildTime),
+          // Abilities
+          abilities: abilitiesList.length > 0 ? abilitiesList : undefined,
+          // Classification flags
+          isBuilding: isBuilding || undefined,
+          isFlyer: isFlyer || undefined,
+          isWorker: isWorker || undefined,
+          canAttack: canAttack || undefined,
+          canHarvest: canHarvest || undefined,
+          // Raw data for reference
           raw: modifications
         };
       });
@@ -371,12 +488,60 @@ function extractBuildings() {
         const icon = getField('bico') || getField('uico') || '';
         const description = getField('bdes') || '';
         
+        // Extract building-specific stats
+        const hp = getField('bhpm') || getField('uhpm') || getField('uhpr');
+        const armor = getField('bdef') || getField('udef');
+        const buildTime = getField('ubld');
+        const goldCost = getField('ugol');
+        const lumberCost = getField('ulum') || getField('ulur');
+        const repairCost = getField('bprc');
+        const repairTime = getField('bprt');
+        const supplyProvided = getField('ubsp');
+        const supplyUsed = getField('ubsa') || getField('ufoo');
+        
+        // Extract abilities for buildings (some buildings have abilities)
+        const abilities = getField('uabi') || '';
+        
+        // Helper to parse numeric values safely
+        const parseNumber = (value) => {
+          if (value === undefined || value === null || value === '') return undefined;
+          if (typeof value === 'number') return value;
+          const parsed = parseFloat(value);
+          return isNaN(parsed) ? undefined : parsed;
+        };
+        
+        // Helper to parse integer values
+        const parseIntValue = (value) => {
+          if (value === undefined || value === null || value === '') return undefined;
+          if (typeof value === 'number') return Math.floor(value);
+          const parsed = parseInt(value, 10);
+          return isNaN(parsed) ? undefined : parsed;
+        };
+        
+        // Parse abilities list (comma-separated)
+        const abilitiesList = typeof abilities === 'string' && abilities.trim()
+          ? abilities.split(',').map(a => a.trim()).filter(Boolean)
+          : [];
+        
         return {
           id,
           name: typeof name === 'string' ? name : '',
           description: typeof description === 'string' ? description : '',
           tooltip: typeof tooltip === 'string' ? tooltip : '',
           icon: typeof icon === 'string' ? icon : '',
+          // Building stats
+          hp: parseNumber(hp),
+          armor: parseNumber(armor),
+          buildTime: parseNumber(buildTime),
+          goldCost: parseIntValue(goldCost),
+          lumberCost: parseIntValue(lumberCost),
+          repairCost: parseNumber(repairCost),
+          repairTime: parseNumber(repairTime),
+          supplyProvided: parseIntValue(supplyProvided),
+          supplyUsed: parseIntValue(supplyUsed),
+          // Abilities
+          abilities: abilitiesList.length > 0 ? abilitiesList : undefined,
+          // Raw data for reference
           raw: modifications
         };
       });

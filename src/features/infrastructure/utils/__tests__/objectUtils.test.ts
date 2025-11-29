@@ -151,7 +151,7 @@ describe('removeUndefined', () => {
         optional?: T;
       }
       const input: TestType<string> = { value: 'test', optional: undefined };
-      const result = removeUndefined(input);
+      const result = removeUndefined(input as unknown as Record<string, unknown>);
 
       expect(result.value).toBe('test');
       expect('optional' in result).toBe(false);
@@ -170,7 +170,7 @@ describe('removeUndefined', () => {
         email?: string;
       }
       const input: User = { name: 'Alice', email: undefined };
-      const result = removeUndefined(input);
+      const result = removeUndefined(input as unknown as Record<string, unknown>);
 
       expect(result.name).toBe('Alice');
       expect('email' in result).toBe(false);

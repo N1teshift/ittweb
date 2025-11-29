@@ -1,182 +1,38 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import dynamic from 'next/dynamic';
+import React from 'react';
 import { PageHero } from '@/features/infrastructure/components';
 import { Card } from '@/features/infrastructure/components/ui/Card';
-import type {
-  ActivityDataPoint,
-  GameLengthDataPoint,
-  PlayerActivityDataPoint,
-  ClassSelectionData,
-  ClassWinRateData,
-} from '../../analytics/types';
-
-// Lazy load chart components to reduce initial bundle size (~300KB)
-const ActivityChart = dynamic(
-  () => import('../../analytics/components/ActivityChart').then(mod => ({ default: mod.ActivityChart })),
-  {
-    loading: () => (
-      <Card variant="medieval" className="p-8">
-        <div className="animate-pulse space-y-4">
-          <div className="h-4 bg-amber-500/20 rounded w-1/4"></div>
-          <div className="h-64 bg-amber-500/10 rounded"></div>
-        </div>
-      </Card>
-    ),
-    ssr: false,
-  }
-);
-
-const GameLengthChart = dynamic(
-  () => import('../../analytics/components/GameLengthChart').then(mod => ({ default: mod.GameLengthChart })),
-  {
-    loading: () => (
-      <Card variant="medieval" className="p-8">
-        <div className="animate-pulse space-y-4">
-          <div className="h-4 bg-amber-500/20 rounded w-1/4"></div>
-          <div className="h-64 bg-amber-500/10 rounded"></div>
-        </div>
-      </Card>
-    ),
-    ssr: false,
-  }
-);
-
-const PlayerActivityChart = dynamic(
-  () => import('../../analytics/components/PlayerActivityChart').then(mod => ({ default: mod.PlayerActivityChart })),
-  {
-    loading: () => (
-      <Card variant="medieval" className="p-8">
-        <div className="animate-pulse space-y-4">
-          <div className="h-4 bg-amber-500/20 rounded w-1/4"></div>
-          <div className="h-64 bg-amber-500/10 rounded"></div>
-        </div>
-      </Card>
-    ),
-    ssr: false,
-  }
-);
-
-const ClassSelectionChart = dynamic(
-  () => import('../../analytics/components/ClassSelectionChart').then(mod => ({ default: mod.ClassSelectionChart })),
-  {
-    loading: () => (
-      <Card variant="medieval" className="p-8">
-        <div className="animate-pulse space-y-4">
-          <div className="h-4 bg-amber-500/20 rounded w-1/4"></div>
-          <div className="h-64 bg-amber-500/10 rounded"></div>
-        </div>
-      </Card>
-    ),
-    ssr: false,
-  }
-);
-
-const ClassWinRateChart = dynamic(
-  () => import('../../analytics/components/ClassWinRateChart').then(mod => ({ default: mod.ClassWinRateChart })),
-  {
-    loading: () => (
-      <Card variant="medieval" className="p-8">
-        <div className="animate-pulse space-y-4">
-          <div className="h-4 bg-amber-500/20 rounded w-1/4"></div>
-          <div className="h-64 bg-amber-500/10 rounded"></div>
-        </div>
-      </Card>
-    ),
-    ssr: false,
-  }
-);
+import { useMetaFilters } from './useMetaFilters';
+import { useMetaData } from './useMetaData';
+import { MetaFilters } from './MetaFilters';
+import { MetaCharts } from './MetaCharts';
 
 interface MetaPageProps {
   pageNamespaces: string[];
 }
 
-interface MetaData {
-  activity: ActivityDataPoint[];
-  gameLength: GameLengthDataPoint[];
-  playerActivity: PlayerActivityDataPoint[];
-  classSelection: ClassSelectionData[];
-  classWinRates: ClassWinRateData[];
-}
-
 export function MetaPage({ pageNamespaces: _pageNamespaces }: MetaPageProps) {
-  const [metaData, setMetaData] = useState<MetaData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [category, setCategory] = useState<string>('');
-  const [teamFormat, setTeamFormat] = useState<string>('');
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
-  
-  // Debounced filter values to avoid excessive API calls
-  const [debouncedCategory, setDebouncedCategory] = useState<string>('');
-  const [debouncedTeamFormat, setDebouncedTeamFormat] = useState<string>('');
-  const [debouncedStartDate, setDebouncedStartDate] = useState<string>('');
-  const [debouncedEndDate, setDebouncedEndDate] = useState<string>('');
+  const {
+    category,
+    teamFormat,
+    startDate,
+    endDate,
+    debouncedCategory,
+    debouncedTeamFormat,
+    debouncedStartDate,
+    debouncedEndDate,
+    setCategory,
+    setTeamFormat,
+    setStartDate,
+    setEndDate,
+    resetFilters,
+  } = useMetaFilters();
 
-  const fetchMetaData = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const params = new URLSearchParams();
-      if (debouncedCategory) params.append('category', debouncedCategory);
-      if (debouncedTeamFormat) params.append('teamFormat', debouncedTeamFormat);
-      if (debouncedStartDate) params.append('startDate', debouncedStartDate);
-      if (debouncedEndDate) params.append('endDate', debouncedEndDate);
-
-      const response = await fetch(`/api/analytics/meta?${params.toString()}`);
-      if (!response.ok) {
-        throw new Error('Failed to load meta statistics');
-      }
-      const result = await response.json();
-      const data = result.data || result;
-      setMetaData(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load meta statistics');
-    } finally {
-      setLoading(false);
-    }
-  }, [debouncedCategory, debouncedTeamFormat, debouncedStartDate, debouncedEndDate]);
-
-  // Debounce filter inputs (300ms delay)
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedCategory(category);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [category]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedTeamFormat(teamFormat);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [teamFormat]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedStartDate(startDate);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [startDate]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedEndDate(endDate);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [endDate]);
-
-  useEffect(() => {
-    fetchMetaData();
-  }, [fetchMetaData]);
-
-  const resetFilters = () => {
-    setCategory('');
-    setTeamFormat('');
-    setStartDate('');
-    setEndDate('');
-  };
+  const { metaData, loading, error } = useMetaData({
+    category: debouncedCategory,
+    teamFormat: debouncedTeamFormat,
+    startDate: debouncedStartDate,
+    endDate: debouncedEndDate,
+  });
 
   if (loading) {
     return (
@@ -212,102 +68,28 @@ export function MetaPage({ pageNamespaces: _pageNamespaces }: MetaPageProps) {
       <PageHero title="Meta Statistics" description="View game meta statistics and trends" />
       
       <div className="container mx-auto px-4 py-8 space-y-6">
-        {/* Filters */}
-        <Card variant="medieval" className="p-6">
-          <h2 className="text-xl font-semibold text-amber-400 mb-4">Filters</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div>
-              <label htmlFor="category" className="block text-sm font-medium text-amber-400 mb-2">
-                Category
-              </label>
-              <select
-                id="category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full bg-gray-800 border border-gray-600 rounded px-4 py-2 text-white focus:border-amber-500 focus:outline-none"
-              >
-                <option value="">All Categories</option>
-                <option value="1v1">1v1</option>
-                <option value="2v2">2v2</option>
-                <option value="3v3">3v3</option>
-                <option value="4v4">4v4</option>
-                <option value="5v5">5v5</option>
-                <option value="6v6">6v6</option>
-                <option value="ffa">FFA</option>
-              </select>
-            </div>
-            
-            <div>
-              <label htmlFor="teamFormat" className="block text-sm font-medium text-amber-400 mb-2">
-                Team Format
-              </label>
-              <select
-                id="teamFormat"
-                value={teamFormat}
-                onChange={(e) => setTeamFormat(e.target.value)}
-                className="w-full bg-gray-800 border border-gray-600 rounded px-4 py-2 text-white focus:border-amber-500 focus:outline-none"
-              >
-                <option value="">All Formats</option>
-                <option value="1v1">1v1</option>
-                <option value="2v2">2v2</option>
-                <option value="3v3">3v3</option>
-                <option value="4v4">4v4</option>
-                <option value="5v5">5v5</option>
-                <option value="6v6">6v6</option>
-              </select>
-            </div>
+        <MetaFilters
+          category={category}
+          teamFormat={teamFormat}
+          startDate={startDate}
+          endDate={endDate}
+          onCategoryChange={setCategory}
+          onTeamFormatChange={setTeamFormat}
+          onStartDateChange={setStartDate}
+          onEndDateChange={setEndDate}
+          onReset={resetFilters}
+        />
 
-            <div>
-              <label htmlFor="startDate" className="block text-sm font-medium text-amber-400 mb-2">
-                From Date
-              </label>
-              <input
-                id="startDate"
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="w-full bg-gray-800 border border-gray-600 rounded px-4 py-2 text-white focus:border-amber-500 focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="endDate" className="block text-sm font-medium text-amber-400 mb-2">
-                To Date
-              </label>
-              <input
-                id="endDate"
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="w-full bg-gray-800 border border-gray-600 rounded px-4 py-2 text-white focus:border-amber-500 focus:outline-none"
-              />
-            </div>
-          </div>
-          
-          <div className="mt-4">
-            <button
-              onClick={resetFilters}
-              className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
-            >
-              Reset Filters
-            </button>
-          </div>
-        </Card>
-
-        {/* Charts */}
         {metaData && (
-          <>
-            <ActivityChart data={metaData.activity} title="Activity (Games per Day)" />
-            <GameLengthChart data={metaData.gameLength} title="Average Game Length" />
-            <PlayerActivityChart data={metaData.playerActivity} title="Active Players per Month" />
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <ClassSelectionChart data={metaData.classSelection} title="Class Selection" />
-              <ClassWinRateChart data={metaData.classWinRates} title="Class Win Rate" />
-            </div>
-          </>
+          <MetaCharts
+            activity={metaData.activity}
+            gameLength={metaData.gameLength}
+            playerActivity={metaData.playerActivity}
+            classSelection={metaData.classSelection}
+            classWinRates={metaData.classWinRates}
+          />
         )}
       </div>
     </div>
   );
 }
-

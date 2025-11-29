@@ -1,0 +1,150 @@
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run weekly on Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+
+jobs:
+  dependency-scan:
+    runs-on: ubuntu-latest
+    name: Dependency Vulnerability Scan
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        id: audit
+        continue-on-error: true
+        run: |
+          npm audit --audit-level=moderate --json > audit-results.json || true
+          
+          # Check for critical vulnerabilities
+          CRITICAL=$(node -e "const audit = require('./audit-results.json'); console.log(audit.metadata.vulnerabilities.critical || 0);")
+          HIGH=$(node -e "const audit = require('./audit-results.json'); console.log(audit.metadata.vulnerabilities.high || 0);")
+          
+          echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
+          echo "high=$HIGH" >> $GITHUB_OUTPUT
+          
+          if [ "$CRITICAL" -gt 0 ] || [ "$HIGH" -gt 0 ]; then
+            echo "## Security Audit Results" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ **Vulnerabilities Found:**" >> $GITHUB_STEP_SUMMARY
+            echo "- Critical: $CRITICAL" >> $GITHUB_STEP_SUMMARY
+            echo "- High: $HIGH" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Run \`npm audit\` locally for details." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ No critical or high vulnerabilities found." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload audit results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: audit-results
+          path: audit-results.json
+          retention-days: 30
+
+      - name: Fail on critical vulnerabilities
+        if: steps.audit.outputs.critical > 0
+        run: |
+          echo "❌ Critical vulnerabilities found. Please update dependencies."
+          exit 1
+
+      - name: Create issue for high vulnerabilities
+        if: steps.audit.outputs.high > 0 && github.event_name == 'schedule'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const audit = JSON.parse(fs.readFileSync('audit-results.json', 'utf8'));
+            const highCount = audit.metadata.vulnerabilities.high || 0;
+            
+            if (highCount > 0) {
+              const title = `Security: ${highCount} High Severity Vulnerabilities Found`;
+              const body = `## Security Audit Alert
+              
+              Weekly security audit found **${highCount} high severity vulnerabilities**.
+              
+              ### Action Required
+              - Review the audit results
+              - Update affected dependencies
+              - Run \`npm audit fix\` if safe to do so
+              
+              ### Audit Results
+              Download the \`audit-results\` artifact from the latest workflow run for details.
+              
+              ### Next Steps
+              1. Review \`npm audit\` output
+              2. Update dependencies: \`npm update\` or \`npm install package@latest\`
+              3. Test thoroughly after updates
+              4. Re-run audit to verify fixes
+              `;
+              
+              // Check if issue already exists
+              const issues = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open',
+                labels: 'security'
+              });
+              
+              const existingIssue = issues.data.find(issue => issue.title === title);
+              
+              if (!existingIssue) {
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: title,
+                  body: body,
+                  labels: ['security', 'dependencies']
+                });
+              }
+            }
+
+  secrets-scan:
+    runs-on: ubuntu-latest
+    name: Secrets Scanning
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for secret scanning
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          config-path: .gitleaks.toml
+          no-git: false
+          verbose: true
+          redact: true
+
+      - name: Upload Gitleaks results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: gitleaks-results
+          path: |
+            .gitleaks-report.json
+            .gitleaks-report.sarif
+          retention-days: 7
+          if-no-files-found: ignore
+

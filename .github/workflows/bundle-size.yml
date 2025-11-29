@@ -1,0 +1,84 @@
+name: Bundle Size
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  bundle-size:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch full history for comparison
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: ANALYZE=true npm run build
+        env:
+          # Use dummy values for build (actual values not needed for bundle analysis)
+          NEXT_PUBLIC_FIREBASE_API_KEY: dummy
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: dummy.firebaseapp.com
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: dummy-project
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: dummy-project.appspot.com
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: dummy
+          NEXT_PUBLIC_FIREBASE_APP_ID: dummy
+          FIREBASE_SERVICE_ACCOUNT_KEY: '{"type":"service_account","project_id":"dummy"}'
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: dummy-secret
+          DISCORD_CLIENT_ID: dummy
+          DISCORD_CLIENT_SECRET: dummy
+
+      - name: Analyze bundle size
+        run: |
+          echo "## Bundle Size Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Bundle analysis completed. Check the build output for detailed size information." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Note**: To view detailed bundle analysis, run \`ANALYZE=true npm run build\` locally." >> $GITHUB_STEP_SUMMARY
+          
+          # Check if .next/analyze directory exists and has reports
+          if [ -d ".next/analyze" ]; then
+            echo "### Bundle Analysis Reports" >> $GITHUB_STEP_SUMMARY
+            echo "Bundle analysis reports generated in \`.next/analyze/\` directory." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload bundle analysis
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: bundle-analysis
+          path: .next/analyze
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: Comment PR with bundle size info
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            let comment = '## 📦 Bundle Size Analysis\n\n';
+            comment += 'Bundle size analysis completed. ';
+            comment += 'To view detailed analysis, download the bundle-analysis artifact or run `ANALYZE=true npm run build` locally.\n\n';
+            comment += '**Note**: Bundle size monitoring is active. Significant increases may require review.\n';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+

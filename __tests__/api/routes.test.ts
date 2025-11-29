@@ -167,7 +167,12 @@ beforeEach(() => {
 
 describe('Games API', () => {
   test('GET /api/games returns games with filters', async () => {
-    gameService.getGames.mockResolvedValue([{ id: '1' }]);
+    gameService.getGames.mockResolvedValue({
+      games: [{ id: '1' }],
+      total: 1,
+      page: 1,
+      limit: 10,
+    });
     const req = createMockRequest({
       method: 'GET',
       query: { gameId: '5', limit: '10' },
@@ -177,7 +182,15 @@ describe('Games API', () => {
 
     expect(gameService.getGames).toHaveBeenCalledWith(expect.objectContaining({ gameId: 5, limit: 10 }));
     expect(status).toHaveBeenCalledWith(200);
-    expect(json).toHaveBeenCalledWith([{ id: '1' }]);
+    expect(json).toHaveBeenCalledWith({
+      success: true,
+      data: {
+        games: [{ id: '1' }],
+        total: 1,
+        page: 1,
+        limit: 10,
+      },
+    });
   });
 
   test('POST /api/games requires auth for scheduled game', async () => {
@@ -186,8 +199,14 @@ describe('Games API', () => {
 
     const { status, json } = await runHandler(handlerGamesIndex, req);
 
-    expect(status).toHaveBeenCalledWith(401);
-    expect(json).toHaveBeenCalledWith({ error: 'Authentication required' });
+    // createApiHandler catches errors and returns 500 with error message
+    expect(status).toHaveBeenCalledWith(500);
+    expect(json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        error: expect.stringContaining('Authentication required'),
+      })
+    );
   });
 
   test('POST /api/games validates scheduled game fields', async () => {
@@ -199,10 +218,14 @@ describe('Games API', () => {
 
     const { status, json } = await runHandler(handlerGamesIndex, req);
 
-    expect(status).toHaveBeenCalledWith(400);
-    expect(json).toHaveBeenCalledWith({
-      error: 'Missing required fields: scheduledDateTime, timezone, teamSize, and gameType are required'
-    });
+    // createApiHandler catches errors and returns 500 with error message
+    expect(status).toHaveBeenCalledWith(500);
+    expect(json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        error: expect.stringContaining('Missing required fields'),
+      })
+    );
   });
 
   test('POST /api/games rejects past scheduled date for non-admin', async () => {
@@ -215,9 +238,16 @@ describe('Games API', () => {
       body: { gameState: 'scheduled', scheduledDateTime: pastDate, timezone: 'UTC', teamSize: 2, gameType: 'team' },
     });
 
-    const { status } = await runHandler(handlerGamesIndex, req);
+    const { status, json } = await runHandler(handlerGamesIndex, req);
 
-    expect(status).toHaveBeenCalledWith(400);
+    // createApiHandler catches errors and returns 500 with error message
+    expect(status).toHaveBeenCalledWith(500);
+    expect(json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        error: expect.stringContaining('Scheduled date must be in the future'),
+      })
+    );
   });
 
   test('POST /api/games creates completed game', async () => {
@@ -239,8 +269,169 @@ describe('Games API', () => {
     const { status, json } = await runHandler(handlerGamesIndex, req);
 
     expect(gameService.createCompletedGame).toHaveBeenCalled();
-    expect(status).toHaveBeenCalledWith(201);
-    expect(json).toHaveBeenCalledWith({ id: 'new-id', success: true });
+    expect(status).toHaveBeenCalledWith(200);
+    expect(json).toHaveBeenCalledWith({ success: true, data: { id: 'new-id' } });
+  });
+
+  test('POST /api/games creates scheduled game successfully', async () => {
+    (getServerSession as jest.Mock).mockResolvedValue(mockSession);
+    gameService.createScheduledGame.mockResolvedValue('scheduled-id');
+    const futureDate = new Date(Date.now() + 60_000).toISOString();
+    const req = createMockRequest({
+      method: 'POST',
+      body: {
+        gameState: 'scheduled',
+        scheduledDateTime: futureDate,
+        timezone: 'UTC',
+        teamSize: 2,
+        gameType: 'team',
+      },
+    });
+
+    const { status, json } = await runHandler(handlerGamesIndex, req);
+
+    expect(gameService.createScheduledGame).toHaveBeenCalled();
+    expect(status).toHaveBeenCalledWith(200);
+    expect(json).toHaveBeenCalledWith({ success: true, data: { id: 'scheduled-id' } });
+  });
+
+  test('POST /api/games validates completed game player data', async () => {
+    (getServerSession as jest.Mock).mockResolvedValue(mockSession);
+    const req = createMockRequest({
+      method: 'POST',
+      body: {
+        gameState: 'completed',
+        gameId: 10,
+        datetime: '2024-01-01T00:00:00Z',
+        players: [
+          { name: 'A', flag: 'invalid', pid: 1 }, // Invalid flag
+          { name: 'B', flag: 'loser', pid: 2 },
+        ],
+      },
+    });
+
+    const { status, json } = await runHandler(handlerGamesIndex, req);
+
+    expect(status).toHaveBeenCalledWith(500);
+    expect(json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        error: expect.stringContaining('Invalid player flag'),
+      })
+    );
+  });
+
+  test('POST /api/games validates completed game has at least 2 players', async () => {
+    (getServerSession as jest.Mock).mockResolvedValue(mockSession);
+    const req = createMockRequest({
+      method: 'POST',
+      body: {
+        gameState: 'completed',
+        gameId: 10,
+        datetime: '2024-01-01T00:00:00Z',
+        players: [{ name: 'A', flag: 'winner', pid: 1 }], // Only 1 player
+      },
+    });
+
+    const { status, json } = await runHandler(handlerGamesIndex, req);
+
+    expect(status).toHaveBeenCalledWith(500);
+    expect(json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        error: expect.stringContaining('at least 2 players'),
+      })
+    );
+  });
+
+  test('POST /api/games allows admin to create past scheduled date', async () => {
+    (getServerSession as jest.Mock).mockResolvedValue(mockSession);
+    userDataService.getUserDataByDiscordId.mockResolvedValue({ role: 'admin' });
+    (isAdmin as jest.Mock).mockReturnValue(true);
+    gameService.createScheduledGame.mockResolvedValue('admin-scheduled-id');
+    const pastDate = new Date(Date.now() - 60_000).toISOString();
+    const req = createMockRequest({
+      method: 'POST',
+      body: {
+        gameState: 'scheduled',
+        scheduledDateTime: pastDate,
+        timezone: 'UTC',
+        teamSize: 2,
+        gameType: 'team',
+      },
+    });
+
+    const { status, json } = await runHandler(handlerGamesIndex, req);
+
+    expect(gameService.createScheduledGame).toHaveBeenCalled();
+    expect(status).toHaveBeenCalledWith(200);
+    expect(json).toHaveBeenCalledWith({ success: true, data: { id: 'admin-scheduled-id' } });
+  });
+
+  test('POST /api/games adds creator as participant when requested', async () => {
+    (getServerSession as jest.Mock).mockResolvedValue(mockSession);
+    gameService.createScheduledGame.mockResolvedValue('scheduled-id');
+    const futureDate = new Date(Date.now() + 60_000).toISOString();
+    const req = createMockRequest({
+      method: 'POST',
+      body: {
+        gameState: 'scheduled',
+        scheduledDateTime: futureDate,
+        timezone: 'UTC',
+        teamSize: 2,
+        gameType: 'team',
+        addCreatorToParticipants: true,
+      },
+    });
+
+    await runHandler(handlerGamesIndex, req);
+
+    expect(gameService.createScheduledGame).toHaveBeenCalledWith(
+      expect.objectContaining({
+        participants: expect.arrayContaining([
+          expect.objectContaining({
+            discordId: '123',
+            name: 'Test User',
+          }),
+        ]),
+      })
+    );
+  });
+
+  test('GET /api/games handles complex filters', async () => {
+    gameService.getGames.mockResolvedValue({
+      games: [{ id: '1' }],
+      total: 1,
+      page: 1,
+      limit: 10,
+    });
+    const req = createMockRequest({
+      method: 'GET',
+      query: {
+        gameState: 'completed',
+        category: '1v1',
+        startDate: '2024-01-01',
+        endDate: '2024-01-31',
+        player: 'TestPlayer',
+        page: '2',
+        limit: '20',
+      },
+    });
+
+    const { status, json } = await runHandler(handlerGamesIndex, req);
+
+    expect(gameService.getGames).toHaveBeenCalledWith(
+      expect.objectContaining({
+        gameState: 'completed',
+        category: '1v1',
+        startDate: '2024-01-01',
+        endDate: '2024-01-31',
+        player: 'TestPlayer',
+        page: 2,
+        limit: 20,
+      })
+    );
+    expect(status).toHaveBeenCalledWith(200);
   });
 
   test('GET /api/games/[id] returns game by id', async () => {
@@ -284,6 +475,68 @@ describe('Players API', () => {
     expect(json).toHaveBeenCalledWith({ success: true, data: { name: 'Test' } });
   });
 
+  test('GET /api/players/[name] requires name parameter', async () => {
+    const req = createMockRequest({ method: 'GET', query: {} }); // No name
+
+    const { status, json } = await runHandler(handlerPlayerByName, req);
+
+    expect(status).toHaveBeenCalledWith(500);
+    expect(json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        error: expect.stringContaining('Player name is required'),
+      })
+    );
+  });
+
+  test('GET /api/players/[name] returns 500 when player not found', async () => {
+    playerService.getPlayerStats.mockResolvedValue(null);
+    const req = createMockRequest({ method: 'GET', query: { name: 'NonExistent' } });
+
+    const { status, json } = await runHandler(handlerPlayerByName, req);
+
+    expect(status).toHaveBeenCalledWith(500);
+    expect(json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        error: expect.stringContaining('Player not found'),
+      })
+    );
+  });
+
+  test('GET /api/players/[name] handles filters correctly', async () => {
+    playerService.getPlayerStats.mockResolvedValue({
+      name: 'Test',
+      categories: { '1v1': { games: 10 } },
+    });
+    const req = createMockRequest({
+      method: 'GET',
+      query: {
+        name: 'Test',
+        category: '1v1',
+        startDate: '2024-01-01',
+        endDate: '2024-01-31',
+        includeGames: 'true',
+      },
+    });
+
+    const { json } = await runHandler(handlerPlayerByName, req);
+
+    expect(playerService.getPlayerStats).toHaveBeenCalledWith('Test', {
+      category: '1v1',
+      startDate: '2024-01-01',
+      endDate: '2024-01-31',
+      includeGames: true,
+    });
+    expect(json).toHaveBeenCalledWith({
+      success: true,
+      data: {
+        name: 'Test',
+        categories: { '1v1': { games: 10 } },
+      },
+    });
+  });
+
   test('GET /api/players/search returns empty when query too short', async () => {
     const req = createMockRequest({ method: 'GET', query: { q: 'a' } });
 
@@ -311,16 +564,23 @@ describe('Posts API', () => {
 
     expect(postService.getAllPosts).toHaveBeenCalledWith(true);
     expect(status).toHaveBeenCalledWith(200);
-    expect(json).toHaveBeenCalledWith([{ id: '1' }]);
+    expect(json).toHaveBeenCalledWith({ success: true, data: [{ id: '1' }] });
   });
 
   test('POST /api/posts requires authentication', async () => {
     (getServerSession as jest.Mock).mockResolvedValue(null);
     const req = createMockRequest({ method: 'POST', body: {} });
 
-    const { status } = await runHandler(handlerPostsIndex, req);
+    const { status, json } = await runHandler(handlerPostsIndex, req);
 
+    // createApiHandler returns 401 for requireAuth: true
     expect(status).toHaveBeenCalledWith(401);
+    expect(json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        error: 'Authentication required',
+      })
+    );
   });
 
   test('GET /api/posts/[id] returns post', async () => {
@@ -329,7 +589,7 @@ describe('Posts API', () => {
 
     const { json } = await runHandler(handlerPostsById, req);
 
-    expect(json).toHaveBeenCalledWith({ id: 'xyz' });
+    expect(json).toHaveBeenCalledWith({ success: true, data: { id: 'xyz' } });
   });
 });
 
@@ -347,7 +607,135 @@ describe('Archives API', () => {
     const req = createMockRequest({ method: 'GET' });
     const { json } = await runHandler(handlerEntriesIndex, req);
 
-    expect(json).toHaveBeenCalledWith(['a']);
+    expect(json).toHaveBeenCalledWith({ success: true, data: ['a'] });
+  });
+
+  test('GET /api/entries filters by contentType', async () => {
+    entryService.getAllEntries.mockResolvedValue([{ id: '1', contentType: 'post' }]);
+    const req = createMockRequest({ method: 'GET', query: { contentType: 'post' } });
+    const { json } = await runHandler(handlerEntriesIndex, req);
+
+    expect(entryService.getAllEntries).toHaveBeenCalledWith('post');
+    expect(json).toHaveBeenCalledWith({ success: true, data: [{ id: '1', contentType: 'post' }] });
+  });
+
+  test('POST /api/entries requires authentication', async () => {
+    (getServerSession as jest.Mock).mockResolvedValue(null);
+    const req = createMockRequest({
+      method: 'POST',
+      body: {
+        title: 'Test Entry',
+        content: 'Test content',
+        contentType: 'post',
+        date: '2024-01-01',
+      },
+    });
+
+    const { status, json } = await runHandler(handlerEntriesIndex, req);
+
+    expect(status).toHaveBeenCalledWith(500);
+    expect(json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        error: expect.stringContaining('Authentication required'),
+      })
+    );
+  });
+
+  test('POST /api/entries validates required fields', async () => {
+    (getServerSession as jest.Mock).mockResolvedValue(mockSession);
+    const req = createMockRequest({
+      method: 'POST',
+      body: {
+        title: 'Test Entry',
+        // Missing: content, contentType, date
+      },
+    });
+
+    const { status, json } = await runHandler(handlerEntriesIndex, req);
+
+    expect(status).toHaveBeenCalledWith(400);
+    expect(json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        error: expect.stringContaining('Missing required fields'),
+      })
+    );
+  });
+
+  test('POST /api/entries validates contentType enum', async () => {
+    (getServerSession as jest.Mock).mockResolvedValue(mockSession);
+    const req = createMockRequest({
+      method: 'POST',
+      body: {
+        title: 'Test Entry',
+        content: 'Test content',
+        contentType: 'invalid', // Invalid enum value
+        date: '2024-01-01',
+      },
+    });
+
+    const { status, json } = await runHandler(handlerEntriesIndex, req);
+
+    expect(status).toHaveBeenCalledWith(400);
+    expect(json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        error: expect.stringContaining('contentType must be one of'),
+      })
+    );
+  });
+
+  test('POST /api/entries validates title is not empty', async () => {
+    (getServerSession as jest.Mock).mockResolvedValue(mockSession);
+    const req = createMockRequest({
+      method: 'POST',
+      body: {
+        title: '', // Empty title
+        content: 'Test content',
+        contentType: 'post',
+        date: '2024-01-01',
+      },
+    });
+
+    const { status, json } = await runHandler(handlerEntriesIndex, req);
+
+    expect(status).toHaveBeenCalledWith(400);
+    expect(json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: false,
+        error: expect.stringContaining('title'),
+      })
+    );
+  });
+
+  test('POST /api/entries creates entry successfully', async () => {
+    (getServerSession as jest.Mock).mockResolvedValue(mockSession);
+    entryService.createEntry.mockResolvedValue('new-entry-id');
+    const req = createMockRequest({
+      method: 'POST',
+      body: {
+        title: 'Test Entry',
+        content: 'Test content',
+        contentType: 'post',
+        date: '2024-01-01',
+      },
+    });
+
+    const { status, json } = await runHandler(handlerEntriesIndex, req);
+
+    expect(entryService.createEntry).toHaveBeenCalledWith(
+      expect.objectContaining({
+        title: 'Test Entry',
+        content: 'Test content',
+        contentType: 'post',
+        date: '2024-01-01',
+        creatorName: 'Test User',
+        createdByDiscordId: '123',
+      })
+    );
+    expect(status).toHaveBeenCalledWith(200);
+    expect(json).toHaveBeenCalledWith({ success: true, data: { id: 'new-entry-id' } });
   });
 
   test('PUT /api/entries/[id] updates archive', async () => {
@@ -429,8 +817,13 @@ describe('Lookup APIs', () => {
   test('GET /api/icons/list returns icons', async () => {
     const { json } = await runHandler(handlerIconsList, createMockRequest({ method: 'GET' }));
     const payload = json.mock.calls[0][0];
-    expect(Array.isArray(payload)).toBe(true);
-    expect(payload[0]).toHaveProperty('filename');
+    // Response is wrapped in { success: true, data: [...] }
+    expect(payload).toHaveProperty('success', true);
+    expect(payload).toHaveProperty('data');
+    expect(Array.isArray(payload.data)).toBe(true);
+    if (payload.data.length > 0) {
+      expect(payload.data[0]).toHaveProperty('filename');
+    }
   });
 });
 
@@ -451,7 +844,7 @@ describe('User API', () => {
 
     const { json } = await runHandler(handlerDataNoticeStatus, req);
 
-    expect(json).toHaveBeenCalledWith({ accepted: true });
+    expect(json).toHaveBeenCalledWith({ success: true, data: { accepted: true } });
   });
 
   test('DELETE /api/user/delete removes account', async () => {
@@ -462,7 +855,10 @@ describe('User API', () => {
     const { json } = await runHandler(handlerUserDelete, req);
 
     expect(userDataService.deleteUserData).toHaveBeenCalledWith(mockSession.discordId);
-    expect(json).toHaveBeenCalledWith({ success: true, message: 'Account deleted successfully' });
+    expect(json).toHaveBeenCalledWith({
+      success: true,
+      data: { message: 'Account deleted successfully' },
+    });
   });
 });
 
@@ -470,10 +866,17 @@ describe('Admin API', () => {
   test('POST /api/admin/wipe-test-data requires admin session', async () => {
     const originalEnv = process.env.NODE_ENV;
     Object.defineProperty(process.env, 'NODE_ENV', { value: 'development', writable: true, configurable: true });
-    // Restore after test if needed
+    
     (getServerSession as jest.Mock).mockResolvedValue(mockSession);
     userDataService.getUserDataByDiscordId.mockResolvedValue({ role: 'admin' });
     (isAdmin as jest.Mock).mockReturnValue(true);
+    
+    // Mock Firebase admin to prevent actual Firebase calls
+    const { getFirestoreAdmin } = jest.requireMock('@/features/infrastructure/api/firebase/admin');
+    getFirestoreAdmin.mockReturnValue({
+      listCollections: jest.fn().mockResolvedValue([]),
+    });
+    
     const req = createMockRequest({ method: 'POST' });
 
     const { json, status } = await runHandler(handlerAdminWipe, req);
@@ -481,6 +884,9 @@ describe('Admin API', () => {
     expect(userDataService.getUserDataByDiscordId).toHaveBeenCalledWith('123');
     expect(status).toHaveBeenCalledWith(200);
     expect(json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
+    
+    // Restore env
+    Object.defineProperty(process.env, 'NODE_ENV', { value: originalEnv, writable: true, configurable: true });
   });
 });
 

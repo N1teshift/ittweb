@@ -182,7 +182,7 @@ function extractBuildingsMetadata(extractedBuildings) {
     const id = (building.id || '').toLowerCase();
     const name = (building.name || '').trim();
     
-    // Extract stats from raw modifications
+    // Use stats from extracted building (from enhanced extraction), fallback to raw if needed
     const raw = building.raw || [];
     const getBuildingField = (fieldId) => getField(raw, fieldId, 0);
     
@@ -191,8 +191,17 @@ function extractBuildingsMetadata(extractedBuildings) {
       unitId: building.id || id.toUpperCase(),
       name: name,
       description: building.description || '',
-      hp: getBuildingField('bhpm') || getBuildingField('uhpm') || null,
-      armor: getBuildingField('bdef') || getBuildingField('udef') || null,
+      // Building stats (use extracted values, fallback to raw extraction)
+      hp: building.hp ?? (getBuildingField('bhpm') || getBuildingField('uhpm') || null),
+      armor: building.armor ?? (getBuildingField('bdef') || getBuildingField('udef') || null),
+      buildTime: building.buildTime ?? undefined,
+      goldCost: building.goldCost ?? undefined,
+      lumberCost: building.lumberCost ?? undefined,
+      repairCost: building.repairCost ?? undefined,
+      repairTime: building.repairTime ?? undefined,
+      supplyProvided: building.supplyProvided ?? undefined,
+      supplyUsed: building.supplyUsed ?? undefined,
+      abilities: building.abilities ?? undefined,
       craftableItems: [], // Will be populated from recipes if available
     };
     

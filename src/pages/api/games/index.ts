@@ -4,7 +4,7 @@ import { parseQueryString, parseQueryInt, parseQueryEnum, parseQueryDate } from 
 import { createScheduledGame, createCompletedGame, getGames } from '@/features/modules/games/lib/gameService';
 import type { CreateScheduledGame, CreateCompletedGame, GameFilters } from '@/features/modules/games/types';
 import { createComponentLogger } from '@/features/infrastructure/logging';
-import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
+import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 import type { Game, GameListResponse } from '@/features/modules/games/types';
 
@@ -60,7 +60,7 @@ export default createGetPostHandler<GameListResponse | { id: string }>(
         const isPastDate = scheduledDate < new Date();
         
         if (isPastDate) {
-          const userData = await getUserDataByDiscordId(session.discordId || '');
+          const userData = await getUserDataByDiscordIdServer(session.discordId || '');
           const userIsAdmin = isAdmin(userData?.role);
           
           if (!userIsAdmin) {

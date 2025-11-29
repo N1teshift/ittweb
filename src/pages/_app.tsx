@@ -10,8 +10,10 @@ import { appWithTranslation } from "next-i18next";
 import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
 import Head from "next/head";
+import { useEffect } from "react";
 import Layout from "@/features/infrastructure/components/Layout";
 import { Logger } from "@/features/infrastructure/logging";
+import { initializeErrorTracking, initializePerformanceMonitoring } from "@/features/infrastructure/monitoring";
 
 // Initialize logging
 if (typeof window !== 'undefined') {
@@ -43,6 +45,14 @@ function App({ Component, pageProps }: AppProps) {
     // Extract translation namespaces from pageProps, fallback to ["common"]
     const extendedProps = pageProps as ExtendedPageProps;
     const translationNamespaces = extendedProps?.translationNamespaces || ["common"];
+    
+    // Initialize monitoring (client-side only)
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            initializeErrorTracking();
+            initializePerformanceMonitoring();
+        }
+    }, []);
     
     return (
         <>

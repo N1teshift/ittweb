@@ -14,10 +14,21 @@
 - `useGame` - Fetch single game by ID
 
 ### Services
-- `gameService` - CRUD operations for games
-- `eloCalculator` - ELO rating calculations
+- `gameService` - CRUD operations for games (split into focused modules: create, read, update, delete, participation, utils)
+- `eloCalculator` - ELO rating calculations and recalculation utilities
 - `replayParser` - Parse Warcraft 3 replay files
 - `w3mmdUtils` - W3MMD (Warcraft 3 Multi-Map Data) utilities
+
+**Note**: `gameService` has been split into multiple focused modules for maintainability:
+- `gameService.ts` - Main entry point (re-exports all functions)
+- `gameService.create.ts` - Create operations
+- `gameService.read.ts` - Read operations
+- `gameService.update.ts` - Update operations
+- `gameService.delete.ts` - Delete operations
+- `gameService.participation.ts` - Join/leave game operations
+- `gameService.utils.ts` - Helper functions
+
+All functions are still available via the main `gameService` import for backward compatibility.
 
 ### Types
 - `Game` - Game document structure
@@ -56,6 +67,25 @@ const newGame = await createGame({
 - `POST /api/games` - Create game (authenticated)
 - `PUT /api/games/[id]` - Update game (authenticated)
 - `DELETE /api/games/[id]` - Delete game (authenticated)
+
+## ELO Calculator Functions
+
+The `eloCalculator` module provides:
+
+- `calculateEloChange()` - Calculate ELO change for a single game result
+- `calculateTeamElo()` - Calculate average team ELO
+- `updateEloScores()` - Update ELO scores for all players in a game
+- `recalculateFromGame()` - Recalculate ELO from a specific game forward (useful for fixing incorrect games)
+
+**Example: Recalculating ELO**
+```typescript
+import { recalculateFromGame } from '@/features/modules/games/lib/eloCalculator';
+
+// Recalculate ELO starting from a specific game
+// This rolls back ELO changes for affected players and recalculates
+// all subsequent games in chronological order
+await recalculateFromGame('game-id-123');
+```
 
 ## Related Documentation
 

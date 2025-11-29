@@ -20,7 +20,7 @@ describe('Security: CSRF Protection & Session Security', () => {
         url: '/api/posts',
         body: {},
         query: {},
-      } as NextApiRequest;
+      } as unknown as NextApiRequest;
 
       const origin = req.headers.origin;
       const host = req.headers.host;
@@ -39,7 +39,7 @@ describe('Security: CSRF Protection & Session Security', () => {
         url: '/api/posts',
         body: {},
         query: {},
-      } as NextApiRequest;
+      } as unknown as NextApiRequest;
 
       const origin = req.headers.origin;
       const host = req.headers.host;
@@ -58,7 +58,7 @@ describe('Security: CSRF Protection & Session Security', () => {
         url: '/api/posts',
         body: {},
         query: {},
-      } as NextApiRequest;
+      } as unknown as NextApiRequest;
 
       const referer = req.headers.referer;
       const host = req.headers.host;
@@ -76,7 +76,7 @@ describe('Security: CSRF Protection & Session Security', () => {
         url: '/api/posts',
         body: {},
         query: {},
-      } as NextApiRequest;
+      } as unknown as NextApiRequest;
 
       // Same-site requests may not have origin header
       const hasOrigin = !!req.headers.origin;
@@ -97,7 +97,7 @@ describe('Security: CSRF Protection & Session Security', () => {
         },
         url: '/api/posts',
         query: {},
-      } as NextApiRequest;
+      } as unknown as NextApiRequest;
 
       const headerToken = req.headers['x-csrf-token'];
       const bodyToken = req.body?.csrfToken;
@@ -118,7 +118,7 @@ describe('Security: CSRF Protection & Session Security', () => {
         },
         url: '/api/posts',
         query: {},
-      } as NextApiRequest;
+      } as unknown as NextApiRequest;
 
       const headerToken = req.headers['x-csrf-token'];
       const bodyToken = req.body?.csrfToken;
@@ -205,8 +205,8 @@ describe('Security: CSRF Protection & Session Security', () => {
 
     it('should handle token theft scenarios', () => {
       const stolenToken = 'stolen-token';
-      const originalIp = '192.168.1.1';
-      const attackerIp = '10.0.0.1';
+      const originalIp: string = '192.168.1.1';
+      const attackerIp: string = '10.0.0.1';
 
       // In a real implementation, IP changes should invalidate sessions
       const ipChanged = originalIp !== attackerIp;
@@ -247,7 +247,7 @@ describe('Security: CSRF Protection & Session Security', () => {
         url: '/api/posts',
         body: {},
         query: {},
-      } as NextApiRequest;
+      } as unknown as NextApiRequest;
 
       const isAllowed = allowedMethods.includes(req.method as string);
       expect(isAllowed).toBe(false);
@@ -262,7 +262,7 @@ describe('Security: CSRF Protection & Session Security', () => {
         url: '/api/posts',
         body: {},
         query: {},
-      } as NextApiRequest;
+      } as unknown as NextApiRequest;
 
       const contentType = req.headers['content-type'];
       const isValidContentType = contentType?.includes('application/json') || 

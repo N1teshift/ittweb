@@ -9,9 +9,9 @@ export type AbilityCategory =
   | 'gatherer' 
   | 'item'
   | 'building'
+  | 'auradummy'
   | 'bonushandler'
   | 'buff'
-  | 'auradummy'
   | 'unknown';
 
 export type AbilityData = {
@@ -28,15 +28,19 @@ export type AbilityData = {
   duration?: number;
   damage?: string;
   effects?: string[];
-  // Additional properties
-  hotkey?: string;
+  // Targeting & effects
   areaOfEffect?: number;
   maxTargets?: number;
-  castTime?: number | string;
   targetsAllowed?: string;
+  // Usage
+  hotkey?: string;
+  castTime?: number | string;
+  // Class relationships
   availableToClasses?: string[];
   spellbook?: 'hero' | 'normal' | string;
+  // Visual effects
   visualEffects?: unknown;
+  // Level-specific data
   levels?: {
     [level: string]: {
       damage?: number | string;

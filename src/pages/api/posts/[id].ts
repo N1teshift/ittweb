@@ -9,7 +9,7 @@ import {
 } from '@/features/modules/blog/lib/postService';
 import { CreatePost } from '@/types/post';
 import { createComponentLogger } from '@/features/infrastructure/logging';
-import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
+import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 import type { Post } from '@/types/post';
 
@@ -52,7 +52,7 @@ export default createApiHandler<Post | { success: boolean }>(
       }
 
       // Check if user is admin or the author
-      const userData = await getUserDataByDiscordId(session.discordId);
+      const userData = await getUserDataByDiscordIdServer(session.discordId);
       const userIsAdmin = isAdmin(userData?.role);
       const userIsAuthor = post.createdByDiscordId === session.discordId;
 
@@ -81,7 +81,7 @@ export default createApiHandler<Post | { success: boolean }>(
       }
 
       // Check if user is admin or the author
-      const userData = await getUserDataByDiscordId(session.discordId);
+      const userData = await getUserDataByDiscordIdServer(session.discordId);
       const userIsAdmin = isAdmin(userData?.role);
       const userIsAuthor = post.createdByDiscordId === session.discordId;
 

@@ -26,9 +26,18 @@ const logger = createComponentLogger('gameService');
 export async function createScheduledGame(gameData: CreateScheduledGame): Promise<string> {
   try {
     // Get the next available game ID if not provided
-    const gameId = gameData.gameId || await getNextGameId();
-    
-    // Reduced logging verbosity
+    let gameId: number;
+    try {
+      gameId = gameData.gameId || await getNextGameId();
+      logger.info('Game ID determined', { gameId, provided: !!gameData.gameId });
+    } catch (gameIdError) {
+      logError(gameIdError as Error, 'Failed to get next game ID', {
+        component: 'gameService',
+        operation: 'createScheduledGame',
+        step: 'getNextGameId',
+      });
+      throw new Error('Failed to generate game ID. Please try again.');
+    }
 
     const cleanedData = removeUndefined(gameData as unknown as Record<string, unknown>);
     
@@ -40,26 +49,40 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
         ? adminTimestamp.fromDate(new Date(cleanedData.scheduledDateTime))
         : adminTimestamp.now();
       
-      const docRef = await adminDb.collection(GAMES_COLLECTION).add({
-        ...cleanedData,
-        gameId,
-        gameState: 'scheduled',
-        creatorName: cleanedData.creatorName || 'Unknown',
-        createdByDiscordId: cleanedData.createdByDiscordId || '',
-        scheduledDateTime,
-        scheduledDateTimeString: cleanedData.scheduledDateTime,
-        ...(cleanedData.submittedAt ? { 
-          submittedAt: cleanedData.submittedAt instanceof Timestamp 
-            ? adminTimestamp.fromDate(cleanedData.submittedAt.toDate())
-            : adminTimestamp.fromDate(new Date(cleanedData.submittedAt as string))
-        } : {}),
-        participants: cleanedData.participants || [],
-        createdAt: adminTimestamp.now(),
-        updatedAt: adminTimestamp.now(),
-        isDeleted: false,
-      });
-      logger.info('Scheduled game created', { id: docRef.id, gameId });
-      return docRef.id;
+      try {
+        const gameDoc = {
+          ...cleanedData,
+          gameId,
+          gameState: 'scheduled',
+          creatorName: cleanedData.creatorName || 'Unknown',
+          createdByDiscordId: cleanedData.createdByDiscordId || '',
+          scheduledDateTime,
+          scheduledDateTimeString: cleanedData.scheduledDateTime,
+          ...(cleanedData.submittedAt ? { 
+            submittedAt: cleanedData.submittedAt instanceof Timestamp 
+              ? adminTimestamp.fromDate(cleanedData.submittedAt.toDate())
+              : adminTimestamp.fromDate(new Date(cleanedData.submittedAt as string))
+          } : {}),
+          participants: cleanedData.participants || [],
+          createdAt: adminTimestamp.now(),
+          updatedAt: adminTimestamp.now(),
+          isDeleted: false,
+        };
+        
+        logger.info('Creating scheduled game document', { gameId, scheduledDateTime: cleanedData.scheduledDateTime });
+        const docRef = await adminDb.collection(GAMES_COLLECTION).add(gameDoc);
+        logger.info('Scheduled game created', { id: docRef.id, gameId });
+        return docRef.id;
+      } catch (writeError) {
+        logError(writeError as Error, 'Failed to write scheduled game to Firestore', {
+          component: 'gameService',
+          operation: 'createScheduledGame',
+          step: 'firestoreWrite',
+          gameId,
+          errorCode: (writeError as { code?: string }).code,
+        });
+        throw new Error('Failed to create scheduled game. Please check your data and try again.');
+      }
     } else {
       const db = getFirestoreInstance();
       
@@ -67,22 +90,36 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
         ? Timestamp.fromDate(new Date(cleanedData.scheduledDateTime))
         : Timestamp.now();
       
-      const docRef = await addDoc(collection(db, GAMES_COLLECTION), {
-        ...cleanedData,
-        gameId,
-        gameState: 'scheduled',
-        creatorName: cleanedData.creatorName || 'Unknown',
-        createdByDiscordId: cleanedData.createdByDiscordId || '',
-        scheduledDateTime,
-        scheduledDateTimeString: cleanedData.scheduledDateTime,
-        ...(cleanedData.submittedAt ? { submittedAt: Timestamp.fromDate(new Date(cleanedData.submittedAt as string)) } : {}),
-        participants: cleanedData.participants || [],
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now(),
-        isDeleted: false,
-      });
-      logger.info('Scheduled game created', { id: docRef.id, gameId });
-      return docRef.id;
+      try {
+        const gameDoc = {
+          ...cleanedData,
+          gameId,
+          gameState: 'scheduled',
+          creatorName: cleanedData.creatorName || 'Unknown',
+          createdByDiscordId: cleanedData.createdByDiscordId || '',
+          scheduledDateTime,
+          scheduledDateTimeString: cleanedData.scheduledDateTime,
+          ...(cleanedData.submittedAt ? { submittedAt: Timestamp.fromDate(new Date(cleanedData.submittedAt as string)) } : {}),
+          participants: cleanedData.participants || [],
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now(),
+          isDeleted: false,
+        };
+        
+        logger.info('Creating scheduled game document', { gameId, scheduledDateTime: cleanedData.scheduledDateTime });
+        const docRef = await addDoc(collection(db, GAMES_COLLECTION), gameDoc);
+        logger.info('Scheduled game created', { id: docRef.id, gameId });
+        return docRef.id;
+      } catch (writeError) {
+        logError(writeError as Error, 'Failed to write scheduled game to Firestore', {
+          component: 'gameService',
+          operation: 'createScheduledGame',
+          step: 'firestoreWrite',
+          gameId,
+          errorCode: (writeError as { code?: string }).code,
+        });
+        throw new Error('Failed to create scheduled game. Please check your data and try again.');
+      }
     }
   } catch (error) {
     const err = error as Error;

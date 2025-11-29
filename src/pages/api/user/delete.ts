@@ -1,6 +1,6 @@
 import type { NextApiRequest } from 'next';
 import { createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
-import { deleteUserData } from '@/features/infrastructure/lib/userDataService';
+import { deleteUserDataServer } from '@/features/infrastructure/lib/userDataService.server';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('api/user/delete');
@@ -15,7 +15,7 @@ export default createPostHandler<{ success: boolean; message: string }>(
 
     logger.info('Deleting user account', { discordId });
 
-    await deleteUserData(discordId);
+    await deleteUserDataServer(discordId);
 
     logger.info('User account deleted successfully', { discordId });
 

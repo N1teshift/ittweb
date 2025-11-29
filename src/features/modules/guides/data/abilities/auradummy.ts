@@ -6,7 +6,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Damage Reduction',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnhardenedskin.png',
+    iconPath: 'BTNHardenedSkin.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -19,7 +19,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Spell Damage Reduction',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnthickfur.png',
+    iconPath: 'BTNThickFur.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -32,7 +32,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Food dietary bonus.',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnmonsterlure.png',
+    iconPath: 'BTNMonsterLure.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -59,7 +59,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Snake Reflexes',
     category: 'auradummy',
     description: '',
-    iconPath: 'BTNWindSerpentPassive.png',
+    iconPath: 'bTNWindSerpentPassive.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -111,7 +111,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Makrura Cuirass',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnnagaarmorup3.png',
+    iconPath: 'BTNNagaArmorUp3.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -124,7 +124,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: 0 Magic Resist',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnresistmagic.png',
+    iconPath: 'BTNResistMagic.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -137,7 +137,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: 1 Magic Resist',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnresistmagic.png',
+    iconPath: 'BTNResistMagic.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -150,7 +150,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: 2 Magic Resist',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnresistmagic.png',
+    iconPath: 'BTNResistMagic.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -163,7 +163,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: 3 Magic Resist',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnresistmagic.png',
+    iconPath: 'BTNResistMagic.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -176,7 +176,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: 4 Magic Resist',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnresistmagic.png',
+    iconPath: 'BTNResistMagic.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -189,7 +189,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: 5 Magic Resist',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnresistmagic.png',
+    iconPath: 'BTNResistMagic.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -202,7 +202,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: 6 Magic Resist',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnresistmagic.png',
+    iconPath: 'BTNResistMagic.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -215,7 +215,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: 7 Magic Resist',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnresistmagic.png',
+    iconPath: 'BTNResistMagic.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -228,7 +228,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: 8 Magic Resist',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnresistmagic.png',
+    iconPath: 'BTNResistMagic.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -241,7 +241,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: 9 Magic Resist',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnresistmagic.png',
+    iconPath: 'BTNResistMagic.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -254,7 +254,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: 10 Magic Resist',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnresistmagic.png',
+    iconPath: 'BTNResistMagic.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -267,7 +267,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Snake Toxin',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnslowpoison.png',
+    iconPath: 'BTNSlowPoison.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -283,7 +283,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Titan\'s Grip',
     category: 'auradummy',
     description: '',
-    iconPath: 'btncancel.png',
+    iconPath: 'ReplaceableTextures/PassiveButtons/PASBTNSeaGiantPulverize.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -296,7 +296,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Dreamwalking',
     category: 'auradummy',
     description: '',
-    iconPath: 'btncancel.png',
+    iconPath: 'BTNEtherealFormOn.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -309,7 +309,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Zap 1',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnstasistrap.png',
+    iconPath: 'BTNStasisTrap.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -323,7 +323,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Zap 2',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnstasistrap.png',
+    iconPath: 'BTNStasisTrap.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -363,7 +363,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Frost Cloak Target',
     category: 'auradummy',
     description: '',
-    iconPath: 'BTNFrostBearPassive.png',
+    iconPath: 'BTNFrost.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -377,7 +377,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Makrura Carapace',
     category: 'auradummy',
     description: '',
-    iconPath: 'BTNMakruraCarapace.png',
+    iconPath: 'bTNMakruraCarapace.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -390,7 +390,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Random Hat',
     category: 'auradummy',
     description: '',
-    iconPath: 'btnselectheroon.png',
+    iconPath: 'BTNSelectHeroOn.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [
@@ -404,7 +404,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: 'Aura Dummy: Tournament Winner 2020',
     category: 'auradummy',
     description: '',
-    iconPath: 'btncancel.png',
+    iconPath: 'BTNCheese.png',
     targetsAllowed: 'self',
     visualEffects: {
             "attachmentPoints": [

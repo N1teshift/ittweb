@@ -8,7 +8,7 @@ export const BEASTMASTER_ABILITIES: AbilityData[] = [
     classRequirement: 'beastmaster',
     description: '',
     tooltip: 'Dire Bear visits bee hives so often, he is considered part of the hive.\nGain a permanent bee protecting you per unique hidden stash scavenged.\nBees inflict |cffFF02021|r magic damage per second.|cFFFFCC00\n\nLevel 1: |rMaximum bees: |cFFFFCC003|r|cFFFFCC00\nLevel 4: |rMaximum bees: |cFFFFCC005|r',
-    iconPath: 'BTNFriendOfTheHive.png',
+    iconPath: 'bTNFriendOfTheHive.png',
     range: 99999,
     duration: 9999,
     areaOfEffect: 400,
@@ -133,7 +133,7 @@ export const BEASTMASTER_ABILITIES: AbilityData[] = [
     classRequirement: 'beastmaster',
     description: '',
     tooltip: 'Your pet goes to sleep, recovering |cff1FBF0060|r health point. Lasts |cff7DBEF110|r seconds, has |cff7DBEF120|r seconds cooldown.',
-    iconPath: 'btnelunesblessing.png',
+    iconPath: 'BTNElunesBlessing.png',
     cooldown: 20,
     hotkey: 'E',
     levels: {
@@ -169,7 +169,7 @@ export const BEASTMASTER_ABILITIES: AbilityData[] = [
     classRequirement: 'beastmaster',
     description: '',
     tooltip: 'Transform into a wolf, gaining the |cffffcc00Wolf\'s Hunger|r ability for stealing life from your opponents.',
-    iconPath: 'btndirewolf.png',
+    iconPath: 'BTNDireWolf.png',
     hotkey: 'Q',
   },
   {
@@ -179,7 +179,7 @@ export const BEASTMASTER_ABILITIES: AbilityData[] = [
     classRequirement: 'beastmaster',
     description: '',
     tooltip: 'Transform into a bear, gaining the |cffffcc00Bear\'s Bulwark|r ability for increasing the durability of your team.',
-    iconPath: 'btngrizzlybear.png',
+    iconPath: 'BTNGrizzlyBear.png',
     hotkey: 'W',
   },
   {
@@ -208,7 +208,7 @@ export const BEASTMASTER_ABILITIES: AbilityData[] = [
     category: 'beastmaster',
     classRequirement: 'beastmaster',
     description: '',
-    iconPath: 'btndirewolf.png',
+    iconPath: 'BTNDireWolf.png',
   },
   {
     id: 'the-shapeshifter-is-strong-in-battle-and-versatile-he-can-transform-himself-into-a-wolf-a-b-edd38a49',
@@ -217,7 +217,7 @@ export const BEASTMASTER_ABILITIES: AbilityData[] = [
     classRequirement: 'beastmaster',
     description: '',
     tooltip: 'The Shapeshifter is strong in battle and versatile, he can transform himself into a wolf,a bear,a panther or a tiger. Each form got a unique ability allowing the shapeshifter to either,get lifesteal,buff his allies armor and health regeneration,escape or cripple the enemy. |cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'btnbearform.png',
+    iconPath: 'BTNBearForm.png',
     hotkey: 'Q',
   },
   {
@@ -227,7 +227,7 @@ export const BEASTMASTER_ABILITIES: AbilityData[] = [
     classRequirement: 'beastmaster',
     description: '',
     tooltip: 'Permanently transform into a Dire Wolf.\nDire Wolf can only consume raw meat and has various abilities related to generating and consuming raw meat.|cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'btndirewolf.png',
+    iconPath: 'BTNDireWolf.png',
     hotkey: 'E',
   },
   {
@@ -237,7 +237,7 @@ export const BEASTMASTER_ABILITIES: AbilityData[] = [
     classRequirement: 'beastmaster',
     description: '',
     tooltip: 'Permanently transform into a Dire Bear.\nDire Bear is strong and durable fighter.|cffFF0202Can only choose 1 subClass!|r|cff7DBEF1\n\nDifficulty: |r|cffFE890DMedium|r',
-    iconPath: 'btngrizzlybear.png',
+    iconPath: 'BTNGrizzlyBear.png',
     hotkey: 'R',
   }
 ];
