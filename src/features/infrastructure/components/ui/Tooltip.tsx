@@ -70,11 +70,17 @@ export function Tooltip({
   };
 
   // Clone child element with event handlers
+  // Type helper to safely access ref from ReactElement
+  type ReactElementWithRef = React.ReactElement & {
+    ref?: React.Ref<HTMLElement>;
+  };
+  
   const triggerElement = React.cloneElement(children, {
     ref: (node: HTMLElement | null) => {
       triggerRef.current = node;
       // Handle ref forwarding if child has ref
-      const childRef = (children as any).ref;
+      const childWithRef = children as ReactElementWithRef;
+      const childRef: React.Ref<HTMLElement> | undefined = childWithRef.ref;
       if (typeof childRef === 'function') {
         childRef(node);
       } else if (childRef && typeof childRef === 'object' && 'current' in childRef) {
