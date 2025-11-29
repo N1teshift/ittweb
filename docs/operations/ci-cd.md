@@ -117,11 +117,73 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
 
 **Duration**: ~2-5 minutes
 
+### 6. Workflow Monitor (`.github/workflows/workflow-monitor.yml`)
+
+**Purpose**: Automatically monitor all workflows and provide feedback on status and failures.
+
+**Triggers**:
+- After any workflow completes (Test, Build, Deploy, Security, Bundle Size)
+- Daily schedule (9 AM UTC)
+- Manual trigger via GitHub Actions UI
+
+**Jobs**:
+- **Monitor Workflows**: Runs on Ubuntu latest
+  - Monitors workflow completion events
+  - Creates GitHub issues for failures
+  - Writes status files for programmatic access
+  - Prevents duplicate issues for recurring failures
+
+**Features**:
+- **Automatic Issue Creation**: Creates GitHub issues when workflows fail (labeled `workflow-failure`, `ci/cd`, `devops`)
+- **Status Files**: Writes status files to `.workflow/progress/workflow-status/*-status.md`
+- **Duplicate Prevention**: Checks for existing issues before creating new ones
+- **Daily Health Check**: Runs daily to ensure workflows are active
+
+**Duration**: ~1-2 minutes
+
+**Feedback Methods**:
+- GitHub Issues (automatic on failures)
+- Status files (readable by scripts)
+- Command-line tool: `node scripts/workflow/check-workflow-status.mjs`
+
 ## Workflow Status
 
-View workflow status:
+### Viewing Workflow Status
+
+**Manual Methods**:
 - **GitHub Repository**: Actions tab
 - **Badge**: Add to README: `![CI](https://github.com/owner/repo/workflows/Test/badge.svg)`
+
+**Automated Feedback**:
+- **Workflow Monitor**: Automatically monitors all workflows and creates GitHub issues on failures
+- **Status Files**: Workflow status is written to `.workflow/progress/workflow-status/*.md` files
+- **Check Script**: Run `node scripts/workflow/check-workflow-status.mjs` to view all workflow statuses
+
+### Workflow Monitoring
+
+The **Workflow Monitor** workflow (`.github/workflows/workflow-monitor.yml`) provides automated feedback:
+
+1. **Monitors All Workflows**: Automatically triggers when any workflow completes
+2. **Creates Issues on Failure**: Opens GitHub issues with details when workflows fail
+3. **Updates Status Files**: Writes status files that can be read programmatically
+4. **Daily Health Check**: Runs daily to ensure workflows are active
+
+**Feedback Methods**:
+- ✅ **GitHub Issues**: Automatic issue creation for failures (labeled `workflow-failure`, `ci/cd`, `devops`)
+- ✅ **Status Files**: Readable status files in `.workflow/progress/workflow-status/`
+- ✅ **Command Line**: Use `node scripts/workflow/check-workflow-status.mjs` to check status
+
+**Example Status Check**:
+```bash
+# Check all workflows
+node scripts/workflow/check-workflow-status.mjs
+
+# Check specific workflow
+node scripts/workflow/check-workflow-status.mjs test
+
+# JSON output
+node scripts/workflow/check-workflow-status.mjs all json
+```
 
 ## Adding New Workflows
 
@@ -282,24 +344,6 @@ jobs:
       - run: npm run test:custom
 ```
 
-### Example: Notification Workflow
-
-```yaml
-name: Notify on Failure
-
-on:
-  workflow_run:
-    workflows: ["Test", "Build"]
-    types: [completed]
-
-jobs:
-  notify:
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Notify
-        run: echo "Workflow failed!"
-```
 
 ## Related Documentation
 
