@@ -71,6 +71,8 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
 - `VERCEL_ORG_ID`: Vercel organization ID
 - `VERCEL_PROJECT_ID`: Vercel project ID
 
+**Note**: The build workflow automatically skips environment variable validation in CI (see [Environment Variables](#environment-variables) section below). Environment variables are still required for actual deployments to Vercel.
+
 ### 4. Bundle Size Workflow (`.github/workflows/bundle-size.yml`)
 
 **Purpose**: Monitor bundle size on pull requests.
@@ -198,6 +200,63 @@ git push
 - **Check**: Verify secrets are set in GitHub repository settings
 - **Check**: Verify secret names match exactly
 - **Check**: Verify secrets are available for the workflow
+
+## Environment Variables
+
+### CI Build Environment
+
+The build workflow automatically skips environment variable validation when running in CI (GitHub Actions). This allows CI builds to pass without requiring all environment variables to be configured in GitHub Secrets, since CI builds only need to verify that the code compiles and builds successfully.
+
+**How it works**:
+- The `scripts/validate-env.js` script checks for `CI=true` environment variable
+- If `CI=true`, validation is skipped and the script exits successfully
+- This allows type-checking and build verification to proceed without real environment variables
+
+**Note**: This only applies to CI builds. Local development and actual deployments still require all environment variables to be configured.
+
+### GitHub Secrets Configuration
+
+For workflows that need environment variables (e.g., deploy workflow), configure them in GitHub Secrets:
+
+1. Go to **GitHub Repository** → **Settings** → **Secrets and variables** → **Actions**
+2. Click **New repository secret**
+3. Add each required environment variable as a secret:
+   - `NEXT_PUBLIC_FIREBASE_API_KEY`
+   - `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+   - `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
+   - `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
+   - `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
+   - `NEXT_PUBLIC_FIREBASE_APP_ID`
+   - `NEXTAUTH_URL`
+   - `NEXTAUTH_SECRET`
+   - `DISCORD_CLIENT_ID`
+   - `DISCORD_CLIENT_SECRET`
+   - `FIREBASE_SERVICE_ACCOUNT_KEY` (JSON string)
+
+**Note**: GitHub Secrets are encrypted and only available to workflows. They are not exposed in logs or to forks.
+
+### Vercel Environment Variables
+
+For deployments to Vercel, configure environment variables in the Vercel Dashboard:
+
+1. Go to **Vercel Dashboard** → **Your Project** → **Settings** → **Environment Variables**
+2. Add each required environment variable
+3. Select which environments to apply to (Production, Preview, Development)
+4. For secrets, you can either:
+   - Add as direct values
+   - Reference Vercel Secrets (create secret first, then reference it)
+
+**Required Variables**:
+- All `NEXT_PUBLIC_FIREBASE_*` variables
+- `FIREBASE_SERVICE_ACCOUNT_KEY` (JSON string)
+- `NEXTAUTH_SECRET`
+- `NEXTAUTH_URL` (production URL for production, preview URL for previews)
+- `DISCORD_CLIENT_ID`
+- `DISCORD_CLIENT_SECRET`
+
+**Important**: After adding environment variables in Vercel, you must redeploy for changes to take effect.
+
+See [Environment Setup Guide](../ENVIRONMENT_SETUP.md) for detailed instructions on obtaining these values.
 
 ## Workflow Examples
 

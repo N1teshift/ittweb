@@ -33,6 +33,14 @@ const optionalVars = {
 };
 
 function validateEnv() {
+  // Skip validation in CI environment (GitHub Actions, etc.)
+  // CI builds don't need real environment variables for type-checking and build verification
+  if (process.env.CI === 'true') {
+    console.log('⚠️  Skipping environment variable validation in CI environment\n');
+    console.log('💡 Note: Environment variables are still required for local development and deployments\n');
+    process.exit(0);
+  }
+
   const missing = [];
   const empty = [];
   
