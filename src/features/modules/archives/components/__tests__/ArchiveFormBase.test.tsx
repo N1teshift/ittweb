@@ -687,8 +687,10 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      expect(screen.getByTestId('preview-text')).toBeInTheDocument();
-      expect(screen.getByText('Test content preview')).toBeInTheDocument();
+      const previewElement = screen.getByTestId('preview-text');
+      expect(previewElement).toBeInTheDocument();
+      // Verify the content is displayed within the preview element
+      expect(previewElement).toHaveTextContent('Test content preview');
     });
 
     it('should show remove image button in edit mode', () => {
