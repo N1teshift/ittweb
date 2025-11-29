@@ -4,6 +4,10 @@ import { getItemIconPathFromRecord } from '@/features/modules/guides/data/items/
 import type { ItemCategory } from '@/types/items';
 import { useItemsDataSWR } from '@/features/modules/guides/hooks/useItemsDataSWR';
 
+// Note: We use GuideIcon with src override to leverage getItemIconPathFromRecord()
+// which checks item.iconPath first, then ICON_MAP, then default fallback.
+// This ensures we use item-specific icon paths when available.
+
 export default function ItemsPalette() {
   const [query, setQuery] = React.useState('');
   const [category, setCategory] = React.useState<ItemCategory | 'all'>('all');

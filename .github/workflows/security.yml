@@ -133,9 +133,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           config-path: .gitleaks.toml
-          no-git: false
-          verbose: true
-          redact: true
 
       - name: Upload Gitleaks results
         if: always()

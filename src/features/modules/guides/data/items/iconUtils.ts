@@ -7,7 +7,14 @@ function toIconCategory(item: ItemData): ITTIconCategory {
 }
 
 export function getItemIconPathFromRecord(item: ItemData): string {
-  if (item.iconPath) return item.iconPath;
+  if (item.iconPath) {
+    // If iconPath is already a full path (starts with /), return it as-is
+    // Otherwise, it's just a filename and we need to construct the full path
+    if (item.iconPath.startsWith('/')) {
+      return item.iconPath;
+    }
+    return `/icons/itt/${item.iconPath}`;
+  }
   const category = toIconCategory(item);
   const explicit = resolveExplicitIcon(category, item.name);
   if (explicit) return explicit;

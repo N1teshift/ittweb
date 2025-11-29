@@ -111,43 +111,63 @@ function extractTasks(content, agentName) {
   if (!content) return [];
   
   const tasks = [];
-  // Match tasks: - [ ] Task text followed by optional metadata lines
-  const taskRegex = /^- \[ \] (.+?)(?:\n(?:  - \*\*.*?\*\*:.*?\n?)+)?/gms;
-  let match;
+  const lines = content.split('\n');
   
-  while ((match = taskRegex.exec(content)) !== null) {
-    const taskText = match[1].trim();
-    const fullMatch = match[0];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim(); // Handle CRLF and trim whitespace
+    const taskMatch = line.match(/^- \[ \] (.+)$/);
     
-    // Extract priority (matches "  - **Priority**: High" format)
-    const priorityMatch = fullMatch.match(/  - \*\*Priority\*\*:\s*(High|Medium|Low|Critical)/i) ||
-                         fullMatch.match(/\*\*Priority\*\*:\s*(High|Medium|Low|Critical)/i);
-    const priority = priorityMatch ? priorityMatch[1] : 'Medium';
-    
-    // Extract tags
-    const tagsMatch = fullMatch.match(/  - \*\*Tags\*\*:\s*(.+?)(?:\n|$)/i) ||
-                     fullMatch.match(/\*\*Tags\*\*:\s*(.+?)(?:\n|$)/i);
-    const tags = tagsMatch ? tagsMatch[1] : '';
-    
-    // Extract status (if mentioned)
-    const statusMatch = fullMatch.match(/  - \*\*Status\*\*:\s*(.+?)(?:\n|$)/i) ||
-                       fullMatch.match(/\*\*Status\*\*:\s*(.+?)(?:\n|$)/i);
-    const taskStatus = statusMatch ? statusMatch[1].trim() : '';
-    
-    // Check if blocked (look for blocked status, waiting, or pause emoji)
-    const isBlocked = taskStatus.toLowerCase().includes('blocked') || 
-                     taskStatus.toLowerCase().includes('waiting') ||
-                     taskStatus.toLowerCase().includes('⏸️') ||
-                     taskStatus.toLowerCase().includes('⏸');
-    
-    tasks.push({
-      agent: agentName,
-      text: taskText.length > 80 ? taskText.substring(0, 77) + '...' : taskText,
-      priority,
-      tags,
-      status: taskStatus,
-      blocked: isBlocked,
-    });
+    if (taskMatch) {
+      const taskText = taskMatch[1].trim();
+      if (!taskText || taskText.length === 0) continue;
+      
+      // Look ahead for metadata (next 20 lines max)
+      let priority = 'Medium';
+      let tags = '';
+      let taskStatus = '';
+      let isBlocked = false;
+      
+      for (let j = i + 1; j < Math.min(i + 20, lines.length); j++) {
+        const metaLine = lines[j];
+        
+        // Stop if we hit another task or section header
+        if (metaLine.match(/^- \[/) || metaLine.match(/^##+ /)) break;
+        
+        // Extract priority
+        const priorityMatch = metaLine.match(/  - \*\*Priority\*\*:\s*(High|Medium|Low|Critical)/i);
+        if (priorityMatch) priority = priorityMatch[1];
+        
+        // Extract tags
+        const tagsMatch = metaLine.match(/  - \*\*Tags\*\*:\s*(.+)$/i);
+        if (tagsMatch) tags = tagsMatch[1];
+        
+        // Extract status
+        const statusMatch = metaLine.match(/  - \*\*Status\*\*:\s*(.+)$/i);
+        if (statusMatch) taskStatus = statusMatch[1].trim();
+        
+        // Check for blocked indicators
+        if (metaLine.includes('⏸️') || metaLine.includes('⏸') || 
+            metaLine.toLowerCase().includes('blocked') ||
+            metaLine.toLowerCase().includes('waiting')) {
+          isBlocked = true;
+        }
+      }
+      
+      // Also check task status for blocked
+      if (taskStatus.toLowerCase().includes('blocked') || 
+          taskStatus.toLowerCase().includes('waiting')) {
+        isBlocked = true;
+      }
+      
+      tasks.push({
+        agent: agentName,
+        text: taskText.length > 100 ? taskText.substring(0, 97) + '...' : taskText,
+        priority,
+        tags,
+        status: taskStatus,
+        blocked: isBlocked,
+      });
+    }
   }
   
   return tasks;
@@ -229,6 +249,12 @@ function generateGoalProgress(goals) {
   }).join('\n');
 }
 
+function generateGoalProgressSummary(goals) {
+  if (goals.length === 0) return 'N/A';
+  const avgProgress = Math.round(goals.reduce((sum, g) => sum + g.progress, 0) / goals.length);
+  return `${avgProgress}%`;
+}
+
 function generateBlockedItems(allTasks) {
   const blocked = allTasks.filter(t => t.blocked);
   
@@ -262,7 +288,7 @@ function generateDashboard(data) {
 | **Total Active Tasks** | ${data.totalTasks} |
 | **High Priority Tasks** | ${data.highPriorityTasks} |
 | **Blocked Tasks** | ${data.blockedTasks} |
-| **Overall Goal Progress** | ${typeof data.goalProgress === 'number' ? data.goalProgress + '%' : data.goalProgress} |
+| **Overall Goal Progress** | ${data.goalProgressSummary} |
 
 ---
 
@@ -397,9 +423,7 @@ function main() {
     totalTasks: allTasks.length,
     highPriorityTasks: allTasks.filter(t => t.priority === 'High' || t.priority === 'Critical').length,
     blockedTasks: allTasks.filter(t => t.blocked).length,
-    goalProgress: goals.length > 0 
-      ? Math.round(goals.reduce((sum, g) => sum + g.progress, 0) / goals.length)
-      : 'N/A',
+    goalProgress: generateGoalProgressSummary(goals),
   };
 
   // Generate dashboard sections
@@ -407,7 +431,8 @@ function main() {
     ...stats,
     agentStatusTable: generateAgentStatusTable(statusInfos),
     tasksByPriority: generateTasksByPriority(allTasks),
-    goalProgress: generateGoalProgress(goals),
+    goalProgressSummary: stats.goalProgress, // Keep the summary for Quick Stats
+    goalProgress: generateGoalProgress(goals), // Full section for Goal Progress
     blockedItems: generateBlockedItems(allTasks),
   };
 

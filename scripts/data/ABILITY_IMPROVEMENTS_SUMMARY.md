@@ -263,3 +263,4 @@ export type AbilityData = {
 See `ABILITY_DATA_EXPLORATION.md` for detailed field reference and examples.
 
 
+

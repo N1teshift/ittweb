@@ -1,8 +1,8 @@
 import React from 'react';
-import Image from 'next/image';
+import GuideIcon from '@/features/modules/guides/components/GuideIcon';
+import { getItemIconPathFromRecord } from '@/features/modules/guides/data/items/iconUtils';
 import type { DragPayload, TrollSide } from '@/features/modules/tools/types';
 import type { ItemData } from '@/types/items';
-import { getItemIconPathFromRecord } from '@/features/modules/guides/data/items/iconUtils';
 
 export default function InventoryGrid({
   side,
@@ -68,7 +68,7 @@ export default function InventoryGrid({
             {item ? (
               <>
                 <div
-                  className="absolute inset-0 w-full h-full rounded-md overflow-hidden"
+                  className="absolute inset-0 w-full h-full rounded-md overflow-hidden flex items-center justify-center"
                   draggable
                   onDragStart={(e) => {
                     e.dataTransfer.effectAllowed = 'move';
@@ -79,15 +79,12 @@ export default function InventoryGrid({
                   }}
                   title={item.name}
                 >
-                  <Image
+                  <GuideIcon
+                    category={item.category === 'buildings' ? 'buildings' : 'items'}
+                    name={item.name}
+                    size={64}
                     src={getItemIconPathFromRecord(item)}
-                    alt={item.name}
-                    fill
                     className="object-cover rounded-md"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = '/icons/itt/BTNYellowHerb.png'; // fallback icon
-                    }}
                   />
                 </div>
                 <span className="absolute -top-2 -right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">

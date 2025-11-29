@@ -34,16 +34,20 @@ export function useIconMapperData() {
         setIsLoading(true);
         const response = await fetch(`/api/icons/list?t=${Date.now()}`);
         if (response.ok) {
-          const data = await response.json();
-          logger.info(`Loaded ${data.length} icons from API`);
-          setIcons(data);
+          const result = await response.json();
+          // API returns { success: true, data: [...] }, extract the data array
+          const iconsArray = result?.data || result || [];
+          logger.info(`Loaded ${iconsArray.length} icons from API`);
+          setIcons(Array.isArray(iconsArray) ? iconsArray : []);
         } else {
           logger.error('API response not OK', undefined, { status: response.status, statusText: response.statusText });
+          setIcons([]); // Set empty array on error
         }
       } catch (error) {
         logger.error('Failed to load icons', error instanceof Error ? error : new Error(String(error)), {
           operation: 'loadIcons',
         });
+        setIcons([]); // Set empty array on error
       } finally {
         setIsLoading(false);
       }

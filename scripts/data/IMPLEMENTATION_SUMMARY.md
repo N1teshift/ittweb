@@ -230,3 +230,4 @@ src/features/modules/guides/data/abilities/*.ts (with new fields)
 - Relationships are extracted from spell lists in TrollUnitTextConstant.wurst
 
 
+

@@ -29,18 +29,40 @@ tags = ["discord", "oauth", "secret"]
 # Allowlist patterns (files that may contain false positives)
 [allowlist]
 description = "Allowlist for known safe files"
-paths = [
-  '''\.env\.example''',
-  '''\.env\.local\.example''',
-  '''docs/.*''',
-  '''\.workflow/.*''',
-  '''\.github/workflows/.*''',
-  '''\.gitleaks\.toml''',
-  '''README\.md''',
-  '''\.gitignore''',
-]
 
 # Ignore test files and mocks
+[[allowlist.paths]]
+regex = '''\.env\.example'''
+reason = "Example environment file"
+
+[[allowlist.paths]]
+regex = '''\.env\.local\.example'''
+reason = "Example local environment file"
+
+[[allowlist.paths]]
+regex = '''docs/.*'''
+reason = "Documentation files"
+
+[[allowlist.paths]]
+regex = '''\.workflow/.*'''
+reason = "Workflow documentation"
+
+[[allowlist.paths]]
+regex = '''\.github/workflows/.*'''
+reason = "GitHub workflow files"
+
+[[allowlist.paths]]
+regex = '''\.gitleaks\.toml'''
+reason = "Gitleaks configuration file"
+
+[[allowlist.paths]]
+regex = '''README\.md'''
+reason = "README file"
+
+[[allowlist.paths]]
+regex = '''\.gitignore'''
+reason = "Git ignore file"
+
 [[allowlist.paths]]
 regex = '''__tests__/.*'''
 reason = "Test files may contain example secrets"
