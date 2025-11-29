@@ -111,6 +111,7 @@ function extractTasks(content, agentName) {
   if (!content) return [];
   
   const tasks = [];
+  // Match tasks: - [ ] Task text followed by optional metadata lines
   const taskRegex = /^- \[ \] (.+?)(?:\n(?:  - \*\*.*?\*\*:.*?\n?)+)?/gms;
   let match;
   
@@ -118,22 +119,26 @@ function extractTasks(content, agentName) {
     const taskText = match[1].trim();
     const fullMatch = match[0];
     
-    // Extract priority
-    const priorityMatch = fullMatch.match(/\*\*Priority\*\*:\s*(High|Medium|Low|Critical)/i);
+    // Extract priority (matches "  - **Priority**: High" format)
+    const priorityMatch = fullMatch.match(/  - \*\*Priority\*\*:\s*(High|Medium|Low|Critical)/i) ||
+                         fullMatch.match(/\*\*Priority\*\*:\s*(High|Medium|Low|Critical)/i);
     const priority = priorityMatch ? priorityMatch[1] : 'Medium';
     
     // Extract tags
-    const tagsMatch = fullMatch.match(/\*\*Tags\*\*:\s*(.+?)(?:\n|$)/i);
+    const tagsMatch = fullMatch.match(/  - \*\*Tags\*\*:\s*(.+?)(?:\n|$)/i) ||
+                     fullMatch.match(/\*\*Tags\*\*:\s*(.+?)(?:\n|$)/i);
     const tags = tagsMatch ? tagsMatch[1] : '';
     
     // Extract status (if mentioned)
-    const statusMatch = fullMatch.match(/\*\*Status\*\*:\s*(.+?)(?:\n|$)/i);
+    const statusMatch = fullMatch.match(/  - \*\*Status\*\*:\s*(.+?)(?:\n|$)/i) ||
+                       fullMatch.match(/\*\*Status\*\*:\s*(.+?)(?:\n|$)/i);
     const taskStatus = statusMatch ? statusMatch[1].trim() : '';
     
-    // Check if blocked
+    // Check if blocked (look for blocked status, waiting, or pause emoji)
     const isBlocked = taskStatus.toLowerCase().includes('blocked') || 
                      taskStatus.toLowerCase().includes('waiting') ||
-                     taskStatus.toLowerCase().includes('⏸️');
+                     taskStatus.toLowerCase().includes('⏸️') ||
+                     taskStatus.toLowerCase().includes('⏸');
     
     tasks.push({
       agent: agentName,
@@ -152,14 +157,30 @@ function extractGoals(content) {
   if (!content) return [];
   
   const goals = [];
-  const goalRegex = /^### (Goal \d+:|.+?)\s*\n\n\*\*Status\*\*:\s*(.+?)\s*\n\*\*Progress\*\*:\s*(\d+)%/gms;
-  let match;
+  // Split by goal headers and parse each section
+  const goalSections = content.split(/^### (Goal \d+:)/gm);
   
-  while ((match = goalRegex.exec(content)) !== null) {
+  // Skip first section (everything before first goal)
+  for (let i = 2; i < goalSections.length; i += 2) {
+    const goalTitle = goalSections[i - 1].trim();
+    const goalContent = goalSections[i];
+    
+    // Extract status
+    const statusMatch = goalContent.match(/\*\*Status\*\*:\s*(.+?)(?:\n|$)/);
+    const status = statusMatch ? statusMatch[1].trim() : 'Unknown';
+    
+    // Extract progress percentage
+    const progressMatch = goalContent.match(/\*\*Progress\*\*:\s*(\d+)%/);
+    const progress = progressMatch ? parseInt(progressMatch[1], 10) : 0;
+    
+    // Extract full goal name (title + first line of content)
+    const firstLine = goalContent.split('\n')[0].trim();
+    const goalName = firstLine ? `${goalTitle} ${firstLine}` : goalTitle;
+    
     goals.push({
-      name: match[1].trim(),
-      status: match[2].trim(),
-      progress: parseInt(match[3], 10),
+      name: goalName,
+      status,
+      progress,
     });
   }
   
@@ -241,7 +262,7 @@ function generateDashboard(data) {
 | **Total Active Tasks** | ${data.totalTasks} |
 | **High Priority Tasks** | ${data.highPriorityTasks} |
 | **Blocked Tasks** | ${data.blockedTasks} |
-| **Overall Goal Progress** | ${data.goalProgress}% |
+| **Overall Goal Progress** | ${typeof data.goalProgress === 'number' ? data.goalProgress + '%' : data.goalProgress} |
 
 ---
 
@@ -378,7 +399,7 @@ function main() {
     blockedTasks: allTasks.filter(t => t.blocked).length,
     goalProgress: goals.length > 0 
       ? Math.round(goals.reduce((sum, g) => sum + g.progress, 0) / goals.length)
-      : 0,
+      : 'N/A',
   };
 
   // Generate dashboard sections
