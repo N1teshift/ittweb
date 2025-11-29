@@ -105,7 +105,7 @@ jobs:
             
             const issueBody = `## Workflow Failure: ${workflowName}
 
-**Status**: ❌ Failed
+**Status**: Failed
 **Workflow Run**: [View Run](${workflowUrl}) (ID: ${workflowRunId})
 **Trigger**: ${triggerEvent}
 

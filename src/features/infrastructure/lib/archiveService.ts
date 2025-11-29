@@ -192,47 +192,30 @@ export const createArchiveEntry = async (entry: CreateArchiveEntry): Promise<str
 };
 
 // Get all archive entries
+// Uses API endpoint to avoid Firestore security rules issues
 export const getArchiveEntries = async (): Promise<ArchiveEntry[]> => {
   if (!isClient) {
     throw new Error('Fetching entries is only available on the client side');
   }
   
-  const q = query(
-    collection(db, ARCHIVE_COLLECTION),
-    orderBy('createdAt', 'desc')
-  );
-  
-  const querySnapshot = await getDocs(q);
-  const entries: ArchiveEntry[] = [];
-  
-  querySnapshot.forEach((doc) => {
-    const data = doc.data();
-    if (data.isDeleted) {
-      return;
+  try {
+    const response = await fetch('/api/archives');
+    if (!response.ok) {
+      throw new Error(`Failed to fetch archives: ${response.statusText}`);
     }
-    entries.push({
-      id: doc.id,
-      title: data.title,
-      content: data.content,
-      creatorName: data.creatorName || 'Unknown',
-      createdByDiscordId: data.createdByDiscordId ?? null,
-      entryType: data.entryType,
-      images: data.images,
-      videoUrl: data.videoUrl,
-      twitchClipUrl: data.twitchClipUrl,
-      replayUrl: data.replayUrl,
-      linkedGameDocumentId: data.linkedGameDocumentId,
-      sectionOrder: data.sectionOrder,
-      dateInfo: data.dateInfo,
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt,
-      submittedAt: data.submittedAt,
-      isDeleted: data.isDeleted ?? false,
-      deletedAt: data.deletedAt,
-    });
-  });
-  
-  return entries;
+    const data = await response.json();
+    
+    // Handle both direct array response and { success: true, data: [...] } format
+    if (Array.isArray(data)) {
+      return data;
+    } else if (data.success && Array.isArray(data.data)) {
+      return data.data;
+    } else {
+      throw new Error('Invalid response format from archives API');
+    }
+  } catch (error) {
+    throw error;
+  }
 };
 
 // Update archive entry
