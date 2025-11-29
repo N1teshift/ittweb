@@ -89,20 +89,29 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
         }
         return true;
       })
-      .map(game => ({
-        id: `game-${game.id}`,
-        title: `Game #${game.gameId}`,
-        content: '',
-        creatorName: 'System',
-        linkedGameDocumentId: game.id, // Set the document ID so ArchiveEntry component can fetch full game data
-        dateInfo: {
-          type: 'single' as const,
-          singleDate: timestampToIso(game.datetime),
-        },
-        createdAt: timestampToIso(game.createdAt),
-        updatedAt: timestampToIso(game.updatedAt),
-        isDeleted: false,
-      } as ArchiveEntry));
+      .map(game => {
+        // For scheduled games, use scheduledDateTime; for completed games, use datetime
+        const gameDate = game.gameState === 'scheduled' && game.scheduledDateTime
+          ? timestampToIso(game.scheduledDateTime)
+          : game.datetime
+          ? timestampToIso(game.datetime)
+          : timestampToIso(game.createdAt); // Fallback to createdAt if neither exists
+
+        return {
+          id: `game-${game.id}`,
+          title: `Game #${game.gameId}`,
+          content: '',
+          creatorName: game.creatorName || 'System',
+          linkedGameDocumentId: game.id, // Set the document ID so ArchiveEntry component can fetch full game data
+          dateInfo: {
+            type: 'single' as const,
+            singleDate: gameDate,
+          },
+          createdAt: timestampToIso(game.createdAt),
+          updatedAt: timestampToIso(game.updatedAt),
+          isDeleted: false,
+        } as ArchiveEntry;
+      });
   }, [games, archivedGameDocumentIds, archivedNumericGameIds]);
 
   // Merge dated entries with games, sorted by date

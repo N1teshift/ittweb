@@ -58,7 +58,13 @@ export function GameLinkedArchiveEntry({
   }
 
   const gameDate = game 
-    ? new Date(game.datetime as string) 
+    ? new Date(
+        game.gameState === 'scheduled' && game.scheduledDateTime
+          ? timestampToIso(game.scheduledDateTime)
+          : game.datetime
+          ? timestampToIso(game.datetime)
+          : timestampToIso(game.createdAt)
+      )
     : (entry.dateInfo.singleDate 
         ? new Date(entry.dateInfo.singleDate) 
         : new Date(timestampToIso(entry.createdAt)));

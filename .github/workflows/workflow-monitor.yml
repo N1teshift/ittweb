@@ -293,11 +293,17 @@ jobs:
           fi
 
       - name: Commit and push status files
-        if: always() && steps.status_report.outputs.has_status_file == 'true'
+        if: always()
         run: |
           # Configure git
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          
+          # Check if status files exist
+          if [ ! -d "/tmp/workflow-status" ] || [ -z "$(ls -A /tmp/workflow-status/*.md 2>/dev/null)" ]; then
+            echo "No status files to commit"
+            exit 0
+          fi
           
           # Ensure we're on main branch
           git fetch origin main
@@ -307,6 +313,12 @@ jobs:
           mkdir -p .workflow/progress/workflow-status
           cp /tmp/workflow-status/*.md .workflow/progress/workflow-status/ 2>/dev/null || true
           
+          # Check if any files were copied
+          if [ -z "$(ls -A .workflow/progress/workflow-status/*.md 2>/dev/null)" ]; then
+            echo "No status files to commit after copy"
+            exit 0
+          fi
+          
           # Add and commit status files
           git add .workflow/progress/workflow-status/*.md
           
@@ -314,7 +326,8 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: Update workflow status files [skip ci]"
-            git push origin main
+            echo "Committing status files..."
+            git commit -m "chore: Update workflow status files [skip ci]" || echo "Commit failed or no changes"
+            git push origin main || echo "Push failed"
           fi
 
