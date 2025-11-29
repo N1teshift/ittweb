@@ -261,8 +261,10 @@ jobs:
             } > "$STATUS_FILE"
           fi
           
-          echo "status_file=$STATUS_FILE" >> $GITHUB_OUTPUT
-          echo "status_file_name=$STATUS_FILE_NAME" >> $GITHUB_OUTPUT
+          # Always set status_file output so commit step can run
+          echo "status_file=${STATUS_FILE}" >> $GITHUB_OUTPUT
+          echo "status_file_name=${STATUS_FILE_NAME}" >> $GITHUB_OUTPUT
+          echo "has_status_file=true" >> $GITHUB_OUTPUT
 
       - name: Create workflow summary
         if: github.event_name == 'workflow_run'
@@ -291,7 +293,7 @@ jobs:
           fi
 
       - name: Commit and push status files
-        if: always() && steps.status_report.outputs.status_file
+        if: always() && steps.status_report.outputs.has_status_file == 'true'
         run: |
           # Configure git
           git config --local user.email "github-actions[bot]@users.noreply.github.com"

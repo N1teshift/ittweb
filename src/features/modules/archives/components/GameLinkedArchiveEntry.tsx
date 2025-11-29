@@ -65,17 +65,6 @@ export function GameLinkedArchiveEntry({
   const formattedDate = gameDate.toLocaleDateString();
   const formattedTime = gameDate.toLocaleTimeString();
 
-  const handleEditClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onEdit) onEdit(entry);
-  };
-
-  const handleDeleteClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onDelete) onDelete(entry);
-  };
 
   const handleTextExpandClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -99,13 +88,8 @@ export function GameLinkedArchiveEntry({
       className={`bg-gradient-to-br from-black/40 via-amber-950/20 to-black/40 backdrop-blur-sm border-2 border-amber-500/40 rounded-lg p-6 mb-6 hover:border-amber-400/70 hover:shadow-lg hover:shadow-amber-500/20 transition-all relative group ${game?.id ? 'cursor-pointer' : ''}`}
       onClick={game?.id ? handleCardClick : undefined}
     >
-      {/* Visual indicator badge */}
-      <div className="absolute top-3 left-3 px-2 py-1 bg-amber-500/30 border border-amber-400/50 rounded text-xs font-semibold text-amber-300 z-10">
-        🎮 Game Archive
-      </div>
-
       {/* Main clickable content area */}
-      <div className="pt-6">
+      <div>
         <div className="flex justify-between items-start mb-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
@@ -274,29 +258,6 @@ export function GameLinkedArchiveEntry({
         </div>
       </div>
 
-      {/* Edit/Delete buttons */}
-      {(onEdit || (canDelete && onDelete)) && (
-        <div className="absolute top-3 right-3 flex items-center gap-2 z-10">
-          {onEdit && (
-            <button
-              onClick={handleEditClick}
-              className="px-3 py-1.5 text-xs font-medium bg-black/70 hover:bg-black/90 border border-amber-500/40 hover:border-amber-500/60 text-amber-300 hover:text-amber-200 rounded transition-all shadow-lg"
-              title="Edit archive entry"
-            >
-              Edit
-            </button>
-          )}
-          {canDelete && onDelete && (
-            <button
-              onClick={handleDeleteClick}
-              className="px-3 py-1.5 text-xs font-medium bg-black/70 hover:bg-black/90 border border-red-500/40 hover:border-red-500/60 text-red-300 hover:text-red-200 rounded transition-all shadow-lg"
-              title="Delete archive entry"
-            >
-              Delete
-            </button>
-          )}
-        </div>
-      )}
     </div>
   );
 }

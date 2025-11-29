@@ -11,3 +11,4 @@ export { default as ArchivesErrorState } from './ArchivesErrorState';
 export { default as ArchivesPage } from '../archivesPage';
 export { default as ArchiveDeleteDialog } from './ArchiveDeleteDialog';
 export { default as TwitchClipEmbed } from './TwitchClipEmbed';
+export { default as HomeTimeline } from './HomeTimeline';

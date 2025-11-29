@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { useSession, signIn } from 'next-auth/react';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
@@ -12,26 +11,22 @@ import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import type { GetStaticProps } from 'next';
 import type { Entry } from '@/types/entry';
-import type { Game, CreateScheduledGame } from '@/features/modules/games/types';
+import type { CreateScheduledGame } from '@/features/modules/games/types';
 import { Button } from '@/features/infrastructure/components/ui';
 import YouTubeEmbed from '@/features/modules/archives/components/YouTubeEmbed';
 import TwitchClipEmbed from '@/features/modules/archives/components/TwitchClipEmbed';
 import { extractYouTubeId, extractTwitchClipId } from '@/features/infrastructure/lib/archiveService';
+import { HomeTimeline } from '@/features/modules/archives/components';
 
 const pageNamespaces = ["common"];
-
-type RecentActivityItem = 
-  | { type: 'entry'; data: Entry }
-  | { type: 'game'; data: Game };
 
 type HomeProps = {
   translationNamespaces?: string[];
   latestEntry?: Entry | null;
   mdxSource?: MDXRemoteSerializeResult | null;
-  recentActivity: RecentActivityItem[];
 };
 
-export default function Home({ latestEntry, mdxSource, recentActivity }: HomeProps) {
+export default function Home({ latestEntry, mdxSource }: HomeProps) {
   const { data: session, status } = useSession();
   const [showEntryForm, setShowEntryForm] = useState(false);
   const [showScheduleForm, setShowScheduleForm] = useState(false);
@@ -160,70 +155,6 @@ export default function Home({ latestEntry, mdxSource, recentActivity }: HomePro
     setShowEntryForm(false);
   };
 
-  const getActivityDate = (item: RecentActivityItem): string => {
-    switch (item.type) {
-      case 'entry':
-        return item.data.date;
-      case 'game':
-        if (item.data.gameState === 'scheduled' && item.data.scheduledDateTime) {
-          return timestampToIso(item.data.scheduledDateTime);
-        }
-        if (item.data.gameState === 'completed' && item.data.datetime) {
-          return timestampToIso(item.data.datetime);
-        }
-        return timestampToIso(item.data.createdAt);
-      default:
-        return new Date().toISOString();
-    }
-  };
-
-  const getActivityTitle = (item: RecentActivityItem): string => {
-    switch (item.type) {
-      case 'entry':
-        return item.data.title;
-      case 'game':
-        if (item.data.gameState === 'scheduled') {
-          const teamSize = item.data.teamSize === 'custom' ? item.data.customTeamSize : item.data.teamSize;
-          return `${teamSize} - ${item.data.gameType === 'elo' ? 'ELO' : 'Normal'} Game #${item.data.gameId}`;
-        }
-        return item.data.archiveContent?.title || `Game #${item.data.gameId}`;
-      default:
-        return '';
-    }
-  };
-
-  const getActivityAuthor = (item: RecentActivityItem): string | undefined => {
-    switch (item.type) {
-      case 'entry':
-        return item.data.creatorName;
-      case 'game':
-        return item.data.creatorName;
-      default:
-        return undefined;
-    }
-  };
-
-  const getActivityUrl = (item: RecentActivityItem): string => {
-    switch (item.type) {
-      case 'entry':
-        return `/entries/${item.data.id}`;
-      case 'game':
-        return `/games/${item.data.id}`;
-      default:
-        return '/';
-    }
-  };
-
-  const getActivityTypeLabel = (item: RecentActivityItem): string => {
-    switch (item.type) {
-      case 'entry':
-        return item.data.contentType === 'post' ? 'Post' : 'Memory';
-      case 'game':
-        return item.data.gameState === 'scheduled' ? 'Scheduled Game' : 'Game';
-      default:
-        return '';
-    }
-  };
 
   return (
     <div className="flex justify-center min-h-[calc(100vh-8rem)]">
@@ -323,73 +254,10 @@ export default function Home({ latestEntry, mdxSource, recentActivity }: HomePro
           </div>
         )}
 
-        {/* Recent Activity */}
-        {recentActivity.length > 0 && (
-          <div className="mt-8">
-            <div className="mb-4">
-              <h2 className="text-2xl font-bold text-amber-400 font-medieval mb-1">Recent Activity</h2>
-              <div className="w-12 h-0.5 bg-gradient-to-r from-amber-500 to-amber-600 rounded-full opacity-80"></div>
-            </div>
-            <div className="grid gap-2">
-              {recentActivity.map((item) => {
-                const title = getActivityTitle(item);
-                const author = getActivityAuthor(item);
-                const url = getActivityUrl(item);
-                const date = getActivityDate(item);
-                const typeLabel = getActivityTypeLabel(item);
-                const key = item.type === 'entry' 
-                  ? `entry-${item.data.id}` 
-                  : `game-${item.data.id}`;
-
-                return (
-                  <Link
-                    key={key}
-                    href={url}
-                    className="group block"
-                  >
-                    <div className="bg-black/40 backdrop-blur-sm border border-amber-500/20 rounded p-3 hover:border-amber-500/40 hover:bg-black/50 transition-all duration-300">
-                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1.5">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-0.5">
-                            <span className="text-[10px] font-semibold text-amber-500/70 uppercase tracking-wide">
-                              {typeLabel}
-                            </span>
-                          </div>
-                          <h3 className="text-sm md:text-base font-semibold text-amber-400 group-hover:text-amber-300 transition-colors font-medieval truncate">
-                            {title}
-                          </h3>
-                        </div>
-                        <div className="flex items-center gap-3 text-xs text-gray-400 flex-shrink-0">
-                          <div className="flex items-center gap-1">
-                            <svg className="w-3 h-3 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            <span>{formatDate(date)}</span>
-                          </div>
-                          {author && (
-                            <div className="flex items-center gap-1">
-                              <svg className="w-3 h-3 text-amber-500/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                              </svg>
-                              <span className="text-amber-400/80">{author}</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* No activity message */}
-        {recentActivity.length === 0 && !mdxSource && (
-          <BlogPost title="Latest Update">
-            <p className="text-gray-300">No recent activity yet.</p>
-          </BlogPost>
-        )}
+        {/* Timeline - Unified view of games, posts, and memories */}
+        <div className="mt-12">
+          <HomeTimeline />
+        </div>
 
         {/* Schedule Game Form Modal */}
         {showScheduleForm && (
@@ -441,62 +309,19 @@ function removeUndefined<T>(obj: T): T {
 export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
   const withI18n = getStaticPropsWithTranslations(pageNamespaces);
   const i18nResult = await withI18n({ locale: locale as string });
-  const [{ getAllEntriesServer }, { getGames }] = await Promise.all([
+  const [{ getAllEntriesServer }] = await Promise.all([
     import('@/features/modules/entries/lib/entryService.server'),
-    import('@/features/modules/games/lib/gameService'),
   ]);
   
   try {
-    const [allEntries, completedGamesResult, scheduledGamesResult] = await Promise.all([
-      getAllEntriesServer().catch((err) => {
-        console.error('Failed to fetch entries:', err);
-        return [];
-      }),
-      getGames({ gameState: 'completed', limit: 100 }).catch((err) => {
-        console.error('Failed to fetch completed games:', err);
-        return { games: [], hasMore: false };
-      }),
-      getGames({ gameState: 'scheduled', limit: 100 }).catch((err) => {
-        console.error('Failed to fetch scheduled games:', err);
-        return { games: [], hasMore: false };
-      }),
-    ]);
-    
-    // Combine completed and scheduled games
-    const allGamesCombined = [...completedGamesResult.games, ...scheduledGamesResult.games];
+    // Only fetch entries for the latest blog post
+    const allEntries = await getAllEntriesServer().catch((err) => {
+      console.error('Failed to fetch entries:', err);
+      return [];
+    });
 
-    // Sanitize entries and games to remove undefined values
+    // Sanitize entries to remove undefined values
     const sanitizedEntries = allEntries.map(removeUndefined) as Entry[];
-    const sanitizedGames = allGamesCombined.map(removeUndefined) as Game[];
-
-    // Combine all activity items
-    const activityItems: RecentActivityItem[] = [
-      ...sanitizedEntries.map((entry): RecentActivityItem => ({ type: 'entry', data: entry })),
-      ...sanitizedGames.map((game): RecentActivityItem => ({ type: 'game', data: game })),
-    ];
-
-    // Sort by date (most recent first)
-    // Import timestampToIso for server-side conversion
-    const { timestampToIso: serverTimestampToIso } = await import('@/features/infrastructure/utils/timestampUtils');
-    const getItemDate = (item: RecentActivityItem): Date => {
-      switch (item.type) {
-        case 'entry':
-          return new Date(item.data.date);
-        case 'game':
-          if (item.data.gameState === 'scheduled' && item.data.scheduledDateTime) {
-            return new Date(serverTimestampToIso(item.data.scheduledDateTime));
-          }
-          if (item.data.gameState === 'completed' && item.data.datetime) {
-            return new Date(serverTimestampToIso(item.data.datetime));
-          }
-          return new Date(serverTimestampToIso(item.data.createdAt));
-        default:
-          return new Date(0);
-      }
-    };
-
-    const sortedActivity = activityItems
-      .sort((a, b) => getItemDate(b).getTime() - getItemDate(a).getTime());
     
     // Get latest entry (post) for display
     const latestEntry = sanitizedEntries
@@ -510,19 +335,10 @@ export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
       mdxSource = await serialize(latestEntry.content);
     }
 
-    // Sanitize the final activity array to remove any undefined values
-    const sanitizedActivity = sortedActivity.map((item) => {
-      return {
-        type: item.type,
-        data: removeUndefined(item.data),
-      } as RecentActivityItem;
-    });
-
     // Build props object
     const props: HomeProps = {
       ...(i18nResult.props || {}),
       translationNamespaces: pageNamespaces,
-      recentActivity: sanitizedActivity,
       latestEntry: latestEntry ? removeUndefined(latestEntry) : null,
       mdxSource,
     };
@@ -534,13 +350,12 @@ export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
     };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error('Failed to load recent activity:', errorMessage);
-    // Return empty props if there's an error (will show "No recent activity yet")
+    console.error('Failed to load latest entry:', errorMessage);
+    // Return empty props if there's an error
     return {
       props: {
         ...(i18nResult.props || {}),
         translationNamespaces: pageNamespaces,
-        recentActivity: [],
       },
       revalidate: 60,
     };

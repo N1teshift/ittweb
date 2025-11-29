@@ -133,14 +133,11 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
       }
     });
     
+    // Sort by creation date (when the record was added to the system)
     return all.sort((a, b) => {
-      const dateA = a.dateInfo.type === 'single' && a.dateInfo.singleDate 
-        ? new Date(a.dateInfo.singleDate).getTime() 
-        : 0;
-      const dateB = b.dateInfo.type === 'single' && b.dateInfo.singleDate 
-        ? new Date(b.dateInfo.singleDate).getTime() 
-        : 0;
-      return dateB - dateA; // Newest first
+      const timeA = new Date(timestampToIso(a.createdAt)).getTime();
+      const timeB = new Date(timestampToIso(b.createdAt)).getTime();
+      return timeB - timeA; // Newest first
     });
   }, [datedEntries, gamesWithoutArchives]);
 

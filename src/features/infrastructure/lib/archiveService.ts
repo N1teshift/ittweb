@@ -245,30 +245,11 @@ export const deleteArchiveEntry = async (id: string): Promise<void> => {
   });
 };
 
-// Sort entries by date (dated entries first, then undated)
+// Sort entries by creation date (when the record was added to the system)
 export const sortArchiveEntries = (entries: ArchiveEntry[], order: 'newest' | 'oldest' = 'newest'): ArchiveEntry[] => {
   return entries.sort((a, b) => {
-    // If both are undated, sort by creation date
-    if (a.dateInfo.type === 'undated' && b.dateInfo.type === 'undated') {
-      const timeA = new Date(timestampToIso(a.createdAt)).getTime();
-      const timeB = new Date(timestampToIso(b.createdAt)).getTime();
-      return order === 'newest' ? timeB - timeA : timeA - timeB;
-    }
-    
-    // Undated entries go to the end
-    if (a.dateInfo.type === 'undated') return 1;
-    if (b.dateInfo.type === 'undated') return -1;
-    
-    // For dated entries, sort by date
-    const dateA = a.dateInfo.singleDate || a.dateInfo.startDate || '';
-    const dateB = b.dateInfo.singleDate || b.dateInfo.startDate || '';
-    
-    if (!dateA && !dateB) return 0;
-    if (!dateA) return 1;
-    if (!dateB) return -1;
-    
-    const timeA = new Date(dateA).getTime();
-    const timeB = new Date(dateB).getTime();
+    const timeA = new Date(timestampToIso(a.createdAt)).getTime();
+    const timeB = new Date(timestampToIso(b.createdAt)).getTime();
     return order === 'newest' ? timeB - timeA : timeA - timeB;
   });
 };
