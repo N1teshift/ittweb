@@ -181,6 +181,7 @@ describe('POST /api/games/[id]/upload-replay', () => {
     (randomUUID as jest.Mock).mockReturnValue('mock-uuid-token');
 
     // Setup Firebase Storage mock
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { getStorageAdmin, getStorageBucketName } = require('@/features/infrastructure/api/firebase/admin');
     getStorageBucketName.mockReturnValue('test-bucket');
     const mockStorage = {
@@ -196,9 +197,11 @@ describe('POST /api/games/[id]/upload-replay', () => {
     getStorageAdmin.mockReturnValue(mockStorage);
     mockBucket.file.mockReturnValue(mockFileRef);
     mockFileRef.save.mockResolvedValue(undefined);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (mockBucket as any).name = 'test-bucket';
 
     // Setup Firestore mock
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { getFirestoreAdmin, getAdminTimestamp } = require('@/features/infrastructure/api/firebase/admin');
     getFirestoreAdmin.mockReturnValue(mockCollection);
     mockCollection.doc.mockReturnValue(mockDocRef);

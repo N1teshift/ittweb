@@ -34,6 +34,7 @@ export function initializePerformanceMonitoring(): void {
 
   // Check for Firebase Performance
   try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { getPerformance } = require('firebase/performance');
     const perf = getPerformance();
     if (perf) {

@@ -109,9 +109,10 @@ export function logError(
   });
 
   // Send to error tracking if available
-  if (typeof window !== 'undefined' || typeof require !== 'undefined') {
+  if (typeof window !== 'undefined') {
     try {
       // Dynamic import to avoid circular dependencies
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const { captureError } = require('../monitoring/errorTracking');
       captureError(error, {
         ...context,

@@ -53,7 +53,7 @@ export function updatePeakElo(
   categoryStats: CategoryStats,
   eloAfter: number,
   gameDatetime: Date,
-  timestampFactory: (date: Date) => Timestamp | any
+  timestampFactory: (date: Date) => Timestamp
 ): void {
   const currentPeakElo = categoryStats.peakElo || STARTING_ELO;
   if (eloAfter > currentPeakElo) {
@@ -86,8 +86,8 @@ export function createNewPlayerDocumentData(
   categoryStats: CategoryStats,
   gameDatetime: Date,
   timestampFactory: {
-    fromDate: (date: Date) => Timestamp | any;
-    now: () => Timestamp | any;
+    fromDate: (date: Date) => Timestamp;
+    now: () => Timestamp;
   }
 ): Record<string, unknown> {
   const categories: { [key: string]: CategoryStats } = {};
@@ -113,8 +113,8 @@ export function createUpdatedPlayerDocumentData(
   totalGames: number,
   gameDatetime: Date,
   timestampFactory: {
-    fromDate: (date: Date) => Timestamp | any;
-    now: () => Timestamp | any;
+    fromDate: (date: Date) => Timestamp;
+    now: () => Timestamp;
   }
 ): Record<string, unknown> {
   return {
@@ -159,8 +159,8 @@ export async function processPlayerStatsUpdate(
   normalizedName: string,
   existingData: Record<string, unknown> | null,
   timestampFactory: {
-    fromDate: (date: Date) => Timestamp | any;
-    now: () => Timestamp | any;
+    fromDate: (date: Date) => Timestamp;
+    now: () => Timestamp;
   },
   firestoreOps: {
     setDoc: (data: Record<string, unknown>) => Promise<void>;

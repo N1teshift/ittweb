@@ -34,6 +34,7 @@ describe('timezoneUtils', () => {
         NumberFormat: originalIntl.NumberFormat,
         PluralRules: originalIntl.PluralRules,
         RelativeTimeFormat: originalIntl.RelativeTimeFormat,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ListFormat: (originalIntl as any).ListFormat,
         DisplayNames: originalIntl.DisplayNames,
       } as unknown as typeof Intl;

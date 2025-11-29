@@ -40,8 +40,8 @@ export function transformEntryDoc(data: Record<string, unknown>, docId: string):
 export function prepareEntryDataForFirestore(
   entryData: CreateEntry,
   timestampFactory: {
-    fromDate: (date: Date) => Timestamp | any;
-    now: () => Timestamp | any;
+    fromDate: (date: Date) => Timestamp | unknown;
+    now: () => Timestamp | unknown;
   }
 ): Record<string, unknown> {
   const cleanedData = removeUndefined(entryData as unknown as Record<string, unknown>);
@@ -70,8 +70,8 @@ export function prepareEntryDataForFirestore(
 export function prepareEntryUpdateData(
   updates: Record<string, unknown>,
   timestampFactory: {
-    fromDate: (date: Date) => Timestamp | any;
-    now: () => Timestamp | any;
+    fromDate: (date: Date) => Timestamp | unknown;
+    now: () => Timestamp | unknown;
   }
 ): Record<string, unknown> {
   const updateData: Record<string, unknown> = {
@@ -93,7 +93,7 @@ export function prepareEntryUpdateData(
  */
 export function prepareDeleteData(
   timestampFactory: {
-    now: () => Timestamp | any;
+    now: () => Timestamp | unknown;
   }
 ): Record<string, unknown> {
   const now = timestampFactory.now();

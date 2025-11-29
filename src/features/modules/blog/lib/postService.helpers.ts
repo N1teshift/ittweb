@@ -37,8 +37,8 @@ export function transformPostDoc(data: Record<string, unknown>, docId: string): 
 export function preparePostDataForFirestore(
   postData: CreatePost,
   timestampFactory: {
-    fromDate: (date: Date) => Timestamp | any;
-    now: () => Timestamp | any;
+    fromDate: (date: Date) => Timestamp;
+    now: () => Timestamp;
   }
 ): Record<string, unknown> {
   const cleanedData = removeUndefined(postData as unknown as Record<string, unknown>);
@@ -66,8 +66,8 @@ export function preparePostDataForFirestore(
 export function preparePostUpdateData(
   updates: Partial<CreatePost>,
   timestampFactory: {
-    fromDate: (date: Date) => Timestamp | any;
-    now: () => Timestamp | any;
+    fromDate: (date: Date) => Timestamp;
+    now: () => Timestamp;
   }
 ): Record<string, unknown> {
   const cleanedUpdates = removeUndefined(updates as unknown as Record<string, unknown>);

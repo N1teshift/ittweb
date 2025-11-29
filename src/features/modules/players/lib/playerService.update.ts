@@ -57,8 +57,8 @@ export async function updatePlayerStats(gameId: string): Promise<void> {
           normalizedName,
           playerDoc.exists ? (playerDoc.data() as Record<string, unknown>) : null,
           {
-            fromDate: adminTimestamp.fromDate.bind(adminTimestamp),
-            now: adminTimestamp.now.bind(adminTimestamp),
+            fromDate: adminTimestamp.fromDate.bind(adminTimestamp) as (date: Date) => Timestamp,
+            now: adminTimestamp.now.bind(adminTimestamp) as () => Timestamp,
           },
           {
             setDoc: async (data: Record<string, unknown>) => {

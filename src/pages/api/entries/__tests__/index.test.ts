@@ -354,6 +354,7 @@ describe('POST /api/entries', () => {
     // Arrange
     const req = createRequest({
       ...validEntryData,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       contentType: 'invalid' as any,
     });
     const res = createResponse();

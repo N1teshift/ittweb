@@ -40,7 +40,7 @@ jest.mock('@/features/infrastructure/logging', () => ({
 }));
 
 const { mockGetDoc } = jest.requireMock('firebase/firestore');
-import { getUserDataByDiscordId } from './userDataService';
+import { getUserDataByDiscordId } from '../userDataService';
 
 describe('userDataService', () => {
   beforeEach(() => {
@@ -54,3 +54,4 @@ describe('userDataService', () => {
     expect(result).toBeNull();
   });
 });
+

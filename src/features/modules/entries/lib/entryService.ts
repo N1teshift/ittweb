@@ -38,14 +38,20 @@ export async function createEntry(entryData: CreateEntry): Promise<string> {
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const adminTimestamp = getAdminTimestamp();
-      const firestoreData = prepareEntryDataForFirestore(entryData, adminTimestamp);
+      const AdminTimestamp = getAdminTimestamp();
+      const firestoreData = prepareEntryDataForFirestore(entryData, {
+        fromDate: AdminTimestamp.fromDate.bind(AdminTimestamp) as (date: Date) => Timestamp,
+        now: AdminTimestamp.now.bind(AdminTimestamp) as () => Timestamp,
+      });
       const docRef = await adminDb.collection(ENTRIES_COLLECTION).add(firestoreData);
       logger.info('Entry created', { id: docRef.id, contentType: entryData.contentType });
       return docRef.id;
     } else {
       const db = getFirestoreInstance();
-      const firestoreData = prepareEntryDataForFirestore(entryData, Timestamp);
+      const firestoreData = prepareEntryDataForFirestore(entryData, {
+        fromDate: Timestamp.fromDate.bind(Timestamp),
+        now: Timestamp.now.bind(Timestamp),
+      });
       const docRef = await addDoc(collection(db, ENTRIES_COLLECTION), firestoreData);
       logger.info('Entry created', { id: docRef.id, contentType: entryData.contentType });
       return docRef.id;
@@ -211,13 +217,19 @@ export async function updateEntry(id: string, updates: UpdateEntry): Promise<voi
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const adminTimestamp = getAdminTimestamp();
-      const updateData = prepareEntryUpdateData(cleanedUpdates, adminTimestamp);
+      const AdminTimestamp = getAdminTimestamp();
+      const updateData = prepareEntryUpdateData(cleanedUpdates, {
+        fromDate: AdminTimestamp.fromDate.bind(AdminTimestamp) as (date: Date) => Timestamp,
+        now: AdminTimestamp.now.bind(AdminTimestamp) as () => Timestamp,
+      });
       await adminDb.collection(ENTRIES_COLLECTION).doc(id).update(updateData);
     } else {
       const db = getFirestoreInstance();
       const docRef = doc(db, ENTRIES_COLLECTION, id);
-      const updateData = prepareEntryUpdateData(cleanedUpdates, Timestamp);
+      const updateData = prepareEntryUpdateData(cleanedUpdates, {
+        fromDate: Timestamp.fromDate.bind(Timestamp),
+        now: Timestamp.now.bind(Timestamp),
+      });
       await updateDoc(docRef, updateData);
     }
 
@@ -243,13 +255,17 @@ export async function deleteEntry(id: string): Promise<void> {
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const adminTimestamp = getAdminTimestamp();
-      const deleteData = prepareDeleteData(adminTimestamp);
+      const AdminTimestamp = getAdminTimestamp();
+      const deleteData = prepareDeleteData({
+        now: AdminTimestamp.now.bind(AdminTimestamp) as () => Timestamp,
+      });
       await adminDb.collection(ENTRIES_COLLECTION).doc(id).update(deleteData);
     } else {
       const db = getFirestoreInstance();
       const docRef = doc(db, ENTRIES_COLLECTION, id);
-      const deleteData = prepareDeleteData(Timestamp);
+      const deleteData = prepareDeleteData({
+        now: Timestamp.now.bind(Timestamp),
+      });
       await updateDoc(docRef, deleteData);
     }
 

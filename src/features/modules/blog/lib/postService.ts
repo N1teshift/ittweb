@@ -38,14 +38,20 @@ export async function createPost(postData: CreatePost): Promise<string> {
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const adminTimestamp = getAdminTimestamp();
-      const firestoreData = preparePostDataForFirestore(postData, adminTimestamp);
+      const AdminTimestamp = getAdminTimestamp();
+      const firestoreData = preparePostDataForFirestore(postData, {
+        fromDate: AdminTimestamp.fromDate.bind(AdminTimestamp) as (date: Date) => Timestamp,
+        now: AdminTimestamp.now.bind(AdminTimestamp) as () => Timestamp,
+      });
       const docRef = await adminDb.collection(POSTS_COLLECTION).add(firestoreData);
       logger.info('Post created', { id: docRef.id, slug: postData.slug });
       return docRef.id;
     } else {
       const db = getFirestoreInstance();
-      const firestoreData = preparePostDataForFirestore(postData, Timestamp);
+      const firestoreData = preparePostDataForFirestore(postData, {
+        fromDate: Timestamp.fromDate.bind(Timestamp),
+        now: Timestamp.now.bind(Timestamp),
+      });
       const docRef = await addDoc(collection(db, POSTS_COLLECTION), firestoreData);
       logger.info('Post created', { id: docRef.id, slug: postData.slug });
       return docRef.id;
@@ -242,13 +248,19 @@ export async function updatePost(id: string, updates: Partial<CreatePost>): Prom
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const adminTimestamp = getAdminTimestamp();
-      const updateData = preparePostUpdateData(updates, adminTimestamp);
+      const AdminTimestamp = getAdminTimestamp();
+      const updateData = preparePostUpdateData(updates, {
+        fromDate: AdminTimestamp.fromDate.bind(AdminTimestamp) as (date: Date) => Timestamp,
+        now: AdminTimestamp.now.bind(AdminTimestamp) as () => Timestamp,
+      });
       await adminDb.collection(POSTS_COLLECTION).doc(id).update(updateData);
     } else {
       const db = getFirestoreInstance();
       const docRef = doc(db, POSTS_COLLECTION, id);
-      const updateData = preparePostUpdateData(updates, Timestamp);
+      const updateData = preparePostUpdateData(updates, {
+        fromDate: Timestamp.fromDate.bind(Timestamp),
+        now: Timestamp.now.bind(Timestamp),
+      });
       await updateDoc(docRef, updateData);
     }
 

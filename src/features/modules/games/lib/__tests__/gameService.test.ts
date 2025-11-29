@@ -371,6 +371,7 @@ describe('gameService', () => {
       await gameService.updateGame('game-123', {
         // UpdateGame doesn't accept players directly
         // Players are managed separately
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } as any);
 
       // Assert
