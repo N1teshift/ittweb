@@ -13,6 +13,19 @@ import { ArchiveMediaSections } from './ArchiveMediaSections';
 import YouTubeEmbed from './YouTubeEmbed';
 import TwitchClipEmbed from './TwitchClipEmbed';
 
+/**
+ * Extract version from map path
+ * Example: "Maps/Download/Island.Troll.Tribes.v3.25.8.w3x" -> "v3.25.8"
+ */
+function extractVersionFromMap(map: string): string | null {
+  if (!map) return null;
+  
+  // Match version pattern like v3.25.8, v3.28, etc.
+  // Pattern: v followed by digits and dots
+  const versionMatch = map.match(/v\d+(\.\d+)*/i);
+  return versionMatch ? versionMatch[0] : null;
+}
+
 interface GameLinkedArchiveEntryProps {
   entry: ArchiveEntry;
   game: GameWithPlayers | null;
@@ -91,9 +104,9 @@ export function GameLinkedArchiveEntry({
               </h3>
             </div>
           </div>
-          {game && game.gameState === 'completed' && (
+          {game && (
             <span className="px-3 py-1 text-xs bg-amber-500/30 border border-amber-400/50 rounded text-amber-300 font-medium">
-              Completed game
+              {game.gameState === 'completed' ? 'Completed game' : game.gameState === 'scheduled' ? 'Scheduled game' : 'Game'}
             </span>
           )}
         </div>
@@ -102,30 +115,94 @@ export function GameLinkedArchiveEntry({
           <>
             {/* Game Details Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs mt-4 p-3 bg-black/30 rounded border border-amber-500/20">
-              {game.duration && (
-                <div>
-                  <span className="text-gray-400">Duration:</span>{' '}
-                  <span className="text-amber-300 font-medium">{formatDuration(game.duration)}</span>
-                </div>
-              )}
-              {game.map && (
-                <div>
-                  <span className="text-gray-400">Map:</span>{' '}
-                  <span className="text-amber-300 font-medium">{typeof game.map === 'string' ? (game.map.split('\\').pop() || game.map) : game.map}</span>
-                </div>
-              )}
-              {game.creatorName && (
-                <div>
-                  <span className="text-gray-400">Creator:</span>{' '}
-                  <span className="text-amber-300 font-medium">{game.creatorName}</span>
-                </div>
-              )}
-              {game.ownername && (
-                <div>
-                  <span className="text-gray-400">Owner:</span>{' '}
-                  <span className="text-amber-300 font-medium">{game.ownername}</span>
-                </div>
-              )}
+              {game.gameState === 'completed' ? (
+                <>
+                  {game.duration && (
+                    <div>
+                      <span className="text-gray-400">Duration:</span>{' '}
+                      <span className="text-amber-300 font-medium">{formatDuration(game.duration)}</span>
+                    </div>
+                  )}
+                  {game.map && (() => {
+                    const version = extractVersionFromMap(typeof game.map === 'string' ? game.map : String(game.map));
+                    return version ? (
+                      <div>
+                        <span className="text-gray-400">Version:</span>{' '}
+                        <span className="text-amber-300 font-medium">{version}</span>
+                      </div>
+                    ) : null;
+                  })()}
+                   {game.category && (
+                     <div>
+                       <span className="text-gray-400">Team Size:</span>{' '}
+                       <span className="text-amber-300 font-medium">{game.category}</span>
+                     </div>
+                   )}
+                  {game.creatorName && (
+                    <div>
+                      <span className="text-gray-400">Creator:</span>{' '}
+                      <span className="text-amber-300 font-medium">{game.creatorName}</span>
+                    </div>
+                  )}
+                  {game.ownername && (
+                    <div>
+                      <span className="text-gray-400">Owner:</span>{' '}
+                      <span className="text-amber-300 font-medium">{game.ownername}</span>
+                    </div>
+                  )}
+                </>
+              ) : game.gameState === 'scheduled' ? (
+                <>
+                  {game.teamSize && (
+                    <div>
+                      <span className="text-gray-400">Team Size:</span>{' '}
+                      <span className="text-amber-300 font-medium">
+                        {game.teamSize === 'custom' ? game.customTeamSize : game.teamSize}
+                      </span>
+                    </div>
+                  )}
+                  {game.gameType && (
+                    <div>
+                      <span className="text-gray-400">Game Type:</span>{' '}
+                      <span className="text-amber-300 font-medium">
+                        {game.gameType === 'elo' ? 'ELO' : 'Normal'}
+                      </span>
+                    </div>
+                  )}
+                  {game.scheduledDateTime && (
+                    <div>
+                      <span className="text-gray-400">Scheduled:</span>{' '}
+                      <span className="text-amber-300 font-medium">
+                        {new Date(timestampToIso(game.scheduledDateTime)).toLocaleString()}
+                      </span>
+                    </div>
+                  )}
+                  {game.timezone && (
+                    <div>
+                      <span className="text-gray-400">Timezone:</span>{' '}
+                      <span className="text-amber-300 font-medium">{game.timezone}</span>
+                    </div>
+                  )}
+                  {game.gameVersion && (
+                    <div>
+                      <span className="text-gray-400">Version:</span>{' '}
+                      <span className="text-amber-300 font-medium">{game.gameVersion}</span>
+                    </div>
+                  )}
+                  {game.gameLength && (
+                    <div>
+                      <span className="text-gray-400">Duration:</span>{' '}
+                      <span className="text-amber-300 font-medium">{formatDuration(game.gameLength)}</span>
+                    </div>
+                  )}
+                  {game.creatorName && (
+                    <div>
+                      <span className="text-gray-400">Creator:</span>{' '}
+                      <span className="text-amber-300 font-medium">{game.creatorName}</span>
+                    </div>
+                  )}
+                </>
+              ) : null}
             </div>
 
             {/* Players Section */}

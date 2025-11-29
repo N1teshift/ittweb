@@ -31,51 +31,18 @@ tags = ["discord", "oauth", "secret"]
 description = "Allowlist for known safe files"
 
 # Ignore test files and mocks
-[[allowlist.paths]]
-regex = '''\.env\.example'''
-reason = "Example environment file"
-
-[[allowlist.paths]]
-regex = '''\.env\.local\.example'''
-reason = "Example local environment file"
-
-[[allowlist.paths]]
-regex = '''docs/.*'''
-reason = "Documentation files"
-
-[[allowlist.paths]]
-regex = '''\.workflow/.*'''
-reason = "Workflow documentation"
-
-[[allowlist.paths]]
-regex = '''\.github/workflows/.*'''
-reason = "GitHub workflow files"
-
-[[allowlist.paths]]
-regex = '''\.gitleaks\.toml'''
-reason = "Gitleaks configuration file"
-
-[[allowlist.paths]]
-regex = '''README\.md'''
-reason = "README file"
-
-[[allowlist.paths]]
-regex = '''\.gitignore'''
-reason = "Git ignore file"
-
-[[allowlist.paths]]
-regex = '''__tests__/.*'''
-reason = "Test files may contain example secrets"
-
-[[allowlist.paths]]
-regex = '''__mocks__/.*'''
-reason = "Mock files may contain example secrets"
-
-[[allowlist.paths]]
-regex = '''\.test\.(ts|tsx|js|jsx)$'''
-reason = "Test files may contain example secrets"
-
-[[allowlist.paths]]
-regex = '''\.spec\.(ts|tsx|js|jsx)$'''
-reason = "Test files may contain example secrets"
+paths = [
+    '''\.env\.example''',
+    '''\.env\.local\.example''',
+    '''docs/.*''',
+    '''\.workflow/.*''',
+    '''\.github/workflows/.*''',
+    '''\.gitleaks\.toml''',
+    '''README\.md''',
+    '''\.gitignore''',
+    '''__tests__/.*''',
+    '''__mocks__/.*''',
+    '''\.test\.(ts|tsx|js|jsx)$''',
+    '''\.spec\.(ts|tsx|js|jsx)$'''
+]
 
