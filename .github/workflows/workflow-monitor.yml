@@ -103,33 +103,28 @@ jobs:
             const shortSha = commitSha.substring(0, 7);
             const commitUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${commitSha}`;
             
-            const issueBody = `## Workflow Failure: ${workflowName}
-
-**Status**: Failed
-**Workflow Run**: [View Run](${workflowUrl}) (ID: ${workflowRunId})
-**Trigger**: ${triggerEvent}
-
-### Commit Information
-- **Commit**: [${shortSha}](${commitUrl})
-- **Message**: ${commitMsg}
-- **Author**: ${commitAuthor}
-
-### Next Steps
-1. Review the [workflow run](${workflowUrl}) for detailed error logs
-2. Check if this is a recurring issue
-3. Fix the underlying problem
-4. Close this issue when resolved
-
-### Investigation Notes
-_Add investigation findings here..._
-
----
-*This issue was automatically created by the Workflow Monitor workflow.*`;
+            const issueBody = '## Workflow Failure: ' + workflowName + '\n\n' +
+              '**Status**: Failed\n' +
+              '**Workflow Run**: [View Run](' + workflowUrl + ') (ID: ' + workflowRunId + ')\n' +
+              '**Trigger**: ' + triggerEvent + '\n\n' +
+              '### Commit Information\n' +
+              '- **Commit**: [' + shortSha + '](' + commitUrl + ')\n' +
+              '- **Message**: ' + commitMsg + '\n' +
+              '- **Author**: ' + commitAuthor + '\n\n' +
+              '### Next Steps\n' +
+              '1. Review the [workflow run](' + workflowUrl + ') for detailed error logs\n' +
+              '2. Check if this is a recurring issue\n' +
+              '3. Fix the underlying problem\n' +
+              '4. Close this issue when resolved\n\n' +
+              '### Investigation Notes\n' +
+              '_Add investigation findings here..._\n\n' +
+              '---\n' +
+              '*This issue was automatically created by the Workflow Monitor workflow.*';
 
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `Workflow Failure: ${workflowName} - ${shortSha}`,
+              title: 'Workflow Failure: ' + workflowName + ' - ' + shortSha,
               body: issueBody,
               labels: ['workflow-failure', 'ci/cd', 'devops']
             });
@@ -145,13 +140,11 @@ _Add investigation findings here..._
             const commitSha = '${{ steps.workflow_info.outputs.commit_sha }}';
             
             const shortSha = commitSha.substring(0, 7);
-            const commentBody = `Another failure detected for **${workflowName}**:
-            
-- **Run**: [${workflowRunId}](${workflowUrl})
-- **Commit**: ${shortSha}
-- **Time**: ${new Date().toISOString()}
-
-This appears to be a recurring issue. Please investigate.`;
+            const commentBody = 'Another failure detected for **' + workflowName + '**:\n\n' +
+              '- **Run**: [' + workflowRunId + '](' + workflowUrl + ')\n' +
+              '- **Commit**: ' + shortSha + '\n' +
+              '- **Time**: ' + new Date().toISOString() + '\n\n' +
+              'This appears to be a recurring issue. Please investigate.';
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
