@@ -1,4 +1,4 @@
-import { useState, FormEvent, useEffect } from 'react';
+import { useState, FormEvent } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { EntryContentType } from '@/types/entry';

@@ -8,13 +8,11 @@ import {
   query,
   orderBy,
   where,
-  Timestamp,
 } from 'firebase/firestore';
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { Post, CreatePost } from '@/types/post';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
 import { createTimestampFactoryAsync } from '@/features/infrastructure/utils/timestampUtils';
 import {
   transformPostDoc,

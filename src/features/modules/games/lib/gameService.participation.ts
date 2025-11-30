@@ -5,12 +5,11 @@ import {
 } from 'firebase/firestore';
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { logError } from '@/features/infrastructure/logging';
 import { createTimestampFactoryAsync } from '@/features/infrastructure/utils/timestampUtils';
 import type { GameParticipant } from '../types';
 
 const GAMES_COLLECTION = 'games';
-const logger = createComponentLogger('gameService');
 
 /**
  * Join a scheduled game (add participant)

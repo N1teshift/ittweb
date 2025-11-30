@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArchiveEntry, CreateArchiveEntry, ArchiveEntryType, DateInfo } from '@/types/archive';
+import { ArchiveEntry, CreateArchiveEntry, ArchiveEntryType } from '@/types/archive';
 import { validateArchiveForm } from '../utils/archiveValidation';
 import { buildDateInfo, computeEffectiveSectionOrder, SectionKey } from '../utils/archiveFormUtils';
 import { uploadSelectedMedia } from './useArchiveMedia';

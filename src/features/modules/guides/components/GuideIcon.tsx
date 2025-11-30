@@ -55,7 +55,7 @@ export default function GuideIcon({ category, name, size = 48, state: _state, cl
     setHasErrored(false);
   }, [initialIconSrc]);
 
-  const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const handleError = (_e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     // Only fallback once to prevent infinite loops
     if (!hasErrored) {
       setHasErrored(true);

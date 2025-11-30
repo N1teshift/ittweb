@@ -6,10 +6,9 @@ import {
 } from 'firebase/firestore';
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { logError } from '@/features/infrastructure/logging';
 
 const GAMES_COLLECTION = 'games';
-const logger = createComponentLogger('gameService');
 
 /**
  * Delete a game

@@ -193,7 +193,7 @@ export async function recalculateFromGame(gameId: string): Promise<void> {
     logger.info('Recalculating ELO from game', { gameId });
 
     const { getGameById, getGames } = await import('./gameService');
-    const { getPlayerStats, updatePlayerStats } = await import('../../players/lib/playerService');
+    const { getPlayerStats } = await import('../../players/lib/playerService');
     
     // Get the target game
     const targetGame = await getGameById(gameId);

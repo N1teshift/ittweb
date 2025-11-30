@@ -46,7 +46,7 @@ export function useGameFilters(initialFilters: GameFilters = {}): UseGameFilters
       // Save to localStorage
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(queryFilters));
-      } catch (e) {
+      } catch {
         // Ignore localStorage errors
       }
     } else {
@@ -57,7 +57,7 @@ export function useGameFilters(initialFilters: GameFilters = {}): UseGameFilters
           const parsed = JSON.parse(stored) as GameFilters;
           setFiltersState(parsed);
         }
-      } catch (e) {
+      } catch {
         // Ignore localStorage errors
       }
     }
@@ -111,7 +111,7 @@ export function useGameFilters(initialFilters: GameFilters = {}): UseGameFilters
   const saveToStorage = useCallback((newFilters: GameFilters) => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newFilters));
-    } catch (e) {
+    } catch {
       // Ignore localStorage errors
     }
   }, []);
@@ -136,7 +136,7 @@ export function useGameFilters(initialFilters: GameFilters = {}): UseGameFilters
     // Clear localStorage
     try {
       localStorage.removeItem(STORAGE_KEY);
-    } catch (e) {
+    } catch {
       // Ignore localStorage errors
     }
   }, [setFilters]);

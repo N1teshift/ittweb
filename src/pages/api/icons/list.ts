@@ -1,4 +1,3 @@
-import type { NextApiRequest } from 'next';
 import { readdir } from 'fs/promises';
 import { join } from 'path';
 import { createGetHandler } from '@/features/infrastructure/api/routeHandlers';
