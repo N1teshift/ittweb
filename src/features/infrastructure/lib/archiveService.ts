@@ -248,8 +248,8 @@ export const deleteArchiveEntry = async (id: string): Promise<void> => {
 // Sort entries by creation date (when the record was added to the system)
 export const sortArchiveEntries = (entries: ArchiveEntry[], order: 'newest' | 'oldest' = 'newest'): ArchiveEntry[] => {
   return entries.sort((a, b) => {
-    const timeA = new Date(timestampToIso(a.createdAt)).getTime();
-    const timeB = new Date(timestampToIso(b.createdAt)).getTime();
+      const timeA = new Date(timestampToIso(a.createdAt)).getTime();
+      const timeB = new Date(timestampToIso(b.createdAt)).getTime();
     return order === 'newest' ? timeB - timeA : timeA - timeB;
   });
 };

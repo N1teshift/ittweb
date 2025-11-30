@@ -8,6 +8,7 @@ import type { GetStaticProps } from 'next';
 import type { CreateScheduledGame } from '@/features/modules/games/types';
 import { Button } from '@/features/infrastructure/components/ui';
 import { HomeTimeline } from '@/features/modules/archives/components';
+import { useRef } from 'react';
 
 const pageNamespaces = ["common"];
 
@@ -21,6 +22,7 @@ export default function Home({}: HomeProps) {
   const [showScheduleForm, setShowScheduleForm] = useState(false);
   const [isSubmittingSchedule, setIsSubmittingSchedule] = useState(false);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
+  const homeTimelineRef = useRef<{ addNewGame: (gameId: string) => Promise<void> } | null>(null);
 
   // Fetch user role to check if admin
   useEffect(() => {
@@ -94,23 +96,19 @@ export default function Home({}: HomeProps) {
         throw new Error(errorData.error || 'Failed to schedule game');
       }
 
+      const responseData = await response.json();
+      // API returns { success: true, data: { id: "..." } }
+      const newGameId = responseData.data?.id || responseData.id;
+
       setShowScheduleForm(false);
-      // Revalidate the homepage to show the new game
-      try {
-        await fetch('/api/revalidate', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ path: '/' }),
-        });
-      } catch (revalidateError) {
-        console.error('Failed to revalidate homepage:', revalidateError);
+
+      // Add the new game to HomeTimeline without page reload
+      if (newGameId && homeTimelineRef.current) {
+        await homeTimelineRef.current.addNewGame(newGameId);
+      } else if (homeTimelineRef.current) {
+        // Fallback: if we can't get the game ID, refetch all games
+        await homeTimelineRef.current.addNewGame('');
       }
-      // Force a full page reload to fetch the revalidated page
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 500);
     } catch (err) {
       console.error('Failed to schedule game:', err);
       throw err;
@@ -123,12 +121,16 @@ export default function Home({}: HomeProps) {
     setShowScheduleForm(false);
   };
 
-  const handleEntrySuccess = () => {
+  const handleEntrySuccess = async (entryId?: string) => {
     setShowEntryForm(false);
-    // Force a full page reload to fetch the revalidated page
-    setTimeout(() => {
-      window.location.href = '/';
-    }, 500);
+    
+    // Add the new entry to HomeTimeline without page reload
+    if (entryId && homeTimelineRef.current) {
+      await homeTimelineRef.current.addNewEntry(entryId);
+    } else if (homeTimelineRef.current) {
+      // Fallback: if we can't get the entry ID, refetch all entries
+      await homeTimelineRef.current.addNewEntry('');
+    }
   };
 
   const handleEntryCancel = () => {
@@ -169,7 +171,7 @@ export default function Home({}: HomeProps) {
         )}
 
         {/* Unified view of games, posts, and memories */}
-        <HomeTimeline />
+        <HomeTimeline ref={homeTimelineRef} />
 
         {/* Schedule Game Form Modal */}
         {showScheduleForm && (
@@ -197,12 +199,12 @@ export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
   const withI18n = getStaticPropsWithTranslations(pageNamespaces);
   const i18nResult = await withI18n({ locale: locale as string });
 
-  return {
+      return {
     props: {
       ...(i18nResult.props || {}),
       translationNamespaces: pageNamespaces,
     },
     // Revalidate every 60 seconds to allow content to update
-    revalidate: 60,
-  };
+      revalidate: 60,
+    };
 };

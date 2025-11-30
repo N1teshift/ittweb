@@ -11,7 +11,7 @@ const logger = createComponentLogger('EntryEditModal');
 interface EntryEditModalProps {
   entry: ArchiveEntry;
   entryId: string; // The actual entry ID (without "entry-" prefix)
-  onSuccess: () => void;
+  onSuccess: (entryId?: string) => void;
   onCancel: () => void;
 }
 
@@ -124,20 +124,8 @@ export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: 
 
       logger.info('Entry updated', { entryId, contentType, title });
       
-      // Revalidate the homepage
-      try {
-        await fetch('/api/revalidate', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ path: '/' }),
-        });
-      } catch (revalidateError) {
-        logger.warn('Failed to revalidate homepage', { error: revalidateError });
-      }
-      
-      onSuccess();
+      // Pass entryId to onSuccess so parent can fetch and update the entry
+      onSuccess(entryId);
     } catch (err) {
       const error = err as Error;
       logError(error, 'Failed to update entry', {

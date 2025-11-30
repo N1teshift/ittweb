@@ -16,7 +16,10 @@ const handleGet = async (req: NextApiRequest): Promise<ReturnType<typeof getGame
   const id = parseRequiredQueryString(req, 'id');
   const game = await getGameById(id);
   if (!game) {
-    throw new Error('Game not found');
+    // Return 404 for not found or deleted games
+    const error = new Error('Game not found');
+    (error as any).statusCode = 404;
+    throw error;
   }
   return game;
 };

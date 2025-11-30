@@ -26,6 +26,11 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
   const [showWipeDialog, setShowWipeDialog] = useState(false);
   const [isWiping, setIsWiping] = useState(false);
   const [wipeError, setWipeError] = useState<string | null>(null);
+  const [wipeSuccess, setWipeSuccess] = useState<string | null>(null);
+  const [showWipeEntriesDialog, setShowWipeEntriesDialog] = useState(false);
+  const [isWipingEntries, setIsWipingEntries] = useState(false);
+  const [wipeEntriesError, setWipeEntriesError] = useState<string | null>(null);
+  const [wipeEntriesSuccess, setWipeEntriesSuccess] = useState<string | null>(null);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
 
   // Check if user is admin
@@ -111,18 +116,72 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
       const counts = result.deletedCounts || {};
       const summaryLines = Object.entries(counts)
         .filter(([_, count]) => typeof count === 'number' && count > 0)
-        .map(([key, count]) => `- ${key}: ${count}`)
-        .join('\n');
+        .map(([key, count]) => `${key}: ${count}`)
+        .join(', ');
       
       const message = summaryLines 
-        ? `All data wiped successfully!\n\nDeleted:\n${summaryLines}`
+        ? `All data wiped successfully! Deleted: ${summaryLines}`
         : 'All data wiped successfully!';
       
-      alert(message);
+      setWipeSuccess(message);
+      
+      // Clear success message after 5 seconds
+      setTimeout(() => {
+        setWipeSuccess(null);
+      }, 5000);
     } catch (error) {
       const err = error as Error;
       setWipeError(err.message || 'An error occurred while wiping test data');
       setIsWiping(false);
+    }
+  };
+
+  const handleWipeAllEntries = async () => {
+    setIsWipingEntries(true);
+    setWipeEntriesError(null);
+
+    try {
+      const response = await fetch('/api/admin/wipe-all-entries', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to wipe all entries');
+      }
+
+      const result = await response.json();
+      setShowWipeEntriesDialog(false);
+      
+      // Build deletion summary message
+      const counts = result.deletedCounts || {};
+      const summaryLines = Object.entries(counts)
+        .filter(([_, count]) => typeof count === 'number' && count > 0)
+        .map(([key, count]) => `${key}: ${count}`)
+        .join(', ');
+      
+      const message = summaryLines 
+        ? `All entries and images deleted successfully! Deleted: ${summaryLines}`
+        : 'All entries and images deleted successfully!';
+      
+      setWipeEntriesSuccess(message);
+      
+      // Clear success message after 5 seconds
+      setTimeout(() => {
+        setWipeEntriesSuccess(null);
+      }, 5000);
+      
+      // Refresh the page to reflect changes after a short delay
+      setTimeout(() => {
+        router.reload();
+      }, 2000);
+    } catch (error) {
+      const err = error as Error;
+      setWipeEntriesError(err.message || 'An error occurred while wiping all entries');
+      setIsWipingEntries(false);
     }
   };
 
@@ -253,16 +312,44 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
             {userIsAdmin && (
               <div className="pt-6 border-t border-amber-500/20 space-y-4">
                 <h3 className="text-lg font-semibold text-white">Admin Tools</h3>
+                
+                {/* Success Messages */}
+                {wipeSuccess && (
+                  <div className="rounded-md border border-green-500/40 bg-green-900/20 px-4 py-3 text-sm text-green-200">
+                    {wipeSuccess}
+                  </div>
+                )}
+                {wipeEntriesSuccess && (
+                  <div className="rounded-md border border-green-500/40 bg-green-900/20 px-4 py-3 text-sm text-green-200">
+                    {wipeEntriesSuccess}
+                  </div>
+                )}
+                
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button
-                    onClick={() => setShowWipeDialog(true)}
+                    onClick={() => {
+                      setShowWipeDialog(true);
+                      setWipeSuccess(null);
+                    }}
                     className="px-4 py-2 text-sm rounded-md bg-orange-800 hover:bg-orange-700 text-white transition-colors border border-orange-600"
                   >
                     Wipe Test Data
                   </button>
+                  <button
+                    onClick={() => {
+                      setShowWipeEntriesDialog(true);
+                      setWipeEntriesSuccess(null);
+                    }}
+                    className="px-4 py-2 text-sm rounded-md bg-red-800 hover:bg-red-700 text-white transition-colors border border-red-600"
+                  >
+                    Wipe All Entries
+                  </button>
                 </div>
                 <p className="text-xs text-gray-500">
-                  This will delete all games, player stats, and associated archive entries. Use only for development/testing. This action cannot be undone.
+                  <strong>Wipe Test Data:</strong> Deletes all games, player stats, and associated archive entries. Use only for development/testing.
+                </p>
+                <p className="text-xs text-gray-500">
+                  <strong>Wipe All Entries:</strong> Deletes all entries (posts and memories) from Firestore and all archived photos from Firebase Storage. This action cannot be undone.
                 </p>
               </div>
             )}
@@ -365,6 +452,59 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
                   className="rounded-md border border-orange-600 bg-orange-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-orange-500 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isWiping ? 'Wiping…' : 'Wipe All Data'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Wipe All Entries Dialog */}
+        {showWipeEntriesDialog && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            <div 
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
+              aria-hidden="true"
+              onClick={() => !isWipingEntries && setShowWipeEntriesDialog(false)}
+            />
+            <div className="relative w-full max-w-md rounded-lg border border-red-500/40 bg-gray-900/95 backdrop-blur-md p-6 shadow-2xl">
+              <div className="mb-4">
+                <h3 className="text-2xl font-semibold text-white mb-2">Wipe All Entries?</h3>
+                <p className="mt-2 text-sm text-gray-300">
+                  This will permanently delete:
+                </p>
+                <ul className="mt-2 text-sm text-gray-400 list-disc list-inside space-y-1">
+                  <li>All entries from Firestore (entries and archives collections)</li>
+                  <li>All archived photos from Firebase Storage (archives/ folder)</li>
+                  <li>All posts and memories</li>
+                </ul>
+                <p className="mt-3 text-sm text-red-300 font-semibold">
+                  ⚠️ This action cannot be undone. All entries and their associated images will be permanently deleted.
+                </p>
+                {wipeEntriesError && (
+                  <div className="mt-3 rounded-md border border-red-500/40 bg-red-900/20 px-3 py-2 text-sm text-red-200">
+                    {wipeEntriesError}
+                  </div>
+                )}
+              </div>
+              <div className="flex justify-end gap-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowWipeEntriesDialog(false);
+                    setWipeEntriesError(null);
+                  }}
+                  disabled={isWipingEntries}
+                  className="rounded-md border border-gray-600 px-4 py-2 text-sm font-medium text-gray-200 transition-colors hover:bg-gray-700/50 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleWipeAllEntries}
+                  disabled={isWipingEntries}
+                  className="rounded-md border border-red-600 bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {isWipingEntries ? 'Deleting…' : 'Delete All Entries'}
                 </button>
               </div>
             </div>

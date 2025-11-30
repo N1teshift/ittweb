@@ -11,8 +11,10 @@ interface GameDetailProps {
   game: GameWithPlayers;
   onEdit?: (game: GameWithPlayers) => void;
   onDelete?: (game: GameWithPlayers) => void;
+  onJoin?: (gameId: string) => Promise<void>;
   onLeave?: (gameId: string) => Promise<void>;
   onUploadReplay?: (game: GameWithPlayers) => void;
+  isJoining?: boolean;
   isLeaving?: boolean;
   userIsCreator?: boolean;
   userIsParticipant?: boolean;
@@ -59,8 +61,10 @@ export function GameDetail({
   game, 
   onEdit, 
   onDelete, 
+  onJoin,
   onLeave,
   onUploadReplay,
+  isJoining = false,
   isLeaving = false,
   userIsCreator = false,
   userIsParticipant = false,
@@ -69,7 +73,8 @@ export function GameDetail({
   const isScheduled = game.gameState === 'scheduled';
   const canEdit = isScheduled && (userIsCreator || userIsAdmin);
   const canDelete = isScheduled && (userIsCreator || userIsAdmin);
-  const canLeave = isScheduled && userIsParticipant && !userIsCreator;
+  const canJoin = isScheduled && !userIsParticipant && onJoin;
+  const canLeave = isScheduled && userIsParticipant && onLeave;
   const awaitingReplay = isAwaitingReplay(game);
   const canUploadReplay = isScheduled && awaitingReplay && onUploadReplay;
   
@@ -195,8 +200,9 @@ export function GameDetail({
         )}
         
         {/* Action buttons for scheduled games */}
-        {isScheduled && (canEdit || canDelete || canLeave || canUploadReplay) && (
-          <div className="mt-4 pt-4 border-t border-amber-500/20 flex flex-wrap gap-3">
+        {isScheduled && (canEdit || canDelete || canJoin || canLeave || canUploadReplay) && (
+          <div className="mt-4 pt-4 border-t border-amber-500/20 flex flex-wrap gap-3 justify-between items-center">
+            <div className="flex flex-wrap gap-3">
             {canUploadReplay && (
               <Tooltip content="Upload the .w3g replay file from your Warcraft 3 game to automatically extract game data and complete the game record">
                 <button
@@ -223,6 +229,17 @@ export function GameDetail({
                 Delete
               </button>
             )}
+            </div>
+            <div className="flex gap-3">
+              {canJoin && onJoin && (
+                <button
+                  onClick={() => onJoin(game.id)}
+                  disabled={isJoining}
+                  className="px-4 py-2 bg-green-600 hover:bg-green-500 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isJoining ? 'Joining...' : 'Join'}
+                </button>
+              )}
             {canLeave && onLeave && (
               <button
                 onClick={() => onLeave(game.id)}
@@ -232,6 +249,7 @@ export function GameDetail({
                 {isLeaving ? 'Leaving...' : 'Leave'}
               </button>
             )}
+            </div>
           </div>
         )}
         

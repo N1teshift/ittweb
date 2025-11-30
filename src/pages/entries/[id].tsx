@@ -138,6 +138,8 @@ export default function EntryPage({ entry, content, canEdit, canDelete }: EntryP
                           fill
                           className="object-cover rounded-lg"
                           sizes="(max-width: 768px) 100vw, 50vw"
+                          // Priority for first image if it's likely to be LCP (above the fold)
+                          priority={index === 0 && entry.contentType === 'memory'}
                           // Unoptimized for Firebase Storage URLs: Next.js cannot optimize authenticated
                           // external URLs. Images are already compressed on upload.
                           unoptimized={imageUrl.includes('firebasestorage.googleapis.com')}

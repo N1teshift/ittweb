@@ -70,17 +70,30 @@ function App({ Component, pageProps }: AppProps) {
                     /Cookie.*__Secure-YEC.*has been rejected/i,
                     /Cookie.*LAST_RESULT_ENTRY_KEY.*will soon be rejected/i,
                     /Cookie.*will soon be rejected.*Partitioned/i,
-                    // Feature Policy warnings (deprecated API, harmless)
+                    // Feature Policy warnings (deprecated API, harmless) - including Lithuanian translations
                     /Feature Policy: Skipping unsupported feature name/i,
+                    /Funkcionalumo nuostatas: praleidžiamas nepalaikomas funkcionalumas/i,
                     // CSP warnings about unknown directives (harmless)
                     /Content-Security-Policy: Couldn't process unknown directive/i,
                     /require-trusted-types-for/i,
                     // YouTube third-party context warnings (expected behavior)
                     /Partitioned cookie or storage access was provided.*youtube/i,
-                    // Unreachable code warnings from minified third-party scripts (YouTube's minified code)
+                    // Twitch third-party context warnings (expected behavior)
+                    /gavo išskaidytą slapuką arba saugyklos priėjimą.*twitch/i,
+                    /gavo išskaidytą slapuką arba saugyklos priėjimą.*youtube/i,
+                    // Unreachable code warnings from minified third-party scripts (YouTube's/Twitch's minified code)
                     /unreachable code after return statement/i,
-                    // YouTube script files (minified code warnings)
+                    // YouTube/Twitch script files (minified code warnings)
                     /9bXBegwkXqu77ttg1H2zNptqxcGE6xDjLfnManLdL_4\.js/i,
+                    /sUOU1m3X_CK9BVAcAV_LmyW1AodswI8pVN5XxRmf9ec\.js/i,
+                    /godoiXtxOBs/i,
+                    // Source map errors (development only, harmless)
+                    /Source map error: request failed with status 404/i,
+                    /Source map error: can't access property/i,
+                    /installHook\.js\.map/i,
+                    /react_devtools_backend_compact\.js\.map/i,
+                    // Cookie warnings (third-party embeds)
+                    /Cookie warnings/i,
                 ];
                 
                 console.error = (...args: unknown[]) => {

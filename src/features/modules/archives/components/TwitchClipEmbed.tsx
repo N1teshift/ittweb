@@ -51,8 +51,10 @@ export default function TwitchClipEmbed({ url, title }: TwitchClipEmbedProps) {
           src={embedUrl}
           title={title}
           allowFullScreen
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           className="h-[360px] w-full"
           scrolling="no"
+          loading="lazy"
         ></iframe>
       ) : (
         <div className="flex h-[360px] items-center justify-center text-gray-300">

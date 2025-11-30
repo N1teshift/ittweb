@@ -10,9 +10,33 @@ interface TimelineSectionProps {
   onDelete?: (entry: ArchiveEntryType) => void;
   canDeleteEntry?: (entry: ArchiveEntryType) => boolean;
   onImageClick: (url: string, title: string) => void;
+  onGameEdit?: (game: any) => void;
+  onGameDelete?: (game: any) => void;
+  onGameJoin?: (gameId: string) => Promise<void>;
+  onGameLeave?: (gameId: string) => Promise<void>;
+  isJoining?: boolean;
+  isLeaving?: boolean;
+  userIsAdmin?: boolean;
+  gamesMap?: Map<string, any>;
 }
 
-export default function TimelineSection({ title, entries, titleClassName, onEdit, onDelete, canDeleteEntry, onImageClick }: TimelineSectionProps) {
+export default function TimelineSection({ 
+  title, 
+  entries, 
+  titleClassName, 
+  onEdit, 
+  onDelete, 
+  canDeleteEntry, 
+  onImageClick,
+  onGameEdit,
+  onGameDelete,
+  onGameJoin,
+  onGameLeave,
+  isJoining,
+  isLeaving,
+  userIsAdmin,
+  gamesMap,
+}: TimelineSectionProps) {
   if (entries.length === 0) return null;
 
   return (
@@ -31,6 +55,14 @@ export default function TimelineSection({ title, entries, titleClassName, onEdit
             onDelete={canDeleteEntry && canDeleteEntry(entry) ? onDelete : undefined}
             canDelete={canDeleteEntry ? canDeleteEntry(entry) : false}
             onImageClick={onImageClick}
+            onGameEdit={onGameEdit}
+            onGameDelete={onGameDelete}
+            onGameJoin={onGameJoin}
+            onGameLeave={onGameLeave}
+            isJoining={isJoining}
+            isLeaving={isLeaving}
+            userIsAdmin={userIsAdmin}
+            game={entry.linkedGameDocumentId ? gamesMap?.get(entry.linkedGameDocumentId) : undefined}
           />
         ))}
       </div>

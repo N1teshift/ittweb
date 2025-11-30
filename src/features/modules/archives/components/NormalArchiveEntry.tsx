@@ -31,9 +31,12 @@ export function NormalArchiveEntry({
 }: NormalArchiveEntryProps) {
   // Get entry type label
   // If entryType is 'story', it's a Post
+  // If entry ID starts with 'entry-', it came from the entries collection
+  //   - If it's not a post (entryType !== 'story'), it's a Memory
   // If entry has media (images/video), it's likely a Memory
   // Otherwise, it's a generic Entry
   const entryTypeLabel = entry.entryType === 'story' ? 'Post' : 
+    entry.id.startsWith('entry-') ? 'Memory' : // Entries from entries collection that aren't posts are memories
     (entry.images && entry.images.length > 0) || entry.videoUrl || entry.twitchClipUrl ? 'Memory' :
     'Entry';
 

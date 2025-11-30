@@ -35,8 +35,13 @@ export function useGames(filters: GameFilters = {}): UseGamesResult {
       if (filters.page) queryParams.append('page', filters.page.toString());
       if (filters.limit) queryParams.append('limit', filters.limit.toString());
       if (filters.cursor) queryParams.append('cursor', filters.cursor);
+      
+      // Add cache-busting timestamp to ensure fresh data
+      queryParams.append('t', Date.now().toString());
 
-      const response = await fetch(`/api/games?${queryParams.toString()}`);
+      const response = await fetch(`/api/games?${queryParams.toString()}`, {
+        cache: 'no-store', // Force fresh fetch, bypass browser cache
+      });
       if (!response.ok) {
         throw new Error(`Failed to fetch games: ${response.statusText}`);
       }

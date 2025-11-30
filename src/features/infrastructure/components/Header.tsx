@@ -23,12 +23,13 @@ export default function Header() {
     ];
 
     const communityItems = [
-        { href: '/archives', label: 'Archives' },
         { href: '/players', label: 'Players' },
+        { href: '/standings', label: 'Standings' },
     ];
 
     const toolsItems = [
         { href: '/classes', label: 'Class Statistics' },
+        { href: '/analytics/classes', label: 'Analytics Classes' },
         { href: '/meta', label: 'Meta Statistics' },
         { href: '/tools/duel-simulator', label: 'Duel Simulator' },
         { href: '/tools/map-analyzer', label: 'Map Analyzer' },

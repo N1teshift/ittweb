@@ -121,10 +121,15 @@ export async function getAllEntries(contentType?: 'post' | 'memory'): Promise<En
         adminQuery = adminQuery.orderBy('date', 'desc') as ReturnType<ReturnType<ReturnType<ReturnType<typeof adminDb.collection>['where']>['where']>['orderBy']>;
         const querySnapshot = await adminQuery.get();
 
-        // Transform documents (query already filters, so no need for additional filtering)
+        // Transform documents (query already filters, but add safety check for deleted entries)
         const docs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
         querySnapshot.forEach((docSnap) => {
-          docs.push({ data: () => docSnap.data(), id: docSnap.id });
+          const data = docSnap.data();
+          // Safety check: filter out deleted entries even if query should have filtered them
+          if (data.isDeleted === true) {
+            return;
+          }
+          docs.push({ data: () => data, id: docSnap.id });
         });
         entries = docs.map((docSnap) => transformEntryDoc(docSnap.data()!, docSnap.id));
       } catch (error: unknown) {
@@ -163,10 +168,15 @@ export async function getAllEntries(contentType?: 'post' | 'memory'): Promise<En
       const querySnapshot = await getDocs(q);
       const docs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
       querySnapshot.forEach((docSnap) => {
-        docs.push({ data: () => docSnap.data(), id: docSnap.id });
+        const data = docSnap.data();
+        // Safety check: filter out deleted entries even if query should have filtered them
+        if (data.isDeleted === true) {
+          return;
+        }
+        docs.push({ data: () => data, id: docSnap.id });
       });
       
-      // Transform documents (query already filters, so no need for additional filtering)
+      // Transform documents
       entries = docs.map((docSnap) => transformEntryDoc(docSnap.data()!, docSnap.id));
     }
 

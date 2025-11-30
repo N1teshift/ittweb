@@ -1,5 +1,6 @@
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { getGames } from '../../games/lib/gameService';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { 
   ActivityDataPoint, 
   EloHistoryDataPoint, 
@@ -25,22 +26,77 @@ export async function getActivityData(
   try {
     logger.info('Getting activity data', { playerName, startDate, endDate, category });
 
+    // When no date filters provided, don't filter by date in query to get all games
+    // But still generate chart data for a reasonable range
     const gamesResult = await getGames({
       player: playerName,
-      startDate,
-      endDate,
+      startDate: startDate || undefined, // Only pass if provided
+      endDate: endDate || undefined, // Only pass if provided
       category,
+      gameState: 'completed', // Only analyze completed games
       limit: 10000, // Get all games for activity
     });
 
-    const start = startDate ? parseISO(startDate) : new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
-    const end = endDate ? parseISO(endDate) : new Date();
+    logger.info('Activity data - games found', { 
+      count: gamesResult.games.length,
+      gameIds: gamesResult.games.map(g => g.id),
+      gameDatetimes: gamesResult.games.map(g => g.datetime)
+    });
+
+    // For chart generation, use provided dates or find the actual date range from games
+    let start: Date;
+    let end: Date;
+    
+    if (startDate && endDate) {
+      start = parseISO(startDate);
+      end = parseISO(endDate);
+    } else if (gamesResult.games.length > 0) {
+      // Find the actual date range from the games
+      const gameDates = gamesResult.games
+        .map(g => {
+          if (!g.datetime) return null;
+          try {
+            const datetimeIso = timestampToIso(g.datetime);
+            return new Date(datetimeIso);
+          } catch {
+            return null;
+          }
+        })
+        .filter((d): d is Date => d !== null);
+      
+      if (gameDates.length > 0) {
+        const minDate = new Date(Math.min(...gameDates.map(d => d.getTime())));
+        const maxDate = new Date(Math.max(...gameDates.map(d => d.getTime())));
+        // Extend range by 7 days on each side for better visualization
+        start = new Date(minDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+        end = new Date(maxDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+      } else {
+        // Fallback to last year if no valid dates
+        start = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
+        end = new Date();
+      }
+    } else {
+      // No games found, use default range
+      start = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
+      end = new Date();
+    }
+    
     const days = eachDayOfInterval({ start, end });
 
     const gamesByDate = new Map<string, number>();
     gamesResult.games.forEach((game) => {
-      const date = format(new Date(game.datetime as string), 'yyyy-MM-dd');
-      gamesByDate.set(date, (gamesByDate.get(date) || 0) + 1);
+      if (!game.datetime) {
+        logger.warn('Game missing datetime field', { gameId: game.id });
+        return;
+      }
+      try {
+        // Handle both Timestamp objects and ISO strings
+        const datetimeIso = timestampToIso(game.datetime);
+        const date = format(new Date(datetimeIso), 'yyyy-MM-dd');
+        gamesByDate.set(date, (gamesByDate.get(date) || 0) + 1);
+      } catch (dateError) {
+        logger.warn('Failed to parse game datetime', { gameId: game.id, datetime: game.datetime, error: dateError });
+      }
     });
 
     return days.map((day) => ({
@@ -74,6 +130,7 @@ export async function getEloHistory(
       category,
       startDate,
       endDate,
+      gameState: 'completed', // Only analyze completed games
       limit: 10000,
     });
 
@@ -103,8 +160,9 @@ export async function getEloHistory(
       );
       if (playerInGame?.elochange !== undefined) {
         currentElo += playerInGame.elochange;
+        const datetimeIso = timestampToIso(game.datetime);
         eloHistory.push({
-          date: format(new Date(game.datetime as string), 'yyyy-MM-dd'),
+          date: format(new Date(datetimeIso), 'yyyy-MM-dd'),
           elo: currentElo,
         });
       }
@@ -167,6 +225,7 @@ export async function getWinRateData(
       category,
       startDate,
       endDate,
+      gameState: 'completed', // Only analyze completed games
       limit: 10000,
     });
 
@@ -354,6 +413,7 @@ export async function getGameLengthData(
       category,
       startDate,
       endDate,
+      gameState: 'completed', // Only analyze completed games
       limit: 10000,
     });
 
@@ -376,7 +436,12 @@ export async function getGameLengthData(
         }
       }
 
-      const date = format(new Date(game.datetime as string), 'yyyy-MM-dd');
+      if (!game.datetime) {
+        logger.warn('Game missing datetime field', { gameId: game.id });
+        continue;
+      }
+      const datetimeIso = timestampToIso(game.datetime);
+      const date = format(new Date(datetimeIso), 'yyyy-MM-dd');
       const durationMinutes = (game.duration || 0) / 60; // Convert seconds to minutes
       const existing = gamesByDate.get(date) || { total: 0, count: 0 };
       gamesByDate.set(date, {
@@ -419,6 +484,7 @@ export async function getPlayerActivityData(
       category,
       startDate,
       endDate,
+      gameState: 'completed', // Only analyze completed games
       limit: 10000,
     });
 
@@ -444,7 +510,12 @@ export async function getPlayerActivityData(
       const gameWithPlayers = await getGameById(game.id);
       if (!gameWithPlayers?.players) continue;
 
-      const month = format(startOfMonth(new Date(game.datetime as string)), 'yyyy-MM-dd');
+      if (!game.datetime) {
+        logger.warn('Game missing datetime field', { gameId: game.id });
+        continue;
+      }
+      const datetimeIso = timestampToIso(game.datetime);
+      const month = format(startOfMonth(new Date(datetimeIso)), 'yyyy-MM-dd');
       if (!playersByMonth.has(month)) {
         playersByMonth.set(month, new Set());
       }
@@ -488,6 +559,7 @@ export async function getClassSelectionData(
       category,
       startDate,
       endDate,
+      gameState: 'completed', // Only analyze completed games
       limit: 10000,
     });
 
@@ -547,6 +619,7 @@ export async function getClassWinRateData(
       category,
       startDate,
       endDate,
+      gameState: 'completed', // Only analyze completed games
       limit: 10000,
     });
 

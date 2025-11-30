@@ -36,11 +36,11 @@ export default function ArchiveDeleteDialog({
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" aria-hidden="true" />
       <div className="relative w-full max-w-md rounded-lg border border-amber-500/40 bg-gray-900/95 p-6 shadow-2xl animate-scale-in">
         <div className="mb-4">
-          <h3 id="archive-delete-dialog-title" className="text-2xl font-semibold text-white">Delete archive entry?</h3>
+          <h3 id="archive-delete-dialog-title" className="text-2xl font-semibold text-white">Delete Entry?</h3>
           <p className="mt-2 text-sm text-gray-300">
             {entryTitle
-              ? `“${entryTitle}” will be permanently removed from the archives. This action cannot be undone.`
-              : 'This entry will be permanently removed from the archives. This action cannot be undone.'}
+              ? `Are you sure you want to delete "${entryTitle}"? This action cannot be undone.`
+              : 'Are you sure you want to delete this entry? This action cannot be undone.'}
           </p>
         </div>
         <div className="flex justify-end gap-4">

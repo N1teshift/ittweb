@@ -80,15 +80,45 @@ export function MetaPage({ pageNamespaces: _pageNamespaces }: MetaPageProps) {
           onReset={resetFilters}
         />
 
-        {metaData && (
-          <MetaCharts
-            activity={metaData.activity}
-            gameLength={metaData.gameLength}
-            playerActivity={metaData.playerActivity}
-            classSelection={metaData.classSelection}
-            classWinRates={metaData.classWinRates}
-          />
-        )}
+        {metaData ? (
+          <>
+            {/* Check if we have any data to show */}
+            {metaData.activity.length === 0 && 
+             metaData.gameLength.length === 0 && 
+             metaData.playerActivity.length === 0 && 
+             metaData.classSelection.length === 0 && 
+             metaData.classWinRates.length === 0 ? (
+              <Card variant="medieval" className="p-8">
+                <div className="text-center">
+                  <p className="text-gray-400 text-lg mb-2">No game data available</p>
+                  <p className="text-gray-500 text-sm mb-4">
+                    Meta statistics require completed games with uploaded and parsed replay data.
+                    <br />
+                    Make sure you have at least one completed game with replay data uploaded.
+                  </p>
+                  <div className="text-left text-xs text-gray-600 bg-gray-900/50 p-4 rounded border border-gray-700">
+                    <p className="font-semibold mb-2">Troubleshooting:</p>
+                    <ul className="list-disc list-inside space-y-1">
+                      <li>Check that your game has <code className="bg-gray-800 px-1 rounded">gameState: "completed"</code></li>
+                      <li>Verify the game has a <code className="bg-gray-800 px-1 rounded">datetime</code> field</li>
+                      <li>Ensure the game's date is within the selected date range (default: last 365 days)</li>
+                      <li>Check browser console for any errors</li>
+                      <li>Try adjusting the date filters to include your game's date</li>
+                    </ul>
+                  </div>
+                </div>
+              </Card>
+            ) : (
+              <MetaCharts
+                activity={metaData.activity}
+                gameLength={metaData.gameLength}
+                playerActivity={metaData.playerActivity}
+                classSelection={metaData.classSelection}
+                classWinRates={metaData.classWinRates}
+              />
+            )}
+          </>
+        ) : null}
       </div>
     </div>
   );

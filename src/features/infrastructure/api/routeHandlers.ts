@@ -225,18 +225,22 @@ export const createApiHandler = <T = unknown>(
       const errorMessage = error instanceof Error ? error.message : String(error);
       const _errorStack = error instanceof Error ? error.stack : undefined;
 
+      // Check if error has a statusCode property (for custom status codes like 404)
+      const statusCode = (error as any)?.statusCode || 500;
+
       // Log error
       logger.error('API request failed', error instanceof Error ? error : new Error(errorMessage), {
         method: req.method,
         url: req.url,
         duration: Date.now() - startTime,
-        error: errorMessage
+        error: errorMessage,
+        statusCode
       });
 
-      // Return error response
-      return res.status(500).json({
+      // Return error response with appropriate status code
+      return res.status(statusCode).json({
         success: false,
-        error: process.env.NODE_ENV === 'production' 
+        error: process.env.NODE_ENV === 'production' && statusCode === 500
           ? 'Internal server error' 
           : errorMessage
       });

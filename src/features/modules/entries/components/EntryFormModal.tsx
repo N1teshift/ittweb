@@ -8,7 +8,7 @@ import { createComponentLogger, logError } from '@/features/infrastructure/loggi
 const logger = createComponentLogger('EntryFormModal');
 
 interface EntryFormModalProps {
-  onSuccess: () => void;
+  onSuccess: (entryId?: string) => void;
   onCancel: () => void;
 }
 
@@ -102,23 +102,14 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
         throw new Error(errorMessage);
       }
 
-      logger.info('Entry created', { contentType, title });
+      // Get the entry ID from the response
+      const responseData = await response.json();
+      // API returns { success: true, data: { id: "..." } } or { id: "..." }
+      const entryId = responseData.data?.id || responseData.id;
       
-      // Revalidate the homepage to show the new entry
-      try {
-        await fetch('/api/revalidate', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ path: '/' }),
-        });
-      } catch (revalidateError) {
-        const error = revalidateError instanceof Error ? revalidateError : new Error(String(revalidateError));
-        logger.warn('Failed to revalidate homepage', { error: error.message, stack: error.stack });
-      }
+      logger.info('Entry created', { contentType, title, entryId });
       
-      onSuccess();
+      onSuccess(entryId);
     } catch (err) {
       const error = err as Error;
       logError(error, 'Failed to create entry', {

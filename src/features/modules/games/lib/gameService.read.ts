@@ -46,6 +46,12 @@ export async function getGameById(id: string): Promise<GameWithPlayers | null> {
         return null;
       }
 
+      // Filter out deleted games
+      if (gameData.isDeleted === true) {
+        logger.info('Game is deleted', { id });
+        return null;
+      }
+
       // Get players
       const playersSnapshot = await gameDoc.ref.collection('players').get();
       const players: GamePlayer[] = [];
@@ -72,6 +78,12 @@ export async function getGameById(id: string): Promise<GameWithPlayers | null> {
 
       const gameData = gameDoc.data();
       if (!gameData) {
+        return null;
+      }
+
+      // Filter out deleted games
+      if (gameData.isDeleted === true) {
+        logger.info('Game is deleted', { id });
         return null;
       }
 

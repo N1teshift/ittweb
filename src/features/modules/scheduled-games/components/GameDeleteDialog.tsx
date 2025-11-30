@@ -26,11 +26,11 @@ export default function GameDeleteDialog({
       />
       <div className="relative w-full max-w-md rounded-lg border border-amber-500/40 bg-gray-900/95 backdrop-blur-md p-6 shadow-2xl">
         <div className="mb-4">
-          <h3 className="text-2xl font-semibold text-white font-medieval-brand">Delete Scheduled Game?</h3>
+          <h3 className="text-2xl font-semibold text-white font-medieval-brand">Delete Game?</h3>
           <p className="mt-2 text-sm text-gray-300">
             {gameTitle
-              ? `"${gameTitle}" will be permanently deleted. This action cannot be undone.`
-              : 'This scheduled game will be permanently deleted. This action cannot be undone.'}
+              ? `Are you sure you want to delete "${gameTitle}"? This action cannot be undone.`
+              : 'Are you sure you want to delete this game? This action cannot be undone.'}
           </p>
         </div>
         <div className="flex justify-end gap-4">

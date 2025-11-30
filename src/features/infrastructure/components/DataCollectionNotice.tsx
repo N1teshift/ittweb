@@ -66,6 +66,11 @@ export default function DataCollectionNotice() {
 
   const handleAccept = async () => {
     try {
+      // Immediately update sessionStorage to prevent showing again in this session
+      sessionStorage.setItem(SESSION_DISMISS_KEY, 'true');
+      setIsVisible(false);
+
+      // Then save to backend (fire and forget - we've already hidden it)
       const response = await fetch('/api/user/accept-data-notice', {
         method: 'POST',
         headers: {
@@ -73,17 +78,12 @@ export default function DataCollectionNotice() {
         },
       });
 
-      if (response.ok) {
-        setIsVisible(false);
-      } else {
+      if (!response.ok) {
         console.error('Failed to accept data notice');
-        // Still hide it to avoid blocking the user
-        setIsVisible(false);
       }
     } catch (error) {
       console.error('Error accepting data notice:', error);
-      // Still hide it to avoid blocking the user
-      setIsVisible(false);
+      // Already hidden, so no need to do anything else
     }
   };
 

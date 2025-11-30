@@ -20,6 +20,7 @@ export default function GameDetailPage() {
   const [editingGame, setEditingGame] = useState<GameWithPlayers | null>(null);
   const [pendingDeleteGame, setPendingDeleteGame] = useState<GameWithPlayers | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isJoining, setIsJoining] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -174,6 +175,44 @@ export default function GameDetailPage() {
     setPendingDeleteGame(null);
   };
 
+  const handleJoin = useCallback(async (gameId: string) => {
+    if (status !== 'authenticated') {
+      signIn('discord');
+      return;
+    }
+
+    if (!session?.discordId || !session?.user?.name) {
+      setErrorMessage('Discord ID or name is missing');
+      return;
+    }
+
+    try {
+      setIsJoining(true);
+      setErrorMessage(null);
+
+      const response = await fetch(`/api/games/${gameId}/join`, {
+        method: 'POST',
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to join game');
+      }
+
+      await refetch?.();
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to join game';
+      setErrorMessage(errorMessage);
+      Logger.error('Failed to join game', {
+        component: 'games/[id]',
+        gameId,
+        error: errorMessage,
+      });
+    } finally {
+      setIsJoining(false);
+    }
+  }, [status, session?.discordId, session?.user?.name, refetch]);
+
   const handleLeave = useCallback(async (gameId: string) => {
     if (status !== 'authenticated') {
       signIn('discord');
@@ -227,7 +266,9 @@ export default function GameDetailPage() {
   };
 
   // Early returns must come after all hooks
-  if (loading) {
+  // Don't show error if router is not ready yet (query params still loading)
+  // or if we're still loading the game data
+  if (!router.isReady || loading) {
     return (
       <div className="container mx-auto px-4 py-8">
         <Card variant="medieval" className="p-8 animate-pulse">
@@ -238,6 +279,7 @@ export default function GameDetailPage() {
     );
   }
 
+  // Only show error if router is ready and we have a definitive error or missing game
   if (error || !game) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -265,8 +307,10 @@ export default function GameDetailPage() {
         game={game} 
         onEdit={game.gameState === 'scheduled' ? handleEdit : undefined}
         onDelete={game.gameState === 'scheduled' ? handleDelete : undefined}
+        onJoin={game.gameState === 'scheduled' ? handleJoin : undefined}
         onLeave={game.gameState === 'scheduled' ? handleLeave : undefined}
         onUploadReplay={game.gameState === 'scheduled' ? handleUploadReplay : undefined}
+        isJoining={isJoining}
         isLeaving={isLeaving}
         userIsCreator={userIsCreator}
         userIsParticipant={userIsParticipant}

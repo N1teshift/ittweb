@@ -11,9 +11,31 @@ interface ArchiveEntryProps {
   onDelete?: (entry: ArchiveEntry) => void;
   canDelete?: boolean;
   onImageClick?: (url: string, title: string) => void;
+  onGameEdit?: (game: any) => void;
+  onGameDelete?: (game: any) => void;
+  onGameJoin?: (gameId: string) => Promise<void>;
+  onGameLeave?: (gameId: string) => Promise<void>;
+  isJoining?: boolean;
+  isLeaving?: boolean;
+  userIsAdmin?: boolean;
+  game?: any; // Pre-fetched game data from localGames
 }
 
-function ArchiveEntryComponent({ entry, onEdit, onDelete, canDelete, onImageClick }: ArchiveEntryProps) {
+function ArchiveEntryComponent({ 
+  entry, 
+  onEdit, 
+  onDelete, 
+  canDelete, 
+  onImageClick,
+  onGameEdit,
+  onGameDelete,
+  onGameJoin,
+  onGameLeave,
+  isJoining,
+  isLeaving,
+  userIsAdmin,
+  game: preloadedGame,
+}: ArchiveEntryProps) {
   const logger = createComponentLogger('ArchiveEntry');
   const [isExpanded, setIsExpanded] = useState(false);
   const [foundGameId, setFoundGameId] = useState<string | null>(null);
@@ -32,8 +54,20 @@ function ArchiveEntryComponent({ entry, onEdit, onDelete, canDelete, onImageClic
     return titleMatch ? titleMatch[1] : null;
   }, [entry.title]);
   
-  // Fetch game data if linkedGameDocumentId is present
-  const { game, loading: gameLoading, error: gameError } = useGame(entry.linkedGameDocumentId || foundGameId || '');
+  // For completed games, always fetch the full game with players to ensure players are displayed
+  // For scheduled games, use preloaded game if available (they don't need players, they have participants)
+  const gameIdToFetch = preloadedGame?.gameState === 'completed' && preloadedGame?.id
+    ? preloadedGame.id
+    : (preloadedGame ? '' : (entry.linkedGameDocumentId || foundGameId || ''));
+  
+  // Fetch game data if linkedGameDocumentId is present, or if we need to fetch players for a completed game
+  const { game: fetchedGame, loading: gameLoading, error: gameError } = useGame(gameIdToFetch);
+  
+  // For completed games, prefer fetched game (which includes players) over preloaded game
+  // For scheduled games, use preloaded game if available (faster, and they don't need players)
+  const game = preloadedGame?.gameState === 'completed' && fetchedGame
+    ? fetchedGame
+    : (preloadedGame || fetchedGame);
   
   // If no linkedGameDocumentId in entry but we have a scheduled game ID, try to find the game by numeric gameId
   useEffect(() => {
@@ -105,6 +139,13 @@ function ArchiveEntryComponent({ entry, onEdit, onDelete, canDelete, onImageClic
         shouldTruncate={shouldTruncate}
         isExpanded={isExpanded}
         onTextExpand={handleTextExpand}
+        onGameEdit={onGameEdit}
+        onGameDelete={onGameDelete}
+        onGameJoin={onGameJoin}
+        onGameLeave={onGameLeave}
+        isJoining={isJoining}
+        isLeaving={isLeaving}
+        userIsAdmin={userIsAdmin}
       />
     );
   }

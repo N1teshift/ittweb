@@ -30,6 +30,12 @@ export function useGame(id: string): UseGameResult {
         cache: 'no-store', // Force fresh fetch, bypass browser cache
       });
       if (!response.ok) {
+        // If 404, game doesn't exist or is deleted - handle gracefully
+        if (response.status === 404) {
+          setGame(null);
+          setLoading(false);
+          return;
+        }
         throw new Error(`Failed to fetch game: ${response.statusText}`);
       }
 

@@ -16,6 +16,7 @@ interface ArchivesContentProps {
   datedEntries: ArchiveEntry[];
   undatedEntries: ArchiveEntry[];
   games?: Game[];
+  gamesMap?: Map<string, Game>; // Map of game document ID to game data for direct lookup
   isAuthenticated: boolean;
   canManageEntries: boolean;
   canDeleteEntry?: (entry: ArchiveEntry) => boolean;
@@ -24,6 +25,13 @@ interface ArchivesContentProps {
   onImageClick: (url: string, title: string) => void;
   onAddClick: () => void;
   onSignInClick: () => void;
+  onGameEdit?: (game: Game) => void;
+  onGameDelete?: (game: Game) => void;
+  onGameJoin?: (gameId: string) => Promise<void>;
+  onGameLeave?: (gameId: string) => Promise<void>;
+  isJoining?: boolean;
+  isLeaving?: boolean;
+  userIsAdmin?: boolean;
 }
 
 const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
@@ -33,6 +41,7 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
   datedEntries,
   undatedEntries,
   games = [],
+  gamesMap,
   isAuthenticated,
   canManageEntries,
   canDeleteEntry,
@@ -41,6 +50,13 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
   onImageClick,
   onAddClick,
   onSignInClick,
+  onGameEdit,
+  onGameDelete,
+  onGameJoin,
+  onGameLeave,
+  isJoining,
+  isLeaving,
+  userIsAdmin,
 }) => {
   const resolveCanDelete = (entry: ArchiveEntry) => {
     if (canManageEntries) {
@@ -102,26 +118,30 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
           : timestampToIso(game.createdAt); // Fallback to createdAt if neither exists
 
         return {
-          id: `game-${game.id}`,
-          title: `Game #${game.gameId}`,
-          content: '',
+        id: `game-${game.id}`,
+        title: `Game #${game.gameId}`,
+        content: '',
           creatorName: game.creatorName || 'System',
-          linkedGameDocumentId: game.id, // Set the document ID so ArchiveEntry component can fetch full game data
-          dateInfo: {
-            type: 'single' as const,
+        linkedGameDocumentId: game.id, // Set the document ID so ArchiveEntry component can fetch full game data
+        dateInfo: {
+          type: 'single' as const,
             singleDate: gameDate,
-          },
-          createdAt: timestampToIso(game.createdAt),
-          updatedAt: timestampToIso(game.updatedAt),
-          isDeleted: false,
+        },
+        createdAt: timestampToIso(game.createdAt),
+        updatedAt: timestampToIso(game.updatedAt),
+        isDeleted: false,
         } as ArchiveEntry;
       });
   }, [games, archivedGameDocumentIds, archivedNumericGameIds]);
 
-  // Merge dated entries with games, sorted by date
+  // Merge ALL entries (dated + undated) with games, sorted by createdAt
   // Also deduplicate by checking if any game-based entry already exists as an archive entry
-  const mergedDatedEntries = useMemo(() => {
-    const all = [...datedEntries];
+  const mergedAllEntries = useMemo(() => {
+    // Start with ALL entries (both dated and undated) - create a fresh array
+    const all: ArchiveEntry[] = [];
+    
+    // Add all entries first
+    entries.forEach(entry => all.push(entry));
     
     // Add games that don't have archive entries, but also check for duplicates by numeric gameId
     gamesWithoutArchives.forEach(gameEntry => {
@@ -129,8 +149,8 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
       const gameTitleMatch = gameEntry.title.match(/^Game #(\d+)/);
       if (gameTitleMatch) {
         const numericGameId = parseInt(gameTitleMatch[1], 10);
-        // Check if we already have an archive entry with this numeric gameId
-        const alreadyExists = datedEntries.some(entry => {
+        // Check if we already have an archive entry with this numeric gameId (check ALL entries, not just dated)
+        const alreadyExists = entries.some(entry => {
           const entryTitleMatch = entry.title.match(/^Game #(\d+)/);
           if (entryTitleMatch) {
             return parseInt(entryTitleMatch[1], 10) === numericGameId;
@@ -147,12 +167,26 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
     });
     
     // Sort by creation date (when the record was added to the system)
-    return all.sort((a, b) => {
-      const timeA = new Date(timestampToIso(a.createdAt)).getTime();
-      const timeB = new Date(timestampToIso(b.createdAt)).getTime();
+    // Sorting down to the second (millisecond precision) by createdAt
+    // Create a new sorted array to ensure proper mixing
+    const sorted = [...all].sort((a, b) => {
+      // Ensure both createdAt values are properly converted to ISO strings first
+      const isoA = timestampToIso(a.createdAt);
+      const isoB = timestampToIso(b.createdAt);
+      const timeA = new Date(isoA).getTime();
+      const timeB = new Date(isoB).getTime();
+      
+      // If timestamps are invalid, put them at the end
+      if (isNaN(timeA) && isNaN(timeB)) return 0;
+      if (isNaN(timeA)) return 1;
+      if (isNaN(timeB)) return -1;
+      
       return timeB - timeA; // Newest first
     });
-  }, [datedEntries, gamesWithoutArchives]);
+    
+    // Limit to 20 most recent items after merging entries and games
+    return sorted.slice(0, 20);
+  }, [entries, gamesWithoutArchives]);
 
   return (
     <div className="max-w-4xl mx-auto px-6">
@@ -167,21 +201,19 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
         <div className="pb-12">
           <TimelineSection 
             title=""
-            entries={mergedDatedEntries}
+            entries={mergedAllEntries}
             onEdit={isAuthenticated ? onEdit : undefined}
             onDelete={onRequestDelete}
             canDeleteEntry={resolveCanDelete}
             onImageClick={onImageClick}
-          />
-
-          <TimelineSection 
-            title="Undated Archives"
-            titleClassName="text-gray-400"
-            entries={undatedEntries}
-            onEdit={isAuthenticated ? onEdit : undefined}
-            onDelete={onRequestDelete}
-            canDeleteEntry={resolveCanDelete}
-            onImageClick={onImageClick}
+            onGameEdit={onGameEdit}
+            onGameDelete={onGameDelete}
+            onGameJoin={onGameJoin}
+            onGameLeave={onGameLeave}
+            isJoining={isJoining}
+            isLeaving={isLeaving}
+            userIsAdmin={userIsAdmin}
+            gamesMap={gamesMap}
           />
 
           {/* Empty State */}
