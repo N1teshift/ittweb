@@ -89,7 +89,6 @@ export const createApiHandler = <T = unknown>(
     requireAdmin = false,
     validateBody,
     logRequests = true,
-    cacheControl
   } = options;
   
   // requireAdmin implies requireAuth
@@ -226,7 +225,7 @@ export const createApiHandler = <T = unknown>(
       const _errorStack = error instanceof Error ? error.stack : undefined;
 
       // Check if error has a statusCode property (for custom status codes like 404)
-      const statusCode = (error as any)?.statusCode || 500;
+      const statusCode = (error as Error & { statusCode?: number })?.statusCode || 500;
 
       // Log error
       logger.error('API request failed', error instanceof Error ? error : new Error(errorMessage), {

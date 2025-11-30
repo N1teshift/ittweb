@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 interface MobileMenuProps {
   isOpen: boolean;

@@ -10,7 +10,6 @@
  * 3. Initialize Sentry in your Next.js app (see Sentry docs)
  */
 
-import { ErrorCategory } from '../logging/logger';
 
 export interface ErrorContext {
   component?: string;

@@ -15,7 +15,7 @@ import {
   validateArray,
   validateBoolean,
 } from './validators';
-import { parseQueryString, parseQueryInt } from './queryParser';
+import { parseQueryString } from './queryParser';
 
 /**
  * Validation schema field definition

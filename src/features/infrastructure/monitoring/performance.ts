@@ -101,7 +101,7 @@ function trackCoreWebVitals(): void {
         }
       });
       observer.observe({ entryTypes: ['largest-contentful-paint'] });
-    } catch (e) {
+    } catch {
       // Silently fail if not supported - this is expected in some browsers
     }
   }
@@ -121,7 +121,7 @@ function trackCoreWebVitals(): void {
         });
       });
       observer.observe({ entryTypes: ['first-input'] });
-    } catch (e) {
+    } catch {
       // Silently fail if not supported - this is expected in some browsers
     }
   }

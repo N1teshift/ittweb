@@ -111,7 +111,9 @@ export function GameLinkedArchiveEntry({
     onTextExpand();
   };
 
-  const handleCardClick = () => {
+  const handleViewDetailsClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (game?.id) {
       router.push(`/games/${game.id}`);
     }
@@ -124,8 +126,7 @@ export function GameLinkedArchiveEntry({
 
   return (
     <div 
-      className={`bg-gradient-to-br from-black/40 via-amber-950/20 to-black/40 backdrop-blur-sm border-2 border-amber-500/40 rounded-lg p-6 mb-6 hover:border-amber-400/70 hover:shadow-lg hover:shadow-amber-500/20 transition-all relative group ${game?.id ? 'cursor-pointer' : ''}`}
-      onClick={game?.id ? handleCardClick : undefined}
+      className="bg-gradient-to-br from-black/40 via-amber-950/20 to-black/40 backdrop-blur-sm border-2 border-amber-500/40 rounded-lg p-6 mb-6 hover:border-amber-400/70 hover:shadow-lg hover:shadow-amber-500/20 transition-all relative group"
     >
       {/* Main clickable content area */}
       <div>
@@ -422,12 +423,15 @@ export function GameLinkedArchiveEntry({
                 </>
               )}
               {game?.id ? (
-                <span className="text-amber-300 font-medium group-hover:text-amber-200 transition-colors flex items-center gap-1">
+                <button
+                  onClick={handleViewDetailsClick}
+                  className="text-amber-300 font-medium hover:text-amber-200 transition-colors flex items-center gap-1 cursor-pointer"
+                >
                   View full game details
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
-                </span>
+                </button>
               ) : entry.linkedGameDocumentId && gameLoading ? (
                 <span className="text-amber-400/60 text-xs animate-pulse">
                   Loading game data...

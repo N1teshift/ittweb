@@ -71,7 +71,7 @@ export function validateInt(
  */
 export function validateDate(
   value: unknown,
-  fieldName: string
+  _fieldName: string
 ): Date | null {
   if (value instanceof Date) {
     if (isNaN(value.getTime())) {
@@ -113,7 +113,7 @@ export function validateEnum<T extends string>(
 /**
  * Validate that a value is a boolean
  */
-export function validateBoolean(value: unknown, fieldName: string): boolean | null {
+export function validateBoolean(value: unknown, _fieldName: string): boolean | null {
   if (typeof value === 'boolean') {
     return value;
   }
