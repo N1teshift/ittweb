@@ -188,13 +188,6 @@ export function MobileMenu({
             <span>{session?.user?.name || 'User'}</span>
           </Link>
         )}
-        <Link
-          href="/test/create-game"
-          className="block mt-3 px-3 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-md text-base text-center"
-          onClick={onClose}
-        >
-          Create Game
-        </Link>
       </div>
     </div>
   );
