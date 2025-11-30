@@ -40,23 +40,45 @@ export default function Header() {
         <header className="bg-black/30 backdrop-blur-sm border-b border-amber-500/30 sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
-                    {/* Navigation Links */}
-                    <nav className="hidden md:flex space-x-8 items-center">
-                        <Link href="/" className="font-medieval-brand-hover px-3 py-2 rounded-md text-lg">
-                            Home
-                        </Link>
-                        <DropdownMenu label="Guides" items={guidesItems} />
-                        <DropdownMenu label="Community" items={communityItems} />
-                        <DropdownMenu label="Tools" items={toolsItems} />
-                        <Link href="/development" className="font-medieval-brand-hover px-3 py-2 rounded-md text-lg">
-                            Development
-                        </Link>
-                        <Link href="/download" className="font-medieval-brand-hover px-3 py-2 rounded-md text-lg">
-                            Download
-                        </Link>
-                    </nav>
+                    {/* Left side: Mobile menu button on mobile, Navigation Links on desktop */}
+                    <div className="flex items-center">
+                        {/* Mobile menu button */}
+                        <div className="md:hidden">
+                            <button 
+                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                className="text-gray-300 hover:text-amber-400 p-2 rounded-md"
+                                aria-expanded={mobileMenuOpen}
+                                aria-label="Toggle mobile menu"
+                            >
+                                <svg 
+                                    className="h-6 w-6" 
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                            </button>
+                        </div>
+                        {/* Navigation Links */}
+                        <nav className="hidden md:flex space-x-8 items-center">
+                            <Link href="/" className="font-medieval-brand-hover px-3 py-2 rounded-md text-lg">
+                                Home
+                            </Link>
+                            <DropdownMenu label="Guides" items={guidesItems} />
+                            <DropdownMenu label="Community" items={communityItems} />
+                            <DropdownMenu label="Tools" items={toolsItems} />
+                            <Link href="/development" className="font-medieval-brand-hover px-3 py-2 rounded-md text-lg">
+                                Development
+                            </Link>
+                            <Link href="/download" className="font-medieval-brand-hover px-3 py-2 rounded-md text-lg">
+                                Download
+                            </Link>
+                        </nav>
+                    </div>
 
-                    {/* Auth / Profile */}
+                    {/* Right side: Auth / Profile */}
                     <div className="flex items-center gap-3">
                         {status === 'authenticated' ? (
                             <>
@@ -84,25 +106,6 @@ export default function Header() {
                                 Sign in with Discord
                             </button>
                         )}
-                        {/* Mobile menu button */}
-                        <div className="md:hidden">
-                            <button 
-                                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                                className="text-gray-300 hover:text-amber-400 p-2 rounded-md"
-                                aria-expanded={mobileMenuOpen}
-                                aria-label="Toggle mobile menu"
-                            >
-                                <svg 
-                                    className="h-6 w-6" 
-                                    fill="none" 
-                                    stroke="currentColor" 
-                                    viewBox="0 0 24 24"
-                                    aria-hidden="true"
-                                >
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
