@@ -142,7 +142,7 @@ function trackCoreWebVitals(): void {
         reportMetric('CLS', clsValue, 'score');
       });
       observer.observe({ entryTypes: ['layout-shift'] });
-    } catch (e) {
+    } catch {
       // Silently fail if not supported - this is expected in some browsers
     }
   }
@@ -180,7 +180,7 @@ export function reportMetric(name: string, value: number, unit: string = 'ms'): 
     try {
       const data = JSON.stringify(metric);
       window.navigator.sendBeacon('/api/analytics/performance', data);
-    } catch (e) {
+    } catch {
       // Analytics endpoint not available or failed
     }
   }

@@ -99,7 +99,7 @@ export function useGameEditDelete({
         setError(error.message);
       }
     },
-    [editingGame, localGames, setError, markGameRecentlyUpdated]
+    [editingGame, localGames, setLocalGames, setError, markGameRecentlyUpdated]
   );
 
   const handleGameEditCancel = useCallback(() => {
@@ -161,7 +161,7 @@ export function useGameEditDelete({
     } finally {
       setIsDeletingGame(false);
     }
-  }, [pendingDeleteGame, refetchGames]);
+  }, [pendingDeleteGame, setLocalGames, refetchGames]);
 
   const handleGameDeleteCancel = useCallback(() => {
     setPendingDeleteGame(null);

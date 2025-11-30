@@ -1,5 +1,4 @@
 import React, { useEffect, useCallback, useImperativeHandle, forwardRef } from 'react';
-import type { ArchiveEntry } from '@/types/archive';
 import type { GameFilters } from '@/features/modules/games/types';
 import ImageModal from '@/features/modules/archives/components/sections/ImageModal';
 import { HomeTimelineModals } from './HomeTimelineModals';

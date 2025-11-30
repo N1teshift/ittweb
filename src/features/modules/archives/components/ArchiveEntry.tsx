@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { ArchiveEntry } from '@/types/archive';
+import type { GameWithPlayers } from '@/features/modules/games/types';
 import { useGame } from '@/features/modules/games/hooks/useGame';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { GameLinkedArchiveEntry } from './GameLinkedArchiveEntry';
@@ -11,14 +12,14 @@ interface ArchiveEntryProps {
   onDelete?: (entry: ArchiveEntry) => void;
   canDelete?: boolean;
   onImageClick?: (url: string, title: string) => void;
-  onGameEdit?: (game: any) => void;
-  onGameDelete?: (game: any) => void;
+  onGameEdit?: (game: GameWithPlayers) => void;
+  onGameDelete?: (game: GameWithPlayers) => void;
   onGameJoin?: (gameId: string) => Promise<void>;
   onGameLeave?: (gameId: string) => Promise<void>;
   isJoining?: boolean;
   isLeaving?: boolean;
   userIsAdmin?: boolean;
-  game?: any; // Pre-fetched game data from localGames
+  game?: GameWithPlayers; // Pre-fetched game data from localGames
 }
 
 function ArchiveEntryComponent({ 
