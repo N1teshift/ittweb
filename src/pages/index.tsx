@@ -8,6 +8,7 @@ import type { GetStaticProps } from 'next';
 import type { CreateScheduledGame } from '@/features/modules/games/types';
 import { Button } from '@/features/infrastructure/components/ui';
 import { HomeTimeline } from '@/features/modules/archives/components';
+import type { HomeTimelineHandle } from '@/features/modules/archives/components/HomeTimeline';
 import { useRef } from 'react';
 
 const pageNamespaces = ["common"];
@@ -22,7 +23,7 @@ export default function Home({}: HomeProps) {
   const [showScheduleForm, setShowScheduleForm] = useState(false);
   const [isSubmittingSchedule, setIsSubmittingSchedule] = useState(false);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
-  const homeTimelineRef = useRef<{ addNewGame: (gameId: string) => Promise<void> } | null>(null);
+  const homeTimelineRef = useRef<HomeTimelineHandle | null>(null);
 
   // Fetch user role to check if admin
   useEffect(() => {

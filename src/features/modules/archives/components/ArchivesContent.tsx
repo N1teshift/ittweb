@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import { ArchiveEntry } from '@/types/archive';
-import type { Game } from '@/features/modules/games/types';
+import type { Game, GameWithPlayers } from '@/features/modules/games/types';
 import TimelineSection from './sections/TimelineSection';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import { 
@@ -16,7 +16,7 @@ interface ArchivesContentProps {
   datedEntries: ArchiveEntry[];
   undatedEntries: ArchiveEntry[];
   games?: Game[];
-  gamesMap?: Map<string, Game>; // Map of game document ID to game data for direct lookup
+  gamesMap?: Map<string, GameWithPlayers>; // Map of game document ID to game data for direct lookup
   isAuthenticated: boolean;
   canManageEntries: boolean;
   canDeleteEntry?: (entry: ArchiveEntry) => boolean;
