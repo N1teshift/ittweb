@@ -2,16 +2,13 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Card } from '@/features/infrastructure/components/ui/Card';
 import { formatDuration } from '@/features/modules/shared/utils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import { formatDateTimeInTimezone } from '@/features/modules/scheduled-games/utils/timezoneUtils';
 import type { ArchiveEntry } from '@/types/archive';
 import type { GameWithPlayers } from '@/features/modules/games/types';
-import { GameDetailsSection } from './GameDetailsSection';
 import { GamePlayersSection } from './GamePlayersSection';
-import { ArchiveMediaSections } from './ArchiveMediaSections';
 import YouTubeEmbed from './YouTubeEmbed';
 import TwitchClipEmbed from './TwitchClipEmbed';
 
@@ -58,10 +55,10 @@ export function GameLinkedArchiveEntry({
   gameLoading,
   gameError,
   gameNumber,
-  gameType,
-  onEdit,
-  onDelete,
-  canDelete,
+  gameType: _gameType,
+  onEdit: _onEdit,
+  onDelete: _onDelete,
+  canDelete: _canDelete,
   onImageClick,
   displayText,
   shouldTruncate,
@@ -245,7 +242,7 @@ export function GameLinkedArchiveEntry({
                                 timeZoneName: 'short',
                               }
                             );
-                          } catch (error) {
+                          } catch {
                             // Fallback to simple date formatting if timezone formatting fails
                             const scheduledDateIso = game.scheduledDateTimeString || timestampToIso(game.scheduledDateTime);
                             return new Date(scheduledDateIso).toLocaleString();

@@ -1,5 +1,6 @@
 import React from 'react';
 import type { ArchiveEntry as ArchiveEntryType } from '@/types/archive';
+import type { GameWithPlayers } from '@/features/modules/games/types';
 import ArchiveEntry from '../ArchiveEntry';
 
 interface TimelineSectionProps {
@@ -10,14 +11,14 @@ interface TimelineSectionProps {
   onDelete?: (entry: ArchiveEntryType) => void;
   canDeleteEntry?: (entry: ArchiveEntryType) => boolean;
   onImageClick: (url: string, title: string) => void;
-  onGameEdit?: (game: any) => void;
-  onGameDelete?: (game: any) => void;
+  onGameEdit?: (game: GameWithPlayers) => void;
+  onGameDelete?: (game: GameWithPlayers) => void;
   onGameJoin?: (gameId: string) => Promise<void>;
   onGameLeave?: (gameId: string) => Promise<void>;
   isJoining?: boolean;
   isLeaving?: boolean;
   userIsAdmin?: boolean;
-  gamesMap?: Map<string, any>;
+  gamesMap?: Map<string, GameWithPlayers>;
 }
 
 export default function TimelineSection({ 

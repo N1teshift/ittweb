@@ -2,7 +2,6 @@ import React from 'react';
 import Image from 'next/image';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { ArchiveEntry } from '@/types/archive';
-import { ArchiveMediaSections } from './ArchiveMediaSections';
 import YouTubeEmbed from './YouTubeEmbed';
 import TwitchClipEmbed from './TwitchClipEmbed';
 
