@@ -2,7 +2,6 @@ import React, { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
 import { Logger } from '@/features/infrastructure/logging';
-import { Card } from '@/features/infrastructure/components/ui/Card';
 import LoadingScreen from '@/features/infrastructure/components/ui/LoadingScreen';
 
 // Lazy load TerrainVisualizerContainer to reduce initial bundle size

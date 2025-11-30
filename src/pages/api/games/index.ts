@@ -1,12 +1,12 @@
 import type { NextApiRequest } from 'next';
 import { createGetPostHandler } from '@/features/infrastructure/api/routeHandlers';
-import { parseQueryString, parseQueryInt, parseQueryEnum, parseQueryDate } from '@/features/infrastructure/api/queryParser';
+import { parseQueryString, parseQueryInt, parseQueryEnum } from '@/features/infrastructure/api/queryParser';
 import { createScheduledGame, createCompletedGame, getGames } from '@/features/modules/games/lib/gameService';
 import type { CreateScheduledGame, CreateCompletedGame, GameFilters } from '@/features/modules/games/types';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
-import type { Game, GameListResponse } from '@/features/modules/games/types';
+import type { GameListResponse } from '@/features/modules/games/types';
 
 const logger = createComponentLogger('api/games');
 

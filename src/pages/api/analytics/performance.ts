@@ -58,7 +58,7 @@ export default createPostHandler<{ received: boolean }>(
       
       // Silently handle invalid format - this is fire-and-forget analytics
       return { received: false };
-    } catch (error) {
+    } catch {
       // Silently handle parsing errors - this is fire-and-forget analytics
       // Errors are expected if the endpoint isn't available, so we don't log them
       return { received: false };

@@ -48,7 +48,7 @@ async function findPngFiles(dir: string, baseDir: string, category: string): Pro
  * GET /api/icons/list - List all icon files
  */
 export default createGetHandler<IconFile[]>(
-  async (req: NextApiRequest) => {
+  async () => {
     const iconsDir = join(process.cwd(), 'public', 'icons', 'itt');
     // All icons are now in a flat directory structure
     const allIcons: IconFile[] = [];

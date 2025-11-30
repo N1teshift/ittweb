@@ -8,8 +8,6 @@ import LoadingScreen from '@/features/infrastructure/components/ui/LoadingScreen
 import { EmptyState } from '@/features/infrastructure/components/ui';
 import type { ClassSelectionData, ClassWinRateData, ClassStats } from '@/features/modules/analytics/types';
 
-const pageNamespaces = ['common'];
-
 // Mark page as SSR to prevent ISR manifest warnings
 export const getServerSideProps: GetServerSideProps = async () => {
   return {

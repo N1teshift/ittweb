@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button } from '@/features/infrastructure/components/ui/Button';
 import { Card } from '@/features/infrastructure/components/ui/Card';
 
 interface PlayerFilterProps {
@@ -46,7 +45,7 @@ export function PlayerFilter({
           );
           setSuggestions(filtered.slice(0, 10)); // Limit to 10 suggestions
         }
-      } catch (error) {
+      } catch {
         // Silently fail - search is non-critical
         setSuggestions([]);
       }

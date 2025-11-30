@@ -3,7 +3,6 @@
  * Extracted to reduce code duplication between server and client paths
  */
 
-import { Timestamp } from 'firebase/firestore';
 import type { CategoryStats } from '../types';
 import type { GamePlayer } from '../../games/types';
 import { STARTING_ELO } from '../../games/lib/eloCalculator';

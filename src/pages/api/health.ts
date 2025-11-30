@@ -38,7 +38,7 @@ export default async function handler(
     // Using a collection that likely exists (games) with limit 1 for minimal cost
     await db.collection('games').limit(1).get();
     health.checks.database = 'ok';
-  } catch (error) {
+  } catch {
     health.checks.database = 'error';
     health.status = 'error';
   }

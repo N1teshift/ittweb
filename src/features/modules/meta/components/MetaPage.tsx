@@ -99,11 +99,11 @@ export function MetaPage({ pageNamespaces: _pageNamespaces }: MetaPageProps) {
                   <div className="text-left text-xs text-gray-600 bg-gray-900/50 p-4 rounded border border-gray-700">
                     <p className="font-semibold mb-2">Troubleshooting:</p>
                     <ul className="list-disc list-inside space-y-1">
-                      <li>Check that your game has <code className="bg-gray-800 px-1 rounded">gameState: "completed"</code></li>
+                      <li>Check that your game has <code className="bg-gray-800 px-1 rounded">gameState: &quot;completed&quot;</code></li>
                       <li>Verify the game has a <code className="bg-gray-800 px-1 rounded">datetime</code> field</li>
-                      <li>Ensure the game's date is within the selected date range (default: last 365 days)</li>
+                      <li>Ensure the game&apos;s date is within the selected date range (default: last 365 days)</li>
                       <li>Check browser console for any errors</li>
-                      <li>Try adjusting the date filters to include your game's date</li>
+                      <li>Try adjusting the date filters to include your game&apos;s date</li>
                     </ul>
                   </div>
                 </div>

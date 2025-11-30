@@ -1,5 +1,5 @@
 import type { NextApiRequest } from 'next';
-import { createGetPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
+import { createGetPostHandler } from '@/features/infrastructure/api/routeHandlers';
 import { parseQueryBoolean } from '@/features/infrastructure/api/queryParser';
 import { validateRequiredFields, validateString } from '@/features/infrastructure/api/validators';
 import { getAllPosts, createPost } from '@/features/modules/blog/lib/postService';
