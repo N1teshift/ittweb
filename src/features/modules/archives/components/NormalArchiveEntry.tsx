@@ -125,6 +125,34 @@ export function NormalArchiveEntry({
           <span className="text-gray-400">
             Added by <span className="text-amber-400/80">{entry.creatorName}</span> on {new Date(timestampToIso(entry.createdAt)).toLocaleDateString()}
           </span>
+          {(onEdit || (canDelete && onDelete)) && (
+            <div className="flex items-center gap-3">
+              {onEdit && (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onEdit(entry);
+                  }}
+                  className="text-amber-400 hover:text-amber-300 underline font-medium transition-colors"
+                >
+                  Edit
+                </button>
+              )}
+              {canDelete && onDelete && (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onDelete(entry);
+                  }}
+                  className="text-red-400 hover:text-red-300 underline font-medium transition-colors"
+                >
+                  Delete
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
