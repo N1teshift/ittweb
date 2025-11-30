@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Card } from '@/features/infrastructure/components/ui/Card';
 import { formatDuration } from '@/features/modules/shared/utils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { formatDateTimeInTimezone } from '@/features/modules/scheduled-games/utils/timezoneUtils';
 import type { ArchiveEntry } from '@/types/archive';
 import type { GameWithPlayers } from '@/features/modules/games/types';
 import { GameDetailsSection } from './GameDetailsSection';
@@ -169,11 +170,32 @@ export function GameLinkedArchiveEntry({
                       </span>
                     </div>
                   )}
-                  {game.scheduledDateTime && (
+                  {(game.scheduledDateTimeString || game.scheduledDateTime) && (
                     <div>
                       <span className="text-gray-400">Scheduled:</span>{' '}
                       <span className="text-amber-300 font-medium">
-                        {new Date(timestampToIso(game.scheduledDateTime)).toLocaleString()}
+                        {(() => {
+                          try {
+                            // Prefer scheduledDateTimeString if available, otherwise convert scheduledDateTime
+                            const scheduledDateIso = game.scheduledDateTimeString || timestampToIso(game.scheduledDateTime);
+                            return formatDateTimeInTimezone(
+                              scheduledDateIso,
+                              game.timezone || 'UTC',
+                              {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                timeZoneName: 'short',
+                              }
+                            );
+                          } catch (error) {
+                            // Fallback to simple date formatting if timezone formatting fails
+                            const scheduledDateIso = game.scheduledDateTimeString || timestampToIso(game.scheduledDateTime);
+                            return new Date(scheduledDateIso).toLocaleString();
+                          }
+                        })()}
                       </span>
                     </div>
                   )}

@@ -76,6 +76,10 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
 
   // Filter games that don't have archive entries and convert them to archive-like entries for display
   const gamesWithoutArchives = useMemo(() => {
+    if (!games || games.length === 0) {
+      return [];
+    }
+    
     return games
       .filter(game => {
         // Exclude if game document ID is already in an archive entry
@@ -90,9 +94,9 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(({
         return true;
       })
       .map(game => {
-        // For scheduled games, use scheduledDateTime; for completed games, use datetime
-        const gameDate = game.gameState === 'scheduled' && game.scheduledDateTime
-          ? timestampToIso(game.scheduledDateTime)
+        // For scheduled games, use scheduledDateTime (prefer scheduledDateTimeString if available); for completed games, use datetime
+        const gameDate = game.gameState === 'scheduled' && (game.scheduledDateTimeString || game.scheduledDateTime)
+          ? (game.scheduledDateTimeString || timestampToIso(game.scheduledDateTime))
           : game.datetime
           ? timestampToIso(game.datetime)
           : timestampToIso(game.createdAt); // Fallback to createdAt if neither exists

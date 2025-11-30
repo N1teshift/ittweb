@@ -4,6 +4,7 @@ import { Card } from '@/features/infrastructure/components/ui/Card';
 import { Tooltip } from '@/features/infrastructure/components/ui';
 import { formatDuration, formatEloChange } from '../../shared/utils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { formatDateTimeInTimezone } from '@/features/modules/scheduled-games/utils/timezoneUtils';
 import type { GameWithPlayers } from '../types';
 
 interface GameDetailProps {
@@ -72,17 +73,28 @@ export function GameDetail({
   const awaitingReplay = isAwaitingReplay(game);
   const canUploadReplay = isScheduled && awaitingReplay && onUploadReplay;
   
-  // Parse scheduled date - prefer scheduledDateTimeString, fallback to converting scheduledDateTime
-  const scheduledDate = isScheduled && game.scheduledDateTime
-    ? parseDate(game.scheduledDateTimeString || timestampToIso(game.scheduledDateTime))
+  // Format scheduled date with timezone awareness
+  const formattedScheduledDate = isScheduled && game.scheduledDateTime
+    ? formatDateTimeInTimezone(
+        game.scheduledDateTimeString || timestampToIso(game.scheduledDateTime),
+        game.timezone || 'UTC',
+        {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZoneName: 'short',
+        }
+      )
     : null;
   
-  // Parse completed game date
+  // Parse completed game date (for fallback display)
   const completedDate = !isScheduled && game.datetime
     ? parseDate(timestampToIso(game.datetime))
     : null;
   
-  const gameDate = scheduledDate || completedDate;
+  const gameDate = completedDate; // Only used for completed games now
   
   const winners = game.players?.filter(p => p.flag === 'winner') || [];
   const losers = game.players?.filter(p => p.flag === 'loser') || [];
@@ -96,9 +108,15 @@ export function GameDetail({
         </h1>
         
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-          {gameDate && (
+          {isScheduled && formattedScheduledDate && (
             <div>
-              <span className="text-gray-500">{isScheduled ? 'Scheduled:' : 'Date:'}</span>
+              <span className="text-gray-500">Scheduled:</span>
+              <p className="text-amber-300">{formattedScheduledDate}</p>
+            </div>
+          )}
+          {!isScheduled && gameDate && (
+            <div>
+              <span className="text-gray-500">Date:</span>
               <p className="text-amber-300">{gameDate.toLocaleString()}</p>
             </div>
           )}

@@ -53,8 +53,21 @@ export default function HomeTimeline() {
     sortOrder: 'newest',
   });
 
-  // Fetch games with filters
-  const { games, loading: gamesLoading } = useGames({ ...gameFilters, limit: 100 });
+  // Fetch games with filters (no gameState filter = fetch all games, both scheduled and completed)
+  const { games, loading: gamesLoading, error: gamesError } = useGames({ ...gameFilters, limit: 100 });
+  
+  // Debug: Log games to console
+  useEffect(() => {
+    if (games && games.length > 0) {
+      logger.debug('Games fetched for timeline', { 
+        total: games.length, 
+        scheduled: games.filter(g => g.gameState === 'scheduled').length,
+        completed: games.filter(g => g.gameState === 'completed').length 
+      });
+    } else if (!gamesLoading) {
+      logger.warn('No games fetched for timeline', { gamesError: gamesError?.message });
+    }
+  }, [games, gamesLoading, gamesError, logger]);
 
   // Fetch user role
   useEffect(() => {
@@ -177,11 +190,11 @@ export default function HomeTimeline() {
     <>
       <ArchivesContent
         loading={loading || gamesLoading}
-        error={error}
+        error={error || (gamesError ? gamesError.message : null)}
         entries={entries}
         datedEntries={datedEntries}
         undatedEntries={undatedEntries}
-        games={games}
+        games={games || []}
         isAuthenticated={isAuthenticated}
         canManageEntries={canManageEntries}
         canDeleteEntry={(entry) =>
