@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const ICONS_DIR = path.join(__dirname, 'public', 'icons', 'itt');
-const ICON_MAP_FILE = path.join(__dirname, 'src', 'features', 'modules', 'guides', 'data', 'iconMap.ts');
-const OUTPUT_FILE = path.join(__dirname, 'missing-icons-report.txt');
+// Adjust paths for running from scripts/ directory
+const ROOT_DIR = path.join(__dirname, '..');
+const ICONS_DIR = path.join(ROOT_DIR, 'public', 'icons', 'itt');
+const ICON_MAP_FILE = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'data', 'iconMap.ts');
+const OUTPUT_FILE = path.join(ROOT_DIR, 'missing-icons-report.txt');
 
 console.log('Reading icons directory...');
 const existingIcons = new Set();
@@ -87,10 +89,4 @@ if (missing.length > 0) {
 fs.writeFileSync(OUTPUT_FILE, report);
 console.log('\n' + report);
 console.log(`Report written to: ${OUTPUT_FILE}`);
-
-
-
-
-
-
 

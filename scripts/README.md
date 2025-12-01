@@ -2,6 +2,63 @@
 
 The `scripts/` folder hosts the end-to-end data regeneration pipeline for Island Troll Tribes. Everything you need to extract Warcraft III data, convert it to TypeScript, and rebuild the icon map lives in `scripts/data/`.
 
+## Utility Scripts
+
+### Check Missing Icons
+
+**Script:** `scripts/check-missing-icons.js`
+
+Checks for missing icon files by comparing iconMap.ts with actual PNG files in the icons directory.
+
+**Usage:**
+```bash
+node scripts/check-missing-icons.js
+```
+
+**Output:** Generates `missing-icons-report.txt` in the project root with a categorized list of missing icons.
+
+**What it checks:**
+- Reads all icon mappings from `src/features/modules/guides/data/iconMap.ts`
+- Compares with actual PNG files in `public/icons/itt/`
+- Categorizes missing icons by type (abilities, items, units, buildings, trolls)
+- Generates a detailed report
+
+---
+
+### Replay File Analyzer
+
+**Script:** `scripts/analyze-replay.mjs`
+
+Analyzes WC3 replay files (`.w3g`) to check what data is available, including:
+- Basic replay information (game ID, map, players, etc.)
+- W3MMD data presence and structure
+- Winning team detection sources
+- Player statistics and properties
+
+**Usage:**
+```bash
+npm run analyze:replay <path-to-replay.w3g>
+```
+
+**Example:**
+```bash
+npm run analyze:replay ./replays/game.w3g
+# or
+node scripts/analyze-replay.mjs ./replays/game.w3g
+```
+
+**What it checks:**
+- ✅ File size and basic metadata
+- ✅ Player information and team distribution
+- ✅ W3MMD data availability (Island Troll Tribes custom stats)
+- ✅ Winning team detection methods (parsed winningTeamId, player properties, W3MMD indicators)
+- ✅ Sample W3MMD structure and mission keys
+
+This is useful for:
+- Testing if replays contain W3MMD data before uploading
+- Debugging why winner detection might not work
+- Understanding what data sources are available in a replay file
+
 ## Pipeline at a Glance
 
 | Stage | Script | Purpose | Output |

@@ -1,64 +1,98 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# ============================================================================
+# Dependencies
+# ============================================================================
 /node_modules
 /.pnp
 .pnp.js
 .yarn/install-state.gz
 
-# testing
+# ============================================================================
+# Testing
+# ============================================================================
 /coverage
 
-# next.js
+# ============================================================================
+# Build Output
+# ============================================================================
+# Next.js
 /.next/
 /out/
+.next/
+.swc/
 
-# production
+# Production
 /build
 
-# misc
-.DS_Store
-*.pem
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
 
-# debug
+# ============================================================================
+# Environment & Secrets
+# ============================================================================
+.env*.local
+.env
+
+# ============================================================================
+# Deployment
+# ============================================================================
+.vercel
+
+# ============================================================================
+# Logs
+# ============================================================================
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
-.env*.local
+# ============================================================================
+# Operating System
+# ============================================================================
+# macOS
+.DS_Store
 
-# vercel
-.vercel
+# Windows
+Thumbs.db
+desktop.ini
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# Linux
+*~
 
-# logs
-*.log
-
-# IDE
+# ============================================================================
+# IDE & Editors
+# ============================================================================
 .vscode/
 .idea/
 *.swp
 *.swo
+*.sublime-project
+*.sublime-workspace
 
-# Additional directories
-.next/
-node_modules/
+# ============================================================================
+# Miscellaneous
+# ============================================================================
+*.pem
+
+# ============================================================================
+# Project-Specific
+# ============================================================================
+# External dependencies
 external/
 
-# local asset caches
+# Local asset caches
 /converted-icons/
 /temp-icons/
 @converted-icons/
 @temp-icons/
 public/icons/@unused/
 
+# Temporary files
 tmp/
 
-
+# Game files
 Island.Troll.Tribes.v3.28.w3x
 
 # Agent workflow system (local only, not in repository)
