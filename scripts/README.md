@@ -86,17 +86,17 @@ node scripts/data/main.mjs
 Each script is standalone and can be executed directly when you need to re-run only one portion of the pipeline:
 
 ```bash
-node scripts/data/extract-from-w3x.mjs
-node scripts/data/extract-metadata.mjs
-node scripts/data/extract-ability-details-from-wurst.mjs
-node scripts/data/extract-ability-relationships.mjs
-node scripts/data/extract-item-details-from-wurst.mjs
-node scripts/data/generate-ability-id-mapping.mjs
-node scripts/data/extract-ability-codes-from-items.mjs
-node scripts/data/convert-extracted-to-typescript.mjs
-node scripts/data/regenerate-iconmap.mjs
-node scripts/data/fix-icon-paths.mjs
-node scripts/resolve-field-references.mjs
+node scripts/data/extract/extract-from-w3x.mjs
+node scripts/data/extract/extract-metadata.mjs
+node scripts/data/extract/extract-ability-details-from-wurst.mjs
+node scripts/data/extract/extract-ability-relationships.mjs
+node scripts/data/extract/extract-item-details-from-wurst.mjs
+node scripts/data/generate/generate-ability-id-mapping.mjs
+node scripts/data/extract/extract-ability-codes-from-items.mjs
+node scripts/data/convert/convert-extracted-to-typescript.mjs
+node scripts/data/generate/regenerate-iconmap.mjs
+node scripts/data/generate/fix-icon-paths.mjs
+node scripts/data/generate/resolve-field-references.mjs
 ```
 
 When debugging, re-run the downstream stages only for the assets you changed to save time.
@@ -131,7 +131,7 @@ For detailed extraction instructions, see [`docs/systems/scripts/extract-w3x.md`
 
 ### Configuration Files
 
-- **category-mappings.json** - Manually curated categories (`scripts/data/category-mappings.json`)
+- **category-mappings.json** - Manually curated categories (`scripts/data/config/category-mappings.json`)
 - **Icon PNGs** - Icon files in `public/icons/itt/` for the icon-mapping stage
 
 ## Outputs & Verification
@@ -218,7 +218,7 @@ See the complete [Pipeline Troubleshooting Guide](../docs/systems/data-pipeline/
 ### Additional Resources
 
 - **Operational details:** `docs/README.md` → **Systems › Data Pipeline**
-- **Refactoring backlog:** `scripts/data/REFACTORING_PLAN.md`
+- **Refactoring status:** Completed (historical notes archived in `docs/archive/scripts-data/REFACTORING_PLAN.md`)
 - **Deep-dive guides:** `docs/systems/data-pipeline/guides/` (icon mapping, extraction, field references)
 - **Input file extraction:** `docs/systems/data-pipeline/guides/extract-w3x.md`
 

@@ -135,7 +135,6 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
 
 **Features**:
 - **Automatic Issue Creation**: Creates GitHub issues when workflows fail (labeled `workflow-failure`, `ci/cd`, `devops`)
-- **Status Files**: Writes status files to `.workflow/progress/workflow-status/*-status.md`
 - **Duplicate Prevention**: Checks for existing issues before creating new ones
 - **Daily Health Check**: Runs daily to ensure workflows are active
 
@@ -143,8 +142,6 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
 
 **Feedback Methods**:
 - GitHub Issues (automatic on failures)
-- Status files (readable by scripts)
-- Command-line tool: `node scripts/workflow/check-workflow-status.mjs`
 
 ## Workflow Status
 
@@ -156,8 +153,6 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
 
 **Automated Feedback**:
 - **Workflow Monitor**: Automatically monitors all workflows and creates GitHub issues on failures
-- **Status Files**: Workflow status is written to `.workflow/progress/workflow-status/*.md` files
-- **Check Script**: Run `node scripts/workflow/check-workflow-status.mjs` to view all workflow statuses
 
 ### Workflow Monitoring
 
@@ -170,20 +165,6 @@ The **Workflow Monitor** workflow (`.github/workflows/workflow-monitor.yml`) pro
 
 **Feedback Methods**:
 - ✅ **GitHub Issues**: Automatic issue creation for failures (labeled `workflow-failure`, `ci/cd`, `devops`)
-- ✅ **Status Files**: Readable status files in `.workflow/progress/workflow-status/`
-- ✅ **Command Line**: Use `node scripts/workflow/check-workflow-status.mjs` to check status
-
-**Example Status Check**:
-```bash
-# Check all workflows
-node scripts/workflow/check-workflow-status.mjs
-
-# Check specific workflow
-node scripts/workflow/check-workflow-status.mjs test
-
-# JSON output
-node scripts/workflow/check-workflow-status.mjs all json
-```
 
 ## Adding New Workflows
 
@@ -318,7 +299,7 @@ For deployments to Vercel, configure environment variables in the Vercel Dashboa
 
 **Important**: After adding environment variables in Vercel, you must redeploy for changes to take effect.
 
-See [Environment Setup Guide](../ENVIRONMENT_SETUP.md) for detailed instructions on obtaining these values.
+See [Environment Setup Guide](../getting-started/setup.md) for detailed instructions on obtaining these values.
 
 ## Workflow Examples
 
@@ -348,6 +329,6 @@ jobs:
 ## Related Documentation
 
 - [Deployment Guide](./deployment.md) - Deployment process
-- [Environment Setup](../ENVIRONMENT_SETUP.md) - Environment configuration
+- [Environment Setup](../getting-started/setup.md) - Environment configuration
 - [Monitoring Guide](./monitoring.md) - Monitoring and observability
 

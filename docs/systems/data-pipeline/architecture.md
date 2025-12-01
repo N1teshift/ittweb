@@ -297,7 +297,7 @@ Stage 9 (Resolve Field References)
 
 ## Category Mappings
 
-**Location:** `scripts/data/category-mappings.json`
+**Location:** `scripts/data/config/category-mappings.json`
 
 **Purpose:** Manual curation of item and ability categories
 

@@ -2,6 +2,8 @@ import type { NextApiRequest } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
+import { zodValidator } from '@/features/infrastructure/api/zodValidation';
+import { UpdatePostSchema } from '@/features/infrastructure/api/schemas';
 import { 
   getPostById, 
   updatePost, 
@@ -60,6 +62,7 @@ export default createApiHandler<Post | { success: boolean }>(
         throw new Error('You do not have permission to edit this post');
       }
 
+      // Body is already validated by validateBody option
       const updates: Partial<CreatePost> = req.body;
       await updatePost(id, updates);
       logger.info('Post updated', { id, userId: session.discordId });
@@ -107,6 +110,8 @@ export default createApiHandler<Post | { success: boolean }>(
       maxAge: 600,
       mustRevalidate: true,
     },
+    // Only validate body for PUT/PATCH requests (GET/DELETE don't have bodies)
+    validateBody: zodValidator(UpdatePostSchema),
   }
 );
 

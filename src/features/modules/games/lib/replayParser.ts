@@ -46,14 +46,11 @@ export async function parseReplayFile(
   options: ReplayParserOptions = {},
 ): Promise<ReplayParserResult> {
   try {
-    // Use both logger and console to ensure visibility
     const investigationStart = {
       bufferSize: buffer.length,
       scheduledGameId: options.scheduledGameId,
     };
     logger.info('🔍 STARTING REPLAY PARSING - W3MMD INVESTIGATION', investigationStart);
-    // eslint-disable-next-line no-console
-    console.log('[REPLAY PARSER] 🔍 STARTING W3MMD INVESTIGATION', investigationStart);
 
     const replay = new W3GReplay();
     const parsed = await replay.parse(buffer) as unknown as ParsedReplay;
@@ -95,8 +92,6 @@ export async function parseReplayFile(
       replayW3mmdDirect: replay.w3mmd,
     };
     logger.info('W3MMD investigation - checking all possible sources', investigationData);
-    // eslint-disable-next-line no-console
-    console.log('[REPLAY PARSER] W3MMD INVESTIGATION:', JSON.stringify(investigationData, null, 2));
 
     // Try multiple ways to get W3MMD data
     let w3mmdActions: unknown[] = [];
@@ -140,7 +135,7 @@ export async function parseReplayFile(
       });
     }
     
-    // SUMMARY LOG - Always show this (both logger and console)
+    // SUMMARY LOG
     const summary = {
       w3mmdActionsFound: w3mmdActions.length,
       w3mmdActionsSource: Array.isArray(replay.w3mmd) 
@@ -153,8 +148,6 @@ export async function parseReplayFile(
         : `✅ W3MMD DATA FOUND - ${w3mmdActions.length} actions`,
     };
     logger.info('📋 W3MMD INVESTIGATION SUMMARY', summary);
-    // eslint-disable-next-line no-console
-    console.log('[REPLAY PARSER] 📋 W3MMD INVESTIGATION SUMMARY:', JSON.stringify(summary, null, 2));
 
     // Log raw W3MMD structure if found
     if (w3mmdActions.length > 0) {

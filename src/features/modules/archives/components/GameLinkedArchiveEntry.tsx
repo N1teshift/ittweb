@@ -11,6 +11,7 @@ import type { GameWithPlayers } from '@/features/modules/games/types';
 import { GamePlayersSection } from './GamePlayersSection';
 import YouTubeEmbed from './YouTubeEmbed';
 import TwitchClipEmbed from './TwitchClipEmbed';
+import { createComponentLogger } from '@/features/infrastructure/logging';
 
 /**
  * Extract version from map path
@@ -74,6 +75,7 @@ export function GameLinkedArchiveEntry({
 }: GameLinkedArchiveEntryProps) {
   const router = useRouter();
   const { data: session } = useSession();
+  const logger = createComponentLogger('GameLinkedArchiveEntry');
 
   // Check if user is participant or creator
   const userIsParticipant = React.useMemo(() => {
@@ -385,7 +387,7 @@ export function GameLinkedArchiveEntry({
                   {onGameLeave && userIsParticipant && (
                     <button
                       onClick={(e) => {
-                        console.log('[GameLinkedArchiveEntry] Leave button clicked', { gameId: game.id });
+                        logger.debug('Leave button clicked', { gameId: game.id });
                         e.preventDefault();
                         e.stopPropagation();
                         onGameLeave(game.id);

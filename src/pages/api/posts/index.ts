@@ -1,7 +1,8 @@
 import type { NextApiRequest } from 'next';
 import { createGetPostHandler } from '@/features/infrastructure/api/routeHandlers';
 import { parseQueryBoolean } from '@/features/infrastructure/api/queryParser';
-import { validateRequiredFields, validateString } from '@/features/infrastructure/api/validators';
+import { zodValidator } from '@/features/infrastructure/api/zodValidation';
+import { CreatePostSchema } from '@/features/infrastructure/api/schemas';
 import { getAllPosts, createPost } from '@/features/modules/blog/lib/postService';
 import { CreatePost } from '@/types/post';
 import { createComponentLogger } from '@/features/infrastructure/logging';
@@ -55,23 +56,7 @@ export default createGetPostHandler<Post[] | { id: string }>(
       maxAge: 600,
       mustRevalidate: true,
     },
-    validateBody: (body: unknown) => {
-      // Only validate POST requests (GET requests don't have body)
-      if (body && typeof body === 'object' && body !== null) {
-        const requiredError = validateRequiredFields(body, ['title', 'content', 'slug', 'date']);
-        if (requiredError) return requiredError;
-        const bodyObj = body as { title?: unknown; slug?: unknown };
-        const titleResult = validateString(bodyObj.title, 'title', 1);
-        if (typeof titleResult === 'string' && titleResult.startsWith('title must be')) {
-          return titleResult;
-        }
-        const slugResult = validateString(bodyObj.slug, 'slug', 1);
-        if (typeof slugResult === 'string' && slugResult.startsWith('slug must be')) {
-          return slugResult;
-        }
-      }
-      return true;
-    },
+    validateBody: zodValidator(CreatePostSchema),
   }
 );
 

@@ -10,6 +10,7 @@ import { Button } from '@/features/infrastructure/components/ui';
 import { HomeTimeline } from '@/features/modules/archives/components';
 import type { HomeTimelineHandle } from '@/features/modules/archives/components/HomeTimeline';
 import { useRef } from 'react';
+import { logError } from '@/features/infrastructure/logging';
 
 const pageNamespaces = ["common"];
 
@@ -111,7 +112,11 @@ export default function Home({}: HomeProps) {
         await homeTimelineRef.current.addNewGame('');
       }
     } catch (err) {
-      console.error('Failed to schedule game:', err);
+      logError(err as Error, 'Failed to schedule game', {
+        component: 'HomePage',
+        operation: 'handleScheduleSubmit',
+        gameData: { gameState: gameData.gameState, addCreatorToParticipants },
+      });
       throw err;
     } finally {
       setIsSubmittingSchedule(false);

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { logError } from '@/features/infrastructure/logging';
 
 const SESSION_DISMISS_KEY = 'dataCollectionNoticeDismissed';
 
@@ -45,12 +46,21 @@ export default function DataCollectionNotice() {
             }
           } else {
             // If we can't fetch status, show the notice to be safe
-            console.error('Failed to fetch data notice status');
+            logError(new Error('Failed to fetch data notice status'), 'Failed to fetch data notice status', {
+              component: 'DataCollectionNotice',
+              operation: 'checkUserData',
+              status: response.status,
+              discordId: session?.discordId,
+            });
             setIsVisible(true);
           }
         } catch (error) {
           // If we can't fetch user data, show the notice to be safe
-          console.error('Failed to fetch user data for notice:', error);
+          logError(error as Error, 'Failed to fetch user data for notice', {
+            component: 'DataCollectionNotice',
+            operation: 'checkUserData',
+            discordId: session?.discordId,
+          });
           setIsVisible(true);
         } finally {
           setIsLoading(false);
@@ -79,10 +89,19 @@ export default function DataCollectionNotice() {
       });
 
       if (!response.ok) {
-        console.error('Failed to accept data notice');
+        logError(new Error('Failed to accept data notice'), 'Failed to accept data notice', {
+          component: 'DataCollectionNotice',
+          operation: 'handleAccept',
+          status: response.status,
+          discordId: session?.discordId,
+        });
       }
     } catch (error) {
-      console.error('Error accepting data notice:', error);
+      logError(error as Error, 'Error accepting data notice', {
+        component: 'DataCollectionNotice',
+        operation: 'handleAccept',
+        discordId: session?.discordId,
+      });
       // Already hidden, so no need to do anything else
     }
   };

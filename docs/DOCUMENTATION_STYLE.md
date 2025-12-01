@@ -5,11 +5,12 @@
 ## Core Principles
 
 1. **Minimal**: Keep files under 200 lines when possible
-2. **Complete**: Cover all features, modules, APIs, and systems
-3. **Actionable**: Include working code examples
-4. **Maintainable**: Easy to update as codebase evolves
-5. **No Duplication**: Reference existing docs rather than repeating
-6. **Consolidated**: Merge redundant documentation, reduce bloat
+2. **Complete**: Cover all essential information for current use (not historical completeness)
+3. **Actionable**: Explains how something works (architecture, design decisions, patterns, standards)
+4. **Useful**: Helps standardize how things work in the project; enables following standards/patterns
+5. **Maintainable**: Easy to update as codebase evolves
+6. **No Duplication**: Reference existing docs rather than repeating
+7. **Consolidated**: Merge redundant documentation, reduce bloat
 
 ## File Size
 
@@ -27,8 +28,9 @@
 
 ### Content
 - **Concise**: Get to the point quickly
-- **Complete**: Cover all essential information
-- **Code Examples**: Always include working code examples
+- **Complete**: Cover all essential information for current use
+- **Explanatory**: Focus on how things work, not just what to do
+- **Code Examples**: Include working code examples when demonstrating patterns
 - **Type Safety**: Show TypeScript types in examples
 
 ## Markdown Format
@@ -118,12 +120,38 @@ const gameId = await createGame({
 
 ## Task Management
 
-
 - **DO NOT** create task lists in other documentation files
 - **DO** use planning documents for strategy, not tasks
-
+- **Completed sections**: Convert completed checklists/task lists to summaries of what was accomplished
 
 ## Documentation File Purposes
+
+### Standards Documentation (Crucial - Keep Updated)
+Standards documentation defines how things should work in the project. These documents must be kept current and accurate.
+
+**Examples**:
+- `ERROR_HANDLING.md` - Error handling patterns and standards
+- `VALIDATION.md` - Validation standards
+- `FIRESTORE_CRUD.md` - Firestore CRUD patterns
+- `DOCUMENTATION_STYLE.md` - This file
+- Scripts folder standards
+- Any document that enforces project-wide patterns
+
+**Naming**: Use simple, descriptive names (e.g., `ERROR_HANDLING.md`, not `ERROR_HANDLING_STANDARDS.md`)
+
+### Research/Analysis Documentation (Archive and Summarize)
+One-time investigations, explorations, completed plans, and analysis documents.
+
+**Location**: `docs/research/`
+
+**Examples**:
+- Completed refactoring plans
+- Data exploration documents
+- Implementation summaries (after implementation is complete)
+- Performance analysis reports
+- Code audits
+
+**Lifecycle**: Archive in `docs/research/` and periodically summarize key findings. User initiates summaries when needed.
 
 ### Planning Documents (Reference, Not Tasks)
 - `DOCUMENTATION_PLAN.md` - Strategy and approach
@@ -132,7 +160,7 @@ const gameId = await createGame({
 - Implementation plans - Feature planning
 
 
-## Updating Documentation
+## Documentation Lifecycle
 
 ### When to Update
 - When adding new features
@@ -140,12 +168,40 @@ const gameId = await createGame({
 - When refactoring code
 - When fixing bugs that affect usage
 - **When consolidating**: Merge redundant docs, remove duplicates
+- **Standards docs**: Must be kept current to maintain project consistency
 
 ### How to Update
 1. Update the relevant documentation file
 2. Keep examples current
 3. Update links if files moved
-4. Mark tasks complete when done
+4. Convert completed checklists to summaries of accomplishments
+
+### When Documentation Becomes Obsolete
+
+**Delete if**:
+- All content is outdated and no longer useful
+- Historical record is not needed
+- Information is better captured elsewhere
+
+**Archive to `docs/research/` if**:
+- Document contains analysis or exploration that might be referenced
+- Completed plans/audits that document what was done
+- One-time investigations that provide context
+
+**Update/Refactor if**:
+- Partially outdated but contains useful information
+- Delete outdated parts, keep useful parts
+- Consider merging useful parts from multiple partially outdated docs into one useful document
+
+### Usefulness Test
+
+When reviewing documentation, ask:
+- **"Does this help someone follow a standard/pattern?"**
+- **"Does this explain how the system works?"**
+- **"Would I reference this while working on a task?"**
+- **"Does this help standardize how things work in the project?"**
+
+If the answer is "no" to all questions, the documentation should be deleted or archived.
 
 ### When to Consolidate
 
@@ -157,6 +213,7 @@ Look for consolidation opportunities when:
 - **Outdated content**: Documentation for removed/deprecated features
 - **Small files**: Multiple small files that could be merged
 - **Redundant examples**: Same code example repeated
+- **Partially outdated docs**: Multiple docs with some useful, some outdated content - merge the useful parts
 
 ### How to Consolidate
 

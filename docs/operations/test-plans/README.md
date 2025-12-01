@@ -48,7 +48,7 @@ Each test item follows this format:
 ## Usage
 
 These test plans can be used to:
-1. Assign test development tasks to different AI agents or developers
+1. Assign test development tasks to developers
 2. Track test coverage and completion
 3. Guide test implementation
 4. Ensure comprehensive testing across all modules

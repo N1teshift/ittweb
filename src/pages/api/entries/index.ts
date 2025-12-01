@@ -1,7 +1,8 @@
 import type { NextApiRequest } from 'next';
 import { createGetPostHandler } from '@/features/infrastructure/api/routeHandlers';
 import { parseQueryEnum } from '@/features/infrastructure/api/queryParser';
-import { validateRequiredFields, validateString, validateEnum } from '@/features/infrastructure/api/validators';
+import { zodValidator } from '@/features/infrastructure/api/zodValidation';
+import { CreateEntrySchema } from '@/features/infrastructure/api/schemas';
 import { getAllEntries, createEntry } from '@/features/modules/entries/lib/entryService';
 import { CreateEntry } from '@/types/entry';
 import { createComponentLogger } from '@/features/infrastructure/logging';
@@ -55,27 +56,7 @@ export default createGetPostHandler<Entry[] | { id: string }>(
       maxAge: 120,
       mustRevalidate: true,
     },
-    validateBody: (body) => {
-      // Only validate POST requests (GET requests don't have body)
-      if (body && typeof body === 'object') {
-        const requiredError = validateRequiredFields(body, ['title', 'content', 'contentType', 'date']);
-        if (requiredError) return requiredError;
-        const bodyObj = body as { contentType?: unknown; title?: unknown };
-        const allowedContentTypes = ['post', 'memory'] as const;
-        const contentTypeResult = validateEnum(bodyObj.contentType, 'contentType', allowedContentTypes);
-        // validateEnum returns the value when valid, or an error string when invalid, or null when not a string
-        // Check if result is an error: null or a string that's not one of the allowed values
-        if (contentTypeResult === null || (typeof contentTypeResult === 'string' && !allowedContentTypes.includes(contentTypeResult as typeof allowedContentTypes[number]))) {
-          return contentTypeResult || 'contentType must be a string';
-        }
-        const titleResult = validateString(bodyObj.title, 'title', 1);
-        if (typeof titleResult === 'string' && titleResult.startsWith('title must be')) {
-          return titleResult; // It's an error message
-        }
-        // Otherwise it's the validated value, continue
-      }
-      return true;
-    },
+    validateBody: zodValidator(CreateEntrySchema),
   }
 );
 

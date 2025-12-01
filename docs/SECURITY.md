@@ -102,45 +102,39 @@ if (resource.createdByDiscordId !== session.discordId && !isAdmin(userData?.role
 
 ## Input Validation
 
-### Type Validation
+**📘 See [Zod Validation Migration Guide](./operations/zod-validation-migration.md) for comprehensive validation documentation.**
 
-Use TypeScript types and runtime validation:
+### Type Validation with Zod
+
+Use Zod schemas for type-safe runtime validation:
 
 ```typescript
-interface CreateGame {
-  category: string;
-  teamSize: number;
-}
+import { z } from 'zod';
+import { zodValidator } from '@/features/infrastructure/api/zodValidation';
 
-function validateCreateGame(data: unknown): boolean | string {
-  if (typeof data !== 'object' || data === null) {
-    return 'Request body must be an object';
-  }
-  
-  const body = data as Record<string, unknown>;
-  
-  if (!('category' in body) || typeof body.category !== 'string') {
-    return 'category is required and must be a string';
-  }
-  
-  if (!('teamSize' in body) || typeof body.teamSize !== 'number' || body.teamSize <= 0) {
-    return 'teamSize is required and must be a positive number';
-  }
-  
-  return true; // Validation passed
-}
+// Define schema in src/features/infrastructure/api/schemas.ts
+export const CreateGameSchema = z.object({
+  category: z.string().min(1, 'category is required'),
+  teamSize: z.number().int().positive('teamSize must be a positive integer'),
+});
 
 export default createApiHandler(
   async (req) => {
     // Body is already validated by validateBody option
-    const gameData = req.body as CreateGame;
+    const gameData = req.body as z.infer<typeof CreateGameSchema>;
     // Use validated data
   },
   {
-    validateBody: validateCreateGame, // Returns boolean | string
+    validateBody: zodValidator(CreateGameSchema),
   }
 );
 ```
+
+**Benefits:**
+- Automatic TypeScript type inference
+- Consistent validation across all routes
+- Better error messages
+- Centralized schema definitions
 
 ### Sanitization
 
@@ -270,6 +264,8 @@ DISCORD_CLIENT_SECRET=...
 - No prefix - Server-only (secrets, API keys)
 
 ## Error Handling
+
+**See [Error Handling Guide](./ERROR_HANDLING.md) for complete error handling patterns and best practices.**
 
 ### Don't Expose Sensitive Info
 
@@ -484,8 +480,8 @@ gitleaks detect --source . --verbose
 
 ## Related Documentation
 
-- [Environment Setup](./ENVIRONMENT_SETUP.md)
-- [Architecture Overview](./ARCHITECTURE.md)
-- [Development Guide](./DEVELOPMENT.md)
+- [Environment Setup](./getting-started/setup.md)
+- [Architecture Overview](./development/architecture.md)
+- [Development Guide](./development/development-guide.md)
 - [CI/CD Pipeline](./operations/ci-cd.md)
 

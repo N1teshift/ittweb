@@ -10,6 +10,7 @@ import { Timestamp } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
+import { logError } from '@/features/infrastructure/logging';
 
 type SerializedUserData = Record<string, unknown> | null;
 
@@ -564,7 +565,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   } catch (error) {
-    console.error('Failed to fetch user data:', error);
+    logError(error as Error, 'Failed to fetch user data', {
+      component: 'SettingsPage',
+      operation: 'getServerSideProps',
+      discordId: session?.discordId,
+    });
     return {
       props: {
         userData: null,

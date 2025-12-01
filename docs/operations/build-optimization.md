@@ -398,8 +398,8 @@ ANALYZE=true npm run build
 
 - [Performance Guide](../PERFORMANCE.md) - Performance optimization strategies
 - [CI/CD Guide](./ci-cd.md) - CI/CD pipeline documentation
-- [Architecture](../ARCHITECTURE.md) - System architecture
-- [Development Guide](../DEVELOPMENT.md) - Development practices
+- [Architecture](../development/architecture.md) - System architecture
+- [Development Guide](../development/development-guide.md) - Development practices
 
 ## Tools and Resources
 

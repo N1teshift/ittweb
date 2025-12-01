@@ -8,10 +8,10 @@
 
 import fs from 'fs';
 import path from 'path';
-import { slugify } from '../utils.mjs';
-import { ROOT_DIR } from '../paths.mjs';
+import { slugify } from '../lib/utils.mjs';
+import { ROOT_DIR } from '../lib/paths.mjs';
 
-const CATEGORY_MAPPINGS_FILE = path.join(ROOT_DIR, 'scripts', 'data', 'category-mappings.json');
+const CATEGORY_MAPPINGS_FILE = path.join(ROOT_DIR, 'scripts', 'data', 'config', 'category-mappings.json');
 
 /**
  * Build item category mapping from extracted metadata and category-mappings.json

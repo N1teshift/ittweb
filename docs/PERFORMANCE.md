@@ -466,8 +466,8 @@ const perf = getPerformance();
 
 ## Related Documentation
 
-- [Architecture Overview](./ARCHITECTURE.md)
-- [Development Guide](./DEVELOPMENT.md)
-- [Troubleshooting Guide](./TROUBLESHOOTING.md)
+- [Architecture Overview](./development/architecture.md)
+- [Development Guide](./development/development-guide.md)
+- [Troubleshooting Guide](./getting-started/troubleshooting.md)
 
 

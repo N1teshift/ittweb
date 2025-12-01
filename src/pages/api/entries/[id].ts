@@ -2,6 +2,8 @@ import type { NextApiRequest } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
+import { zodValidator } from '@/features/infrastructure/api/zodValidation';
+import { UpdateEntrySchema } from '@/features/infrastructure/api/schemas';
 import { getEntryById, updateEntry, deleteEntry } from '@/features/modules/entries/lib/entryService';
 import { UpdateEntry } from '@/types/entry';
 import { createComponentLogger } from '@/features/infrastructure/logging';
@@ -39,6 +41,7 @@ export default createApiHandler<Entry | { success: boolean }>(
         throw new Error('Authentication required');
       }
 
+      // Body is already validated by validateBody option
       const updates: UpdateEntry = req.body;
       await updateEntry(id, updates);
       logger.info('Entry updated', { id });
@@ -71,6 +74,8 @@ export default createApiHandler<Entry | { success: boolean }>(
       maxAge: 120,
       mustRevalidate: true,
     },
+    // Only validate body for PUT/PATCH requests (GET/DELETE don't have bodies)
+    validateBody: zodValidator(UpdateEntrySchema),
   }
 );
 

@@ -1,0 +1,357 @@
+/**
+ * Generic Data Fetching Hook Factory
+ * 
+ * Provides a reusable abstraction for data fetching hooks that supports:
+ * - Both SWR and non-SWR (useState/useEffect) modes
+ * - Standard API response format handling
+ * - Consistent error handling and logging
+ * - Conditional fetching
+ * - Cache-busting
+ * - Custom data transformation
+ * 
+ * @example
+ * // SWR mode (recommended for static/cacheable data)
+ * const useItems = createDataFetchHook<ItemsResponse>({
+ *   fetchFn: async () => {
+ *     const response = await fetch('/api/items');
+ *     return response.json();
+ *   },
+ *   useSWR: true,
+ *   swrKey: '/api/items',
+ *   swrConfig: { dedupingInterval: 600000 }
+ * });
+ * 
+ * @example
+ * // Non-SWR mode (for dynamic data that needs cache-busting)
+ * const useGame = createDataFetchHook<Game>({
+ *   fetchFn: async (id: string) => {
+ *     const response = await fetch(`/api/games/${id}?t=${Date.now()}`);
+ *     return response.json();
+ *   },
+ *   useSWR: false,
+ *   enabled: (id) => !!id,
+ *   dependencies: [id]
+ * });
+ */
+
+import { useState, useEffect, useCallback } from 'react';
+import useSWR, { type SWRConfiguration, type Key } from 'swr';
+import { logError } from '@/features/infrastructure/logging';
+
+/**
+ * Standard API response format
+ */
+export interface ApiResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
+/**
+ * Configuration for data fetching hook
+ */
+export interface DataFetchConfig<TData, TParams = void> {
+  /**
+   * Function to fetch data
+   * @param params - Parameters passed to the hook
+   * @returns Promise resolving to API response or data
+   */
+  fetchFn: (params: TParams) => Promise<ApiResponse<TData> | TData>;
+  
+  /**
+   * Whether to use SWR (recommended for cacheable data)
+   * @default false
+   */
+  useSWR?: boolean;
+  
+  /**
+   * SWR cache key (required if useSWR is true)
+   * Can be a string, array, or function that returns a key
+   */
+  swrKey?: Key | ((params: TParams) => Key | null);
+  
+  /**
+   * SWR configuration options
+   */
+  swrConfig?: SWRConfiguration<TData, Error>;
+  
+  /**
+   * Whether fetching is enabled (for conditional fetching)
+   * @default true
+   */
+  enabled?: boolean | ((params: TParams) => boolean);
+  
+  /**
+   * Dependencies array for non-SWR mode (similar to useEffect deps)
+   * Only used when useSWR is false
+   */
+  dependencies?: unknown[];
+  
+  /**
+   * Transform the response data before returning
+   */
+  transform?: (data: TData) => TData;
+  
+  /**
+   * Component name for logging
+   */
+  componentName?: string;
+  
+  /**
+   * Operation name for logging
+   */
+  operationName?: string;
+  
+  /**
+   * Handle 404 errors gracefully (return null instead of error)
+   * @default false
+   */
+  handle404?: boolean;
+  
+  /**
+   * Cache-busting query parameter name
+   * If provided, adds ?t=timestamp to fetch requests
+   */
+  cacheBust?: boolean | string;
+  
+  /**
+   * Initial data value
+   */
+  initialData?: TData | null;
+}
+
+/**
+ * Result returned by data fetching hook
+ */
+export interface DataFetchResult<TData> {
+  data: TData | null;
+  loading: boolean;
+  isLoading: boolean; // Alias for loading (for SWR compatibility)
+  error: Error | null;
+  refetch: () => void | Promise<void>;
+}
+
+/**
+ * Create a data fetching hook
+ */
+export function createDataFetchHook<TData, TParams = void>(
+  config: DataFetchConfig<TData, TParams>
+) {
+  const {
+    fetchFn,
+    useSWR = false,
+    swrKey,
+    swrConfig = {},
+    enabled = true,
+    dependencies = [],
+    transform,
+    componentName = 'useDataFetch',
+    operationName = 'fetchData',
+    handle404 = false,
+    cacheBust = false,
+    initialData = null,
+  } = config;
+
+  return function useDataFetch(params: TParams): DataFetchResult<TData> {
+    const isEnabled = typeof enabled === 'function' ? enabled(params) : enabled;
+
+    // SWR mode
+    if (useSWR) {
+      const key = typeof swrKey === 'function' 
+        ? (isEnabled ? swrKey(params) : null)
+        : (isEnabled ? swrKey : null);
+
+      const { data, error, isLoading, mutate } = useSWR<TData, Error>(
+        key,
+        async () => {
+          try {
+            const response = await fetchFn(params);
+            
+            // Handle standard API response format
+            if (response && typeof response === 'object' && 'success' in response) {
+              const apiResponse = response as ApiResponse<TData>;
+              if (!apiResponse.success) {
+                throw new Error(apiResponse.error || 'API request failed');
+              }
+              if (apiResponse.data === undefined) {
+                throw new Error('API response missing data');
+              }
+              return transform ? transform(apiResponse.data) : apiResponse.data;
+            }
+            
+            // Assume response is already the data
+            return transform ? transform(response as TData) : (response as TData);
+          } catch (err) {
+            const error = err instanceof Error ? err : new Error(String(err));
+            logError(error, `Failed to fetch data`, {
+              component: componentName,
+              operation: operationName,
+              params: JSON.stringify(params),
+            });
+            throw error;
+          }
+        },
+        {
+          ...swrConfig,
+          fallbackData: initialData ?? undefined,
+        }
+      );
+
+      return {
+        data: data ?? initialData ?? null,
+        loading: isLoading,
+        isLoading,
+        error: error as Error | null,
+        refetch: () => mutate(),
+      };
+    }
+
+    // Non-SWR mode (useState/useEffect)
+    const [data, setData] = useState<TData | null>(initialData ?? null);
+    const [loading, setLoading] = useState<boolean>(isEnabled);
+    const [error, setError] = useState<Error | null>(null);
+
+    const fetchData = useCallback(async () => {
+      if (!isEnabled) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetchFn(params);
+        
+        // Handle standard API response format
+        if (response && typeof response === 'object' && 'success' in response) {
+          const apiResponse = response as ApiResponse<TData>;
+          if (!apiResponse.success) {
+            // Handle 404 gracefully if enabled
+            if (handle404 && apiResponse.error?.includes('404')) {
+              setData(null);
+              setLoading(false);
+              return;
+            }
+            throw new Error(apiResponse.error || 'API request failed');
+          }
+          if (apiResponse.data === undefined) {
+            throw new Error('API response missing data');
+          }
+          const finalData = transform ? transform(apiResponse.data) : apiResponse.data;
+          setData(finalData);
+        } else {
+          // Assume response is already the data
+          const finalData = transform ? transform(response as TData) : (response as TData);
+          setData(finalData);
+        }
+      } catch (err) {
+        const error = err instanceof Error ? err : new Error(String(err));
+        
+        // Handle 404 gracefully if enabled
+        if (handle404 && (error.message.includes('404') || error.message.includes('Not Found'))) {
+          setData(null);
+          setLoading(false);
+          return;
+        }
+        
+        logError(error, `Failed to fetch data`, {
+          component: componentName,
+          operation: operationName,
+          params: JSON.stringify(params),
+        });
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    }, [isEnabled, params, fetchFn, transform, handle404, componentName, operationName]);
+
+    useEffect(() => {
+      fetchData();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fetchData, ...dependencies]);
+
+    return {
+      data,
+      loading,
+      isLoading: loading,
+      error,
+      refetch: fetchData,
+    };
+  };
+}
+
+/**
+ * Create a standard API fetcher that handles the response format
+ * 
+ * @example
+ * const fetcher = createApiFetcher<Game>('/api/games/123');
+ * const game = await fetcher();
+ */
+export function createApiFetcher<TData>(
+  url: string,
+  options?: RequestInit
+): () => Promise<ApiResponse<TData>> {
+  return async () => {
+    const response = await fetch(url, {
+      ...options,
+      cache: options?.cache ?? 'no-store',
+    });
+    
+    if (!response.ok) {
+      // Try to parse error from response
+      try {
+        const errorData = await response.json() as ApiResponse<never>;
+        if (errorData.error) {
+          throw new Error(errorData.error);
+        }
+      } catch {
+        // If parsing fails, use status text
+      }
+      throw new Error(`Failed to fetch: ${response.statusText}`);
+    }
+    
+    const data = await response.json() as ApiResponse<TData>;
+    return data;
+  };
+}
+
+/**
+ * Create an SWR fetcher that handles the standard API response format
+ * 
+ * @example
+ * const { data } = useSWR('/api/games/123', createSwrFetcher<Game>());
+ */
+export function createSwrFetcher<TData>(
+  transform?: (data: TData) => TData
+): (url: string) => Promise<TData> {
+  return async (url: string) => {
+    const response = await fetch(url, { cache: 'no-store' });
+    
+    if (!response.ok) {
+      // Try to parse error from response
+      try {
+        const errorData = await response.json() as ApiResponse<never>;
+        if (errorData.error) {
+          throw new Error(errorData.error);
+        }
+      } catch {
+        // If parsing fails, use status text
+      }
+      throw new Error(`Failed to fetch: ${response.statusText}`);
+    }
+    
+    const apiResponse = await response.json() as ApiResponse<TData>;
+    
+    if (!apiResponse.success) {
+      throw new Error(apiResponse.error || 'API request failed');
+    }
+    
+    if (apiResponse.data === undefined) {
+      throw new Error('API response missing data');
+    }
+    
+    return transform ? transform(apiResponse.data) : apiResponse.data;
+  };
+}
+

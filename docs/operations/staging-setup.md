@@ -248,6 +248,6 @@ git push -u origin feature/my-feature
 ## Related Documentation
 
 - [Deployment Guide](./deployment.md) - General deployment information
-- [Environment Setup](../ENVIRONMENT_SETUP.md) - Environment variable configuration
+- [Environment Setup](../getting-started/setup.md) - Environment variable configuration
 - [CI/CD Guide](./ci-cd.md) - CI/CD pipeline documentation
 

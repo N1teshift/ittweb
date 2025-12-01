@@ -3,7 +3,7 @@
  * Handles troll classes, units, and class relationships
  */
 
-import { slugify, convertIconPath, getField } from '../utils.mjs';
+import { slugify, convertIconPath, getField } from '../lib/utils.mjs';
 
 // Class relationships (source of truth for subclass/superclass mappings)
 export const CLASS_RELATIONSHIPS = {

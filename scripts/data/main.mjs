@@ -45,27 +45,27 @@ import {
   UNITS_TS_DIR,
   TMP_ROOT,
   ensureTmpDirs,
-} from './paths.mjs';
+} from './lib/paths.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Static category mappings file (manually curated, not regenerated)
-const CATEGORY_MAPPINGS_FILE = path.join(ROOT_DIR, 'scripts', 'data', 'category-mappings.json');
+const CATEGORY_MAPPINGS_FILE = path.join(ROOT_DIR, 'scripts', 'data', 'config', 'category-mappings.json');
 
 // ============================================================================
 // PIPELINE SCRIPTS - Called automatically by this master script
 // ============================================================================
-const EXTRACT_FROM_W3X_SCRIPT = path.join(__dirname, 'extract-from-w3x.mjs');
-const EXTRACT_METADATA_SCRIPT = path.join(__dirname, 'extract-metadata.mjs');
-const EXTRACT_ABILITY_DETAILS_SCRIPT = path.join(__dirname, 'extract-ability-details-from-wurst.mjs');
-const EXTRACT_ABILITY_RELATIONSHIPS_SCRIPT = path.join(__dirname, 'extract-ability-relationships.mjs');
-const EXTRACT_ITEM_DETAILS_SCRIPT = path.join(__dirname, 'extract-item-details-from-wurst.mjs');
-const GENERATE_ABILITY_ID_MAPPING_SCRIPT = path.join(__dirname, 'generate-ability-id-mapping.mjs');
-const EXTRACT_ABILITY_CODES_SCRIPT = path.join(__dirname, 'extract-ability-codes-from-items.mjs');
-const CONVERT_SCRIPT = path.join(__dirname, 'convert-extracted-to-typescript.mjs');
-const REGENERATE_ICONMAP_SCRIPT = path.join(__dirname, 'regenerate-iconmap.mjs');
-const FIX_ICON_PATHS_SCRIPT = path.join(__dirname, 'fix-icon-paths.mjs');
-const RESOLVE_FIELD_REFERENCES_SCRIPT = path.join(ROOT_DIR, 'scripts', 'resolve-field-references.mjs');
+const EXTRACT_FROM_W3X_SCRIPT = path.join(__dirname, 'extract', 'extract-from-w3x.mjs');
+const EXTRACT_METADATA_SCRIPT = path.join(__dirname, 'extract', 'extract-metadata.mjs');
+const EXTRACT_ABILITY_DETAILS_SCRIPT = path.join(__dirname, 'extract', 'extract-ability-details-from-wurst.mjs');
+const EXTRACT_ABILITY_RELATIONSHIPS_SCRIPT = path.join(__dirname, 'extract', 'extract-ability-relationships.mjs');
+const EXTRACT_ITEM_DETAILS_SCRIPT = path.join(__dirname, 'extract', 'extract-item-details-from-wurst.mjs');
+const GENERATE_ABILITY_ID_MAPPING_SCRIPT = path.join(__dirname, 'generate', 'generate-ability-id-mapping.mjs');
+const EXTRACT_ABILITY_CODES_SCRIPT = path.join(__dirname, 'extract', 'extract-ability-codes-from-items.mjs');
+const CONVERT_SCRIPT = path.join(__dirname, 'convert', 'convert-extracted-to-typescript.mjs');
+const REGENERATE_ICONMAP_SCRIPT = path.join(__dirname, 'generate', 'regenerate-iconmap.mjs');
+const FIX_ICON_PATHS_SCRIPT = path.join(__dirname, 'generate', 'fix-icon-paths.mjs');
+const RESOLVE_FIELD_REFERENCES_SCRIPT = path.join(__dirname, 'generate', 'resolve-field-references.mjs');
 
 /**
  * Clean a directory by removing all .ts files

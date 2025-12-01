@@ -269,8 +269,8 @@ Build settings are configured in `vercel.json`:
 ## Related Documentation
 
 - [Staging Setup Guide](./staging-setup.md) - Complete guide for setting up staging environment
-- [Environment Setup](../ENVIRONMENT_SETUP.md) - Environment variable configuration
+- [Environment Setup](../getting-started/setup.md) - Environment variable configuration
 - [CI/CD Guide](./ci-cd.md) - CI/CD pipeline documentation
 - [Monitoring Guide](./monitoring.md) - Monitoring and observability
-- [Architecture](../ARCHITECTURE.md) - System architecture
+- [Architecture](../development/architecture.md) - System architecture
 

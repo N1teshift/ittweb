@@ -7,7 +7,7 @@ Deep dives for the main subsystems that power ITTWeb. Start here when you need a
 - `replay-parser/` – integration plan and quick start for processing replays.
 - `timestamp-time-management.md` – comprehensive guide to timestamp handling, standardization patterns, and best practices for Firestore timestamps.
 
-Each subfolder owns its own structure; keep write-ups current and move anything outdated into the relevant `archive/` subfolder so AI agents don’t surface stale info.
+Each subfolder owns its own structure; keep write-ups current and move anything outdated into the relevant `archive/` subfolder to avoid confusion.
 
 
 

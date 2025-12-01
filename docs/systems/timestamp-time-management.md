@@ -2,7 +2,7 @@
 
 **Status**: Analysis Complete | Standardization In Progress  
 **Last Updated**: 2025-01-15  
-**Related**: [Firestore Collections Schema](../schemas/firestore-collections.md)
+**Related**: [Firestore Collections Schema](../database/schemas.md)
 
 ## Executive Summary
 
@@ -496,9 +496,9 @@ Refactor all services to use standardized factory pattern:
 
 ## Related Documentation
 
-- [Firestore Collections Schema](../schemas/firestore-collections.md)
-- [Development Guide](../../DEVELOPMENT.md)
-- [Type Safety Guidelines](../../CONTRIBUTING.md)
+- [Firestore Collections Schema](../database/schemas.md)
+- [Development Guide](../development/development-guide.md)
+- [Type Safety Guidelines](../development/contributing.md)
 
 ---
 

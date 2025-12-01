@@ -1,6 +1,6 @@
 # Operations & Testing
 
-Use this folder whenever you (or an AI agent) need to run, seed, or verify the app locally.
+Use this folder when you need to run, seed, or verify the app locally.
 
 - `quick-start-testing.md` – shortest path to spin up the dev server and create sample games via the Scheduled Games form (includes `/players` verification steps).
 - `testing-guide.md` – detailed scenarios (API calls, manual validations, troubleshooting).

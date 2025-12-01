@@ -138,7 +138,7 @@ Maps entity names → icon filenames (without path). Uses `resolveExplicitIcon()
 
 **Analyze current icon mapping status:**
 ```bash
-node scripts/data/regenerate-iconmap.mjs
+node scripts/data/generate/regenerate-iconmap.mjs
 ```
 
 What it does:
@@ -167,7 +167,7 @@ What it does:
 
 **Manage icon mappings:**
 ```bash
-node scripts/data/regenerate-iconmap.mjs
+node scripts/data/generate/regenerate-iconmap.mjs
 ```
 
 Features:
@@ -180,7 +180,7 @@ Features:
 
 **Maintain icon map:**
 ```bash
-node scripts/data/regenerate-iconmap.mjs
+node scripts/data/generate/regenerate-iconmap.mjs
 ```
 
 Features:
@@ -193,7 +193,7 @@ Features:
 
 **Cleanup icons:**
 ```bash
-node scripts/data/regenerate-iconmap.mjs
+node scripts/data/generate/regenerate-iconmap.mjs
 ```
 
 Features:
@@ -206,7 +206,7 @@ Features:
 
 1. **Run analysis first:**
    ```bash
-   node scripts/data/regenerate-iconmap.mjs
+   node scripts/data/generate/regenerate-iconmap.mjs
    ```
    This gives you the current state.
 
@@ -218,7 +218,7 @@ Features:
 
 3. **Generate extraction list:**
    ```bash
-   node scripts/data/regenerate-iconmap.mjs
+   node scripts/data/generate/regenerate-iconmap.mjs
    ```
    This shows what icons need to be extracted (see `ICON_EXTRACTION_LIST.md`).
 
@@ -230,12 +230,12 @@ Features:
 
 5. **Map newly extracted icons:**
    ```bash
-   node scripts/data/regenerate-iconmap.mjs
+   node scripts/data/generate/regenerate-iconmap.mjs
    ```
 
 6. **Re-run analysis:**
    ```bash
-   node scripts/data/regenerate-iconmap.mjs
+   node scripts/data/generate/regenerate-iconmap.mjs
    ```
    Verify improved coverage.
 

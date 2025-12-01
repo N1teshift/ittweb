@@ -3,9 +3,9 @@
  */
 
 import path from 'path';
-import { loadJson, slugify, convertIconPath } from '../utils.mjs';
+import { loadJson, slugify, convertIconPath } from '../lib/utils.mjs';
 import { mapItemCategory } from './category-mapper.mjs';
-import { TMP_METADATA_DIR } from '../paths.mjs';
+import { TMP_METADATA_DIR } from '../lib/paths.mjs';
 
 const RECIPES_FILE = path.join(TMP_METADATA_DIR, 'recipes.json');
 const ITEM_DETAILS_FILE = path.join(TMP_METADATA_DIR, 'item-details-wurst.json');

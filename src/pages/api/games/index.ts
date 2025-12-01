@@ -1,6 +1,8 @@
 import type { NextApiRequest } from 'next';
 import { createGetPostHandler } from '@/features/infrastructure/api/routeHandlers';
 import { parseQueryString, parseQueryInt, parseQueryEnum } from '@/features/infrastructure/api/queryParser';
+import { createCustomValidator, formatZodErrors } from '@/features/infrastructure/api/zodValidation';
+import { CreateScheduledGameSchema, CreateCompletedGameSchema } from '@/features/infrastructure/api/schemas';
 import { createScheduledGame, createCompletedGame, getGames } from '@/features/modules/games/lib/gameService';
 import type { CreateScheduledGame, CreateCompletedGame, GameFilters } from '@/features/modules/games/types';
 import { createComponentLogger } from '@/features/infrastructure/logging';
@@ -44,16 +46,12 @@ export default createGetPostHandler<GameListResponse | { id: string }>(
       }
       const session = context.session;
 
+      // Body is already validated by validateBody option
       const body = req.body as { gameState?: 'scheduled' | 'completed' } & (CreateScheduledGame | CreateCompletedGame);
       const gameState = body.gameState || 'completed';
 
       if (gameState === 'scheduled') {
         const gameData = body as CreateScheduledGame;
-
-        // Validate required fields
-        if (!gameData.scheduledDateTime || !gameData.timezone || !gameData.teamSize || !gameData.gameType) {
-          throw new Error('Missing required fields: scheduledDateTime, timezone, teamSize, and gameType are required');
-        }
 
         // Validate scheduledDateTime is in the future (unless admin)
         const scheduledDate = new Date(gameData.scheduledDateTime);
@@ -93,22 +91,8 @@ export default createGetPostHandler<GameListResponse | { id: string }>(
         return { id: gameId };
       } else {
         // Completed game
+        // Body is already validated by validateBody option
         const gameData = body as CreateCompletedGame;
-
-        // Validate required fields
-        if (!gameData.gameId || !gameData.datetime || !gameData.players || gameData.players.length < 2) {
-          throw new Error('Missing required fields: gameId, datetime, and at least 2 players are required');
-        }
-
-        // Validate players
-        for (const player of gameData.players) {
-          if (!player.name || !player.flag || player.pid === undefined) {
-            throw new Error('Invalid player data: name, flag, and pid are required');
-          }
-          if (!['winner', 'loser', 'drawer'].includes(player.flag)) {
-            throw new Error(`Invalid player flag: ${player.flag}`);
-          }
-        }
 
         // Add user info from session
         const gameWithUser: CreateCompletedGame = {
@@ -135,6 +119,21 @@ export default createGetPostHandler<GameListResponse | { id: string }>(
       maxAge: 120,
       mustRevalidate: true,
     },
+    validateBody: createCustomValidator((body) => {
+      // Determine gameState (defaults to 'completed')
+      const gameState = (body as { gameState?: 'scheduled' | 'completed' })?.gameState || 'completed';
+      
+      if (gameState === 'scheduled') {
+        const result = CreateScheduledGameSchema.safeParse(body);
+        if (result.success) return true;
+        return formatZodErrors([result.error]);
+      } else {
+        // Try as completed game (with or without gameState field)
+        const result = CreateCompletedGameSchema.safeParse(body);
+        if (result.success) return true;
+        return formatZodErrors([result.error]);
+      }
+    }),
   }
 );
 

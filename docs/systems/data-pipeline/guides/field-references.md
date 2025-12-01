@@ -53,7 +53,7 @@ Keep the references visible so users know what data is missing. They can be manu
 
 ## Current Status
 
-The resolver script (`scripts/resolve-field-references.mjs`) is part of the data generation pipeline (Stage 9). It resolves field references by:
+The resolver script (`scripts/data/generate/resolve-field-references.mjs`) is part of the data generation pipeline (Stage 9). It resolves field references by:
 1. Loading the ability ID mapper to convert raw ability IDs to ability slugs
 2. Looking up cooldown/duration values from the same object's definition
 3. Replacing field references with actual values when found

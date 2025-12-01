@@ -10,6 +10,7 @@
 
 import useSWR from 'swr';
 import type { ItemData } from '@/types/items';
+import { createSwrFetcher } from '@/features/infrastructure/hooks/useDataFetch';
 
 type ItemsMeta = {
   total: number;
@@ -23,21 +24,6 @@ type ItemsApiResult = {
   items: ItemData[];
   meta: ItemsMeta;
 };
-
-/**
- * Custom fetcher for items API that handles the response format
- */
-async function fetcher(url: string): Promise<ItemsApiResult> {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch items: ${response.statusText}`);
-  }
-  const apiResponse = await response.json() as { success: boolean; data: ItemsApiResult };
-  if (!apiResponse.success || !apiResponse.data) {
-    throw new Error('Invalid API response format');
-  }
-  return apiResponse.data;
-}
 
 /**
  * Hook to fetch items data with SWR caching
@@ -54,7 +40,7 @@ async function fetcher(url: string): Promise<ItemsApiResult> {
 export function useItemsDataSWR() {
   const { data, error, isLoading, mutate } = useSWR<ItemsApiResult>(
     '/api/items',
-    fetcher,
+    createSwrFetcher<ItemsApiResult>(),
     {
       // Static data - cache for longer
       revalidateOnFocus: false,

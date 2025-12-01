@@ -3,7 +3,7 @@
  */
 
 import fs from 'fs';
-import { escapeString } from '../utils.mjs';
+import { escapeString } from '../lib/utils.mjs';
 
 /**
  * Write TypeScript file with items

@@ -19,6 +19,7 @@ import { Entry } from '@/types/entry';
 import YouTubeEmbed from '@/features/modules/archives/components/YouTubeEmbed';
 import TwitchClipEmbed from '@/features/modules/archives/components/TwitchClipEmbed';
 import { extractYouTubeId, extractTwitchClipId } from '@/features/infrastructure/lib/archiveService';
+import { logError } from '@/features/infrastructure/logging';
 
 const pageNamespaces = ["common"];
 
@@ -65,7 +66,11 @@ export default function EntryPage({ entry, content, canEdit, canDelete }: EntryP
           });
           window.location.href = '/';
         } catch (revalidateError) {
-          console.error('Failed to revalidate homepage:', revalidateError);
+          logError(revalidateError as Error, 'Failed to revalidate homepage', {
+            component: 'EntryPage',
+            operation: 'handleDeleteConfirm',
+            entryId: entry.id,
+          });
           router.push('/');
         }
       } else {
@@ -74,7 +79,11 @@ export default function EntryPage({ entry, content, canEdit, canDelete }: EntryP
         setIsDeleting(false);
       }
     } catch (error) {
-      console.error('Error deleting entry:', error);
+      logError(error as Error, 'Error deleting entry', {
+        component: 'EntryPage',
+        operation: 'handleDeleteConfirm',
+        entryId: entry.id,
+      });
       setDeleteError('Failed to delete entry. Please try again.');
       setIsDeleting(false);
     }
@@ -262,7 +271,12 @@ export const getServerSideProps: GetServerSideProps<EntryPageProps> = async (con
         canEdit = userIsAdmin || userIsAuthor;
         canDelete = userIsAdmin || userIsAuthor;
       } catch (error) {
-        console.error('Failed to check permissions:', error);
+        logError(error as Error, 'Failed to check permissions', {
+          component: 'EntryPage',
+          operation: 'getServerSideProps',
+          entryId: id,
+          discordId: session.discordId,
+        });
       }
     }
 
@@ -300,7 +314,11 @@ export const getServerSideProps: GetServerSideProps<EntryPageProps> = async (con
       },
     };
   } catch (error) {
-    console.error('Failed to load entry:', error);
+    logError(error as Error, 'Failed to load entry', {
+      component: 'EntryPage',
+      operation: 'getServerSideProps',
+      entryId: id,
+    });
     return {
       notFound: true,
     };

@@ -11,6 +11,8 @@ ITT Web includes comprehensive monitoring infrastructure for:
 
 ## Error Tracking
 
+**See [Error Handling Guide](../ERROR_HANDLING.md) for complete error handling patterns. This section covers error tracking setup and integration.**
+
 ### Setup
 
 Error tracking is **optional** and uses Sentry if configured. The system gracefully falls back to console logging if Sentry is not available.
@@ -260,7 +262,7 @@ If Sentry is configured:
 
 ## Related Documentation
 
-- [Environment Setup](../ENVIRONMENT_SETUP.md) - Environment variable configuration
-- [Architecture](../ARCHITECTURE.md) - System architecture
-- [Troubleshooting](../TROUBLESHOOTING.md) - Common issues and solutions
+- [Environment Setup](../getting-started/setup.md) - Environment variable configuration
+- [Architecture](../development/architecture.md) - System architecture
+- [Troubleshooting](../getting-started/troubleshooting.md) - Common issues and solutions
 

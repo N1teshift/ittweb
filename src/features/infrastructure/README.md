@@ -123,6 +123,43 @@ export default createPostHandler(
 ```
 
 ### Validation Helpers
+
+#### Zod Validation (Recommended)
+
+```typescript
+import { zodValidator } from '@/features/infrastructure/api/zodValidation';
+import { CreatePostSchema } from '@/features/infrastructure/api/schemas';
+import { z } from 'zod';
+
+// Define Zod schema
+const CreateGameSchema = z.object({
+  gameId: z.number().int().positive(),
+  datetime: z.string().datetime(),
+  players: z.array(z.object({
+    name: z.string().min(1),
+    flag: z.enum(['winner', 'loser', 'drawer']),
+  })).min(2),
+});
+
+// Use with route handler
+export default createPostHandler(
+  async (req, res, context) => {
+    // Body is already validated
+    const gameData = req.body as z.infer<typeof CreateGameSchema>;
+    // ... handler logic
+  },
+  {
+    validateBody: zodValidator(CreateGameSchema),
+  }
+);
+```
+
+See [Zod Validation Migration Guide](../../../docs/operations/zod-validation-migration.md) for more details.
+
+#### Legacy Validation Helpers (Deprecated)
+
+The old `validateApiRequest` helper is still available but deprecated in favor of Zod:
+
 ```typescript
 import { validateApiRequest, createStringValidator, createEnumValidator } from '@/features/infrastructure/api/validationHelpers';
 

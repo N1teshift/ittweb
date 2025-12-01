@@ -1,73 +1,48 @@
-import { useState, useEffect } from 'react';
 import type { PlayerProfile, PlayerSearchFilters } from '../types';
-import { logError } from '@/features/infrastructure/logging';
+import { createDataFetchHook } from '@/features/infrastructure/hooks/useDataFetch';
+
+interface UsePlayerStatsParams {
+  name: string;
+  filters?: PlayerSearchFilters;
+}
+
+const usePlayerStatsHook = createDataFetchHook<PlayerProfile, UsePlayerStatsParams>({
+  fetchFn: async ({ name, filters }) => {
+    const queryParams = new URLSearchParams();
+    if (filters?.category) queryParams.append('category', filters.category);
+    if (filters?.startDate) queryParams.append('startDate', filters.startDate);
+    if (filters?.endDate) queryParams.append('endDate', filters.endDate);
+    if (filters?.includeGames) queryParams.append('includeGames', 'true');
+
+    const response = await fetch(
+      `/api/players/${encodeURIComponent(name)}?${queryParams.toString()}`
+    );
+    return response.json();
+  },
+  useSWR: false,
+  enabled: ({ name }) => !!name,
+  componentName: 'usePlayerStats',
+  operationName: 'fetchPlayer',
+});
 
 interface UsePlayerStatsResult {
   player: PlayerProfile | null;
   loading: boolean;
   error: Error | null;
-  refetch: () => void;
+  refetch: () => void | Promise<void>;
 }
 
 export function usePlayerStats(
   name: string,
   filters?: PlayerSearchFilters
 ): UsePlayerStatsResult {
-  const [player, setPlayer] = useState<PlayerProfile | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-
-  const fetchPlayer = async () => {
-    if (!name) {
-      setLoading(false);
-      return;
-    }
-
-    try {
-      setLoading(true);
-      setError(null);
-
-      const queryParams = new URLSearchParams();
-      if (filters?.category) queryParams.append('category', filters.category);
-      if (filters?.startDate) queryParams.append('startDate', filters.startDate);
-      if (filters?.endDate) queryParams.append('endDate', filters.endDate);
-      if (filters?.includeGames) queryParams.append('includeGames', 'true');
-
-      const response = await fetch(`/api/players/${encodeURIComponent(name)}?${queryParams.toString()}`);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch player: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to fetch player');
-      }
-
-      setPlayer(data.data as PlayerProfile);
-    } catch (err) {
-      const error = err instanceof Error ? err : new Error('Unknown error');
-      logError(error, 'Failed to fetch player stats', {
-        component: 'usePlayerStats',
-        operation: 'fetchPlayer',
-        playerName: name,
-        filters,
-      });
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPlayer();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, filters?.category, filters?.startDate, filters?.endDate, filters?.includeGames]);
-
+  const { data, loading, error, refetch } = usePlayerStatsHook({ name, filters });
+  
   return {
-    player,
+    player: data,
     loading,
     error,
-    refetch: fetchPlayer,
+    refetch,
   };
 }
 

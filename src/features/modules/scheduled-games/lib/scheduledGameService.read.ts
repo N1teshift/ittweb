@@ -5,6 +5,7 @@ import { ScheduledGame } from '@/types/scheduledGame';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import { convertGameDataToScheduledGame, shouldIncludeGame } from './scheduledGameService.read.helpers';
+import { queryWithIndexFallback } from '@/features/infrastructure/api/firebase/queryWithIndexFallback';
 
 const GAMES_COLLECTION = 'games'; // Unified games collection (scheduled and completed)
 const logger = createComponentLogger('scheduledGameService');
@@ -17,10 +18,8 @@ export async function getAllScheduledGames(includePast: boolean = false, include
   try {
     logger.info('Fetching scheduled games from unified games collection', { includePast, includeArchived });
 
-    const games: ScheduledGame[] = [];
-
+    let adminDb: ReturnType<typeof getFirestoreAdmin> | undefined;
     if (isServerSide()) {
-      let adminDb: ReturnType<typeof getFirestoreAdmin>;
       try {
         adminDb = getFirestoreAdmin();
       } catch (initError) {
@@ -31,121 +30,72 @@ export async function getAllScheduledGames(includePast: boolean = false, include
         });
         return [];
       }
-      
-      try {
-        logger.debug('Querying unified games collection for scheduled games');
-        // Use Index 1 for efficient sorting: isDeleted (Asc), gameState (Asc), scheduledDateTime (Asc)
-        const gamesQuerySnapshot = await adminDb.collection(GAMES_COLLECTION)
-          .where('gameState', '==', 'scheduled')
-          .where('isDeleted', '==', false)
-          .orderBy('scheduledDateTime', 'asc')
-          .get();
+    }
+
+    const games = await queryWithIndexFallback({
+      collectionName: GAMES_COLLECTION,
+      executeQuery: async () => {
+        const docs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
         
-        logger.debug('Found scheduled games in games collection', { count: gamesQuerySnapshot.size });
-        
-        gamesQuerySnapshot.forEach((docSnap) => {
-          const data = docSnap.data();
-          const scheduledDateTime = (data.scheduledDateTimeString as string) || timestampToIso(data.scheduledDateTime);
-          
-          if (shouldIncludeGame(data, scheduledDateTime, includePast, includeArchived)) {
-            games.push(convertGameDataToScheduledGame(docSnap.id, data));
-          }
-        });
-        
-        logger.debug('Added scheduled games from unified games collection', { count: gamesQuerySnapshot.size });
-      } catch (gamesCollectionError) {
-        // If index is missing, fall back to fetching all and sorting in memory
-        const firestoreError = gamesCollectionError as { code?: string; message?: string };
-        if (firestoreError?.code === 'failed-precondition' || firestoreError?.message?.includes('index')) {
-          logger.warn('Index missing for scheduled games query, using fallback', {
-            error: gamesCollectionError instanceof Error ? gamesCollectionError.message : String(gamesCollectionError)
-          });
-          
-          // Fallback: fetch without orderBy, sort in memory
-          const fallbackSnapshot = await adminDb.collection(GAMES_COLLECTION)
+        if (isServerSide() && adminDb) {
+          logger.debug('Querying unified games collection for scheduled games');
+          const gamesQuerySnapshot = await adminDb.collection(GAMES_COLLECTION)
             .where('gameState', '==', 'scheduled')
             .where('isDeleted', '==', false)
+            .orderBy('scheduledDateTime', 'asc')
             .get();
           
-          fallbackSnapshot.forEach((docSnap) => {
-            const data = docSnap.data();
-            const scheduledDateTime = (data.scheduledDateTimeString as string) || timestampToIso(data.scheduledDateTime);
-            
-            if (shouldIncludeGame(data, scheduledDateTime, includePast, includeArchived)) {
-              games.push(convertGameDataToScheduledGame(docSnap.id, data));
-            }
+          logger.debug('Found scheduled games in games collection', { count: gamesQuerySnapshot.size });
+          
+          gamesQuerySnapshot.forEach((docSnap) => {
+            docs.push({ data: () => docSnap.data(), id: docSnap.id });
           });
         } else {
-          logger.warn('Failed to query games collection for scheduled games', { 
-            error: gamesCollectionError instanceof Error ? gamesCollectionError.message : String(gamesCollectionError) 
-          });
-        }
-      }
-      
-      // Sort by scheduled date (ascending - upcoming first)
-      // Note: Results from index-based query are already sorted, but we sort anyway
-      // to ensure correctness if fallback was used or if filtering changed order
-      games.sort((a, b) => {
-        const dateA = new Date(timestampToIso(a.scheduledDateTime)).getTime();
-        const dateB = new Date(timestampToIso(b.scheduledDateTime)).getTime();
-        return dateA - dateB;
-      });
-    } else {
-      const db = getFirestoreInstance();
-      
-      try {
-        const q = query(
-          collection(db, GAMES_COLLECTION),
-          where('gameState', '==', 'scheduled'),
-          where('isDeleted', '==', false),
-          orderBy('scheduledDateTime', 'asc')
-        );
-
-        const querySnapshot = await getDocs(q);
-
-        querySnapshot.forEach((docSnap) => {
-          const data = docSnap.data();
-          const scheduledDateTime = (data.scheduledDateTimeString as string) || timestampToIso(data.scheduledDateTime as Timestamp);
-          
-          if (shouldIncludeGame(data, scheduledDateTime, includePast, includeArchived)) {
-            games.push(convertGameDataToScheduledGame(docSnap.id, data));
-          }
-        });
-      } catch (error: unknown) {
-        // If index is still building, fall back to fetching all and filtering in memory
-        const firestoreError = error as { code?: string; message?: string };
-        if (firestoreError?.code === 'failed-precondition' || firestoreError?.message?.includes('index')) {
-          logger.info('Index still building, falling back to in-memory filtering');
-          
-          const querySnapshot = await getDocs(
-            query(collection(db, GAMES_COLLECTION), where('gameState', '==', 'scheduled'))
+          const db = getFirestoreInstance();
+          const q = query(
+            collection(db, GAMES_COLLECTION),
+            where('gameState', '==', 'scheduled'),
+            where('isDeleted', '==', false),
+            orderBy('scheduledDateTime', 'asc')
           );
 
+          const querySnapshot = await getDocs(q);
           querySnapshot.forEach((docSnap) => {
-            const data = docSnap.data();
-            
-            if (data.isDeleted === true) {
-              return;
-            }
-            
-            const scheduledDateTime = (data.scheduledDateTimeString as string) || timestampToIso(data.scheduledDateTime as Timestamp);
-            
-            if (shouldIncludeGame(data, scheduledDateTime, includePast, includeArchived)) {
-              games.push(convertGameDataToScheduledGame(docSnap.id, data));
-            }
+            docs.push({ data: () => docSnap.data(), id: docSnap.id });
           });
-          
-          // Sort by scheduled date (ascending - upcoming first) in memory
-          games.sort((a, b) => {
-            const dateA = new Date(timestampToIso(a.scheduledDateTime)).getTime();
-            const dateB = new Date(timestampToIso(b.scheduledDateTime)).getTime();
-            return dateA - dateB;
-          });
-        } else {
-          throw error;
         }
-      }
-    }
+        
+        return docs;
+      },
+      fallbackFilter: (docs) => {
+        // Filter by gameState and isDeleted in memory
+        return docs.filter((doc) => {
+          const data = doc.data();
+          return data.gameState === 'scheduled' && data.isDeleted !== true;
+        });
+      },
+      transform: (docs) => {
+        const games: ScheduledGame[] = [];
+        docs.forEach((doc) => {
+          const data = doc.data();
+          const scheduledDateTime = (data.scheduledDateTimeString as string) || timestampToIso(data.scheduledDateTime as Timestamp | undefined);
+          
+          if (shouldIncludeGame(data, scheduledDateTime, includePast, includeArchived)) {
+            games.push(convertGameDataToScheduledGame(doc.id, data));
+          }
+        });
+        return games;
+      },
+      sort: (games) => {
+        // Sort by scheduled date (ascending - upcoming first)
+        return games.sort((a, b) => {
+          const dateA = new Date(timestampToIso(a.scheduledDateTime)).getTime();
+          const dateB = new Date(timestampToIso(b.scheduledDateTime)).getTime();
+          return dateA - dateB;
+        });
+      },
+      logger,
+    });
 
     logger.info('Scheduled games fetched', { count: games.length });
     return games;

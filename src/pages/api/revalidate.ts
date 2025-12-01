@@ -1,6 +1,7 @@
 import type { NextApiRequest } from 'next';
 import { createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
-import { validateRequiredFields, validateString } from '@/features/infrastructure/api/validators';
+import { zodValidator } from '@/features/infrastructure/api/zodValidation';
+import { RevalidateSchema } from '@/features/infrastructure/api/schemas';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('api/revalidate');
@@ -13,11 +14,8 @@ export default createPostHandler<{ revalidated: boolean; path: string }>(
     const session = requireSession(context);
     
     // Get the path to revalidate from the request body
-    const { path } = req.body;
-
-    if (!path || typeof path !== 'string') {
-      throw new Error('Path is required');
-    }
+    // Body is already validated by validateBody option
+    const { path } = req.body as { path: string };
 
     // Revalidate the path
     await res.revalidate(path);
@@ -27,18 +25,7 @@ export default createPostHandler<{ revalidated: boolean; path: string }>(
   },
   {
     requireAuth: true,
-    validateBody: (body: unknown) => {
-      const requiredError = validateRequiredFields(body, ['path']);
-      if (requiredError) return requiredError;
-      if (typeof body === 'object' && body !== null && 'path' in body) {
-        const pathResult = validateString((body as { path: unknown }).path, 'path', 1);
-        if (typeof pathResult === 'string' && pathResult.startsWith('path must be')) {
-          return pathResult;
-        }
-        return true;
-      }
-      return 'Invalid request body';
-    },
+    validateBody: zodValidator(RevalidateSchema),
     logRequests: true,
   }
 );

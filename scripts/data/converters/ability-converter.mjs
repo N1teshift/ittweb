@@ -2,7 +2,7 @@
  * Ability converter - converts extracted ability data to TypeScript AbilityData format
  */
 
-import { slugify, stripColorCodes, convertIconPath, getField } from '../utils.mjs';
+import { slugify, stripColorCodes, convertIconPath, getField } from '../lib/utils.mjs';
 import { mapAbilityCategory, isGarbageAbilityName } from './category-mapper.mjs';
 
 /**

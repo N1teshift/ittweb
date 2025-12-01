@@ -1,0 +1,11 @@
+# Cursor Rules
+
+## Date Handling in Documentation
+
+When writing or updating documentation files (`.md` files) that include dates, the agent MUST:
+1. First check the current date using a terminal command (e.g., `date` on Unix/Mac or `Get-Date` on Windows PowerShell)
+2. Use the actual current date from the system, not an estimated or assumed date
+3. Format dates consistently (preferred format: YYYY-MM-DD or "Month DD, YYYY" depending on context)
+
+This ensures all documentation dates are accurate and reflect when the documentation was actually written or updated.
+

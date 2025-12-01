@@ -126,8 +126,8 @@ This document tracks known issues, technical debt, and migration status in the c
 
 ## Related Documentation
 
-- [Architecture Overview](./ARCHITECTURE.md)
-- [Development Guide](./DEVELOPMENT.md)
+- [Architecture Overview](./development/architecture.md)
+- [Development Guide](./development/development-guide.md)
 - [API Reference](./api/README.md)
 - [Documentation Plan](./DOCUMENTATION_PLAN.md)
 

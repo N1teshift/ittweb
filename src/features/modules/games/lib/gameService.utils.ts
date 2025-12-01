@@ -9,6 +9,7 @@ import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { queryWithIndexFallback } from '@/features/infrastructure/api/firebase/queryWithIndexFallback';
 import type { 
   Game, 
   GamePlayer, 
@@ -29,106 +30,62 @@ const logger = createComponentLogger('gameService');
  */
 export async function getNextGameId(): Promise<number> {
   try {
-    if (isServerSide()) {
-      const adminDb = getFirestoreAdmin();
-      let querySnapshot;
-      
-      try {
-        // Try the optimized query with orderBy
-        querySnapshot = await adminDb.collection(GAMES_COLLECTION)
-          .orderBy('gameId', 'desc')
-          .limit(1)
-          .get();
-      } catch (queryError) {
-        // If query fails (likely due to missing index), use fallback
-        const error = queryError as { code?: string; message?: string };
-        if (error?.code === 'failed-precondition' || error?.message?.includes('index')) {
-          logError(error as Error, 'Missing Firestore index for gameId orderBy, using fallback query', {
-            component: 'gameService',
-            operation: 'getNextGameId',
-            fallback: true,
-          });
-          
-          // Fallback: Get all games and sort in memory
-          querySnapshot = await adminDb.collection(GAMES_COLLECTION)
-            .limit(1000) // Reasonable limit for fallback
+    const maxGameId = await queryWithIndexFallback({
+      collectionName: GAMES_COLLECTION,
+      executeQuery: async () => {
+        const docs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
+        
+        if (isServerSide()) {
+          const adminDb = getFirestoreAdmin();
+          const querySnapshot = await adminDb.collection(GAMES_COLLECTION)
+            .orderBy('gameId', 'desc')
+            .limit(1)
             .get();
-        } else {
-          // Re-throw if it's not an index error
-          throw queryError;
-        }
-      }
-
-      if (querySnapshot.empty) {
-        logger.info('No games found, starting with gameId 1');
-        return 1;
-      }
-
-      // If fallback was used, sort in memory
-      let maxGameId = 0;
-      querySnapshot.forEach((doc) => {
-        const gameData = doc.data();
-        const gameId = typeof gameData.gameId === 'number' ? gameData.gameId : Number(gameData.gameId) || 0;
-        if (gameId > maxGameId) {
-          maxGameId = gameId;
-        }
-      });
-
-      const nextId = maxGameId + 1;
-      logger.info('Next game ID calculated', { nextId, maxGameId });
-      return nextId;
-    } else {
-      const db = getFirestoreInstance();
-      const gamesCollection = collection(db, GAMES_COLLECTION);
-      let querySnapshot;
-      
-      try {
-        // Try the optimized query with orderBy
-        const q = query(
-          gamesCollection,
-          orderBy('gameId', 'desc')
-        );
-        querySnapshot = await getDocs(q);
-      } catch (queryError) {
-        // If query fails (likely due to missing index), use fallback
-        const error = queryError as { code?: string; message?: string };
-        if (error?.code === 'failed-precondition' || error?.message?.includes('index')) {
-          logError(error as Error, 'Missing Firestore index for gameId orderBy, using fallback query', {
-            component: 'gameService',
-            operation: 'getNextGameId',
-            fallback: true,
-          });
           
-          // Fallback: Get games and sort in memory (limited to prevent performance issues)
-          const fallbackQuery = query(gamesCollection);
-          querySnapshot = await getDocs(fallbackQuery);
-          // Note: If there are more than ~1000 games, this fallback may not find the true max
-          // In production, ensure the Firestore index exists for optimal performance
+          querySnapshot.forEach((doc) => {
+            docs.push({ data: () => doc.data(), id: doc.id });
+          });
         } else {
-          // Re-throw if it's not an index error
-          throw queryError;
+          const db = getFirestoreInstance();
+          const gamesCollection = collection(db, GAMES_COLLECTION);
+          const q = query(gamesCollection, orderBy('gameId', 'desc'));
+          const querySnapshot = await getDocs(q);
+          
+          querySnapshot.forEach((doc) => {
+            docs.push({ data: () => doc.data(), id: doc.id });
+          });
         }
-      }
+        
+        return docs;
+      },
+      fallbackFilter: (docs) => {
+        // In fallback, return all docs (utility fetches all documents)
+        // Note: For large collections, this may be inefficient, but ensures we find the true max
+        return docs;
+      },
+      transform: (docs) => {
+        // Extract gameIds from documents and find max
+        let maxGameId = 0;
+        docs.forEach((doc) => {
+          const gameData = doc.data();
+          const gameId = typeof gameData.gameId === 'number' ? gameData.gameId : Number(gameData.gameId) || 0;
+          if (gameId > maxGameId) {
+            maxGameId = gameId;
+          }
+        });
+        return maxGameId;
+      },
+      logger,
+    });
 
-      if (querySnapshot.empty) {
-        logger.info('No games found, starting with gameId 1');
-        return 1;
-      }
-
-      // If fallback was used, sort in memory
-      let maxGameId = 0;
-      querySnapshot.forEach((doc) => {
-        const gameData = doc.data();
-        const gameId = typeof gameData.gameId === 'number' ? gameData.gameId : Number(gameData.gameId) || 0;
-        if (gameId > maxGameId) {
-          maxGameId = gameId;
-        }
-      });
-
-      const nextId = maxGameId + 1;
-      logger.info('Next game ID calculated', { nextId, maxGameId });
-      return nextId;
+    if (maxGameId === 0) {
+      logger.info('No games found, starting with gameId 1');
+      return 1;
     }
+
+    const nextId = maxGameId + 1;
+    logger.info('Next game ID calculated', { nextId, maxGameId });
+    return nextId;
   } catch (error) {
     const err = error as Error;
     logError(err, 'Failed to get next game ID, defaulting to 1', {

@@ -68,7 +68,7 @@ Common issues, errors, and debugging procedures for the data generation pipeline
 
 2. **Re-run extraction:**
    ```bash
-   node scripts/data/extract-from-w3x.mjs
+   node scripts/data/extract/extract-from-w3x.mjs
    ```
 
 3. **Check input files are valid:**
@@ -118,7 +118,7 @@ Build fails after running pipeline
 **Solution:**
 1. Run full extraction pipeline:
    ```bash
-   node scripts/data/extract-from-w3x.mjs
+   node scripts/data/extract/extract-from-w3x.mjs
    ```
 
 2. Verify ability data exists:
@@ -199,7 +199,7 @@ Build fails after running pipeline
 **Solutions:**
 1. **Run icon path fixer:**
    ```bash
-   node scripts/data/fix-icon-paths.mjs
+   node scripts/data/generate/fix-icon-paths.mjs
    ```
 
 2. **Check icon mapping:**
@@ -233,7 +233,7 @@ Build fails after running pipeline
 
 2. **Re-run field reference resolver:**
    ```bash
-   node scripts/resolve-field-references.mjs
+   node scripts/data/generate/resolve-field-references.mjs
    ```
 
 3. **Check for missing ability mappings:**
@@ -381,5 +381,5 @@ node scripts/data/extract-from-w3x.mjs 2>&1 | tee debug.log
 - [Data Schemas](./schemas.md) - Expected data structures
 - [Main Pipeline README](../../../scripts/README.md) - Operational guide
 - [Field References](./guides/field-references.md) - Understanding field references
-- [Refactoring Plan](../../../scripts/data/REFACTORING_PLAN.md) - Known issues and improvements
+- [Refactoring Plan](../../../scripts/data/docs/REFACTORING_PLAN.md) - Known issues and improvements
 
