@@ -370,26 +370,28 @@ async headers() {
 }
 ```
 
-## Checklist
+## Security Review Guidelines
 
 ### Before Deployment
 
-- [ ] All API routes require authentication where needed
-- [ ] Firestore security rules configured
-- [ ] Input validation on all user inputs
-- [ ] Error messages don't expose sensitive info
-- [ ] Environment variables properly configured
-- [ ] File uploads validated
-- [ ] Security headers configured
-- [ ] Secrets not committed to repository
+Ensure the following security checks are completed:
+- All API routes require authentication where needed (use `requireAuth: true` in `createApiHandler`)
+- Firestore security rules configured and tested
+- Input validation on all user inputs (use Zod schemas via `validateBody` option)
+- Error messages don't expose sensitive information (handled automatically by `createApiHandler` in production)
+- Environment variables properly configured (secrets in `.env.local`, not committed)
+- File uploads validated (type, size, scanned if applicable)
+- Security headers configured in `next.config.ts`
+- Secrets not committed to repository (verified with Gitleaks scan)
 
-### Ongoing
+### Ongoing Security Maintenance
 
-- [ ] Review Firestore rules regularly
-- [ ] Audit user permissions
-- [ ] Monitor for suspicious activity
-- [ ] Keep dependencies updated
-- [ ] Review security logs
+Regular security maintenance should include:
+- Review Firestore rules regularly for access control accuracy
+- Audit user permissions and roles
+- Monitor for suspicious activity (unusual API patterns, failed auth attempts)
+- Keep dependencies updated (automated via security scanning workflow)
+- Review security logs and error tracking (Sentry, Firebase logs)
 
 ## Automated Security Scanning
 

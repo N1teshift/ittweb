@@ -479,18 +479,20 @@ Refactor all services to use standardized factory pattern:
 
 ---
 
-## Migration Checklist
+## Migration Steps
 
-- [ ] Create standardized timestamp utilities
-- [ ] Update all type definitions
-- [ ] Refactor entry service (already uses factory, standardize types)
-- [ ] Refactor post service (already uses factory, standardize types)
-- [ ] Refactor game service (convert to factory pattern)
-- [ ] Refactor scheduled game service (convert to factory pattern)
-- [ ] Fix user data service (bug: storing class instead of instance)
-- [ ] Update all helper functions to use standardized factory
-- [ ] Update documentation
-- [ ] Add to documentation index
+To complete the timestamp management migration:
+
+1. **Create standardized timestamp utilities** - Implement factory functions for consistent timestamp creation
+2. **Update all type definitions** - Ensure types use standardized timestamp types
+3. **Refactor entry service** - Already uses factory, standardize types
+4. **Refactor post service** - Already uses factory, standardize types
+5. **Refactor game service** - Convert to factory pattern
+6. **Refactor scheduled game service** - Convert to factory pattern
+7. **Fix user data service** - Fix bug where class is stored instead of instance
+8. **Update all helper functions** - Use standardized factory functions
+9. **Update documentation** - Document the new patterns
+10. **Add to documentation index** - Ensure discoverability
 
 ---
 

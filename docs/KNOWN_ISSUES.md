@@ -101,27 +101,19 @@ This document tracks known issues, technical debt, and migration status in the c
 ## 🔧 Technical Debt
 
 ### Documentation
-- [ ] Module-level READMEs planned but not implemented
-- [ ] API docs reference redundant `scheduled-games/[id]/*` routes (functionality moved to `/api/games/[id]/*`)
-- [ ] Testing guide links verified ✅
+**Outstanding Items**:
+- Module-level READMEs planned but not yet implemented for all modules
+- API docs may reference redundant `scheduled-games/[id]/*` routes (functionality moved to `/api/games/[id]/*`) - needs verification
 
 ### Code Quality
-- [ ] API response format standardization needed
-- [ ] Logging system consolidation needed (3 files still use legacy path)
-- [ ] Shared folder structure - consolidation planned
-- [ ] Remove empty `scheduled-games/[id]/` folder (redundant)
-- [ ] Remove unused Input components (Input, NumberInput, SelectInput)
+**Outstanding Items**:
+- Remove empty `scheduled-games/[id]/` folder (redundant, functionality moved to `/api/games/[id]/*`)
+- Remove unused Input components (`Input`, `NumberInput`, `SelectInput`) - only used in 2 files
 
-### Redundant Code
-- [ ] Empty `src/pages/api/scheduled-games/[id]/` folder (functionality moved to `/api/games/[id]/*`)
-- [ ] Input components (`Input`, `NumberInput`, `SelectInput`) - only used in 2 files, should be removed
-
----
-
-
-1. **Review Issues**: Check all issues for security implications
-2. **Authentication**: Pay special attention to authentication-related issues (e.g., createApiHandler auth)
-3. **Create Tasks**: If security issues are found, add them here and create tasks
+**Note**: The following items have been resolved:
+- ✅ API response format standardization - Complete (all routes use `createApiHandler`)
+- ✅ Logging system consolidation - Complete (all files migrated)
+- ✅ Shared folder structure consolidation - Complete (consolidated to `@/features/infrastructure`)
 
 
 ## Related Documentation
@@ -129,5 +121,5 @@ This document tracks known issues, technical debt, and migration status in the c
 - [Architecture Overview](./development/architecture.md)
 - [Development Guide](./development/development-guide.md)
 - [API Reference](./api/README.md)
-- [Documentation Plan](./DOCUMENTATION_PLAN.md)
+- [Documentation Plan](./archive/meta-documentation/DOCUMENTATION_PLAN.md)
 

@@ -64,36 +64,36 @@ POST /api/games
 
 ---
 
-## 📋 Implementation Checklist
+## 📋 Implementation Phases
 
 ### Phase 1: Parser Foundation
-- [ ] Install `w3gjs` library
-- [ ] Create `replayParser.ts` service
-- [ ] Test with sample Island Troll Tribes replay
-- [ ] Extract basic game data
-- [ ] Extract W3MMD variables
-- [ ] Map players to winners/losers
+1. Install `w3gjs` library for replay parsing
+2. Create `replayParser.ts` service with parsing logic
+3. Test with sample Island Troll Tribes replay files
+4. Extract basic game data (duration, map, players)
+5. Extract W3MMD variables for game statistics
+6. Map players to winners/losers based on game outcome
 
 ### Phase 2: API Integration
-- [ ] Update `POST /api/games` to accept replay files
-- [ ] Integrate parser with upload endpoint
-- [ ] Handle file upload to Firebase Storage
-- [ ] Create game from parsed data
-- [ ] Error handling
+1. Update `POST /api/games` to accept replay files
+2. Integrate parser with upload endpoint
+3. Handle file upload to Firebase Storage
+4. Create game from parsed data
+5. Implement error handling for parsing failures
 
 ### Phase 3: UI Components
-- [ ] Create `ReplayUploadForm` component
-- [ ] Add to game creation flow
-- [ ] Add "Record Result" to scheduled games
-- [ ] Show parsed data preview
-- [ ] Allow editing parsed data
+1. Create `ReplayUploadForm` component for file upload
+2. Add to game creation flow
+3. Add "Record Result" functionality to scheduled games
+4. Show parsed data preview before submission
+5. Allow editing parsed data if needed
 
 ### Phase 4: Scheduled Games Link
-- [ ] Update `scheduledGames` schema (add `gameId`, `gameResultId`)
-- [ ] Update `games` schema (add `scheduledGameId`)
-- [ ] Link games when created from scheduled game
-- [ ] Update scheduled game status
-- [ ] Show linked results in UI
+1. Update `scheduledGames` schema (add `gameId`, `gameResultId`)
+2. Update `games` schema (add `scheduledGameId`)
+3. Link games when created from scheduled game
+4. Update scheduled game status automatically
+5. Show linked results in UI
 
 ---
 

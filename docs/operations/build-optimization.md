@@ -409,22 +409,24 @@ ANALYZE=true npm run build
 - **Webpack Bundle Analyzer**: Alternative analyzer
 - **Lighthouse**: Performance auditing
 
-## Checklist
+## Build Optimization Review Guidelines
 
 ### Before Release
 
-- [ ] Run bundle analysis: `ANALYZE=true npm run build`
-- [ ] Review bundle size reports
-- [ ] Check for large dependencies
-- [ ] Verify lazy loading is working
-- [ ] Check bundle size targets are met
-- [ ] Document bundle size in release notes
+Ensure the following build checks are completed:
+- Run bundle analysis: `ANALYZE=true npm run build`
+- Review bundle size reports for any unexpected increases
+- Check for large dependencies that could be optimized
+- Verify lazy loading is working correctly
+- Check bundle size targets are met
+- Document bundle size in release notes
 
 ### Regular Maintenance
 
-- [ ] Monthly bundle size review
-- [ ] Check for unused dependencies
-- [ ] Update large dependencies if alternatives available
-- [ ] Monitor bundle size trends
-- [ ] Review PR bundle size changes
+Ongoing build optimization should include:
+- Monthly bundle size review to track trends
+- Check for unused dependencies and remove them
+- Update large dependencies if smaller alternatives are available
+- Monitor bundle size trends over time
+- Review PR bundle size changes in CI/CD
 

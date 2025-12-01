@@ -3,13 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "check:items": "node scripts/check-items.cjs",
-    "gen:items:external": "node scripts/generate-external-items.cjs",
     "extract:data": "python ./src/features/infrastructure/extraction/scripts/current/manage_extraction.py pipeline",
-    "dev": "node scripts/filter-dev-logs.js next dev",
+    "dev": "node scripts/utils/filter-dev-logs.js next dev",
     "dev:verbose": "next dev",
     "type-check": "tsc --noEmit",
-    "validate-env": "node scripts/validate-env.js",
+    "validate-env": "node scripts/utils/validate-env.js",
     "build": "npm run validate-env && next build",
     "build:check": "npm run type-check && npm run build",
     "start": "next start",
@@ -17,10 +15,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "analyze:replay": "node scripts/analyze-replay.mjs",
-    "staging:push": "node scripts/staging-workflow.mjs push-staging",
-    "staging:deploy": "node scripts/staging-workflow.mjs deploy-prod",
-    "staging:status": "node scripts/staging-workflow.mjs status"
+    "analyze:replay": "node scripts/utils/analyze-replay.mjs"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.16",

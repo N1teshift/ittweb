@@ -60,6 +60,7 @@ All 13 feature modules have README files in `src/features/modules/[module-name]/
 - **[Performance](./PERFORMANCE.md)** - Performance optimization strategies
 - **[Security](./SECURITY.md)** - Security best practices
 - **[Documentation Style](./DOCUMENTATION_STYLE.md)** - Documentation standards
+- **[Documentation Audit](./DOCUMENTATION_AUDIT.md)** - Audit of all documentation against style guide
 
 ## External
 

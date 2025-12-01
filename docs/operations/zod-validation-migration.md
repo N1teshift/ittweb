@@ -313,16 +313,16 @@ Current schemas in `src/features/infrastructure/api/schemas.ts`:
 4. **Better Errors**: Structured, detailed error messages
 5. **Documentation**: Schemas serve as API documentation
 
-## Migration Checklist
+## Migration Steps
 
-For each route that needs migration:
+For each route that needs migration, follow these steps:
 
-- [ ] Identify all fields that need validation
-- [ ] Create a Zod schema in `schemas.ts`
-- [ ] Replace `validateBody` with `zodValidator(schema)`
-- [ ] Remove manual validation logic from handler
-- [ ] Test the route with valid and invalid inputs
-- [ ] Update any related tests
+1. **Identify all fields that need validation** - Review the route handler to determine required and optional fields
+2. **Create a Zod schema in `schemas.ts`** - Define the schema with appropriate validators (string, number, optional, etc.)
+3. **Replace `validateBody` with `zodValidator(schema)`** - Update the route handler options
+4. **Remove manual validation logic from handler** - Clean up any inline validation code
+5. **Test the route with valid and invalid inputs** - Verify validation works correctly
+6. **Update any related tests** - Ensure tests reflect the new validation approach
 
 ## Migration Status
 

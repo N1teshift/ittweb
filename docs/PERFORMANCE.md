@@ -444,25 +444,27 @@ const perf = getPerformance();
 // Automatically tracks network requests
 ```
 
-## Checklist
+## Performance Review Guidelines
 
 ### Before Deployment
 
-- [ ] Bundle size analyzed (`ANALYZE=true npm run build`)
-- [ ] Firestore indexes created
-- [ ] Images optimized
-- [ ] Lazy loading implemented for heavy components
-- [ ] API responses cached where appropriate
-- [ ] Performance tested with realistic data volumes
-- [ ] Web Vitals checked
+Ensure the following performance checks are completed:
+- Bundle size analyzed using `ANALYZE=true npm run build`
+- Firestore indexes created for all complex queries
+- Images optimized (using Next.js Image component, WebP format when possible)
+- Lazy loading implemented for heavy components (charts, large data tables)
+- API responses cached where appropriate (see [API Optimization](#api-optimization) section)
+- Performance tested with realistic data volumes
+- Web Vitals checked (LCP < 2.5s, FID < 100ms, CLS < 0.1)
 
-### Ongoing
+### Ongoing Monitoring
 
-- [ ] Monitor Firestore read/write counts
-- [ ] Check API response times
-- [ ] Review bundle size regularly
-- [ ] Optimize slow queries
-- [ ] Remove unused dependencies
+Regular performance maintenance should include:
+- Monitor Firestore read/write counts to identify expensive operations
+- Check API response times and optimize slow endpoints
+- Review bundle size regularly and remove unused dependencies
+- Optimize slow queries by adding indexes or refactoring
+- Remove unused dependencies to reduce bundle size
 
 ## Related Documentation
 

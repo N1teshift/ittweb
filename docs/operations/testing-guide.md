@@ -146,17 +146,18 @@ Create several more games with different players to see:
 
 **Note**: All game creation endpoints require authentication. The `creatorName` and `createdByDiscordId` fields are automatically filled from the session if not provided.
 
-## 🔍 Testing Checklist
+## 🔍 Testing Verification
 
-- [ ] Can create a game via API
-- [ ] Games appear in the games list page
-- [ ] Game detail page shows correct information
-- [ ] ELO is calculated correctly (winner gains, loser loses)
-- [ ] Player stats update after game creation
-- [ ] Player profile page displays correctly
-- [ ] Leaderboard shows players ranked by ELO
-- [ ] Category filtering works on leaderboard
-- [ ] Multiple games accumulate stats correctly
+When testing, verify the following functionality:
+- Can create a game via API (with proper authentication)
+- Games appear in the games list page
+- Game detail page shows correct information
+- ELO is calculated correctly (winner gains, loser loses)
+- Player stats update after game creation
+- Player profile page displays correctly
+- Leaderboard shows players ranked by ELO
+- Category filtering works on leaderboard
+- Multiple games accumulate stats correctly
 
 ## 🐛 Troubleshooting
 

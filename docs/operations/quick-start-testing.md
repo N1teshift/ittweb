@@ -100,16 +100,17 @@ You should see players ranked by ELO!
 - Verify winner/loser flags are correct
 - Check server logs for ELO calculation errors
 
-## ✅ Success Checklist
+## ✅ Verification Steps
 
-- [ ] Can create a game via test form
-- [ ] Game appears in games list
-- [ ] Can view game details
-- [ ] Player stats page loads
-- [ ] ELO is calculated (winner > 1000, loser < 1000)
-- [ ] Leaderboard shows players
-- [ ] Can create multiple games
-- [ ] Stats accumulate correctly
+To verify the system is working correctly, ensure you can:
+- Create a game via the test form
+- See the game appear in the games list
+- View game details successfully
+- Load player stats pages
+- Confirm ELO is calculated correctly (winner > 1000, loser < 1000)
+- View the leaderboard with players displayed
+- Create multiple games successfully
+- Verify stats accumulate correctly across games
 
 ---
 

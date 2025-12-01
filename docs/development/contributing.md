@@ -105,20 +105,18 @@ refactor(services): extract timestamp utility
 Brief description of changes
 
 ## Type of Change
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Documentation update
-- [ ] Refactoring
+Specify the type of change: Bug fix, New feature, Documentation update, or Refactoring
 
 ## Testing
-- [ ] Tests added/updated
-- [ ] Manual testing completed
+- Tests added/updated for new functionality
+- Manual testing completed to verify changes work as expected
 
-## Checklist
-- [ ] Code follows style guidelines
-- [ ] Self-review completed
-- [ ] Documentation updated
-- [ ] No new warnings/errors
+## Pre-Submission Checklist
+Before submitting your PR, ensure:
+- Code follows style guidelines
+- Self-review completed
+- Documentation updated if needed
+- No new warnings/errors introduced
 ```
 
 ## Testing Requirements
@@ -176,14 +174,15 @@ describe('myService', () => {
 - **Test Functionality**: Test the changes locally
 - **Approve Promptly**: Don't block on minor issues
 
-### Review Checklist
+### Review Guidelines
 
-- [ ] Code follows style guidelines
-- [ ] Error handling uses `loggerUtils`
-- [ ] Tests are included and pass
-- [ ] Documentation is updated
-- [ ] No security issues
-- [ ] Performance considerations addressed
+When reviewing code, verify:
+- Code follows style guidelines
+- Error handling uses the logging infrastructure (`@/features/infrastructure/logging`)
+- Tests are included and pass
+- Documentation is updated if needed
+- No security issues introduced
+- Performance considerations addressed
 
 ## Adding New Features
 
