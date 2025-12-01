@@ -11,7 +11,6 @@
 import { getFirestoreAdmin, isServerSide } from './admin';
 import { getFirestoreInstance } from './firebaseClient';
 import { collection, getDocs } from 'firebase/firestore';
-import type { Firestore as AdminFirestore } from 'firebase-admin/firestore';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 
 /**
@@ -82,7 +81,7 @@ export async function queryWithIndexFallback<T>(
       logger.info('Index still building, falling back to in-memory filtering', { collectionName });
       
       // Fallback: fetch all documents
-      let allDocs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
+      const allDocs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
       
       if (isServerSide()) {
         const adminDb = getFirestoreAdmin();

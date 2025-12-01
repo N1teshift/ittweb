@@ -21,8 +21,6 @@ import { getFirestoreAdmin, isServerSide } from './admin';
 import { getDocument } from './firestoreHelpers';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { createTimestampFactoryAsync, type TimestampFactory } from '@/features/infrastructure/utils/timestampUtils';
-import type { Firestore as AdminFirestore } from 'firebase-admin/firestore';
-import type { Firestore as ClientFirestore } from 'firebase/firestore';
 
 /**
  * Configuration for creating a Firestore CRUD service

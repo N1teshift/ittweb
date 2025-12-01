@@ -9,6 +9,8 @@ Most POST/PUT/DELETE endpoints require authentication via NextAuth session. Incl
 ## API Namespaces
 
 - [Games](./games.md) - Game statistics and management
+  - [CRUD Operations](./games/crud-operations.md)
+  - [Replay Operations](./games/replay-operations.md)
 - [Players](./players.md) - Player statistics and profiles
 - [Archives](./archives.md) - Archive entry management
 - [Scheduled Games](./scheduled-games.md) - Scheduled game management

@@ -1,374 +1,16 @@
 # Security Best Practices
 
-Security guidelines and patterns.
+Security guidelines and patterns for ITT Web.
 
-## Authentication
+## Overview
 
-### Server-Side Checks
+This document provides an overview of security best practices. For detailed information on specific topics, see the focused security documentation:
 
-Always verify authentication server-side:
-
-```typescript
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/features/infrastructure/auth';
-
-export default async function handler(req, res) {
-  const session = await getServerSession(req, res, authOptions);
-  
-  if (!session) {
-    return res.status(401).json({ error: 'Authentication required' });
-  }
-  
-  // Proceed with authenticated operation
-}
-```
-
-### Using createApiHandler (Recommended)
-
-```typescript
-import { createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
-
-export default createPostHandler(
-  async (req, res, context) => {
-    // Session is guaranteed to be available when requireAuth: true
-    const session = requireSession(context);
-    
-    // Use session data
-    const userId = session.discordId;
-    
-    // Handler logic
-  },
-  {
-    requireAuth: true, // Automatically checks authentication
-    logRequests: true,
-  }
-);
-```
-
-**How it works:**
-- `requireAuth: true` automatically checks authentication
-- Returns `401 Unauthorized` if not authenticated
-- Session is available via `requireSession(context)` helper
-- No need to manually check authentication
-
-**Admin Access:**
-```typescript
-export default createPostHandler(
-  async (req, res, context) => {
-    const session = requireSession(context);
-    // User is guaranteed to be admin when requireAdmin: true
-    // ... admin-only operations
-  },
-  {
-    requireAuth: true,
-    requireAdmin: true, // Also checks admin role
-    // Returns 403 Forbidden if not admin
-  }
-);
-```
-
-## Authorization
-
-### Role-Based Access Control
-
-Check user roles for admin operations:
-
-```typescript
-import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
-import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
-
-const session = await getServerSession(req, res, authOptions);
-if (!session) {
-  return res.status(401).json({ error: 'Authentication required' });
-}
-
-const userData = await getUserDataByDiscordId(session.discordId || '');
-if (!isAdmin(userData?.role)) {
-  return res.status(403).json({ error: 'Admin access required' });
-}
-```
-
-### Resource Ownership
-
-Verify users can only modify their own resources:
-
-```typescript
-const resource = await getResource(id);
-
-if (resource.createdByDiscordId !== session.discordId && !isAdmin(userData?.role)) {
-  return res.status(403).json({ error: 'Access denied' });
-}
-```
-
-## Input Validation
-
-**📘 See [Zod Validation Migration Guide](./operations/zod-validation-migration.md) for comprehensive validation documentation.**
-
-### Type Validation with Zod
-
-Use Zod schemas for type-safe runtime validation:
-
-```typescript
-import { z } from 'zod';
-import { zodValidator } from '@/features/infrastructure/api/zodValidation';
-
-// Define schema in src/features/infrastructure/api/schemas.ts
-export const CreateGameSchema = z.object({
-  category: z.string().min(1, 'category is required'),
-  teamSize: z.number().int().positive('teamSize must be a positive integer'),
-});
-
-export default createApiHandler(
-  async (req) => {
-    // Body is already validated by validateBody option
-    const gameData = req.body as z.infer<typeof CreateGameSchema>;
-    // Use validated data
-  },
-  {
-    validateBody: zodValidator(CreateGameSchema),
-  }
-);
-```
-
-**Benefits:**
-- Automatic TypeScript type inference
-- Consistent validation across all routes
-- Better error messages
-- Centralized schema definitions
-
-### Sanitization
-
-Sanitize user input before storing:
-
-```typescript
-import DOMPurify from 'isomorphic-dompurify';
-
-function sanitizeHtml(html: string): string {
-  return DOMPurify.sanitize(html);
-}
-
-// For text fields
-function sanitizeText(text: string): string {
-  return text.trim().slice(0, 1000); // Limit length
-}
-```
-
-### Firestore Rules
-
-Always set up Firestore security rules:
-
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // Public read, authenticated write
-    match /games/{gameId} {
-      allow read: if true;
-      allow write: if request.auth != null;
-      
-      match /players/{playerId} {
-        allow read: if true;
-        allow write: if request.auth != null;
-      }
-    }
-    
-    // Server-only writes
-    match /playerStats/{playerId} {
-      allow read: if true;
-      allow write: if false; // Only server can write
-    }
-    
-    // User-specific data
-    match /userData/{userId} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null && 
-                      request.auth.uid == userId;
-    }
-  }
-}
-```
-
-## XSS Prevention
-
-### React Escaping
-
-React automatically escapes content:
-
-```typescript
-// Safe - React escapes HTML
-<div>{userInput}</div>
-
-// Dangerous - only use with sanitized content
-<div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
-```
-
-### Content Security Policy
-
-CSP is configured in `next.config.ts`:
-
-```typescript
-headers: [
-  {
-    source: '/(.*)',
-    headers: [
-      {
-        key: 'Content-Security-Policy',
-        value: "default-src 'self'; script-src 'self' 'unsafe-inline'; ..."
-      }
-    ]
-  }
-]
-```
-
-## SQL Injection Prevention
-
-### Firestore Parameterized Queries
-
-Firestore queries are parameterized by default:
-
-```typescript
-// Safe - Firestore handles escaping
-db.collection('games')
-  .where('category', '==', userInput)
-  .get();
-
-// No raw SQL queries - Firestore is NoSQL
-```
-
-## CSRF Protection
-
-### Next.js Built-in Protection
-
-Next.js provides CSRF protection for API routes. Ensure:
-
-- API routes use proper HTTP methods
-- State-changing operations use POST/PUT/DELETE
-- GET requests are idempotent
-
-## Secrets Management
-
-### Environment Variables
-
-Never commit secrets to repository:
-
-```bash
-# .env.local (in .gitignore)
-NEXTAUTH_SECRET=your-secret
-FIREBASE_SERVICE_ACCOUNT_KEY=...
-DISCORD_CLIENT_SECRET=...
-```
-
-### Public vs Private
-
-- `NEXT_PUBLIC_*` - Exposed to browser (Firebase client config)
-- No prefix - Server-only (secrets, API keys)
-
-## Error Handling
-
-**See [Error Handling Guide](./ERROR_HANDLING.md) for complete error handling patterns and best practices.**
-
-### Don't Expose Sensitive Info
-
-```typescript
-// Production
-const errorMessage = process.env.NODE_ENV === 'production'
-  ? 'Internal server error'
-  : err.message;
-
-return res.status(500).json({ error: errorMessage });
-```
-
-### Logging
-
-Log detailed errors server-side only:
-
-```typescript
-logError(error, 'Operation failed', {
-  component: 'myComponent',
-  operation: 'myOperation',
-  userId: session?.discordId, // Log for debugging
-  // Don't return sensitive data to client
-});
-```
-
-## File Uploads
-
-### Validate File Types
-
-```typescript
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'application/octet-stream'];
-const MAX_SIZE = 10 * 1024 * 1024; // 10MB
-
-if (!ALLOWED_TYPES.includes(file.type)) {
-  throw new Error('Invalid file type');
-}
-
-if (file.size > MAX_SIZE) {
-  throw new Error('File too large');
-}
-```
-
-### Scan Uploads
-
-Consider scanning uploaded files for malware (production).
-
-## Rate Limiting
-
-### API Rate Limiting
-
-Implement rate limiting for API routes:
-
-```typescript
-// Simple in-memory rate limiting
-const rateLimit = new Map();
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const window = 60000; // 1 minute
-  const maxRequests = 100;
-  
-  const requests = rateLimit.get(ip) || [];
-  const recent = requests.filter(time => now - time < window);
-  
-  if (recent.length >= maxRequests) {
-    return false;
-  }
-  
-  recent.push(now);
-  rateLimit.set(ip, recent);
-  return true;
-}
-```
-
-## Security Headers
-
-### Next.js Headers
-
-Configure security headers in `next.config.ts`:
-
-```typescript
-async headers() {
-  return [
-    {
-      source: '/(.*)',
-      headers: [
-        {
-          key: 'X-Content-Type-Options',
-          value: 'nosniff',
-        },
-        {
-          key: 'X-Frame-Options',
-          value: 'DENY',
-        },
-        {
-          key: 'X-XSS-Protection',
-          value: '1; mode=block',
-        },
-      ],
-    },
-  ];
-}
-```
+- **[Authentication & Authorization](./security/authentication-authorization.md)** - Authentication patterns, role-based access control
+- **[Input Validation](./security/input-validation.md)** - Zod validation, sanitization, Firestore rules
+- **[Web Security](./security/web-security.md)** - XSS prevention, CSRF protection, security headers
+- **[Secrets Management](./security/secrets-management.md)** - Environment variables, file uploads, rate limiting
+- **[Automated Security Scanning](./security/automated-scanning.md)** - Dependency scanning, secrets detection
 
 ## Security Review Guidelines
 
@@ -393,97 +35,46 @@ Regular security maintenance should include:
 - Keep dependencies updated (automated via security scanning workflow)
 - Review security logs and error tracking (Sentry, Firebase logs)
 
-## Automated Security Scanning
+## Quick Reference
 
-ITT Web includes automated security scanning via GitHub Actions to detect vulnerabilities and secrets.
-
-### Dependency Vulnerability Scanning
-
-**Workflow**: `.github/workflows/security.yml` (dependency-scan job)
-
-**What it does**:
-- Runs `npm audit` on every push and pull request
-- Fails build on critical vulnerabilities
-- Creates GitHub issues for high vulnerabilities (weekly schedule)
-- Uploads audit results as artifacts
-
-**How to use**:
-1. View results in GitHub Actions tab
-2. Download `audit-results.json` artifact for details
-3. Fix vulnerabilities: `npm audit fix` (if safe)
-4. Update dependencies: `npm update` or `npm install package@latest`
-
-**Configuration**:
-- Audit level: `moderate` (reports moderate, high, and critical)
-- Critical vulnerabilities: Fail build immediately
-- High vulnerabilities: Create GitHub issue (weekly)
-
-### Secrets Scanning
-
-**Workflow**: `.github/workflows/security.yml` (secrets-scan job)
-
-**What it does**:
-- Scans codebase for accidentally committed secrets
-- Uses Gitleaks for detection
-- Scans full git history
-- Uploads scan results as artifacts
-
-**What it scans for**:
-- API keys and tokens
-- Passwords and credentials
-- Firebase service account keys
-- NextAuth secrets
-- Discord OAuth secrets
-- Other common secret patterns
-
-**Configuration**: `.gitleaks.toml`
-
-**Allowlist**:
-- `.env.example` files
-- Documentation files
-- Test files and mocks
-- Workflow files (may contain example secrets)
-
-**How to use**:
-1. View results in GitHub Actions tab
-2. Download `gitleaks-results.json` artifact for details
-3. If false positive: Add to allowlist in `.gitleaks.toml`
-4. If real secret: Rotate the secret immediately
-
-### Manual Security Checks
-
-**Run locally**:
-```bash
-# Dependency audit
-npm audit
-
-# Fix vulnerabilities (if safe)
-npm audit fix
-
-# Secrets scan (requires Gitleaks)
-gitleaks detect --source . --verbose
+### Authentication
+```typescript
+// Using createApiHandler (recommended)
+export default createPostHandler(
+  async (req, res, context) => {
+    const session = requireSession(context);
+    // Session guaranteed when requireAuth: true
+  },
+  { requireAuth: true }
+);
 ```
 
-### Responding to Security Issues
+### Input Validation
+```typescript
+import { zodValidator } from '@/features/infrastructure/api/zodValidation';
+import { CreateGameSchema } from '@/features/infrastructure/api/schemas';
 
-**If vulnerability found**:
-1. Review the vulnerability details
-2. Check if fix is available: `npm audit fix`
-3. Update dependency if needed
-4. Test thoroughly after update
-5. Re-run audit to verify fix
+export default createApiHandler(
+  async (req) => {
+    const data = req.body as z.infer<typeof CreateGameSchema>;
+  },
+  { validateBody: zodValidator(CreateGameSchema) }
+);
+```
 
-**If secret found**:
-1. **Immediately rotate the secret**
-2. Remove secret from git history (if possible)
-3. Add to `.gitleaks.toml` allowlist if false positive
-4. Review access logs for compromised secret
-5. Update documentation if secret format changed
+### Error Handling
+```typescript
+// Errors automatically sanitized in production
+logError(error, 'Operation failed', {
+  component: 'MyComponent',
+  operation: 'myOperation',
+});
+```
 
 ## Related Documentation
 
 - [Environment Setup](./getting-started/setup.md)
 - [Architecture Overview](./development/architecture.md)
 - [Development Guide](./development/development-guide.md)
+- [Error Handling Guide](./ERROR_HANDLING.md)
 - [CI/CD Pipeline](./operations/ci-cd.md)
-

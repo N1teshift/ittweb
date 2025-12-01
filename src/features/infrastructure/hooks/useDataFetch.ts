@@ -139,7 +139,7 @@ export function createDataFetchHook<TData, TParams = void>(
 ) {
   const {
     fetchFn,
-    useSWR = false,
+    useSWR: useSwrMode = false,
     swrKey,
     swrConfig = {},
     enabled = true,
@@ -148,78 +148,77 @@ export function createDataFetchHook<TData, TParams = void>(
     componentName = 'useDataFetch',
     operationName = 'fetchData',
     handle404 = false,
-    cacheBust = false,
     initialData = null,
   } = config;
 
   return function useDataFetch(params: TParams): DataFetchResult<TData> {
     const isEnabled = typeof enabled === 'function' ? enabled(params) : enabled;
 
-    // SWR mode
-    if (useSWR) {
-      const key = typeof swrKey === 'function' 
-        ? (isEnabled ? swrKey(params) : null)
-        : (isEnabled ? swrKey : null);
+    // Always call all hooks unconditionally to satisfy React Hooks rules
+    // SWR key - null when not in SWR mode or not enabled
+    const swrKeyValue = useSwrMode
+      ? (typeof swrKey === 'function' 
+          ? (isEnabled ? swrKey(params) : null)
+          : (isEnabled ? swrKey : null))
+      : null;
 
-      const { data, error, isLoading, mutate } = useSWR<TData, Error>(
-        key,
-        async () => {
-          try {
-            const response = await fetchFn(params);
-            
-            // Handle standard API response format
-            if (response && typeof response === 'object' && 'success' in response) {
-              const apiResponse = response as ApiResponse<TData>;
-              if (!apiResponse.success) {
-                throw new Error(apiResponse.error || 'API request failed');
+    // SWR hook - always called, but disabled when not in SWR mode
+    const swrResult = useSWR<TData, Error>(
+      swrKeyValue,
+      useSwrMode
+        ? async () => {
+            try {
+              const response = await fetchFn(params);
+              
+              // Handle standard API response format
+              if (response && typeof response === 'object' && 'success' in response) {
+                const apiResponse = response as ApiResponse<TData>;
+                if (!apiResponse.success) {
+                  throw new Error(apiResponse.error || 'API request failed');
+                }
+                if (apiResponse.data === undefined) {
+                  throw new Error('API response missing data');
+                }
+                return transform ? transform(apiResponse.data) : apiResponse.data;
               }
-              if (apiResponse.data === undefined) {
-                throw new Error('API response missing data');
-              }
-              return transform ? transform(apiResponse.data) : apiResponse.data;
+              
+              // Assume response is already the data
+              return transform ? transform(response as TData) : (response as TData);
+            } catch (err) {
+              const error = err instanceof Error ? err : new Error(String(err));
+              logError(error, `Failed to fetch data`, {
+                component: componentName,
+                operation: operationName,
+                params: JSON.stringify(params),
+              });
+              throw error;
             }
-            
-            // Assume response is already the data
-            return transform ? transform(response as TData) : (response as TData);
-          } catch (err) {
-            const error = err instanceof Error ? err : new Error(String(err));
-            logError(error, `Failed to fetch data`, {
-              component: componentName,
-              operation: operationName,
-              params: JSON.stringify(params),
-            });
-            throw error;
           }
-        },
-        {
-          ...swrConfig,
-          fallbackData: initialData ?? undefined,
-        }
-      );
+        : null, // Disable SWR fetcher when not in SWR mode
+      useSwrMode
+        ? {
+            ...swrConfig,
+            fallbackData: initialData ?? undefined,
+          }
+        : { fallbackData: initialData ?? undefined }
+    );
 
-      return {
-        data: data ?? initialData ?? null,
-        loading: isLoading,
-        isLoading,
-        error: error as Error | null,
-        refetch: () => mutate(),
-      };
-    }
-
-    // Non-SWR mode (useState/useEffect)
-    const [data, setData] = useState<TData | null>(initialData ?? null);
-    const [loading, setLoading] = useState<boolean>(isEnabled);
-    const [error, setError] = useState<Error | null>(null);
+    // Non-SWR state hooks - always called, but only used when not in SWR mode
+    const [nonSwrData, setNonSwrData] = useState<TData | null>(initialData ?? null);
+    const [nonSwrLoading, setNonSwrLoading] = useState<boolean>(isEnabled && !useSwrMode);
+    const [nonSwrError, setNonSwrError] = useState<Error | null>(null);
 
     const fetchData = useCallback(async () => {
-      if (!isEnabled) {
-        setLoading(false);
+      if (!isEnabled || useSwrMode) {
+        if (!useSwrMode) {
+          setNonSwrLoading(false);
+        }
         return;
       }
 
       try {
-        setLoading(true);
-        setError(null);
+        setNonSwrLoading(true);
+        setNonSwrError(null);
 
         const response = await fetchFn(params);
         
@@ -229,8 +228,8 @@ export function createDataFetchHook<TData, TParams = void>(
           if (!apiResponse.success) {
             // Handle 404 gracefully if enabled
             if (handle404 && apiResponse.error?.includes('404')) {
-              setData(null);
-              setLoading(false);
+              setNonSwrData(null);
+              setNonSwrLoading(false);
               return;
             }
             throw new Error(apiResponse.error || 'API request failed');
@@ -239,19 +238,19 @@ export function createDataFetchHook<TData, TParams = void>(
             throw new Error('API response missing data');
           }
           const finalData = transform ? transform(apiResponse.data) : apiResponse.data;
-          setData(finalData);
+          setNonSwrData(finalData);
         } else {
           // Assume response is already the data
           const finalData = transform ? transform(response as TData) : (response as TData);
-          setData(finalData);
+          setNonSwrData(finalData);
         }
       } catch (err) {
         const error = err instanceof Error ? err : new Error(String(err));
         
         // Handle 404 gracefully if enabled
         if (handle404 && (error.message.includes('404') || error.message.includes('Not Found'))) {
-          setData(null);
-          setLoading(false);
+          setNonSwrData(null);
+          setNonSwrLoading(false);
           return;
         }
         
@@ -260,22 +259,35 @@ export function createDataFetchHook<TData, TParams = void>(
           operation: operationName,
           params: JSON.stringify(params),
         });
-        setError(error);
+        setNonSwrError(error);
       } finally {
-        setLoading(false);
+        setNonSwrLoading(false);
       }
-    }, [isEnabled, params, fetchFn, transform, handle404, componentName, operationName]);
+    }, [isEnabled, useSwrMode, params, fetchFn, transform, handle404, componentName, operationName]);
 
     useEffect(() => {
-      fetchData();
+      if (!useSwrMode) {
+        fetchData();
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fetchData, ...dependencies]);
+    }, [useSwrMode, fetchData, ...dependencies]);
+
+    // Return appropriate result based on mode
+    if (useSwrMode) {
+      return {
+        data: swrResult.data ?? initialData ?? null,
+        loading: swrResult.isLoading ?? false,
+        isLoading: swrResult.isLoading ?? false,
+        error: swrResult.error as Error | null,
+        refetch: () => swrResult.mutate(),
+      };
+    }
 
     return {
-      data,
-      loading,
-      isLoading: loading,
-      error,
+      data: nonSwrData,
+      loading: nonSwrLoading,
+      isLoading: nonSwrLoading,
+      error: nonSwrError,
       refetch: fetchData,
     };
   };

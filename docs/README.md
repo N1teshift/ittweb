@@ -11,8 +11,16 @@ Quick navigation to ITT Web documentation.
 ## Development
 
 - **[Development Guide](./development/development-guide.md)** - How to add features, API routes, follow conventions
+  - [Adding Features](./development/adding-features.md)
+  - [Adding API Routes](./development/adding-api-routes.md)
+  - [Code Conventions](./development/code-conventions.md)
 - **[Architecture](./development/architecture.md)** - System architecture and design patterns
 - **[Code Patterns](./development/code-patterns.md)** - Common code patterns and recipes
+  - [CRUD Pattern](./development/patterns/crud-pattern.md)
+  - [Form Handling](./development/patterns/form-handling-pattern.md)
+  - [Pagination](./development/patterns/pagination-pattern.md)
+  - [UI Patterns](./development/patterns/ui-patterns.md)
+  - [API Route Patterns](./development/patterns/api-route-patterns.md)
 - **[Component Library](./development/components.md)** - Shared UI components
 - **[API Client Usage](./development/api-client.md)** - Using APIs from client-side code
 - **[Contributing](./development/contributing.md)** - Development standards and contribution process
@@ -59,6 +67,11 @@ All 13 feature modules have README files in `src/features/modules/[module-name]/
 - **[Known Issues](./KNOWN_ISSUES.md)** - Technical debt and known issues
 - **[Performance](./PERFORMANCE.md)** - Performance optimization strategies
 - **[Security](./SECURITY.md)** - Security best practices
+  - [Authentication & Authorization](./security/authentication-authorization.md)
+  - [Input Validation](./security/input-validation.md)
+  - [Web Security](./security/web-security.md)
+  - [Secrets Management](./security/secrets-management.md)
+  - [Automated Scanning](./security/automated-scanning.md)
 - **[Documentation Style](./DOCUMENTATION_STYLE.md)** - Documentation standards
 - **[Documentation Audit](./DOCUMENTATION_AUDIT.md)** - Audit of all documentation against style guide
 
