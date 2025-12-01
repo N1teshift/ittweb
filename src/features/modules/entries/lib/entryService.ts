@@ -31,9 +31,14 @@ const baseService = createFirestoreCrudService<Entry, CreateEntry, UpdateEntry>(
   componentName: 'entryService',
   transformDoc: transformEntryDoc,
   prepareForFirestore: prepareEntryDataForFirestore,
-  prepareUpdate: prepareEntryUpdateData,
+  prepareUpdate: (updates: UpdateEntry, timestampFactory) => {
+    return prepareEntryUpdateData(updates as Record<string, unknown>, timestampFactory);
+  },
   prepareDelete: prepareDeleteData,
-  transformDocs: transformEntryDocs,
+  transformDocs: (docs, filters?: unknown) => {
+    const contentType = filters as 'post' | 'memory' | undefined;
+    return transformEntryDocs(docs, contentType);
+  },
   sortEntities: sortEntriesByDate,
 });
 

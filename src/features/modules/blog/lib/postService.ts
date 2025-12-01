@@ -30,7 +30,10 @@ const baseService = createFirestoreCrudService<Post, CreatePost, Partial<CreateP
   transformDoc: transformPostDoc,
   prepareForFirestore: preparePostDataForFirestore,
   prepareUpdate: preparePostUpdateData,
-  transformDocs: transformPostDocs,
+  transformDocs: (docs, filters?: unknown) => {
+    const includeUnpublished = filters as boolean | undefined;
+    return transformPostDocs(docs, includeUnpublished ?? false);
+  },
   sortEntities: sortPostsByDate,
 });
 

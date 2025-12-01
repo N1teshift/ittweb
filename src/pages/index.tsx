@@ -115,7 +115,7 @@ export default function Home({}: HomeProps) {
       logError(err as Error, 'Failed to schedule game', {
         component: 'HomePage',
         operation: 'handleScheduleSubmit',
-        gameData: { gameState: gameData.gameState, addCreatorToParticipants },
+        gameData: { ...gameData, gameState: 'scheduled', addCreatorToParticipants },
       });
       throw err;
     } finally {
