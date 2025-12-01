@@ -75,12 +75,6 @@
 
 ## 🟢 Low Priority / Documentation
 
-### Remove Outdated TODO Comments
-**Locations**:
-- `src/features/modules/games/lib/eloCalculator.ts` (line 9) - ELO calculation is already implemented
-- `src/features/modules/shared/utils/index.ts` (line 3) - File already has utility functions
-
-**Action**: Remove or update these outdated TODO comments.
 
 ### Documentation: Ability Field Identifiers
 **Location**: `docs/systems/data-pipeline/guides/ability-field-identifiers.md` (line 150)  
@@ -103,32 +97,21 @@
 
 **Action**: Update API documentation to reflect unified games routes.
 
-### Remove Unused Components
-**Location**: `docs/KNOWN_ISSUES.md`  
-**Issue**: Input components (`Input`, `NumberInput`, `SelectInput`) are only used in 2 files and should be removed.  
-**Status**: ⚪ Not Started
+### Remove Unused Components ✅ COMPLETED
+**Status**: ✅ Completed - Input components (`Input`, `NumberInput`, `SelectInput`) have been removed from the codebase as they were underutilized.
 
-**Details**:
-- Components are documented but rarely used
-- Only 2 files use these components
-- Should be removed from codebase entirely
-
-### Remove Empty Folder
-**Location**: `docs/KNOWN_ISSUES.md`  
-**Issue**: Empty `src/pages/api/scheduled-games/[id]/` folder (functionality moved to `/api/games/[id]/*`).  
-**Status**: ⚪ Not Started
-
-**Action**: Remove redundant empty folder.
+### Remove Empty Folder ✅ COMPLETED
+**Status**: ✅ Completed - Empty `src/pages/api/scheduled-games/[id]/` folder has been removed as functionality was moved to `/api/games/[id]/*`.
 
 ---
 
 ## 📊 Statistics
 
-- **Total TODOs**: 12
+- **Total TODOs**: 9
 - **High Priority**: 1
 - **Medium Priority**: 4
-- **Low Priority**: 2
-- **Documentation/Cleanup**: 5
+- **Low Priority**: 1
+- **Documentation/Cleanup**: 3
 
 ---
 

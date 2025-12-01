@@ -1,6 +1,5 @@
 /**
  * Shared utilities for game statistics features
- * TODO: Add utility functions as needed
  */
 
 /**

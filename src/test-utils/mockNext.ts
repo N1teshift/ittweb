@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-export interface MockResponse<T = any> {
+export interface MockResponse<T = unknown> {
   res: NextApiResponse<T>;
   json: jest.Mock;
   status: jest.Mock;
@@ -18,7 +18,7 @@ export const createMockRequest = (partial: Partial<NextApiRequest> = {}): NextAp
   } as NextApiRequest;
 };
 
-export const createMockResponse = <T = any>(): MockResponse<T> => {
+export const createMockResponse = <T = unknown>(): MockResponse<T> => {
   const json = jest.fn();
   const status = jest.fn().mockReturnThis();
   const setHeader = jest.fn();

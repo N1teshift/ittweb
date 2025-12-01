@@ -4,9 +4,8 @@ const logger = createComponentLogger('eloCalculator');
 
 /**
  * ELO Calculator
- * 
+
  * Handles ELO rating calculations
- * TODO: Implement ELO calculation logic
  */
 
 /**

@@ -83,18 +83,13 @@ This document tracks known issues, technical debt, and migration status in the c
 - ✅ All functionality moved to `@/features/infrastructure`
 - ✅ All imports updated
 
-### Component Library Usage
+### Component Library Usage ✅ RESOLVED
 **Component Usage Statistics**:
 - `Button`: Used in 13 files
 - `Card`: Used in 31 files (most popular)
-- `Input/NumberInput/SelectInput`: Used in 2 files (underutilized)
 - `LoadingOverlay/LoadingScreen`: Used in 3 files
 
-**Note**: Input components (`Input`, `NumberInput`, `SelectInput`) are documented but rarely used (only 2 files).
-
-**Planned Action**: Remove Input components entirely from codebase (not just documentation) as they are not being used.
-
-**Related**: See TODO `remove-unused-input-components`
+**Status**: ✅ Input components (`Input`, `NumberInput`, `SelectInput`) have been removed from codebase as they were underutilized.
 
 ---
 
@@ -104,10 +99,12 @@ This document tracks known issues, technical debt, and migration status in the c
 **Outstanding Items**:
 - API docs may reference redundant `scheduled-games/[id]/*` routes (functionality moved to `/api/games/[id]/*`) - needs verification
 
-### Code Quality
-**Outstanding Items**:
-- Remove empty `scheduled-games/[id]/` folder (redundant, functionality moved to `/api/games/[id]/*`)
-- Remove unused Input components (`Input`, `NumberInput`, `SelectInput`) - only used in 2 files
+### Code Quality ✅ RESOLVED
+**Outstanding Items**: None remaining
+
+**Completed Items**:
+- ✅ Removed empty `scheduled-games/[id]/` folder (redundant, functionality moved to `/api/games/[id]/*`)
+- ✅ Removed unused Input components (`Input`, `NumberInput`, `SelectInput`) - only used in 2 files
 
 **Note**: The following items have been resolved:
 - ✅ API response format standardization - Complete (all routes use `createApiHandler`)

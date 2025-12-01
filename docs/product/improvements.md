@@ -66,7 +66,7 @@ This document summarizes all the improvements applied to the ittweb project base
   - `LoadingOverlay.tsx` - Full-screen loading overlay
   - `LoadingScreen.tsx` - Loading screen component
   - **Location:** `src/features/infrastructure/components/ui/`
-  - **Note:** Input components (Input, NumberInput, SelectInput) were removed as they were unused
+  - ✅ **Completed:** Input components (Input, NumberInput, SelectInput) were removed as they were unused
 
 ### 7. Testing Infrastructure ✅
 - Added Jest configuration:
