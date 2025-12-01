@@ -5,7 +5,7 @@
  */
 
 import { createDataFetchHook, type DataFetchConfig, type DataFetchResult } from './useDataFetch';
-import type { ApiResponse } from './useDataFetch';
+import type { ApiResponse } from '@/features/infrastructure/api';
 
 /**
  * Create a data fetching hook from a URL pattern

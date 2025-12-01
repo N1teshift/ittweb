@@ -37,15 +37,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import useSWR, { type SWRConfiguration, type Key } from 'swr';
 import { logError } from '@/features/infrastructure/logging';
-
-/**
- * Standard API response format
- */
-export interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
+import type { ApiResponse } from '@/features/infrastructure/api';
 
 /**
  * Configuration for data fetching hook
