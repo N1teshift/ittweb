@@ -6,8 +6,8 @@
 The Game Stats domain uses Firestore with one top-level collection per aggregate plus subcollections for per-game participants. Every write path must pass through typed services so indexes, timestamps, and derived values stay consistent.
 
 ## Collections
-### games
-`	ypescript
+### `games`
+```typescript
 interface GameDoc {
   id: string;          // Firestore ID
   gameId: number;      // External unique identifier
@@ -23,11 +23,11 @@ interface GameDoc {
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }
-`
-**Indexes**: gameId (unique), datetime desc, category+datetime, erified+datetime.
+```
+**Indexes:** `gameId` (unique), `datetime desc`, `category+datetime`, `verified+datetime`.
 
-### games/{gameId}/players
-`	ypescript
+### `games/{gameId}/players`
+```typescript
 interface GamePlayerDoc {
   name: string;        // normalized + original casing stored separately
   pid: number;         // 0-11 slot
@@ -44,12 +44,11 @@ interface GamePlayerDoc {
   damageTaken?: number;
   createdAt: Timestamp;
 }
-`
-**Indexes**: gameId+name, 
-ame+datetime (via parent), lag+category.
+```
+**Indexes:** `gameId+name`, `name+datetime` (via parent), `flag+category`.
 
-### playerStats
-`	ypescript
+### `playerStats`
+```typescript
 interface PlayerStatsDoc {
   name: string;                // normalized key
   displayName: string;
@@ -69,13 +68,12 @@ interface PlayerStatsDoc {
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }
-`
-**Indexes**: 
-ame, categories.{category}.score, lastPlayed.
+```
+**Indexes:** `name`, `categories.{category}.score`, `lastPlayed`.
 
-### eloHistory
+### `eloHistory`
 Optional but recommended for analytics.
-`	ypescript
+```typescript
 interface EloHistoryDoc {
   playerName: string;
   category: string;
@@ -86,11 +84,11 @@ interface EloHistoryDoc {
   datetime: Timestamp;
   createdAt: Timestamp;
 }
-`
-**Index**: playerName+category+datetime.
+```
+**Index:** `playerName+category+datetime`.
 
-### classStats
-`	ypescript
+### `classStats`
+```typescript
 interface ClassStatsDoc {
   id: string;          // class name
   category?: string;
@@ -107,10 +105,10 @@ interface ClassStatsDoc {
   }>;
   updatedAt: Timestamp;
 }
-`
+```
 
 ## Security Rules Snapshot
-`javascript
+```javascript
 match /games/{gameId} {
   allow read: if true;
   allow write: if request.auth != null;
@@ -131,10 +129,10 @@ match /classStats/{classId} {
   allow read: if true;
   allow write: if false;
 }
-`
+```
 Keep server-side updates behind background functions or admin APIs so public clients never mutate aggregate collections directly.
 
 ## Operational Notes
-- Always set createdAt/updatedAt via server timestamps.
+- Always set `createdAt`/`updatedAt` via server timestamps.
 - Name normalization happens before writes; store both normalized and original casing where needed.
-- When importing historical data, replay ELO through eloCalculator.updateEloScores to keep history deterministic.
+- When importing historical data, replay ELO through `eloCalculator.updateEloScores` to keep history deterministic.

@@ -53,182 +53,23 @@ The logging system automatically categorizes errors:
 
 ## Service Layer Patterns
 
-### Pattern 1: Log and Throw
-
-Use when the error should propagate up:
-
-```typescript
-import { logAndThrow } from '@/features/infrastructure/logging';
-
-export async function myOperation() {
-  try {
-    // operation
-    return result;
-  } catch (error) {
-    logAndThrow(error as Error, 'Operation failed', {
-      component: 'myService',
-      operation: 'myOperation',
-    });
-  }
-}
-```
-
-### Pattern 2: Log and Return Null/Empty
-
-Use when you can gracefully handle the error:
-
-```typescript
-import { logError } from '@/features/infrastructure/logging';
-
-export async function myOperation(): Promise<MyData | null> {
-  try {
-    // operation
-    return data;
-  } catch (error) {
-    logError(error as Error, 'Operation failed', {
-      component: 'myService',
-      operation: 'myOperation',
-    });
-    return null;
-  }
-}
-```
-
-### Pattern 3: Log and Use Fallback
-
-Use when you have a fallback strategy:
-
-```typescript
-import { logError } from '@/features/infrastructure/logging';
-
-export async function myOperation(): Promise<MyData> {
-  try {
-    // operation
-    return data;
-  } catch (error) {
-    logError(error as Error, 'Operation failed, using fallback', {
-      component: 'myService',
-      operation: 'myOperation',
-    });
-    return getFallbackData();
-  }
-}
-```
+See [Service Layer Patterns](./error-handling/service-patterns.md) for detailed patterns:
+- Log and Throw
+- Log and Return Null/Empty
+- Log and Use Fallback
 
 ## API Layer Patterns
 
-### Using createApiHandler
-
-All API routes should use `createApiHandler` for consistent error handling:
-
-```typescript
-import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-
-export default createApiHandler(async (req, res) => {
-  // Your handler code
-  // Errors are automatically caught, logged, and returned with appropriate status codes
-  return { data: result };
-});
-```
-
-### Custom Error Status Codes
-
-```typescript
-import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-
-export default createApiHandler(async (req, res) => {
-  const item = await getItem(id);
-  
-  if (!item) {
-    const error = new Error('Item not found') as Error & { statusCode?: number };
-    error.statusCode = 404;
-    throw error;
-  }
-  
-  return { data: item };
-});
-```
-
-### Production Error Messages
-
-```typescript
-// Errors are automatically sanitized in production
-// Development: Full error message
-// Production: Generic "Internal server error" for 500s
-```
+See [API Error Patterns](./error-handling/api-patterns.md) for detailed patterns:
+- Using createApiHandler
+- Custom Error Status Codes
+- Production Error Messages
 
 ## Component Layer Patterns
 
-### Basic Error Handling
-
-```typescript
-import { useState } from 'react';
-import { logError } from '@/features/infrastructure/logging';
-
-function MyComponent() {
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (data: FormData) => {
-    try {
-      setError(null);
-      setLoading(true);
-      
-      const response = await fetch('/api/my-endpoint', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Request failed');
-      }
-
-      const result = await response.json();
-      // Handle success
-    } catch (err) {
-      const error = err as Error;
-      logError(error, 'Failed to submit form', {
-        component: 'MyComponent',
-        operation: 'handleSubmit',
-      });
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div>
-      {error && <div className="text-red-400">{error}</div>}
-      {/* Form */}
-    </div>
-  );
-}
-```
-
-### Component Logger
-
-For components with multiple operations:
-
-```typescript
-import { createComponentLogger } from '@/features/infrastructure/logging';
-
-const logger = createComponentLogger('MyComponent');
-
-function MyComponent() {
-  const handleAction = async () => {
-    try {
-      logger.info('Action started', { userId: user.id });
-      // operation
-      logger.info('Action completed');
-    } catch (error) {
-      logger.error('Action failed', error as Error, { userId: user.id });
-    }
-  };
-}
-```
+See [Component Error Patterns](./error-handling/component-patterns.md) for detailed patterns:
+- Basic Error Handling
+- Component Logger
 
 ## Error Tracking
 
