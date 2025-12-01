@@ -5,7 +5,7 @@
  * These are reference implementations - actual hooks should be in their respective modules.
  */
 
-import { createUrlDataFetchHook, createDataFetchHook, createSwrFetcher } from './useDataFetch';
+import { createDataFetchHook, createSwrFetcher, createUrlDataFetchHook } from './useDataFetch';
 import useSWR from 'swr';
 import type { GameWithPlayers } from '@/features/modules/games/types';
 import type { StandingsResponse, StandingsFilters } from '@/features/modules/standings/types';

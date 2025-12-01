@@ -4,7 +4,7 @@
  * Provides common patterns for creating data fetching hooks with URL-based fetching.
  */
 
-import { createDataFetchHook, type DataFetchConfig } from './useDataFetch';
+import { createDataFetchHook, type DataFetchConfig, type DataFetchResult } from './useDataFetch';
 import type { ApiResponse } from './useDataFetch';
 
 /**
@@ -44,7 +44,7 @@ export function createUrlDataFetchHook<TData, TParams = Record<string, unknown>>
      */
     fetchOptions?: RequestInit;
   } = {}
-): (params: TParams) => ReturnType<typeof createDataFetchHook<TData, TParams>> {
+): (params: TParams) => DataFetchResult<TData> {
   const {
     buildUrl,
     cacheBust = false,

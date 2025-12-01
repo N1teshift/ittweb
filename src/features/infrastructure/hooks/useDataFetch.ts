@@ -263,7 +263,7 @@ export function createDataFetchHook<TData, TParams = void>(
       } finally {
         setNonSwrLoading(false);
       }
-    }, [isEnabled, useSwrMode, params, fetchFn, transform, handle404, componentName, operationName]);
+    }, [isEnabled, params]);
 
     useEffect(() => {
       if (!useSwrMode) {
@@ -279,7 +279,9 @@ export function createDataFetchHook<TData, TParams = void>(
         loading: swrResult.isLoading ?? false,
         isLoading: swrResult.isLoading ?? false,
         error: swrResult.error as Error | null,
-        refetch: () => swrResult.mutate(),
+        refetch: () => {
+          void swrResult.mutate();
+        },
       };
     }
 
@@ -366,4 +368,7 @@ export function createSwrFetcher<TData>(
     return transform ? transform(apiResponse.data) : apiResponse.data;
   };
 }
+
+// Re-export helper function for convenience
+export { createUrlDataFetchHook } from './useDataFetch.helpers';
 
