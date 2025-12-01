@@ -17,15 +17,18 @@ ITT Web is deployed to **Vercel** (recommended) with automated CI/CD via GitHub 
 
 ### Staging
 
-- **Trigger**: Automatic on push to `main` branch
-- **URL**: `https://ittweb-staging.vercel.app` (or custom domain)
-- **Purpose**: Pre-production testing
+- **Trigger**: Automatic on push to `staging` branch
+- **URL**: `https://ittweb-git-staging-*.vercel.app` (Vercel auto-generated) or custom staging domain
+- **Purpose**: Pre-production testing in production-like environment
+- **Note**: Not connected to production custom domain
+- **Setup**: See [Staging Setup Guide](./staging-setup.md) for detailed instructions
 
 ### Production
 
-- **Trigger**: Manual or on release/tag creation
-- **URL**: `https://ittweb.vercel.app` (or custom domain)
+- **Trigger**: Automatic on push to `main` branch
+- **URL**: Your custom domain (e.g., `https://yourdomain.com`)
 - **Purpose**: Live production environment
+- **Note**: Connected to your custom domain
 
 ## Initial Setup
 
@@ -88,15 +91,24 @@ For automated deployment via GitHub Actions, add these secrets:
 
 ## Deployment Process
 
-### Automated Deployment (Recommended)
+### Recommended Workflow
 
-Deployment is automated via GitHub Actions:
+1. **Develop locally**: Test with `npm run dev`
+2. **Push to staging**: Push to `staging` branch → Auto-deploys to staging URL
+3. **Test staging**: Verify everything works in staging environment
+4. **Deploy to production**: Merge `staging` → `main` → Auto-deploys to production
 
-1. **Push to main**: Automatically deploys to staging
-2. **Create release/tag**: Automatically deploys to production
-3. **Manual trigger**: Use GitHub Actions UI to trigger deployment
+**See [Staging Setup Guide](./staging-setup.md) for complete setup instructions.**
 
-**Workflow**: `.github/workflows/deploy.yml`
+### Automated Deployment
+
+Deployment is automated via Vercel:
+
+1. **Push to `staging` branch**: Automatically deploys to staging environment
+2. **Push to `main` branch**: Automatically deploys to production environment
+3. **Push to any other branch**: Creates preview deployment (for testing)
+
+**Note**: Vercel automatically detects pushes and deploys accordingly. No GitHub Actions workflow required for basic deployments.
 
 ### Manual Deployment
 
@@ -256,6 +268,7 @@ Build settings are configured in `vercel.json`:
 
 ## Related Documentation
 
+- [Staging Setup Guide](./staging-setup.md) - Complete guide for setting up staging environment
 - [Environment Setup](../ENVIRONMENT_SETUP.md) - Environment variable configuration
 - [CI/CD Guide](./ci-cd.md) - CI/CD pipeline documentation
 - [Monitoring Guide](./monitoring.md) - Monitoring and observability

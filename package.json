@@ -17,7 +17,10 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "analyze:replay": "node scripts/analyze-replay.mjs"
+    "analyze:replay": "node scripts/analyze-replay.mjs",
+    "staging:push": "node scripts/staging-workflow.mjs push-staging",
+    "staging:deploy": "node scripts/staging-workflow.mjs deploy-prod",
+    "staging:status": "node scripts/staging-workflow.mjs status"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.16",
