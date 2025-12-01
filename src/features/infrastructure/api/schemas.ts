@@ -28,9 +28,7 @@ export const CreatePostSchema = z.object({
 export const CreateEntrySchema = z.object({
   title: z.string().min(1, 'title must be a non-empty string'),
   content: z.string().min(1, 'content must be a non-empty string'),
-  contentType: z.enum(['post', 'memory'], {
-    errorMap: () => ({ message: 'contentType must be either "post" or "memory"' }),
-  }),
+  contentType: z.enum(['post', 'memory']),
   date: z.string().datetime('date must be a valid ISO 8601 datetime string'),
   creatorName: z.string().optional(), // Auto-filled from session if not provided
   createdByDiscordId: z.string().nullable().optional(), // Auto-filled from session if not provided
@@ -61,9 +59,7 @@ export const RevalidateSchema = z.object({
 const GamePlayerSchema = z.object({
   name: z.string().min(1, 'name must be a non-empty string'),
   pid: z.number().int('pid must be an integer'),
-  flag: z.enum(['winner', 'loser', 'drawer'], {
-    errorMap: () => ({ message: 'flag must be one of: winner, loser, drawer' }),
-  }),
+  flag: z.enum(['winner', 'loser', 'drawer']),
   class: z.string().optional(),
   randomClass: z.boolean().optional(),
   kills: z.number().int().optional(),
@@ -91,13 +87,9 @@ export const CreateScheduledGameSchema = z.object({
   gameState: z.literal('scheduled').optional(), // Discriminator
   scheduledDateTime: z.string().datetime('scheduledDateTime must be a valid ISO 8601 datetime string'),
   timezone: z.string().min(1, 'timezone must be a non-empty string (IANA timezone identifier)'),
-  teamSize: z.enum(['1v1', '2v2', '3v3', '4v4', '5v5', '6v6', 'custom'], {
-    errorMap: () => ({ message: 'teamSize must be one of: 1v1, 2v2, 3v3, 4v4, 5v5, 6v6, custom' }),
-  }),
+  teamSize: z.enum(['1v1', '2v2', '3v3', '4v4', '5v5', '6v6', 'custom']),
   customTeamSize: z.string().optional(), // Required when teamSize is 'custom'
-  gameType: z.enum(['elo', 'normal'], {
-    errorMap: () => ({ message: 'gameType must be either "elo" or "normal"' }),
-  }),
+  gameType: z.enum(['elo', 'normal']),
   gameVersion: z.string().optional(),
   gameLength: z.number().int().positive().optional(), // Game length in seconds
   modes: z.array(z.string()).min(1, 'modes must be a non-empty array'),
@@ -150,9 +142,7 @@ export const CreateGameSchema = z.union([
 export const UpdateEntrySchema = z.object({
   title: z.string().min(1, 'title must be a non-empty string').optional(),
   content: z.string().min(1, 'content must be a non-empty string').optional(),
-  contentType: z.enum(['post', 'memory'], {
-    errorMap: () => ({ message: 'contentType must be either "post" or "memory"' }),
-  }).optional(),
+  contentType: z.enum(['post', 'memory']).optional(),
   date: z.string().datetime('date must be a valid ISO 8601 datetime string').optional(),
   creatorName: z.string().optional(),
   createdByDiscordId: z.string().nullable().optional(),

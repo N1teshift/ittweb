@@ -38,7 +38,7 @@ export function zodValidator<T extends z.ZodTypeAny>(
     }
     
     // Format Zod errors into a readable string
-    const errors = result.error.errors.map(err => {
+    const errors = result.error.issues.map((err: z.ZodIssue) => {
       const path = err.path.length > 0 ? `${err.path.join('.')}: ` : '';
       return `${path}${err.message}`;
     });
@@ -70,7 +70,7 @@ export function validateZodBody<T extends z.ZodTypeAny>(
   }
   
   // Format Zod errors into a readable string
-  const errors = result.error.errors.map(err => {
+  const errors = result.error.issues.map((err: z.ZodIssue) => {
     const path = err.path.length > 0 ? `${err.path.join('.')}: ` : '';
     return `${path}${err.message}`;
   });
@@ -109,7 +109,7 @@ export function createCustomValidator(
 export function formatZodErrors(errors: z.ZodError[]): string {
   const allErrors: string[] = [];
   for (const error of errors) {
-    const formatted = error.errors.map(err => {
+    const formatted = error.issues.map((err: z.ZodIssue) => {
       const path = err.path.length > 0 ? `${err.path.join('.')}: ` : '';
       return `${path}${err.message}`;
     });
