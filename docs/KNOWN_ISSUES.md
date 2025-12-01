@@ -102,7 +102,6 @@ This document tracks known issues, technical debt, and migration status in the c
 
 ### Documentation
 **Outstanding Items**:
-- Module-level READMEs planned but not yet implemented for all modules
 - API docs may reference redundant `scheduled-games/[id]/*` routes (functionality moved to `/api/games/[id]/*`) - needs verification
 
 ### Code Quality

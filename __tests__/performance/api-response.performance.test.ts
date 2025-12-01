@@ -36,7 +36,7 @@ jest.mock('@/pages/api/auth/[...nextauth]', () => ({
 
 // Now import after mocks are set up
 import type { NextApiRequest } from 'next';
-import { createMockRequest, createMockResponse } from '../../test-utils/mockNext';
+import { createMockRequest, createMockResponse } from '@/test-utils/mockNext';
 import handlerGamesIndex from '@/pages/api/games/index';
 import handlerPlayersIndex from '@/pages/api/players/index';
 import handlerStandings from '@/pages/api/standings/index';

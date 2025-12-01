@@ -8,14 +8,14 @@ The Games API provides endpoints for managing both scheduled and completed games
 
 ## Documentation
 
-- **[CRUD Operations](./api/games/crud-operations.md)** - Create, read, update, and delete games
+- **[CRUD Operations](./games/crud-operations.md)** - Create, read, update, and delete games
   - `GET /api/games` - List games with filters
   - `GET /api/games/[id]` - Get single game
   - `POST /api/games` - Create game (scheduled or completed)
   - `PUT /api/games/[id]` - Update game
   - `DELETE /api/games/[id]` - Delete game (admin only)
 
-- **[Replay Operations](./api/games/replay-operations.md)** - Upload replay files
+- **[Replay Operations](./games/replay-operations.md)** - Upload replay files
   - `POST /api/games/upload-replay` - Upload replay to create completed game
   - `POST /api/games/[id]/upload-replay` - Upload replay for scheduled game
 

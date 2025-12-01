@@ -40,7 +40,7 @@ import handlerDataNoticeStatus from '@/pages/api/user/data-notice-status';
 import handlerUserDelete from '@/pages/api/user/delete';
 import handlerAdminWipe from '@/pages/api/admin/wipe-test-data';
 import handlerRevalidate from '@/pages/api/revalidate';
-import { createMockRequest, createMockResponse } from '../../test-utils/mockNext';
+import { createMockRequest, createMockResponse } from '@/test-utils/mockNext';
 
 jest.mock('next-auth/next', () => ({
   getServerSession: jest.fn(),

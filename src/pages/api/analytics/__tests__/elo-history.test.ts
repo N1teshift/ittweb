@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { createMockRequest, createMockResponse } from '../../../../../test-utils/mockNext';
+import { createMockRequest, createMockResponse } from '../../test-utils/mockNext';
 import type { ApiResponse } from '@/features/infrastructure/api/routeHandlers';
 
 // Mock routeHandlers BEFORE importing handler to prevent NextAuth/jose import

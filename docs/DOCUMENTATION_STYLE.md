@@ -169,6 +169,6 @@ See [Documentation Lifecycle Guide](./documentation-lifecycle.md) for complete l
 
 ## Related Documentation
 
-- [Documentation Plan](./DOCUMENTATION_PLAN.md) - Strategy and templates
-- [Documentation Audit](./DOCUMENTATION_AUDIT.md) - What needs documentation
+- [Documentation Lifecycle](./documentation-lifecycle.md) - Lifecycle management and consolidation
+- [Documentation Index](./README.md) - Navigation to all documentation
 

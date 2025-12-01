@@ -99,16 +99,16 @@ const baseConfig: NextConfig = {
                         value: [
                             "default-src 'self'",
                             // Script sources - explicitly exclude tracking domains
-                            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.youtube.com https://www.youtube-nocookie.com https://s.ytimg.com",
+                            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.youtube.com https://www.youtube-nocookie.com https://s.ytimg.com https://clips.twitch.tv https://player.twitch.tv",
                             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.youtube.com https://www.youtube-nocookie.com https://s.ytimg.com",
                             "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com",
                             "font-src 'self' data: https://fonts.gstatic.com",
                             // Frame sources - use privacy-enhanced YouTube domain
-                            "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://clips.twitch.tv",
+                            "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://clips.twitch.tv https://player.twitch.tv",
                             "img-src 'self' data: https: blob:",
                             "media-src 'self' https:",
                             // Connect sources - explicitly exclude tracking domains (googleads.g.doubleclick.net)
-                            "connect-src 'self' https:",
+                            "connect-src 'self' https: wss:",
                         ].join('; ')
                     }
                 ]

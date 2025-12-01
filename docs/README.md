@@ -74,7 +74,7 @@ All 13 feature modules have README files in `src/features/modules/[module-name]/
   - [Secrets Management](./security/secrets-management.md)
   - [Automated Scanning](./security/automated-scanning.md)
 - **[Documentation Style](./DOCUMENTATION_STYLE.md)** - Documentation standards
-- **[Documentation Audit](./DOCUMENTATION_AUDIT.md)** - Audit of all documentation against style guide
+- **[Documentation Lifecycle](./documentation-lifecycle.md)** - Lifecycle management and consolidation
 
 ## External
 
