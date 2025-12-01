@@ -1,4 +1,6 @@
-﻿## Component Tests
+﻿# Test Specifications - Component Tests
+
+Test specifications for React components.
 
 ### Shared Components
 - [ ] `src/features/shared/components/Header.tsx`
@@ -231,5 +233,10 @@
   - Test loading spinner
   - Test error message display
 
----
+## Related Documentation
+
+- [Test Specifications Index](./README.md)
+- [Hook Tests](./hook-tests.md)
+- [API Route Tests](./api-route-tests.md)
+- [Testing Guide](../testing-guide.md)
 

@@ -99,7 +99,7 @@ const baseConfig: NextConfig = {
                         value: [
                             "default-src 'self'",
                             // Script sources - explicitly exclude tracking domains
-                            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.youtube.com https://www.youtube-nocookie.com https://s.ytimg.com https://www.googletagmanager.com https://www.google-analytics.com",
+                            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.youtube.com https://www.youtube-nocookie.com https://s.ytimg.com",
                             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.youtube.com https://www.youtube-nocookie.com https://s.ytimg.com",
                             "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com",
                             "font-src 'self' data: https://fonts.gstatic.com",
@@ -108,7 +108,7 @@ const baseConfig: NextConfig = {
                             "img-src 'self' data: https: blob:",
                             "media-src 'self' https:",
                             // Connect sources - explicitly exclude tracking domains (googleads.g.doubleclick.net)
-                            "connect-src 'self' https: https://www.google-analytics.com https://www.googletagmanager.com",
+                            "connect-src 'self' https:",
                         ].join('; ')
                     }
                 ]

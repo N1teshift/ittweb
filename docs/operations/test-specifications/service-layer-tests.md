@@ -1,4 +1,6 @@
-﻿## Service Layer Tests
+﻿# Test Specifications - Service Layer Tests
+
+Test specifications for service layer functions.
 
 ### Game Service
 - [ ] `src/features/modules/games/lib/gameService.ts`
@@ -100,4 +102,9 @@
   - Test date range filtering
   - Test category filtering
 
----
+## Related Documentation
+
+- [Test Specifications Index](./README.md)
+- [Infrastructure & Utility Tests](./infrastructure-utility-tests.md)
+- [API Route Tests](./api-route-tests.md)
+- [Testing Guide](../testing-guide.md)

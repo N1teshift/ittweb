@@ -4,7 +4,7 @@
 
 ## Core Principles
 
-1. **Minimal**: Keep files under 200 lines when possible
+1. **Minimal**: Keep files concise and focused
 2. **Complete**: Cover all essential information for current use (not historical completeness)
 3. **Actionable**: Explains how something works (architecture, design decisions, patterns, standards)
 4. **Useful**: Helps standardize how things work in the project; enables following standards/patterns
@@ -14,9 +14,9 @@
 
 ## File Size
 
-- **Target**: Under 200 lines per file
-- **Maximum**: Split into multiple files if exceeding 200 lines
-- **Exception**: Reference documents (schemas, plans) can be longer if needed
+- **Guideline**: Keep files concise and focused; split into multiple files if a document becomes difficult to navigate or maintain
+- **Consider splitting when**: Documentation covers multiple distinct topics, becomes hard to scan, or is difficult to update
+- **Longer files are acceptable**: When content is cohesive and splitting would reduce clarity (e.g., comprehensive guides, reference documents, schemas, plans)
 
 ## Writing Style
 
@@ -228,7 +228,7 @@ Look for consolidation opportunities when:
 **Consolidation Guidelines**:
 - Preserve all unique information
 - Maintain clear structure and navigation
-- Keep consolidated files under 200 lines when possible
+- Keep consolidated files focused and maintainable
 - Use links for related but separate topics
 - Document consolidation in task notes
 

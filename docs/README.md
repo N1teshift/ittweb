@@ -39,6 +39,7 @@ Quick navigation to ITT Web documentation.
 
 - **[Testing Guide](./operations/testing-guide.md)** - Testing scenarios and API calls
 - **[Test Plans](./operations/test-plans/)** - Comprehensive test plans by feature
+- **[Test Specifications](./operations/test-specifications/)** - Detailed test specifications by category
 - **[Deployment](./operations/deployment.md)** - Deployment procedures
 - **[CI/CD](./operations/ci-cd.md)** - Continuous integration setup
 

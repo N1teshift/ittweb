@@ -314,11 +314,32 @@ The following files meet all style guide criteria (under 200 lines, no task list
 - ✅ All new files include proper cross-references
 - ✅ Main index files link to split files
 
+### ✅ Additional Completed Work (2025-01-15) - Continued
+
+**File Splitting**:
+- ✅ Split `api/games.md` (511 lines) into 2 focused files:
+  - `api/games/crud-operations.md` (326 lines - reference document, acceptable)
+  - `api/games/replay-operations.md` (220 lines)
+  - Main `api/games.md` converted to index with overview
+
+- ✅ Split `operations/comprehensive-test-plan.md` (1,166 lines) into 9 focused files:
+  - `test-specifications/infrastructure-utility-tests.md` (113 lines)
+  - `test-specifications/service-layer-tests.md` (97 lines)
+  - `test-specifications/api-route-tests.md` (151 lines)
+  - `test-specifications/component-tests.md` (195 lines)
+  - `test-specifications/hook-tests.md` (84 lines)
+  - `test-specifications/validation-form-tests.md` (19 lines)
+  - `test-specifications/module-tests.md` (322 lines - reference document, acceptable)
+  - `test-specifications/integration-e2e-tests.md` (64 lines)
+  - `test-specifications/special-tests.md` (129 lines)
+  - `test-specifications/README.md` (61 lines) - Index
+  - Main `comprehensive-test-plan.md` converted to overview/index
+
+**Note**: Test specification documents appropriately use checkboxes for tracking test implementation status. Some reference documents (module-tests.md, crud-operations.md) exceed 200 lines but are acceptable as reference documents per style guide.
+
 ### 🔄 Remaining Work
 
-**File Splitting** (Lower Priority):
-- Split `operations/comprehensive-test-plan.md` (1,166 lines) - Consider if test specification format is acceptable
-- Split `api/games.md` (511 lines) - Split into CRUD operations, queries, relationships
+**No remaining high or medium priority work identified.**
 
 **Test Plan Files**:
 - Review test plan files in `operations/test-plans/` - Determine if checkboxes are acceptable for test specifications

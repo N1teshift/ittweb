@@ -1,4 +1,6 @@
-﻿## API Route Tests
+﻿# Test Specifications - API Route Tests
+
+Test specifications for API route handlers.
 
 ### Games API
 - [ ] `src/pages/api/games/index.ts`
@@ -174,6 +176,11 @@
   - Test POST validates secret token
   - Test revalidation logic
 
----
+## Related Documentation
+
+- [Test Specifications Index](./README.md)
+- [Service Layer Tests](./service-layer-tests.md)
+- [Component Tests](./component-tests.md)
+- [Testing Guide](../testing-guide.md)
 
 ## Component Tests

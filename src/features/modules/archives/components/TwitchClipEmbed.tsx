@@ -51,7 +51,7 @@ export default function TwitchClipEmbed({ url, title }: TwitchClipEmbedProps) {
           src={embedUrl}
           title={title}
           allowFullScreen
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allow="clipboard-write; encrypted-media; picture-in-picture"
           className="h-[360px] w-full"
           scrolling="no"
           loading="lazy"

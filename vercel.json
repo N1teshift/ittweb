@@ -5,6 +5,16 @@
   "installCommand": "npm ci",
   "framework": "nextjs",
   "regions": ["iad1"],
+  "functions": {
+    "src/pages/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "build": {
+    "env": {
+      "VERCEL_LIVE": "false"
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
@@ -20,6 +30,14 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
+        },
+        {
+          "key": "Cross-Origin-Embedder-Policy",
+          "value": "credentialless"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin-allow-popups"
         }
       ]
     }

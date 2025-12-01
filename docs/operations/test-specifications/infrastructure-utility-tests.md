@@ -127,4 +127,5 @@ Test specifications for infrastructure components and utility functions.
 - [Test Specifications Index](./README.md)
 - [Service Layer Tests](./service-layer-tests.md)
 - [API Route Tests](./api-route-tests.md)
+- [Testing Guide](../testing-guide.md)
 

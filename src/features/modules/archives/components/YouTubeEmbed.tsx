@@ -63,7 +63,7 @@ export default function YouTubeEmbed({ url, title }: YouTubeEmbedProps) {
           title={title}
           className="w-full h-full"
           frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allow="clipboard-write; encrypted-media; picture-in-picture"
           allowFullScreen
           loading="lazy"
           onError={() => setHasError(true)}
