@@ -3,11 +3,11 @@ import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/ge
 import { ErrorBoundary } from '@/features/infrastructure/components';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { AbilityData } from '@/features/modules/guides/data/abilities';
-import { ABILITIES, ABILITY_CATEGORIES, getAbilityById } from '@/features/modules/guides/data/abilities';
-import { getItemById } from '@/features/modules/guides/data/items';
-import { getClassBySlug } from '@/features/modules/guides/data/units/classes';
-import { ColoredText } from '@/features/modules/guides/components/ColoredText';
+import { AbilityData } from '@/features/modules/content/guides/data/abilities';
+import { ABILITIES, ABILITY_CATEGORIES, getAbilityById } from '@/features/modules/content/guides/data/abilities';
+import { getItemById } from '@/features/modules/content/guides/data/items';
+import { getClassBySlug } from '@/features/modules/content/guides/data/units/classes';
+import { ColoredText } from '@/features/modules/content/guides/components/ColoredText';
 
 type Props = { ability: AbilityData };
 

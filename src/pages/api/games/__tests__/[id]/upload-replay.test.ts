@@ -13,12 +13,12 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/modules/games/lib/gameService', () => ({
+jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
   getGameById: (...args: unknown[]) => mockGetGameById(...args),
   updateEloScores: (...args: unknown[]) => mockUpdateEloScores(...args),
 }));
 
-jest.mock('@/features/modules/games/lib/replayParser', () => ({
+jest.mock('@/features/infrastructure/game/replayParser', () => ({
   parseReplayFile: (...args: unknown[]) => mockParseReplayFile(...args),
 }));
 
@@ -88,7 +88,7 @@ describe('POST /api/games/[id]/upload-replay', () => {
   const mockScheduledGame = {
     gameId: 123,
     gameState: 'scheduled',
-    teamSize: 4,
+    teamSize: '4v4',
     scheduledDateTime: '2024-01-15T12:00:00Z',
     creatorName: 'Creator',
     createdByDiscordId: 'discord123',

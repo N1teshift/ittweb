@@ -4,7 +4,7 @@ import { authOptions } from '../auth/[...nextauth]';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
 import { zodValidator } from '@/features/infrastructure/api/zodValidation';
 import { UpdateEntrySchema } from '@/features/infrastructure/api/schemas';
-import { getEntryById, updateEntry, deleteEntry } from '@/features/modules/entries/lib/entryService';
+import { getEntryById, updateEntry, deleteEntry } from '@/features/modules/game-management/entries/lib/entryService';
 import { UpdateEntry } from '@/types/entry';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import type { Entry } from '@/types/entry';

@@ -11,5 +11,6 @@ export * as infrastructure from './infrastructure';
 // Module exports - feature-specific functionality
 export * as modules from './modules';
 
-// Direct module access for convenience (namespaced)
-export { Archives, Analytics, Blog, Classes, Entries, Games, Guides, MapAnalyzer, Meta, Players, ScheduledGames, Standings, Tools, Shared } from './modules';
+// Direct feature group access for convenience (namespaced)
+export { GameManagement, Content, Community, Analytics, Tools, Shared } from './modules';
+

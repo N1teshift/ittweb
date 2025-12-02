@@ -1,14 +1,14 @@
 import { useSession, signIn } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
-import EntryFormModal from '@/features/modules/entries/components/EntryFormModal';
-import ScheduleGameForm from '@/features/modules/scheduled-games/components/ScheduleGameForm';
+import EntryFormModal from '@/features/modules/game-management/entries/components/EntryFormModal';
+import ScheduleGameForm from '@/features/modules/game-management/scheduled-games/components/ScheduleGameForm';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 import type { GetStaticProps } from 'next';
-import type { CreateScheduledGame } from '@/features/modules/games/types';
+import type { CreateScheduledGame } from '@/features/modules/game-management/games/types';
 import { Button } from '@/features/infrastructure/components/ui';
-import { HomeTimeline } from '@/features/modules/archives/components';
-import type { HomeTimelineHandle } from '@/features/modules/archives/components/HomeTimeline';
+import { HomeTimeline } from '@/features/modules/community/archives/shared/components';
+import type { HomeTimelineHandle } from '@/features/modules/community/archives/timeline/components/HomeTimeline';
 import { useRef } from 'react';
 import { logError } from '@/features/infrastructure/logging';
 
@@ -214,3 +214,4 @@ export const getStaticProps: GetStaticProps<HomeProps> = async ({ locale }) => {
       revalidate: 60,
     };
 };
+

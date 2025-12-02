@@ -7,7 +7,7 @@ import LoadingScreen from '@/features/infrastructure/components/ui/LoadingScreen
 // Lazy load TerrainVisualizerContainer to reduce initial bundle size
 // This component uses w3gjs which is ~200KB
 const TerrainVisualizerContainer = dynamic(
-  () => import('@/features/modules/map-analyzer/components/TerrainVisualizerContainer'),
+  () => import('@/features/modules/tools-group/map-analyzer/components/TerrainVisualizerContainer'),
   {
     loading: () => <LoadingScreen message="Loading map analyzer..." />,
     ssr: false, // Map analyzer requires client-side only
@@ -38,5 +38,6 @@ export default function MapAnalyzer() {
     </div>
   );
 }
+
 
 

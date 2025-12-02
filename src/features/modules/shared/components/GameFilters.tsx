@@ -4,7 +4,7 @@ import { PlayerFilter } from './PlayerFilter';
 import { TeamFormatFilter } from './TeamFormatFilter';
 import { Button } from '@/features/infrastructure/components/ui/Button';
 import { Card } from '@/features/infrastructure/components/ui/Card';
-import type { GameFilters } from '@/features/modules/games/types';
+import type { GameFilters } from '@/features/modules/game-management/games/types';
 
 interface GameFiltersProps {
   filters: GameFilters;
@@ -121,4 +121,5 @@ export function GameFiltersComponent({
     </Card>
   );
 }
+
 

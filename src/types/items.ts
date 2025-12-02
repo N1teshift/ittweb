@@ -68,3 +68,4 @@ export type ItemData = {
 export type ItemsByCategory = {
   [K in ItemCategory]: ItemData[];
 };
+

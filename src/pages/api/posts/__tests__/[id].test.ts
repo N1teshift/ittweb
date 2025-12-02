@@ -17,7 +17,7 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/modules/blog/lib/postService', () => ({
+jest.mock('@/features/modules/content/blog/lib/postService', () => ({
   getPostById: (...args: unknown[]) => mockGetPostById(...args),
   updatePost: (...args: unknown[]) => mockUpdatePost(...args),
   deletePost: (...args: unknown[]) => mockDeletePost(...args),

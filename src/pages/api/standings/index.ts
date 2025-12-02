@@ -1,7 +1,7 @@
 import type { NextApiRequest } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-import { getStandings } from '@/features/modules/standings/lib/standingsService';
-import type { StandingsFilters } from '@/features/modules/standings/types';
+import { getStandings } from '@/features/modules/community/standings/lib/standingsService';
+import type { StandingsFilters } from '@/features/modules/community/standings/types';
 
 /**
  * GET /api/standings - Get leaderboard
@@ -29,6 +29,7 @@ export default createApiHandler(
     },
   }
 );
+
 
 
 

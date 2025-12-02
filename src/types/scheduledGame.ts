@@ -1,5 +1,5 @@
 import { Timestamp } from 'firebase/firestore';
-import type { TeamSize, GameType, GameMode, GameParticipant } from '@/features/modules/games/types';
+import type { TeamSize, GameType, GameMode, GameParticipant } from '@/features/modules/game-management/games/types';
 
 /**
  * Scheduled game status
@@ -64,6 +64,7 @@ export interface CreateScheduledGame {
   participants?: GameParticipant[];
   submittedAt?: Timestamp | string;
 }
+
 
 
 

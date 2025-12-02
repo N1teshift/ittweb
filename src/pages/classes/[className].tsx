@@ -1,4 +1,4 @@
-import { ClassDetailPage } from '@/features/modules/classes/components/ClassDetailPage';
+import { ClassDetailPage } from '@/features/modules/content/classes/components/ClassDetailPage';
 
 const pageNamespaces = ["common"];
 

@@ -1,5 +1,7 @@
 # Environment Setup Guide
 
+> Date: 2025-12-02
+
 Complete guide for setting up the development environment.
 
 ## Prerequisites
@@ -51,6 +53,9 @@ NEXTAUTH_SECRET=your-secret-key  # Generate with: openssl rand -base64 32
 # Discord OAuth (for authentication)
 DISCORD_CLIENT_ID=your-discord-client-id
 DISCORD_CLIENT_SECRET=your-discord-client-secret
+
+# Discord Bot API (for bot join/leave operations)
+BOT_API_KEY=your-secure-bot-api-key  # Generate with: openssl rand -base64 32
 
 # Optional: Bundle Analyzer
 ANALYZE=false  # Set to 'true' to analyze bundle size

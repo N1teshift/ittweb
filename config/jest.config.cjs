@@ -20,6 +20,8 @@ const config = {
   },
   setupFilesAfterEnv: ["<rootDir>/config/jest.setup.cjs"],
   testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+  // Test categorization
+  testNamePattern: process.env.TEST_CATEGORY || '.*',
   testPathIgnorePatterns: [
     "/node_modules/",
     "/.next/",

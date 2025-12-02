@@ -3,10 +3,10 @@ import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/ge
 import { ErrorBoundary } from '@/features/infrastructure/components';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { ALL_UNITS, getUnitById, UnitData } from '@/features/modules/guides/data/units/allUnits';
-import { getItemById } from '@/features/modules/guides/data/items';
-import GuideIcon from '@/features/modules/guides/components/GuideIcon';
-import { ColoredText } from '@/features/modules/guides/components/ColoredText';
+import { ALL_UNITS, getUnitById, UnitData } from '@/features/modules/content/guides/data/units/allUnits';
+import { getItemById } from '@/features/modules/content/guides/data/items';
+import GuideIcon from '@/features/modules/content/guides/components/GuideIcon';
+import { ColoredText } from '@/features/modules/content/guides/components/ColoredText';
 
 type Props = { unit: UnitData };
 

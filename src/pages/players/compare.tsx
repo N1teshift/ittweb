@@ -1,5 +1,5 @@
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
-import { PlayerComparison } from '@/features/modules/players/components/PlayerComparison';
+import { PlayerComparison } from '@/features/modules/community/players/components/PlayerComparison';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 
 const pageNamespaces = ["common"];
@@ -12,6 +12,7 @@ export default function ComparePlayers() {
     </ErrorBoundary>
   );
 }
+
 
 
 

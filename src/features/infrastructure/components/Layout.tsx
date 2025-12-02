@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { TranslationNamespaceContext } from '../lib/TranslationNamespaceContext';
 import Header from './Header';
 import Footer from './Footer';

@@ -2,8 +2,8 @@ import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
-import BlogPost from '@/features/modules/blog/components/BlogPost';
-import PostDeleteDialog from '@/features/modules/blog/components/PostDeleteDialog';
+import BlogPost from '@/features/modules/content/blog/components/BlogPost';
+import PostDeleteDialog from '@/features/modules/content/blog/components/PostDeleteDialog';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import remarkGfm from 'remark-gfm';
@@ -149,7 +149,7 @@ export const getServerSideProps: GetServerSideProps<PostPageProps> = async (cont
   const slug = String(context.params?.slug || '');
   const withI18n = getStaticPropsWithTranslations(pageNamespaces);
   const i18nResult = await withI18n({ locale: context.locale as string });
-  const { loadPostBySlug } = await import('@/features/modules/blog/lib/posts');
+  const { loadPostBySlug } = await import('@/features/modules/content/blog/lib/posts');
 
   try {
     const post = await loadPostBySlug(slug);

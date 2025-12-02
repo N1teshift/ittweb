@@ -57,7 +57,7 @@ jest.mock('@/features/infrastructure/utils/userRoleUtils', () => ({
   isAdmin: jest.fn(() => false),
 }));
 
-jest.mock('@/features/modules/games/lib/gameService', () => ({
+jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
   getGames: jest.fn(),
   createScheduledGame: jest.fn(),
   createCompletedGame: jest.fn(),
@@ -66,14 +66,14 @@ jest.mock('@/features/modules/games/lib/gameService', () => ({
   deleteGame: jest.fn(),
 }));
 
-jest.mock('@/features/modules/players/lib/playerService', () => ({
+jest.mock('@/features/modules/community/players/lib/playerService', () => ({
   getAllPlayers: jest.fn(),
   getPlayerStats: jest.fn(),
   searchPlayers: jest.fn(),
   comparePlayers: jest.fn(),
 }));
 
-jest.mock('@/features/modules/blog/lib/postService', () => ({
+jest.mock('@/features/modules/content/blog/lib/postService', () => ({
   getAllPosts: jest.fn(),
   getPostById: jest.fn(),
   updatePost: jest.fn(),
@@ -91,7 +91,7 @@ jest.mock('@/features/modules/scheduled-games/lib/scheduledGameService', () => (
   leaveScheduledGame: jest.fn(),
 }));
 
-jest.mock('@/features/modules/entries/lib/entryService', () => ({
+jest.mock('@/features/modules/game-management/entries/lib/entryService', () => ({
   getAllEntries: jest.fn(),
   createEntry: jest.fn(),
   getEntryById: jest.fn(),
@@ -99,11 +99,11 @@ jest.mock('@/features/modules/entries/lib/entryService', () => ({
   deleteEntry: jest.fn(),
 }));
 
-jest.mock('@/features/modules/standings/lib/standingsService', () => ({
+jest.mock('@/features/modules/community/standings/lib/standingsService', () => ({
   getStandings: jest.fn(),
 }));
 
-jest.mock('@/features/modules/analytics/lib/analyticsService', () => ({
+jest.mock('@/features/modules/analytics-group/analytics/lib/analyticsService', () => ({
   getActivityData: jest.fn(),
   getEloHistory: jest.fn(),
   getMetaStats: jest.fn(),
@@ -146,13 +146,13 @@ jest.mock('@/features/infrastructure/logging', () => ({
 }));
 
 const { getServerSession } = jest.requireMock('next-auth/next');
-const gameService = jest.requireMock('@/features/modules/games/lib/gameService');
-const playerService = jest.requireMock('@/features/modules/players/lib/playerService');
-const postService = jest.requireMock('@/features/modules/blog/lib/postService');
+const gameService = jest.requireMock('@/features/modules/game-management/games/lib/gameService');
+const playerService = jest.requireMock('@/features/modules/community/players/lib/playerService');
+const postService = jest.requireMock('@/features/modules/content/blog/lib/postService');
 const scheduledService = jest.requireMock('@/features/modules/scheduled-games/lib/scheduledGameService');
 const entryService = jest.requireMock('@/features/modules/entries/lib/entryService');
-const standingsService = jest.requireMock('@/features/modules/standings/lib/standingsService');
-const analyticsService = jest.requireMock('@/features/modules/analytics/lib/analyticsService');
+const standingsService = jest.requireMock('@/features/modules/community/standings/lib/standingsService');
+const analyticsService = jest.requireMock('@/features/modules/analytics-group/analytics/lib/analyticsService');
 const userDataService = jest.requireMock('@/features/infrastructure/lib/userDataService');
 const { isAdmin } = jest.requireMock('@/features/infrastructure/utils/userRoleUtils');
 const { readdir } = jest.requireMock('fs/promises');
@@ -240,7 +240,7 @@ describe('Games API', () => {
     const pastDate = new Date(Date.now() - 60_000).toISOString();
     const req = createMockRequest({
       method: 'POST',
-      body: { gameState: 'scheduled', scheduledDateTime: pastDate, timezone: 'UTC', teamSize: 2, gameType: 'team' },
+      body: { gameState: 'scheduled', scheduledDateTime: pastDate, timezone: 'UTC', teamSize: '2v2', gameType: 'team' },
     });
 
     const { status, json } = await runHandler(handlerGamesIndex, req);
@@ -288,7 +288,7 @@ describe('Games API', () => {
         gameState: 'scheduled',
         scheduledDateTime: futureDate,
         timezone: 'UTC',
-        teamSize: 2,
+        teamSize: '2v2',
         gameType: 'team',
       },
     });
@@ -361,7 +361,7 @@ describe('Games API', () => {
         gameState: 'scheduled',
         scheduledDateTime: pastDate,
         timezone: 'UTC',
-        teamSize: 2,
+        teamSize: '2v2',
         gameType: 'team',
       },
     });
@@ -383,7 +383,7 @@ describe('Games API', () => {
         gameState: 'scheduled',
         scheduledDateTime: futureDate,
         timezone: 'UTC',
-        teamSize: 2,
+        teamSize: '2v2',
         gameType: 'team',
         addCreatorToParticipants: true,
       },

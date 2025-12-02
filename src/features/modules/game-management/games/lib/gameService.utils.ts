@@ -1,0 +1,198 @@
+import {
+  collection,
+  query,
+  orderBy,
+  getDocs,
+  Timestamp,
+} from 'firebase/firestore';
+import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
+import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
+import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { queryWithIndexFallback } from '@/features/infrastructure/api/firebase/queryWithIndexFallback';
+import type { 
+  Game, 
+  GamePlayer, 
+  GamePlayerFlag, 
+  GameState,
+  GameArchiveContent,
+  TeamSize,
+  GameType,
+} from '../types';
+
+const GAMES_COLLECTION = 'games';
+const logger = createComponentLogger('gameService');
+
+/**
+ * Get the next available game ID
+ * Queries all games and finds the highest gameId, then increments by 1
+ * Uses fallback query if index is missing
+ */
+export async function getNextGameId(): Promise<number> {
+  try {
+    const maxGameId = await queryWithIndexFallback({
+      collectionName: GAMES_COLLECTION,
+      executeQuery: async () => {
+        const docs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
+        
+        if (isServerSide()) {
+          const adminDb = getFirestoreAdmin();
+          const querySnapshot = await adminDb.collection(GAMES_COLLECTION)
+            .orderBy('gameId', 'desc')
+            .limit(1)
+            .get();
+          
+          querySnapshot.forEach((doc) => {
+            docs.push({ data: () => doc.data(), id: doc.id });
+          });
+        } else {
+          const db = getFirestoreInstance();
+          const gamesCollection = collection(db, GAMES_COLLECTION);
+          const q = query(gamesCollection, orderBy('gameId', 'desc'));
+          const querySnapshot = await getDocs(q);
+          
+          querySnapshot.forEach((doc) => {
+            docs.push({ data: () => doc.data(), id: doc.id });
+          });
+        }
+        
+        return docs;
+      },
+      fallbackFilter: (docs) => {
+        // In fallback, return all docs (utility fetches all documents)
+        // Note: For large collections, this may be inefficient, but ensures we find the true max
+        return docs;
+      },
+      transform: (docs) => {
+        // Extract gameIds from documents and find max
+        let maxGameId = 0;
+        docs.forEach((doc) => {
+          const gameData = doc.data();
+          const gameId = typeof gameData.gameId === 'number' ? gameData.gameId : Number(gameData.gameId) || 0;
+          if (gameId > maxGameId) {
+            maxGameId = gameId;
+          }
+        });
+        return maxGameId;
+      },
+      logger,
+    });
+
+    if (maxGameId === 0) {
+      logger.info('No games found, starting with gameId 1');
+      return 1;
+    }
+
+    const nextId = maxGameId + 1;
+    logger.info('Next game ID calculated', { nextId, maxGameId });
+    return nextId;
+  } catch (error) {
+    const err = error as Error;
+    logError(err, 'Failed to get next game ID, defaulting to 1', {
+      component: 'gameService',
+      operation: 'getNextGameId',
+      errorCode: (error as { code?: string }).code,
+      errorMessage: err.message,
+    });
+    // Return 1 as fallback - this is safe but may cause duplicate gameIds if there are existing games
+    return 1;
+  }
+}
+
+/**
+ * Convert game document from Firestore to Game type
+ * Handles both scheduled and completed games
+ */
+export function convertGameDoc(docData: Record<string, unknown>, id: string): Game {
+  const gameState = (docData.gameState as GameState) || 'completed'; // Default to completed for backward compatibility
+  
+  const baseGame: Game = {
+    id,
+    gameId: typeof docData.gameId === 'number' ? docData.gameId : Number(docData.gameId) || 0,
+    gameState,
+    creatorName: typeof docData.creatorName === 'string' ? docData.creatorName : String(docData.creatorName || ''),
+    createdByDiscordId: typeof docData.createdByDiscordId === 'string' ? docData.createdByDiscordId : undefined,
+    createdAt: (docData.createdAt as Timestamp | string) || Timestamp.now(),
+    updatedAt: (docData.updatedAt as Timestamp | string) || Timestamp.now(),
+    submittedAt: docData.submittedAt ? (docData.submittedAt as Timestamp | string) : undefined,
+    isDeleted: typeof docData.isDeleted === 'boolean' ? docData.isDeleted : false,
+    deletedAt: docData.deletedAt ? (docData.deletedAt as Timestamp | string | null) : null,
+  };
+
+  // Add scheduled game fields if gameState is 'scheduled'
+  if (gameState === 'scheduled') {
+    return {
+      ...baseGame,
+      scheduledDateTime: docData.scheduledDateTime ? (docData.scheduledDateTime as Timestamp | string) : undefined,
+      scheduledDateTimeString: typeof docData.scheduledDateTimeString === 'string' ? docData.scheduledDateTimeString : undefined,
+      timezone: typeof docData.timezone === 'string' ? docData.timezone : undefined,
+      teamSize: (docData.teamSize as TeamSize | undefined),
+      customTeamSize: typeof docData.customTeamSize === 'string' ? docData.customTeamSize : undefined,
+      gameType: (docData.gameType as GameType | undefined),
+      gameVersion: typeof docData.gameVersion === 'string' ? docData.gameVersion : undefined,
+      gameLength: typeof docData.gameLength === 'number' ? docData.gameLength : undefined,
+      modes: Array.isArray(docData.modes) ? docData.modes : [],
+      participants: Array.isArray(docData.participants) ? docData.participants : [],
+    };
+  }
+
+  // Add completed game fields if gameState is 'completed'
+  const playerNames = Array.isArray(docData.playerNames) 
+    ? docData.playerNames.map(n => String(n))
+    : undefined;
+  const playerCount = typeof docData.playerCount === 'number' 
+    ? docData.playerCount 
+    : (playerNames ? playerNames.length : undefined);
+
+  const completedGame: Game = {
+    ...baseGame,
+    datetime: docData.datetime ? (docData.datetime as Timestamp | string) : undefined,
+    duration: typeof docData.duration === 'number' ? docData.duration : Number(docData.duration) || 0,
+    gamename: typeof docData.gamename === 'string' ? docData.gamename : String(docData.gamename || ''),
+    map: typeof docData.map === 'string' ? docData.map : String(docData.map || ''),
+    ownername: typeof docData.ownername === 'string' ? docData.ownername : String(docData.ownername || ''),
+    category: typeof docData.category === 'string' ? docData.category : undefined,
+    replayUrl: typeof docData.replayUrl === 'string' ? docData.replayUrl : undefined,
+    replayFileName: typeof docData.replayFileName === 'string' ? docData.replayFileName : undefined,
+    playerNames,
+    playerCount,
+    verified: typeof docData.verified === 'boolean' ? docData.verified : false,
+  };
+
+  // Add archive content if present
+  if (docData.archiveContent) {
+    completedGame.archiveContent = docData.archiveContent as GameArchiveContent;
+  }
+
+  return completedGame;
+}
+
+/**
+ * Convert game player document from Firestore to GamePlayer type
+ */
+export function convertGamePlayerDoc(docData: Record<string, unknown>, id: string): GamePlayer {
+  return {
+    id,
+    gameId: typeof docData.gameId === 'string' ? docData.gameId : String(docData.gameId || ''),
+    name: typeof docData.name === 'string' ? docData.name : String(docData.name || ''),
+    pid: typeof docData.pid === 'number' ? docData.pid : Number(docData.pid) || 0,
+    flag: (typeof docData.flag === 'string' && (docData.flag === 'winner' || docData.flag === 'loser' || docData.flag === 'drawer')) 
+      ? docData.flag as GamePlayerFlag 
+      : 'drawer',
+    category: typeof docData.category === 'string' ? docData.category : undefined,
+    elochange: typeof docData.elochange === 'number' ? docData.elochange : undefined,
+    eloBefore: typeof docData.eloBefore === 'number' ? docData.eloBefore : undefined,
+    eloAfter: typeof docData.eloAfter === 'number' ? docData.eloAfter : undefined,
+    class: typeof docData.class === 'string' ? docData.class : undefined,
+    randomClass: typeof docData.randomClass === 'boolean' ? docData.randomClass : undefined,
+    kills: typeof docData.kills === 'number' ? docData.kills : undefined,
+    deaths: typeof docData.deaths === 'number' ? docData.deaths : undefined,
+    assists: typeof docData.assists === 'number' ? docData.assists : undefined,
+    gold: typeof docData.gold === 'number' ? docData.gold : undefined,
+    damageDealt: typeof docData.damageDealt === 'number' ? docData.damageDealt : undefined,
+    damageTaken: typeof docData.damageTaken === 'number' ? docData.damageTaken : undefined,
+    createdAt: timestampToIso(docData.createdAt as Timestamp | { toDate?: () => Date } | string | Date | undefined),
+  };
+}
+
+

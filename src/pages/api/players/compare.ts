@@ -1,7 +1,7 @@
 import type { NextApiRequest } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-import { comparePlayers } from '@/features/modules/players/lib/playerService';
-import type { PlayerSearchFilters } from '@/features/modules/players/types';
+import { comparePlayers } from '@/features/modules/community/players/lib/playerService';
+import type { PlayerSearchFilters } from '@/features/modules/community/players/types';
 
 /**
  * GET /api/players/compare?names=... - Compare players
@@ -38,6 +38,7 @@ export default createApiHandler(
     },
   }
 );
+
 
 
 

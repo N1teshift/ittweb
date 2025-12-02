@@ -3,12 +3,12 @@ import { createGetPostHandler } from '@/features/infrastructure/api/routeHandler
 import { parseQueryString, parseQueryInt, parseQueryEnum } from '@/features/infrastructure/api/queryParser';
 import { createCustomValidator, formatZodErrors } from '@/features/infrastructure/api/zodValidation';
 import { CreateScheduledGameSchema, CreateCompletedGameSchema } from '@/features/infrastructure/api/schemas';
-import { createScheduledGame, createCompletedGame, getGames } from '@/features/modules/games/lib/gameService';
-import type { CreateScheduledGame, CreateCompletedGame, GameFilters } from '@/features/modules/games/types';
+import { createScheduledGame, createCompletedGame, getGames } from '@/features/modules/game-management/games/lib/gameService';
+import type { CreateScheduledGame, CreateCompletedGame, GameFilters } from '@/features/modules/game-management/games/types';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
-import type { GameListResponse } from '@/features/modules/games/types';
+import type { GameListResponse } from '@/features/modules/game-management/games/types';
 
 const logger = createComponentLogger('api/games');
 
@@ -136,6 +136,7 @@ export default createGetPostHandler<GameListResponse | { id: string }>(
     }),
   }
 );
+
 
 
 

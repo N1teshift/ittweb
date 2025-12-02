@@ -7,8 +7,8 @@
 
 import { createDataFetchHook, createSwrFetcher, createUrlDataFetchHook } from './useDataFetch';
 import useSWR from 'swr';
-import type { GameWithPlayers } from '@/features/modules/games/types';
-import type { StandingsResponse, StandingsFilters } from '@/features/modules/standings/types';
+import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
+import type { StandingsResponse, StandingsFilters } from '@/features/modules/community/standings/types';
 import type { ItemData } from '@/types/items';
 import { swrKeys } from '@/features/infrastructure/lib/swrConfig';
 
@@ -116,7 +116,7 @@ export function useItemsDataSWRExample() {
 // Example 4: usePlayerStats (non-SWR, with complex params)
 // ============================================================================
 
-import type { PlayerProfile, PlayerSearchFilters } from '@/features/modules/players/types';
+import type { PlayerProfile, PlayerSearchFilters } from '@/features/modules/community/players/types';
 
 export const usePlayerStatsExample = createDataFetchHook<
   PlayerProfile,
@@ -148,7 +148,7 @@ export const usePlayerStatsExample = createDataFetchHook<
 // Example 5: useClassesData (SWR mode with dynamic key)
 // ============================================================================
 
-import type { ClassStats } from '@/features/modules/analytics/types';
+import type { ClassStats } from '@/features/modules/analytics-group/analytics/types';
 
 export function useClassesDataExample(category?: string) {
   const key = swrKeys.classes(undefined, category ? { category } : undefined);
@@ -170,4 +170,5 @@ export function useClassesDataExample(category?: string) {
     refetch: mutate,
   };
 }
+
 

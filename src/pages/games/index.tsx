@@ -1,7 +1,7 @@
 import React from 'react';
-import { GameList } from '@/features/modules/games/components/GameList';
+import { GameList } from '@/features/modules/game-management/games/components/GameList';
 import { GameFiltersComponent } from '@/features/modules/shared/components';
-import { useGameFilters } from '@/features/modules/games/hooks/useGameFilters';
+import { useGameFilters } from '@/features/modules/game-management/games/hooks/useGameFilters';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 
 export default function GamesPage() {
@@ -25,4 +25,5 @@ export default function GamesPage() {
     </ErrorBoundary>
   );
 }
+
 

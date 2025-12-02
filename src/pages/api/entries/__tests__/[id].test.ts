@@ -10,7 +10,7 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/modules/entries/lib/entryService', () => ({
+jest.mock('@/features/modules/game-management/entries/lib/entryService', () => ({
   getEntryById: (...args: unknown[]) => mockGetEntryById(...args),
   updateEntry: (...args: unknown[]) => mockUpdateEntry(...args),
   deleteEntry: (...args: unknown[]) => mockDeleteEntry(...args),

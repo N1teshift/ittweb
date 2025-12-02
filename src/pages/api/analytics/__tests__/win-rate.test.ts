@@ -28,7 +28,7 @@ jest.mock('@/features/infrastructure/api/routeHandlers', () => ({
   },
 }));
 
-jest.mock('@/features/modules/analytics/lib/analyticsService', () => ({
+jest.mock('@/features/modules/analytics-group/analytics/lib/analyticsService', () => ({
   getWinRateData: jest.fn(),
 }));
 
@@ -44,7 +44,7 @@ jest.mock('@/features/infrastructure/logging', () => ({
 
 import handlerWinRate from '../win-rate';
 
-const { getWinRateData } = jest.requireMock('@/features/modules/analytics/lib/analyticsService');
+const { getWinRateData } = jest.requireMock('@/features/modules/analytics-group/analytics/lib/analyticsService');
 
 const runHandler = async (req: NextApiRequest) => {
   const { res, status, json } = createMockResponse();
@@ -229,4 +229,5 @@ describe('GET /api/analytics/win-rate', () => {
     expect(status).toHaveBeenCalledWith(405);
   });
 });
+
 

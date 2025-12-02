@@ -3,7 +3,7 @@ import { createGetPostHandler } from '@/features/infrastructure/api/routeHandler
 import { parseQueryEnum } from '@/features/infrastructure/api/queryParser';
 import { zodValidator } from '@/features/infrastructure/api/zodValidation';
 import { CreateEntrySchema } from '@/features/infrastructure/api/schemas';
-import { getAllEntries, createEntry } from '@/features/modules/entries/lib/entryService';
+import { getAllEntries, createEntry } from '@/features/modules/game-management/entries/lib/entryService';
 import { CreateEntry } from '@/types/entry';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import type { Entry } from '@/types/entry';
@@ -59,4 +59,5 @@ export default createGetPostHandler<Entry[] | { id: string }>(
     validateBody: zodValidator(CreateEntrySchema),
   }
 );
+
 

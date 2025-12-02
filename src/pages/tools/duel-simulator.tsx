@@ -1,13 +1,13 @@
 import React from 'react';
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
 import { Logger } from '@/features/infrastructure/logging';
-import TrollPanel from '@/features/modules/tools/components/TrollPanel';
-import ItemsPalette from '@/features/modules/tools/components/ItemsPalette';
-import SimulationPanel from '@/features/modules/tools/components/SimulationPanel';
-import type { TrollLoadout, TrollSide, DragPayload } from '@/features/modules/tools/types';
-import { BASE_TROLL_CLASS_SLUGS } from '@/features/modules/guides/data/units/classes';
+import TrollPanel from '@/features/modules/tools-group/tools/components/TrollPanel';
+import ItemsPalette from '@/features/modules/tools-group/tools/components/ItemsPalette';
+import SimulationPanel from '@/features/modules/tools-group/tools/components/SimulationPanel';
+import type { TrollLoadout, TrollSide, DragPayload } from '@/features/modules/tools-group/tools/types';
+import { BASE_TROLL_CLASS_SLUGS } from '@/features/modules/content/guides/data/units/classes';
 import type { ItemData } from '@/types/items';
-import { useItemsDataSWR } from '@/features/modules/guides/hooks/useItemsDataSWR';
+import { useItemsDataSWR } from '@/features/modules/content/guides/hooks/useItemsDataSWR';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
@@ -160,5 +160,7 @@ export default function DuelSimulator() {
       </div>
   );
 }
+
+
 
 

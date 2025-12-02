@@ -1,5 +1,7 @@
 # Bundle Size Optimization
 
+> Date: 2025-12-02
+
 Strategies for reducing bundle size and optimizing code loading.
 
 ## Analyze Bundle
@@ -125,7 +127,7 @@ function MyPage() {
 **Example**:
 ```typescript
 // Lazy load chart component
-const EloChart = lazy(() => import('@/features/modules/analytics/components/EloChart'));
+const EloChart = lazy(() => import('@/features/modules/analytics-group/analytics/components/EloChart'));
 
 function AnalyticsPage() {
   return (

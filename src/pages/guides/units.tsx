@@ -2,9 +2,9 @@ import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/ge
 import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { useState, useMemo } from 'react';
-import { ALL_UNITS, getUnitsByType, searchUnits, UnitType, UnitData } from '@/features/modules/guides/data/units/allUnits';
-import GuideCard from '@/features/modules/guides/components/GuideCard';
-import GuideIcon from '@/features/modules/guides/components/GuideIcon';
+import { ALL_UNITS, getUnitsByType, searchUnits, UnitType, UnitData } from '@/features/modules/content/guides/data/units/allUnits';
+import GuideCard from '@/features/modules/content/guides/components/GuideCard';
+import GuideIcon from '@/features/modules/content/guides/components/GuideIcon';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
@@ -214,4 +214,6 @@ export default function UnitsPage() {
     </ErrorBoundary>
   );
 }
+
+
 

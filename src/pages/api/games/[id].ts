@@ -3,8 +3,8 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
 import { createApiHandler, checkResourceOwnership } from '@/features/infrastructure/api/routeHandlers';
 import { parseRequiredQueryString } from '@/features/infrastructure/api/queryParser';
-import { getGameById, updateGame, deleteGame } from '@/features/modules/games/lib/gameService';
-import type { UpdateGame } from '@/features/modules/games/types';
+import { getGameById, updateGame, deleteGame } from '@/features/modules/game-management/games/lib/gameService';
+import type { UpdateGame } from '@/features/modules/game-management/games/types';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('api/games/[id]');

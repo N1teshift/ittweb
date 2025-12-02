@@ -1,6 +1,6 @@
 import type { NextApiRequest } from 'next';
 import { createGetHandler } from '@/features/infrastructure/api/routeHandlers';
-import { ITEMS_DATA } from '@/features/modules/guides/data/items';
+import { ITEMS_DATA } from '@/features/modules/content/guides/data/items';
 import type { ItemCategory, ItemData } from '@/types/items';
 
 type ItemsApiResponse = {
@@ -75,6 +75,7 @@ export default createGetHandler<ItemsApiResponse>(
     },
   }
 );
+
 
 
 

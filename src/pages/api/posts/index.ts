@@ -3,7 +3,7 @@ import { createGetPostHandler } from '@/features/infrastructure/api/routeHandler
 import { parseQueryBoolean } from '@/features/infrastructure/api/queryParser';
 import { zodValidator } from '@/features/infrastructure/api/zodValidation';
 import { CreatePostSchema } from '@/features/infrastructure/api/schemas';
-import { getAllPosts, createPost } from '@/features/modules/blog/lib/postService';
+import { getAllPosts, createPost } from '@/features/modules/content/blog/lib/postService';
 import { CreatePost } from '@/types/post';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import type { Post } from '@/types/post';
@@ -59,4 +59,5 @@ export default createGetPostHandler<Post[] | { id: string }>(
     validateBody: zodValidator(CreatePostSchema),
   }
 );
+
 

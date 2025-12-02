@@ -6,7 +6,7 @@ import {
   getPlayerActivityData,
   getClassSelectionData,
   getClassWinRateData,
-} from '@/features/modules/analytics/lib/analyticsService';
+} from '@/features/modules/analytics-group/analytics/lib/analyticsService';
 
 /**
  * GET /api/analytics/meta - Get meta statistics
@@ -46,6 +46,7 @@ export default createApiHandler(
     },
   }
 );
+
 
 
 

@@ -11,7 +11,7 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/modules/games/lib/gameService', () => ({
+jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
   getGameById: (...args: unknown[]) => mockGetGameById(...args),
   updateGame: (...args: unknown[]) => mockUpdateGame(...args),
   deleteGame: (...args: unknown[]) => mockDeleteGame(...args),

@@ -1,4 +1,4 @@
-import { PlayersPage } from '@/features/modules/players/components/PlayersPage';
+import { PlayersPage } from '@/features/modules/community/players/components/PlayersPage';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 
 const pageNamespaces = ["common"];
@@ -10,6 +10,7 @@ export default function Players() {
     </ErrorBoundary>
   );
 }
+
 
 
 

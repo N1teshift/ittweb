@@ -2,12 +2,12 @@
 
 import { useState, useMemo } from 'react';
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
-import { ITTIconCategory } from '@/features/modules/guides/utils/iconUtils';
-import { useIconMapperData } from '@/features/modules/tools/useIconMapperData';
-import { exportMappingsAsCode, exportMappingsAndDeletions } from '@/features/modules/tools/icon-mapper.utils';
-import IconItem from '@/features/modules/tools/components/IconItem';
-import EntityProgressStats from '@/features/modules/tools/components/EntityProgressStats';
-import IconMapperMappingsList from '@/features/modules/tools/components/IconMapperMappingsList';
+import { ITTIconCategory } from '@/features/modules/content/guides/utils/iconUtils';
+import { useIconMapperData } from '@/features/modules/tools-group/tools/hooks/useIconMapperData';
+import { exportMappingsAsCode, exportMappingsAndDeletions } from '@/features/modules/tools-group/tools/utils/icon-mapper.utils';
+import IconItem from '@/features/modules/tools-group/tools/components/IconItem';
+import EntityProgressStats from '@/features/modules/tools-group/tools/components/EntityProgressStats';
+import IconMapperMappingsList from '@/features/modules/tools-group/tools/components/IconMapperMappingsList';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
@@ -239,3 +239,4 @@ export default function IconMapper() {
     </div>
   );
 }
+

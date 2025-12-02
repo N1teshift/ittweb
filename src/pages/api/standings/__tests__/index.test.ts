@@ -8,7 +8,7 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/modules/standings/lib/standingsService', () => ({
+jest.mock('@/features/modules/community/standings/lib/standingsService', () => ({
   getStandings: (...args: unknown[]) => mockGetStandings(...args),
 }));
 
@@ -308,4 +308,5 @@ describe('GET /api/standings', () => {
     );
   });
 });
+
 

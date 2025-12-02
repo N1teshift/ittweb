@@ -305,3 +305,4 @@ export function getScreenReaderText(element: HTMLElement): string {
   return parts.join(' ').trim();
 }
 
+

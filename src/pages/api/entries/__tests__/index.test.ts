@@ -9,7 +9,7 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/modules/entries/lib/entryService', () => ({
+jest.mock('@/features/modules/game-management/entries/lib/entryService', () => ({
   getAllEntries: (...args: unknown[]) => mockGetAllEntries(...args),
   createEntry: (...args: unknown[]) => mockCreateEntry(...args),
 }));
@@ -493,4 +493,5 @@ describe('POST /api/entries', () => {
     );
   });
 });
+
 

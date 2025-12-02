@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { PlayerProfile } from '@/features/modules/players/components/PlayerProfile';
+import { PlayerProfile } from '@/features/modules/community/players/components/PlayerProfile';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 
 export default function PlayerPage() {

@@ -1,7 +1,7 @@
 import type { NextApiRequest } from 'next';
 import { createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
 import { parseRequiredQueryString } from '@/features/infrastructure/api/queryParser';
-import { leaveGame } from '@/features/modules/games/lib/gameService';
+import { leaveGame } from '@/features/modules/game-management/games/lib/gameService';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('api/games/[id]/leave');

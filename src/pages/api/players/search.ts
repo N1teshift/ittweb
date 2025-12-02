@@ -1,6 +1,6 @@
 import type { NextApiRequest } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-import { searchPlayers } from '@/features/modules/players/lib/playerService';
+import { searchPlayers } from '@/features/modules/community/players/lib/playerService';
 import { parseQueryString } from '@/features/infrastructure/api/queryParser';
 
 /**
@@ -25,6 +25,7 @@ export default createApiHandler(
     },
   }
 );
+
 
 
 

@@ -61,3 +61,4 @@ export interface ArchiveFilters {
   mediaType?: 'image' | 'video' | 'replay' | 'none' | 'all';
   includeUndated?: boolean;
 }
+

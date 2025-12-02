@@ -1,5 +1,5 @@
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
-import { ArchivesPage } from '@/features/modules/archives/components';
+import { ArchivesPage } from '@/features/modules/community/archives/shared/components';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 
 const pageNamespaces = ["common"];
@@ -12,3 +12,4 @@ export default function Archives() {
     </ErrorBoundary>
   );
 }
+

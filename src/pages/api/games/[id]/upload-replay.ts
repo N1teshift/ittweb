@@ -1,13 +1,13 @@
 import type { NextApiRequest } from 'next';
 import { createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
 import { parseRequiredQueryString } from '@/features/infrastructure/api/queryParser';
-import { getGameById, updateEloScores } from '@/features/modules/games/lib/gameService';
-import { parseReplayFile } from '@/features/modules/games/lib/replayParser';
+import { getGameById, updateEloScores } from '@/features/modules/game-management/games/lib/gameService';
+import { parseReplayFile } from '@/features/infrastructure/game/replayParser';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import { getFirestoreAdmin, getAdminTimestamp, getStorageAdmin, getStorageBucketName } from '@/features/infrastructure/api/firebase/admin';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
-import type { CreateCompletedGame } from '@/features/modules/games/types';
+import type { CreateCompletedGame } from '@/features/modules/game-management/games/types';
 import { IncomingForm, Fields, Files, File as FormidableFile } from 'formidable';
 import { promises as fs } from 'fs';
 import os from 'os';

@@ -8,7 +8,7 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/modules/analytics/lib/analyticsService', () => ({
+jest.mock('@/features/modules/analytics-group/analytics/lib/analyticsService', () => ({
   getClassStats: (...args: unknown[]) => mockGetClassStats(...args),
 }));
 
@@ -186,4 +186,5 @@ describe('GET /api/classes', () => {
     );
   });
 });
+
 

@@ -56,3 +56,4 @@ export function validateFirebaseClientConfig(config: FirebaseClientConfig): stri
   return errors;
 }
 
+

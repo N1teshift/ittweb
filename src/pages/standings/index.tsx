@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Leaderboard } from '@/features/modules/standings/components/Leaderboard';
-import { CategorySelector } from '@/features/modules/standings/components/CategorySelector';
+import { Leaderboard } from '@/features/modules/community/standings/components/Leaderboard';
+import { CategorySelector } from '@/features/modules/community/standings/components/CategorySelector';
 import { ErrorBoundary } from '@/features/infrastructure/components';
-import type { StandingsFilters } from '@/features/modules/standings/types';
+import type { StandingsFilters } from '@/features/modules/community/standings/types';
 
 export default function StandingsPage() {
   const [category, setCategory] = useState<string | undefined>();
@@ -26,4 +26,5 @@ export default function StandingsPage() {
     </ErrorBoundary>
   );
 }
+
 

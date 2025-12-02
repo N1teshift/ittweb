@@ -14,13 +14,13 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/modules/games/lib/gameService', () => ({
+jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
   createCompletedGame: (...args: unknown[]) => mockCreateCompletedGame(...args),
   getGames: (...args: unknown[]) => mockGetGames(...args),
   updateEloScores: (...args: unknown[]) => mockUpdateEloScores(...args),
 }));
 
-jest.mock('@/features/modules/games/lib/replayParser', () => ({
+jest.mock('@/features/infrastructure/game/replayParser', () => ({
   parseReplayFile: (...args: unknown[]) => mockParseReplayFile(...args),
 }));
 
@@ -647,4 +647,5 @@ describe('POST /api/games/upload-replay', () => {
     );
   });
 });
+
 

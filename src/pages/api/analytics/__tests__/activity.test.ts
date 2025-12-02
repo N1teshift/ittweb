@@ -28,7 +28,7 @@ jest.mock('@/features/infrastructure/api/routeHandlers', () => ({
   },
 }));
 
-jest.mock('@/features/modules/analytics/lib/analyticsService', () => ({
+jest.mock('@/features/modules/analytics-group/analytics/lib/analyticsService', () => ({
   getActivityData: jest.fn(),
 }));
 
@@ -44,7 +44,7 @@ jest.mock('@/features/infrastructure/logging', () => ({
 
 import handlerActivity from '../activity';
 
-const { getActivityData } = jest.requireMock('@/features/modules/analytics/lib/analyticsService');
+const { getActivityData } = jest.requireMock('@/features/modules/analytics-group/analytics/lib/analyticsService');
 
 const runHandler = async (req: NextApiRequest) => {
   const { res, status, json } = createMockResponse();
@@ -210,4 +210,5 @@ describe('GET /api/analytics/activity', () => {
     expect(status).toHaveBeenCalledWith(405);
   });
 });
+
 

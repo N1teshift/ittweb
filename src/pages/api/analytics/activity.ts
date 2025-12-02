@@ -1,6 +1,6 @@
 import type { NextApiRequest } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-import { getActivityData } from '@/features/modules/analytics/lib/analyticsService';
+import { getActivityData } from '@/features/modules/analytics-group/analytics/lib/analyticsService';
 
 /**
  * GET /api/analytics/activity - Get activity data
@@ -26,6 +26,7 @@ export default createApiHandler(
     },
   }
 );
+
 
 
 

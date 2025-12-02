@@ -43,27 +43,27 @@ jest.mock('@/features/infrastructure/logging', () => ({
 }));
 
 // Mock services
-jest.mock('@/features/modules/games/lib/gameService', () => ({
+jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
   getGames: jest.fn(),
 }));
 
-jest.mock('@/features/modules/players/lib/playerService', () => ({
+jest.mock('@/features/modules/community/players/lib/playerService', () => ({
   getPlayerStats: jest.fn(),
 }));
 
-jest.mock('@/features/modules/standings/lib/standingsService', () => ({
+jest.mock('@/features/modules/community/standings/lib/standingsService', () => ({
   getStandings: jest.fn(),
 }));
 
-jest.mock('@/features/modules/entries/lib/entryService', () => ({
+jest.mock('@/features/modules/game-management/entries/lib/entryService', () => ({
   getAllEntries: jest.fn(),
 }));
 
 // Now import after mocks are set up
-import { getGames } from '@/features/modules/games/lib/gameService';
-import { getPlayerStats } from '@/features/modules/players/lib/playerService';
-import { getStandings } from '@/features/modules/standings/lib/standingsService';
-import { getAllEntries } from '@/features/modules/entries/lib/entryService';
+import { getGames } from '@/features/modules/game-management/games/lib/gameService';
+import { getPlayerStats } from '@/features/modules/community/players/lib/playerService';
+import { getStandings } from '@/features/modules/community/standings/lib/standingsService';
+import { getAllEntries } from '@/features/modules/game-management/entries/lib/entryService';
 
 // Performance thresholds (in milliseconds)
 const PERFORMANCE_THRESHOLDS = {

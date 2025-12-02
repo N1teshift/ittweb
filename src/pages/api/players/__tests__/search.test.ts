@@ -8,7 +8,7 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/modules/players/lib/playerService', () => ({
+jest.mock('@/features/modules/community/players/lib/playerService', () => ({
   searchPlayers: (...args: unknown[]) => mockSearchPlayers(...args),
 }));
 
@@ -311,4 +311,5 @@ describe('GET /api/players/search', () => {
     );
   });
 });
+
 

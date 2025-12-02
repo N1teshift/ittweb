@@ -1,6 +1,6 @@
 import type { NextApiRequest } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-import { getClassStats } from '@/features/modules/analytics/lib/analyticsService';
+import { getClassStats } from '@/features/modules/analytics-group/analytics/lib/analyticsService';
 
 /**
  * GET /api/classes?category=... - Get class statistics
@@ -22,6 +22,7 @@ export default createApiHandler(
     },
   }
 );
+
 
 
 

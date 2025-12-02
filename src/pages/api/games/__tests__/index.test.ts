@@ -17,7 +17,7 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/modules/games/lib/gameService', () => ({
+jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
   getGames: (...args: unknown[]) => mockGetGames(...args),
   createScheduledGame: (...args: unknown[]) => mockCreateScheduledGame(...args),
   createCompletedGame: (...args: unknown[]) => mockCreateCompletedGame(...args),
@@ -893,4 +893,5 @@ describe('POST /api/games', () => {
     });
   });
 });
+
 

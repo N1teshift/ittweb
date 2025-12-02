@@ -30,3 +30,4 @@ export default createPostHandler<{ revalidated: boolean; path: string }>(
   }
 );
 
+

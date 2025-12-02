@@ -2,9 +2,9 @@ import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/ge
 import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { useState } from 'react';
-import { ABILITIES, ABILITY_CATEGORIES, AbilityCategory, AbilityData, getAbilitiesByCategory, searchAbilities } from '@/features/modules/guides/data/abilities';
-import GuideCard from '@/features/modules/guides/components/GuideCard';
-import GuideIcon from '@/features/modules/guides/components/GuideIcon';
+import { ABILITIES, ABILITY_CATEGORIES, AbilityCategory, AbilityData, getAbilitiesByCategory, searchAbilities } from '@/features/modules/content/guides/data/abilities';
+import GuideCard from '@/features/modules/content/guides/components/GuideCard';
+import GuideIcon from '@/features/modules/content/guides/components/GuideIcon';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
@@ -197,5 +197,6 @@ export default function AbilitiesPage() {
     </ErrorBoundary>
   );
 }
+
 
 

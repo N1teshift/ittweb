@@ -123,3 +123,4 @@ if (typeof window !== 'undefined' && !process.env.CI) {
 // Export instances for backward compatibility
 export { app, db, storage, analytics };
 
+

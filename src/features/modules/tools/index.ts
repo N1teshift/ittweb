@@ -1,3 +1,1 @@
-export * from './components';
-export * from './types';
-
+export * from '@/features/modules/tools-group/tools';

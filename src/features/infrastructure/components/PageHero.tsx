@@ -30,3 +30,4 @@ const PageHero: React.FC<PageHeroProps> = ({
 };
 
 export default PageHero;
+

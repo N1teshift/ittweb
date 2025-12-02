@@ -9,7 +9,7 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/modules/blog/lib/postService', () => ({
+jest.mock('@/features/modules/content/blog/lib/postService', () => ({
   getAllPosts: (...args: unknown[]) => mockGetAllPosts(...args),
   createPost: (...args: unknown[]) => mockCreatePost(...args),
 }));
@@ -462,4 +462,5 @@ describe('POST /api/posts', () => {
     );
   });
 });
+
 

@@ -203,8 +203,8 @@ export type AbilityData = {
  */
 export function generateItemsIconUtils(itemsDir) {
   const content = `import { ItemData } from '@/types/items';
-import { resolveExplicitIcon } from '@/features/modules/guides/utils/iconMap';
-import { getDefaultIconPath, ITTIconCategory } from '@/features/modules/guides/utils/iconUtils';
+import { resolveExplicitIcon } from '@/features/modules/content/guides/utils/iconMap';
+import { getDefaultIconPath, ITTIconCategory } from '@/features/modules/content/guides/utils/iconUtils';
 
 function toIconCategory(item: ItemData): ITTIconCategory {
   return item.category === 'buildings' ? 'buildings' : 'items';

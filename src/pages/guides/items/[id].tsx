@@ -3,13 +3,13 @@ import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/ge
 import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ITEMS_DATA, getItemById } from '@/features/modules/guides/data/items';
-import { ABILITIES, getAbilityById } from '@/features/modules/guides/data/abilities';
-import { getAbilitySlugFromRawId, findAbilitySlugByRawId } from '@/features/modules/guides/data/items/abilityIdMapper';
-import { ALL_UNITS } from '@/features/modules/guides/data/units/allUnits';
+import { ITEMS_DATA, getItemById } from '@/features/modules/content/guides/data/items';
+import { ABILITIES, getAbilityById } from '@/features/modules/content/guides/data/abilities';
+import { getAbilitySlugFromRawId, findAbilitySlugByRawId } from '@/features/modules/content/guides/data/items/abilityIdMapper';
+import { ALL_UNITS } from '@/features/modules/content/guides/data/units/allUnits';
 import { ItemData } from '@/types/items';
-import { ColoredText } from '@/features/modules/guides/components/ColoredText';
-import GuideIcon from '@/features/modules/guides/components/GuideIcon';
+import { ColoredText } from '@/features/modules/content/guides/components/ColoredText';
+import GuideIcon from '@/features/modules/content/guides/components/GuideIcon';
 
 type Props = { item: ItemData };
 

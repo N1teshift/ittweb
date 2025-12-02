@@ -24,7 +24,7 @@ jest.mock('@/features/infrastructure/utils/userRoleUtils', () => ({
   isAdmin: jest.fn(),
 }));
 
-jest.mock('@/features/modules/games/lib/gameService', () => ({
+jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
   getGameById: jest.fn(),
   updateGame: jest.fn(),
   deleteGame: jest.fn(),
@@ -37,7 +37,7 @@ jest.mock('@/pages/api/auth/[...nextauth]', () => ({
 const mockGetServerSession = getServerSession as jest.MockedFunction<typeof getServerSession>;
 const { getUserDataByDiscordId } = jest.requireMock('@/features/infrastructure/lib/userDataService');
 const { isAdmin } = jest.requireMock('@/features/infrastructure/utils/userRoleUtils');
-const { getGameById, updateGame, deleteGame } = jest.requireMock('@/features/modules/games/lib/gameService');
+const { getGameById, updateGame, deleteGame } = jest.requireMock('@/features/modules/game-management/games/lib/gameService');
 
 /**
  * API Route Authentication Integration Tests

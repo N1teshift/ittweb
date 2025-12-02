@@ -3,10 +3,10 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../api/auth/[...nextauth]';
 import Head from 'next/head';
 import PageHero from '@/features/infrastructure/components/PageHero';
-import { getPostById } from '@/features/modules/blog/lib/postService';
+import { getPostById } from '@/features/modules/content/blog/lib/postService';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
-import EditPostForm from '@/features/modules/blog/components/EditPostForm';
-import type { PostFormState } from '@/features/modules/blog/hooks/useNewPostForm';
+import EditPostForm from '@/features/modules/content/blog/components/EditPostForm';
+import type { PostFormState } from '@/features/modules/content/blog/hooks/useNewPostForm';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 
 type EditPostPageProps = {

@@ -1,7 +1,7 @@
 import type { NextApiRequest } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-import { getPlayerStats } from '@/features/modules/players/lib/playerService';
-import type { PlayerSearchFilters } from '@/features/modules/players/types';
+import { getPlayerStats } from '@/features/modules/community/players/lib/playerService';
+import type { PlayerSearchFilters } from '@/features/modules/community/players/types';
 
 /**
  * GET /api/players/[name] - Get player statistics

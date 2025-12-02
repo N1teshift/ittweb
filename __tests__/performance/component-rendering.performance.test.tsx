@@ -1,12 +1,12 @@
 /// <reference types="@testing-library/jest-dom" />
 import React from 'react';
 import { render } from '@testing-library/react';
-import { ActivityChart } from '@/features/modules/analytics/components/ActivityChart';
-import { EloChart } from '@/features/modules/analytics/components/EloChart';
+import { ActivityChart } from '@/features/modules/analytics-group/analytics/components/ActivityChart';
+import { EloChart } from '@/features/modules/analytics-group/analytics/components/EloChart';
 import type {
   ActivityDataPoint,
   EloHistoryDataPoint,
-} from '@/features/modules/analytics/types';
+} from '@/features/modules/analytics-group/analytics/types';
 
 // Mock recharts
 jest.mock('recharts', () => ({

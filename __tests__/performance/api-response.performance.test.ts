@@ -3,19 +3,19 @@ jest.mock('next-auth/next', () => ({
   getServerSession: jest.fn(),
 }));
 
-jest.mock('@/features/modules/games/lib/gameService', () => ({
+jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
   getGames: jest.fn(),
 }));
 
-jest.mock('@/features/modules/players/lib/playerService', () => ({
+jest.mock('@/features/modules/community/players/lib/playerService', () => ({
   getAllPlayers: jest.fn(),
 }));
 
-jest.mock('@/features/modules/standings/lib/standingsService', () => ({
+jest.mock('@/features/modules/community/standings/lib/standingsService', () => ({
   getStandings: jest.fn(),
 }));
 
-jest.mock('@/features/modules/analytics/lib/analyticsService', () => ({
+jest.mock('@/features/modules/analytics-group/analytics/lib/analyticsService', () => ({
   getActivityData: jest.fn(),
 }));
 
@@ -42,10 +42,10 @@ import handlerPlayersIndex from '@/pages/api/players/index';
 import handlerStandings from '@/pages/api/standings/index';
 import handlerAnalyticsActivity from '@/pages/api/analytics/activity';
 
-const { getGames } = jest.requireMock('@/features/modules/games/lib/gameService');
-const { getAllPlayers } = jest.requireMock('@/features/modules/players/lib/playerService');
-const { getStandings } = jest.requireMock('@/features/modules/standings/lib/standingsService');
-const { getActivityData } = jest.requireMock('@/features/modules/analytics/lib/analyticsService');
+const { getGames } = jest.requireMock('@/features/modules/game-management/games/lib/gameService');
+const { getAllPlayers } = jest.requireMock('@/features/modules/community/players/lib/playerService');
+const { getStandings } = jest.requireMock('@/features/modules/community/standings/lib/standingsService');
+const { getActivityData } = jest.requireMock('@/features/modules/analytics-group/analytics/lib/analyticsService');
 
 // Performance thresholds (in milliseconds)
 const PERFORMANCE_THRESHOLDS = {

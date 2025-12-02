@@ -28,7 +28,7 @@ jest.mock('@/features/infrastructure/api/routeHandlers', () => ({
   },
 }));
 
-jest.mock('@/features/modules/analytics/lib/analyticsService', () => ({
+jest.mock('@/features/modules/analytics-group/analytics/lib/analyticsService', () => ({
   getEloHistory: jest.fn(),
 }));
 
@@ -44,7 +44,7 @@ jest.mock('@/features/infrastructure/logging', () => ({
 
 import handlerEloHistory from '../elo-history';
 
-const { getEloHistory } = jest.requireMock('@/features/modules/analytics/lib/analyticsService');
+const { getEloHistory } = jest.requireMock('@/features/modules/analytics-group/analytics/lib/analyticsService');
 
 const runHandler = async (req: NextApiRequest) => {
   const { res, status, json } = createMockResponse();
@@ -240,4 +240,5 @@ describe('GET /api/analytics/elo-history', () => {
     expect(status).toHaveBeenCalledWith(405);
   });
 });
+
 

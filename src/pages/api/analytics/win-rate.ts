@@ -1,6 +1,6 @@
 import type { NextApiRequest } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-import { getWinRateData } from '@/features/modules/analytics/lib/analyticsService';
+import { getWinRateData } from '@/features/modules/analytics-group/analytics/lib/analyticsService';
 
 /**
  * GET /api/analytics/win-rate - Get win rate data
@@ -26,6 +26,7 @@ export default createApiHandler(
     },
   }
 );
+
 
 
 

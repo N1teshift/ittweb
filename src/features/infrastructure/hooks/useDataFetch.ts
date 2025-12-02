@@ -258,11 +258,11 @@ export function createDataFetchHook<TData, TParams = void>(
     }, [isEnabled, params]);
 
     useEffect(() => {
-      if (!useSwrMode) {
+      if (!useSwrMode && isEnabled) {
         fetchData();
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [useSwrMode, fetchData, ...dependencies]);
+    }, [useSwrMode, isEnabled, ...dependencies]);
 
     // Return appropriate result based on mode
     if (useSwrMode) {
@@ -363,4 +363,5 @@ export function createSwrFetcher<TData>(
 
 // Re-export helper function for convenience
 export { createUrlDataFetchHook } from './useDataFetch.helpers';
+
 

@@ -3,10 +3,10 @@ import Link from 'next/link';
 import type { GetServerSideProps } from 'next';
 import { PageHero, ErrorBoundary } from '@/features/infrastructure/components';
 import { Card } from '@/features/infrastructure/components/ui/Card';
-import { ClassSelectionChart, ClassWinRateChart } from '@/features/modules/analytics/components';
+import { ClassSelectionChart, ClassWinRateChart } from '@/features/modules/analytics-group/analytics/components';
 import LoadingScreen from '@/features/infrastructure/components/ui/LoadingScreen';
 import { EmptyState } from '@/features/infrastructure/components/ui';
-import type { ClassSelectionData, ClassWinRateData, ClassStats } from '@/features/modules/analytics/types';
+import type { ClassSelectionData, ClassWinRateData, ClassStats } from '@/features/modules/analytics-group/analytics/types';
 
 // Mark page as SSR to prevent ISR manifest warnings
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -170,4 +170,5 @@ export default function ClassStatisticsPage() {
     </ErrorBoundary>
   );
 }
+
 

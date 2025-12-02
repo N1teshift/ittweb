@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useSession, signIn } from 'next-auth/react';
-import { useGame } from '@/features/modules/games/hooks/useGame';
-import { GameDetail } from '@/features/modules/games/components/GameDetail';
+import { useGame } from '@/features/modules/game-management/games/hooks/useGame';
+import { GameDetail } from '@/features/modules/game-management/games/components/GameDetail';
 import { Card } from '@/features/infrastructure/components/ui/Card';
-import EditGameForm from '@/features/modules/scheduled-games/components/EditGameForm';
-import GameDeleteDialog from '@/features/modules/scheduled-games/components/GameDeleteDialog';
-import UploadReplayModal from '@/features/modules/scheduled-games/components/UploadReplayModal';
+import EditGameForm from '@/features/modules/game-management/scheduled-games/components/EditGameForm';
+import GameDeleteDialog from '@/features/modules/game-management/scheduled-games/components/GameDeleteDialog';
+import UploadReplayModal from '@/features/modules/game-management/scheduled-games/components/UploadReplayModal';
 import { Logger } from '@/features/infrastructure/logging';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 import { ErrorBoundary } from '@/features/infrastructure/components';
-import type { GameWithPlayers } from '@/features/modules/games/types';
+import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
 
 export default function GameDetailPage() {
   const router = useRouter();

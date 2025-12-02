@@ -1,6 +1,6 @@
 import type { NextApiRequest } from 'next';
 import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-import { getEloHistory } from '@/features/modules/analytics/lib/analyticsService';
+import { getEloHistory } from '@/features/modules/analytics-group/analytics/lib/analyticsService';
 
 /**
  * GET /api/analytics/elo-history - Get ELO history
@@ -30,6 +30,7 @@ export default createApiHandler(
     },
   }
 );
+
 
 
 

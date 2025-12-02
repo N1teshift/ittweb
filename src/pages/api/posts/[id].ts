@@ -8,7 +8,7 @@ import {
   getPostById, 
   updatePost, 
   deletePost 
-} from '@/features/modules/blog/lib/postService';
+} from '@/features/modules/content/blog/lib/postService';
 import { CreatePost } from '@/types/post';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';

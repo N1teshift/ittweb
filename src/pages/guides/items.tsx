@@ -3,11 +3,11 @@ import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState, useMemo, useEffect } from 'react';
-import { ITEMS_DATA, ITEMS_BY_CATEGORY, searchItems, getItemById } from '@/features/modules/guides/data/items';
-import { ALL_UNITS } from '@/features/modules/guides/data/units/allUnits';
+import { ITEMS_DATA, ITEMS_BY_CATEGORY, searchItems, getItemById } from '@/features/modules/content/guides/data/items';
+import { ALL_UNITS } from '@/features/modules/content/guides/data/units/allUnits';
 import { ItemCategory, ItemData } from '@/types/items';
-import GuideCard from '@/features/modules/guides/components/GuideCard';
-import GuideIcon from '@/features/modules/guides/components/GuideIcon';
+import GuideCard from '@/features/modules/content/guides/components/GuideCard';
+import GuideIcon from '@/features/modules/content/guides/components/GuideIcon';
 
 function IconWithTooltip({ 
   children, 
