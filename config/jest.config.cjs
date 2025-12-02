@@ -16,7 +16,11 @@ const config = {
     "^@/utils/(.*)$": "<rootDir>/src/utils/$1",
     "^@/config/(.*)$": "<rootDir>/src/config/$1",
     "^@/__tests__/(.*)$": "<rootDir>/__tests__/$1",
+    "^(\\.\\.?/.*)\\.js$": "$1",
     "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+  },
+  haste: {
+    throwOnModuleCollision: false,
   },
   setupFilesAfterEnv: ["<rootDir>/config/jest.setup.cjs"],
   testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],

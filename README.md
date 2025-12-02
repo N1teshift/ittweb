@@ -93,6 +93,8 @@ npm run dev
 - `npm run test:coverage` - Generate test coverage
 - `npm run type-check` - TypeScript type checking
 - `npm run build:check` - Type check + build
+- `npm run replay-meta:build` - Build the replay metadata CLI
+- `npm run replay-meta:decode -- <path>` - Decode a `.w3g` replay (after build)
 
 
 ## Internationalization

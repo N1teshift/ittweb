@@ -65,6 +65,7 @@ desktop.ini
 # IDE & Editors
 # ============================================================================
 .vscode/
+.cursor/
 .idea/
 *.swp
 *.swo
@@ -91,6 +92,9 @@ public/icons/@unused/
 
 # Temporary files
 tmp/
+
+# Replay metadata parser build output
+scripts/replay-metadata-parser/dist/
 
 # Game files
 Island.Troll.Tribes.v3.28.w3x
