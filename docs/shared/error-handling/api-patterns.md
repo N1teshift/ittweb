@@ -44,7 +44,7 @@ export default createApiHandler(async (req, res) => {
 
 ## Related Documentation
 
-- [Error Handling Guide](../ERROR_HANDLING.md)
+- [Error Handling Guide](./ERROR_HANDLING.md)
 - [Component Error Patterns](./component-patterns.md)
 - [Service Layer Patterns](./service-patterns.md)
 

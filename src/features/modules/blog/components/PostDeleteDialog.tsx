@@ -35,9 +35,10 @@ export default function PostDeleteDialog({
       aria-modal="true" 
       aria-labelledby="delete-dialog-title"
     >
-      <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
+      <div
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         aria-hidden="true"
+        data-testid="backdrop"
         onClick={onCancel}
       />
       <div className="relative w-full max-w-md rounded-lg border border-amber-500/40 bg-gray-900/95 backdrop-blur-md p-6 shadow-2xl animate-scale-in">

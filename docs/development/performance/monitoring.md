@@ -56,7 +56,7 @@ Regular performance maintenance should include:
 
 ## Related Documentation
 
-- [Performance Guide](../PERFORMANCE.md)
+- [Performance Guide](../../shared/PERFORMANCE.md)
 - [Query Optimization](./query-optimization.md)
 - [Caching Strategies](./caching.md)
 - [Bundle Optimization](./bundle-optimization.md)

@@ -108,7 +108,7 @@ const players = await db.collection('games').doc(id).collection('players').get()
 
 ## Related Documentation
 
-- [Performance Guide](../PERFORMANCE.md)
-- [Database Indexes](../database/indexes.md)
-- [Database Schemas](../database/schemas.md)
+- [Performance Guide](../../shared/PERFORMANCE.md)
+- [Database Indexes](../../production/database/indexes.md)
+- [Database Schemas](../../production/database/schemas.md)
 

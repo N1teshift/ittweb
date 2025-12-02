@@ -66,7 +66,7 @@ export async function myOperation(): Promise<MyData> {
 
 ## Related Documentation
 
-- [Error Handling Guide](../ERROR_HANDLING.md)
+- [Error Handling Guide](./ERROR_HANDLING.md)
 - [API Error Patterns](./api-patterns.md)
 - [Component Error Patterns](./component-patterns.md)
 

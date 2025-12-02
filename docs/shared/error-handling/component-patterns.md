@@ -75,7 +75,7 @@ function MyComponent() {
 
 ## Related Documentation
 
-- [Error Handling Guide](../ERROR_HANDLING.md)
+- [Error Handling Guide](./ERROR_HANDLING.md)
 - [API Error Patterns](./api-patterns.md)
 - [Service Layer Patterns](./service-patterns.md)
 

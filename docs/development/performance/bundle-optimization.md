@@ -187,6 +187,6 @@ setField2(value2);
 
 ## Related Documentation
 
-- [Performance Guide](../PERFORMANCE.md)
-- [Component Library](../development/components.md)
+- [Performance Guide](../../shared/PERFORMANCE.md)
+- [Component Library](./components.md)
 

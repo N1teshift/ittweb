@@ -121,6 +121,6 @@ const [games, players, standings] = await Promise.all([
 
 ## Related Documentation
 
-- [Performance Guide](../PERFORMANCE.md)
-- [API Client Usage](../development/api-client.md)
+- [Performance Guide](../../shared/PERFORMANCE.md)
+- [API Client Usage](./api-client.md)
 

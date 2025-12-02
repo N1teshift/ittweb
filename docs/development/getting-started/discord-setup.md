@@ -61,5 +61,5 @@ For production, update the redirect URI in Discord Developer Portal:
 ## Related Documentation
 
 - [Environment Setup](./setup.md)
-- [Authentication & Authorization](../security/authentication-authorization.md)
+- [Authentication & Authorization](../../production/security/authentication-authorization.md)
 

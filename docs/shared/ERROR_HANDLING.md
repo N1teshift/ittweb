@@ -120,7 +120,7 @@ import { setUserContext } from '@/features/infrastructure/monitoring';
 setUserContext('user123', 'user@example.com', 'username');
 ```
 
-See [Monitoring Guide](./operations/monitoring.md) for Sentry setup.
+See [Monitoring Guide](../development/operations/monitoring.md) for Sentry setup.
 
 ## Security Considerations
 
@@ -201,9 +201,9 @@ setError('Unable to load user data. Please try again.');
 
 ## Related Documentation
 
-- [Monitoring Guide](./operations/monitoring.md) - Error tracking setup and Sentry integration
-- [Architecture](./development/architecture.md) - System architecture and design patterns
-- [API Client Usage](./development/api-client.md) - Client-side API error handling
+- [Monitoring Guide](../development/operations/monitoring.md) - Error tracking setup and Sentry integration
+- [Architecture](../development/architecture.md) - System architecture and design patterns
+- [API Client Usage](../development/api-client.md) - Client-side API error handling
 - [Security](./SECURITY.md) - Security best practices for error handling
-- [Code Patterns](./development/code-patterns.md) - Additional code patterns
+- [Code Patterns](../development/code-patterns.md) - Additional code patterns
 

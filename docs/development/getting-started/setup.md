@@ -131,7 +131,7 @@ See [CI/CD Setup Guide](./cicd-setup.md) for complete CI/CD configuration:
 
 ## Related Documentation
 
-- [Development Guide](../development/development-guide.md)
+- [Development Guide](./development-guide.md)
 - [Infrastructure README](../src/features/infrastructure/README.md)
 - [Firebase Admin Setup](../src/features/infrastructure/api/firebase/admin.ts)
 

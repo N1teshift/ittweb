@@ -1,86 +1,48 @@
-# Documentation Index
+# ITT Web Documentation
 
-Quick navigation to ITT Web documentation.
+Welcome to the ITT Web documentation. This documentation is organized into three main sections based on purpose and lifecycle.
 
-## Getting Started
+## 📁 Documentation Structure
 
-- **[Environment Setup](./getting-started/setup.md)** - Firebase, Discord OAuth, and local development setup
-- **[Quick Start Testing](./operations/quick-start-testing.md)** - Launch dev server, seed data, test flows
-- **[Troubleshooting](./getting-started/troubleshooting.md)** - Common issues and solutions
+### 🚀 Production Documentation (`production/`)
+**What stays when the project is finished** - Custom business logic, domain-specific functionality, and user-facing features that define your website.
 
-## Development
+- **[API Reference](./production/api/)** - Complete API documentation for your custom endpoints
+- **[Database](./production/database/)** - Firestore schemas and indexes
+- **[Systems](./production/systems/)** - Game stats, replay parser, data pipeline
+- **[Product](./production/product/)** - Feature descriptions and user roles
+- **[Security](./production/security/)** - Your security implementations
 
-- **[Development Guide](./development/development-guide.md)** - How to add features, API routes, follow conventions
-  - [Adding Features](./development/adding-features.md)
-  - [Adding API Routes](./development/adding-api-routes.md)
-  - [Code Conventions](./development/code-conventions.md)
-- **[Architecture](./development/architecture.md)** - System architecture and design patterns
-- **[Code Patterns](./development/code-patterns.md)** - Common code patterns and recipes
-  - [CRUD Pattern](./development/patterns/crud-pattern.md)
-  - [Form Handling](./development/patterns/form-handling-pattern.md)
-  - [Pagination](./development/patterns/pagination-pattern.md)
-  - [UI Patterns](./development/patterns/ui-patterns.md)
-  - [API Route Patterns](./development/patterns/api-route-patterns.md)
-- **[Component Library](./development/components.md)** - Shared UI components
-- **[API Client Usage](./development/api-client.md)** - Using APIs from client-side code
-- **[Contributing](./development/contributing.md)** - Development standards and contribution process
+### 🛠️ Development Documentation (`development/`)
+**Internal development docs** - Learning journey, development processes, testing, and operational knowledge. Safe to remove when finished.
 
-## Database
+- **[Getting Started](./development/getting-started/)** - Setup guides and troubleshooting
+- **[Development Guide](./development/)** - Code patterns, architecture, conventions
+- **[Operations](./development/operations/)** - Testing, deployment, CI/CD, monitoring
+- **[Performance](./development/performance/)** - Optimization strategies
+- **[Archive](./development/archive/)** - Historical docs and research notes
 
-- **[Indexes](./database/indexes.md)** - Firestore index configuration (required for queries)
-- **[Schemas](./database/schemas.md)** - Firestore collection schemas (single source of truth)
+### 📚 Shared Reference (`shared/`)
+**Reference materials** - Style guides, error handling patterns, and documentation standards.
 
-## API Reference
+- **[Error Handling](./shared/ERROR_HANDLING.md)** - Error handling guide and patterns
+- **[Known Issues](./shared/KNOWN_ISSUES.md)** - Technical debt and known issues
+- **[Performance](./shared/PERFORMANCE.md)** - Performance optimization strategies
+- **[Security](./shared/SECURITY.md)** - Security best practices
+- **[Documentation Style](./shared/DOCUMENTATION_STYLE.md)** - Documentation standards
+- **[Documentation Lifecycle](./shared/documentation-lifecycle.md)** - Lifecycle management
 
-- **[API Index](./api/README.md)** - Complete API documentation
-- Individual API docs: `games`, `players`, `standings`, `analytics`, `archives`, `blog`, etc.
-
-## Operations
-
-- **[Testing Guide](./operations/testing-guide.md)** - Testing scenarios and API calls
-- **[Test Plans](./operations/test-plans/)** - Comprehensive test plans by feature
-- **[Test Specifications](./operations/test-specifications/)** - Detailed test specifications by category
-- **[Deployment](./operations/deployment.md)** - Deployment procedures
-- **[CI/CD](./operations/ci-cd.md)** - Continuous integration setup
-
-## Systems
-
-- **[Game Stats](./systems/game-stats/implementation-plan.md)** - Game statistics system architecture
-- **[Replay Parser](./systems/replay-parser/)** - Replay file parsing integration
-- **[Data Pipeline](./systems/data-pipeline/)** - Data generation scripts and guides
-- **[Timestamp Management](./systems/timestamp-time-management.md)** - Firestore timestamp handling
-
-## Product
-
-- **[Summary](./product/summary.md)** - Feature showcase
-- **[Status](./product/status.md)** - Current roadmap and phases
-- **[Improvements](./product/improvements.md)** - Infrastructure and DX upgrades
-- **[User Roles](./product/user-roles.md)** - Access and permissions
-
-## Module Documentation
+## 🔗 Module Documentation
 
 All 13 feature modules have README files in `src/features/modules/[module-name]/README.md`:
 - `games`, `players`, `standings`, `analytics`, `archives`, `scheduled-games`, `blog`, `guides`, `classes`, `meta`, `map-analyzer`, `tools`, `entries`
 
-## Reference
+## 📖 Quick Start
 
-- **[Error Handling](./ERROR_HANDLING.md)** - Complete error handling guide and patterns
-- **[Known Issues](./KNOWN_ISSUES.md)** - Technical debt and known issues
-- **[Performance](./PERFORMANCE.md)** - Performance optimization strategies
-- **[Security](./SECURITY.md)** - Security best practices
-  - [Authentication & Authorization](./security/authentication-authorization.md)
-  - [Input Validation](./security/input-validation.md)
-  - [Web Security](./security/web-security.md)
-  - [Secrets Management](./security/secrets-management.md)
-  - [Automated Scanning](./security/automated-scanning.md)
-- **[Documentation Style](./DOCUMENTATION_STYLE.md)** - Documentation standards
-- **[Documentation Lifecycle](./documentation-lifecycle.md)** - Lifecycle management and consolidation
-
-## External
-
-- **[Scripts](../scripts/README.md)** - Data generation and utility scripts
-- **[Infrastructure](../src/features/infrastructure/README.md)** - Core systems (auth, Firebase, logging)
+- **For production docs**: Start with [`production/README.md`](./production/)
+- **For development setup**: See [`development/getting-started/setup.md`](./development/getting-started/setup.md)
+- **For API reference**: Check [`production/api/README.md`](./production/api/)
 
 ---
 
-**Archive**: Historical and outdated documentation is in [`archive/`](./archive/).
+**Note**: When your project is production-ready, you can safely delete the `development/` folder while keeping `production/` and `shared/`.

@@ -4,10 +4,10 @@ Strategies for optimizing application performance.
 
 ## Quick Navigation
 
-- **[Query Optimization](./performance/query-optimization.md)** - Firestore query optimization, pagination, batch operations
-- **[Caching Strategies](./performance/caching.md)** - API caching, client-side caching, request debouncing
-- **[Bundle Optimization](./performance/bundle-optimization.md)** - Code splitting, lazy loading, component optimization
-- **[Performance Monitoring](./performance/monitoring.md)** - Web Vitals, monitoring tools, review guidelines
+- **[Query Optimization](../development/performance/query-optimization.md)** - Firestore query optimization, pagination, batch operations
+- **[Caching Strategies](../development/performance/caching.md)** - API caching, client-side caching, request debouncing
+- **[Bundle Optimization](../development/performance/bundle-optimization.md)** - Code splitting, lazy loading, component optimization
+- **[Performance Monitoring](../development/performance/monitoring.md)** - Web Vitals, monitoring tools, review guidelines
 
 ## Overview
 
@@ -20,7 +20,7 @@ This guide covers performance optimization strategies across multiple areas:
 
 ## Related Documentation
 
-- [Architecture Overview](./development/architecture.md)
-- [Development Guide](./development/development-guide.md)
-- [Troubleshooting Guide](./getting-started/troubleshooting.md)
-- [Database Indexes](./database/indexes.md)
+- [Architecture Overview](../development/architecture.md)
+- [Development Guide](../development/development-guide.md)
+- [Troubleshooting Guide](../development/getting-started/troubleshooting.md)
+- [Database Indexes](../production/database/indexes.md)
