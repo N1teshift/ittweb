@@ -27,6 +27,35 @@ interface PlayerWithResult extends Player {
   won?: boolean;
 }
 
+/**
+ * ITT-specific player stats from metadata payload
+ */
+interface ITTPlayerStats {
+  slotIndex: number;
+  name: string;
+  damageTroll: number;
+  selfHealing: number;
+  allyHealing: number;
+  goldAcquired: number;
+  meatEaten: number;
+  killsElk: number;
+  killsHawk: number;
+  killsSnake: number;
+  killsWolf: number;
+  killsBear: number;
+  killsPanther: number;
+}
+
+/**
+ * Parsed ITT metadata from W3MMD custom messages
+ */
+interface ITTMetadata {
+  version?: string;
+  schema?: number;
+  payload?: string;
+  players: ITTPlayerStats[];
+}
+
 export interface ReplayParserOptions {
   scheduledGameId?: number;
   fallbackDatetime?: string;
@@ -39,6 +68,100 @@ export interface ReplayParserResult {
     raw: ParsedW3MMDEntry[];
     lookup: Record<string, Record<string, number>>;
   };
+  ittMetadata?: ITTMetadata;
+}
+
+/**
+ * Extract ITT-specific metadata from W3MMD custom messages
+ */
+function extractITTMetadata(w3mmdActions: unknown[]): ITTMetadata | undefined {
+  const customData = new Map<string, string>();
+
+  // Extract custom messages from W3MMD actions
+  for (const action of w3mmdActions) {
+    const actionObj = action as { cache?: { key?: string } };
+    const key = actionObj.cache?.key;
+    
+    if (!key || typeof key !== 'string') continue;
+    
+    // ITT custom messages format: "custom itt_<identifier> <data>"
+    if (key.startsWith('custom itt_')) {
+      const content = key.slice('custom '.length);
+      const firstSpace = content.indexOf(' ');
+      if (firstSpace !== -1) {
+        const identifier = content.substring(0, firstSpace);
+        const data = content.substring(firstSpace + 1);
+        customData.set(identifier, data);
+      }
+    }
+  }
+
+  // Check if we have ITT metadata
+  const chunksCountStr = customData.get('itt_chunks');
+  if (!chunksCountStr) {
+    return undefined;
+  }
+
+  const numChunks = parseInt(chunksCountStr, 10);
+  if (isNaN(numChunks) || numChunks <= 0) {
+    return undefined;
+  }
+
+  // Reconstruct payload from chunks
+  const chunks: string[] = [];
+  for (let i = 0; i < numChunks; i++) {
+    const chunk = customData.get(`itt_data_${i}`);
+    if (chunk !== undefined) {
+      chunks.push(chunk);
+    }
+  }
+
+  // Unescape backslashes (WurstMMD escapes spaces)
+  const payload = chunks.join('').replace(/\\(.)/g, '$1');
+
+  // Parse the payload to extract player stats
+  const players = parseITTPayload(payload);
+
+  return {
+    version: customData.get('itt_version'),
+    schema: customData.get('itt_schema') ? parseInt(customData.get('itt_schema')!, 10) : undefined,
+    payload,
+    players,
+  };
+}
+
+/**
+ * Parse ITT metadata payload to extract player stats
+ */
+function parseITTPayload(payload: string): ITTPlayerStats[] {
+  const players: ITTPlayerStats[] = [];
+  const lines = payload.split('\n');
+
+  for (const line of lines) {
+    if (!line.startsWith('player:')) continue;
+
+    const parts = line.slice('player:'.length).split('|');
+    // Schema v2 format: slot|name|race|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
+    if (parts.length >= 16) {
+      players.push({
+        slotIndex: parseInt(parts[0], 10) || 0,
+        name: parts[1] || '',
+        damageTroll: parseInt(parts[5], 10) || 0,
+        selfHealing: parseInt(parts[6], 10) || 0,
+        allyHealing: parseInt(parts[7], 10) || 0,
+        goldAcquired: parseInt(parts[8], 10) || 0,
+        meatEaten: parseInt(parts[9], 10) || 0,
+        killsElk: parseInt(parts[10], 10) || 0,
+        killsHawk: parseInt(parts[11], 10) || 0,
+        killsSnake: parseInt(parts[12], 10) || 0,
+        killsWolf: parseInt(parts[13], 10) || 0,
+        killsBear: parseInt(parts[14], 10) || 0,
+        killsPanther: parseInt(parts[15], 10) || 0,
+      });
+    }
+  }
+
+  return players;
 }
 
 export async function parseReplayFile(
@@ -172,6 +295,22 @@ export async function parseReplayFile(
 
     const w3mmdData = buildW3MMDLookup(w3mmdActions as Parameters<typeof buildW3MMDLookup>[0] || []);
     const derivedStats = mapMissionStatsToPlayers(players, w3mmdData.lookup);
+
+    // Extract ITT-specific metadata from W3MMD custom messages
+    const ittMetadata = extractITTMetadata(w3mmdActions);
+    if (ittMetadata) {
+      logger.info('ITT metadata extracted', {
+        version: ittMetadata.version,
+        schema: ittMetadata.schema,
+        playerCount: ittMetadata.players.length,
+        players: ittMetadata.players.map(p => ({
+          name: p.name,
+          slotIndex: p.slotIndex,
+          meatEaten: p.meatEaten,
+          killsElk: p.killsElk,
+        })),
+      });
+    }
 
     // Log detailed information about the parsed replay for debugging
     logger.info('Parsing replay - raw data', {
@@ -359,12 +498,36 @@ export async function parseReplayFile(
         const stats = derivedStats.get(player.id) || {};
         const flag = deriveFlag(player.teamid, winningTeamId, player, w3mmdData.lookup);
         
+        // Find ITT stats for this player by matching slot index or name
+        const ittPlayer = ittMetadata?.players.find(
+          (p) => p.slotIndex === player.id || 
+                 p.name.toLowerCase().replace(/[^a-z0-9]/g, '') === 
+                 (player.name || '').toLowerCase().replace(/[^a-z0-9]/g, '')
+        );
+        
+        // Merge ITT stats if found
+        const ittStats = ittPlayer ? {
+          damageDealt: ittPlayer.damageTroll || stats.damageDealt,
+          selfHealing: ittPlayer.selfHealing,
+          allyHealing: ittPlayer.allyHealing,
+          goldAcquired: ittPlayer.goldAcquired,
+          meatEaten: ittPlayer.meatEaten,
+          killsElk: ittPlayer.killsElk,
+          killsHawk: ittPlayer.killsHawk,
+          killsSnake: ittPlayer.killsSnake,
+          killsWolf: ittPlayer.killsWolf,
+          killsBear: ittPlayer.killsBear,
+          killsPanther: ittPlayer.killsPanther,
+        } : {};
+        
         logger.debug('Player parsed', {
           name: player.name,
           pid: player.id,
           teamId: player.teamid,
           flag,
           stats: Object.keys(stats),
+          ittStats: Object.keys(ittStats),
+          hasITTData: !!ittPlayer,
         });
 
         return {
@@ -372,6 +535,7 @@ export async function parseReplayFile(
           pid: player.id,
           flag,
           ...stats,
+          ...ittStats,
         };
       }),
     };
@@ -389,6 +553,7 @@ export async function parseReplayFile(
         raw: w3mmdData.rawEntries,
         lookup: w3mmdData.lookup,
       },
+      ittMetadata,
     };
   } catch (error) {
     const err = error as Error;

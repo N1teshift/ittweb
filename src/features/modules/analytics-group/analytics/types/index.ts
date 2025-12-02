@@ -75,5 +75,103 @@ export interface ClassWinRateData {
   winRate: number; // percentage
 }
 
+/**
+ * ITT-specific analytics types
+ */
+
+/**
+ * Animal kills data (aggregate or per-player)
+ */
+export interface AnimalKillsData {
+  elk: number;
+  hawk: number;
+  snake: number;
+  wolf: number;
+  bear: number;
+  panther: number;
+  total: number;
+}
+
+/**
+ * Healing statistics data
+ */
+export interface HealingStatsData {
+  selfHealing: number;
+  allyHealing: number;
+  totalHealing: number;
+}
+
+/**
+ * Player ITT stats summary
+ */
+export interface PlayerITTStats {
+  playerName: string;
+  gamesPlayed: number;
+  totalDamageDealt: number;
+  totalSelfHealing: number;
+  totalAllyHealing: number;
+  totalMeatEaten: number;
+  totalGoldAcquired: number;
+  animalKills: AnimalKillsData;
+  averagePerGame: {
+    damageDealt: number;
+    selfHealing: number;
+    allyHealing: number;
+    meatEaten: number;
+    goldAcquired: number;
+    animalKills: number;
+  };
+}
+
+/**
+ * Aggregate ITT stats across all games
+ */
+export interface AggregateITTStats {
+  totalGames: number;
+  totalDamageDealt: number;
+  totalHealing: HealingStatsData;
+  totalMeatEaten: number;
+  totalGoldAcquired: number;
+  totalAnimalKills: AnimalKillsData;
+  averagesPerGame: {
+    damageDealt: number;
+    selfHealing: number;
+    allyHealing: number;
+    meatEaten: number;
+    goldAcquired: number;
+    animalKills: number;
+  };
+}
+
+/**
+ * Animal kills distribution data (for pie chart)
+ */
+export interface AnimalKillsDistribution {
+  animalType: 'elk' | 'hawk' | 'snake' | 'wolf' | 'bear' | 'panther';
+  count: number;
+  percentage: number;
+}
+
+/**
+ * Top hunters leaderboard entry
+ */
+export interface TopHunterEntry {
+  playerName: string;
+  totalKills: number;
+  favoriteAnimal: string;
+  gamesPlayed: number;
+}
+
+/**
+ * Top healers leaderboard entry
+ */
+export interface TopHealerEntry {
+  playerName: string;
+  totalHealing: number;
+  selfHealing: number;
+  allyHealing: number;
+  gamesPlayed: number;
+}
+
 
 

@@ -88,7 +88,8 @@ function deriveStatsFromMission(entry: Record<string, number>): PlayerStatPatch 
   Object.entries(entry).forEach(([key, value]) => {
     const normalizedKey = key.toLowerCase();
 
-    if (normalizedKey.includes('kill')) {
+    // Generic kills (not animal-specific)
+    if (normalizedKey === 'kills' || normalizedKey === 'kill') {
       stats.kills = value;
       return;
     }
@@ -100,8 +101,10 @@ function deriveStatsFromMission(entry: Record<string, number>): PlayerStatPatch 
       stats.assists = value;
       return;
     }
-    if (normalizedKey.includes('gold')) {
+    // Gold - handle both 'gold' and 'goldacquired'
+    if (normalizedKey === 'gold' || normalizedKey === 'goldacquired') {
       stats.gold = value;
+      stats.goldAcquired = value;
       return;
     }
     if (normalizedKey.includes('damage') && normalizedKey.includes('taken')) {
@@ -118,6 +121,47 @@ function deriveStatsFromMission(entry: Record<string, number>): PlayerStatPatch 
     }
     if (normalizedKey.includes('class')) {
       stats.class = decodeMaybeString(value);
+      return;
+    }
+
+    // ITT-specific stats
+    if (normalizedKey === 'selfhealing' || normalizedKey === 'selfheal') {
+      stats.selfHealing = value;
+      return;
+    }
+    if (normalizedKey === 'allyhealing' || normalizedKey === 'allyheal') {
+      stats.allyHealing = value;
+      return;
+    }
+    if (normalizedKey === 'meateaten' || normalizedKey === 'meat') {
+      stats.meatEaten = value;
+      return;
+    }
+
+    // Animal kill counts
+    if (normalizedKey === 'killselk' || normalizedKey === 'elk') {
+      stats.killsElk = value;
+      return;
+    }
+    if (normalizedKey === 'killshawk' || normalizedKey === 'hawk') {
+      stats.killsHawk = value;
+      return;
+    }
+    if (normalizedKey === 'killssnake' || normalizedKey === 'snake') {
+      stats.killsSnake = value;
+      return;
+    }
+    if (normalizedKey === 'killswolf' || normalizedKey === 'wolf') {
+      stats.killsWolf = value;
+      return;
+    }
+    if (normalizedKey === 'killsbear' || normalizedKey === 'bear') {
+      stats.killsBear = value;
+      return;
+    }
+    if (normalizedKey === 'killspanther' || normalizedKey === 'panther') {
+      stats.killsPanther = value;
+      return;
     }
   });
 

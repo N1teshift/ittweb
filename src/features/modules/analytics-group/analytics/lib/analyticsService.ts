@@ -9,6 +9,12 @@ import type {
   PlayerActivityDataPoint,
   ClassSelectionData,
   ClassWinRateData,
+  AnimalKillsData,
+  AnimalKillsDistribution,
+  AggregateITTStats,
+  TopHunterEntry,
+  TopHealerEntry,
+  HealingStatsData,
 } from '../types';
 import { format, eachDayOfInterval, parseISO, startOfMonth, eachMonthOfInterval } from 'date-fns';
 
@@ -670,6 +676,302 @@ export async function getClassWinRateData(
     logError(err, 'Failed to get class win rate data', {
       component: 'analyticsService',
       operation: 'getClassWinRateData',
+    });
+    return [];
+  }
+}
+
+/**
+ * Get aggregate ITT stats across all games
+ */
+export async function getAggregateITTStats(
+  category?: string,
+  startDate?: string,
+  endDate?: string,
+): Promise<AggregateITTStats> {
+  try {
+    logger.info('Getting aggregate ITT stats', { category, startDate, endDate });
+
+    const gamesResult = await getGames({
+      category,
+      startDate,
+      endDate,
+      gameState: 'completed',
+      limit: 10000,
+    });
+
+    const totals = {
+      games: 0,
+      damageDealt: 0,
+      selfHealing: 0,
+      allyHealing: 0,
+      meatEaten: 0,
+      goldAcquired: 0,
+      elk: 0,
+      hawk: 0,
+      snake: 0,
+      wolf: 0,
+      bear: 0,
+      panther: 0,
+    };
+
+    for (const game of gamesResult.games) {
+      const gameWithPlayers = await getGameById(game.id);
+      if (!gameWithPlayers?.players) continue;
+
+      totals.games++;
+
+      for (const player of gameWithPlayers.players) {
+        totals.damageDealt += player.damageDealt || 0;
+        totals.selfHealing += player.selfHealing || 0;
+        totals.allyHealing += player.allyHealing || 0;
+        totals.meatEaten += player.meatEaten || 0;
+        totals.goldAcquired += player.goldAcquired || player.gold || 0;
+        totals.elk += player.killsElk || 0;
+        totals.hawk += player.killsHawk || 0;
+        totals.snake += player.killsSnake || 0;
+        totals.wolf += player.killsWolf || 0;
+        totals.bear += player.killsBear || 0;
+        totals.panther += player.killsPanther || 0;
+      }
+    }
+
+    const totalAnimalKills = totals.elk + totals.hawk + totals.snake + totals.wolf + totals.bear + totals.panther;
+    const gameCount = totals.games || 1; // Avoid division by zero
+
+    return {
+      totalGames: totals.games,
+      totalDamageDealt: totals.damageDealt,
+      totalHealing: {
+        selfHealing: totals.selfHealing,
+        allyHealing: totals.allyHealing,
+        totalHealing: totals.selfHealing + totals.allyHealing,
+      },
+      totalMeatEaten: totals.meatEaten,
+      totalGoldAcquired: totals.goldAcquired,
+      totalAnimalKills: {
+        elk: totals.elk,
+        hawk: totals.hawk,
+        snake: totals.snake,
+        wolf: totals.wolf,
+        bear: totals.bear,
+        panther: totals.panther,
+        total: totalAnimalKills,
+      },
+      averagesPerGame: {
+        damageDealt: totals.damageDealt / gameCount,
+        selfHealing: totals.selfHealing / gameCount,
+        allyHealing: totals.allyHealing / gameCount,
+        meatEaten: totals.meatEaten / gameCount,
+        goldAcquired: totals.goldAcquired / gameCount,
+        animalKills: totalAnimalKills / gameCount,
+      },
+    };
+  } catch (error) {
+    const err = error as Error;
+    logError(err, 'Failed to get aggregate ITT stats', {
+      component: 'analyticsService',
+      operation: 'getAggregateITTStats',
+    });
+    return {
+      totalGames: 0,
+      totalDamageDealt: 0,
+      totalHealing: { selfHealing: 0, allyHealing: 0, totalHealing: 0 },
+      totalMeatEaten: 0,
+      totalGoldAcquired: 0,
+      totalAnimalKills: { elk: 0, hawk: 0, snake: 0, wolf: 0, bear: 0, panther: 0, total: 0 },
+      averagesPerGame: { damageDealt: 0, selfHealing: 0, allyHealing: 0, meatEaten: 0, goldAcquired: 0, animalKills: 0 },
+    };
+  }
+}
+
+/**
+ * Get animal kills distribution (for pie chart)
+ */
+export async function getAnimalKillsDistribution(
+  category?: string,
+  startDate?: string,
+  endDate?: string,
+): Promise<AnimalKillsDistribution[]> {
+  try {
+    logger.info('Getting animal kills distribution', { category, startDate, endDate });
+
+    const stats = await getAggregateITTStats(category, startDate, endDate);
+    const total = stats.totalAnimalKills.total || 1; // Avoid division by zero
+
+    const animalTypes: Array<'elk' | 'hawk' | 'snake' | 'wolf' | 'bear' | 'panther'> = 
+      ['elk', 'hawk', 'snake', 'wolf', 'bear', 'panther'];
+
+    return animalTypes
+      .map((animalType) => ({
+        animalType,
+        count: stats.totalAnimalKills[animalType],
+        percentage: (stats.totalAnimalKills[animalType] / total) * 100,
+      }))
+      .sort((a, b) => b.count - a.count);
+  } catch (error) {
+    const err = error as Error;
+    logError(err, 'Failed to get animal kills distribution', {
+      component: 'analyticsService',
+      operation: 'getAnimalKillsDistribution',
+    });
+    return [];
+  }
+}
+
+/**
+ * Get top hunters leaderboard
+ */
+export async function getTopHunters(
+  category?: string,
+  startDate?: string,
+  endDate?: string,
+  limit = 10,
+): Promise<TopHunterEntry[]> {
+  try {
+    logger.info('Getting top hunters', { category, startDate, endDate, limit });
+
+    const gamesResult = await getGames({
+      category,
+      startDate,
+      endDate,
+      gameState: 'completed',
+      limit: 10000,
+    });
+
+    const playerStats = new Map<string, {
+      totalKills: number;
+      gamesPlayed: number;
+      animalKills: AnimalKillsData;
+    }>();
+
+    for (const game of gamesResult.games) {
+      const gameWithPlayers = await getGameById(game.id);
+      if (!gameWithPlayers?.players) continue;
+
+      for (const player of gameWithPlayers.players) {
+        const name = player.name.toLowerCase();
+        const existing = playerStats.get(name) || {
+          totalKills: 0,
+          gamesPlayed: 0,
+          animalKills: { elk: 0, hawk: 0, snake: 0, wolf: 0, bear: 0, panther: 0, total: 0 },
+        };
+
+        existing.gamesPlayed++;
+        existing.animalKills.elk += player.killsElk || 0;
+        existing.animalKills.hawk += player.killsHawk || 0;
+        existing.animalKills.snake += player.killsSnake || 0;
+        existing.animalKills.wolf += player.killsWolf || 0;
+        existing.animalKills.bear += player.killsBear || 0;
+        existing.animalKills.panther += player.killsPanther || 0;
+        existing.animalKills.total = 
+          existing.animalKills.elk + existing.animalKills.hawk + 
+          existing.animalKills.snake + existing.animalKills.wolf + 
+          existing.animalKills.bear + existing.animalKills.panther;
+        existing.totalKills = existing.animalKills.total;
+
+        playerStats.set(name, existing);
+      }
+    }
+
+    return Array.from(playerStats.entries())
+      .map(([name, stats]) => {
+        // Find favorite animal
+        const animalCounts = [
+          { animal: 'Elk', count: stats.animalKills.elk },
+          { animal: 'Hawk', count: stats.animalKills.hawk },
+          { animal: 'Snake', count: stats.animalKills.snake },
+          { animal: 'Wolf', count: stats.animalKills.wolf },
+          { animal: 'Bear', count: stats.animalKills.bear },
+          { animal: 'Panther', count: stats.animalKills.panther },
+        ];
+        const favorite = animalCounts.sort((a, b) => b.count - a.count)[0];
+
+        return {
+          playerName: name,
+          totalKills: stats.totalKills,
+          favoriteAnimal: favorite.count > 0 ? favorite.animal : 'None',
+          gamesPlayed: stats.gamesPlayed,
+        };
+      })
+      .filter((p) => p.totalKills > 0)
+      .sort((a, b) => b.totalKills - a.totalKills)
+      .slice(0, limit);
+  } catch (error) {
+    const err = error as Error;
+    logError(err, 'Failed to get top hunters', {
+      component: 'analyticsService',
+      operation: 'getTopHunters',
+    });
+    return [];
+  }
+}
+
+/**
+ * Get top healers leaderboard
+ */
+export async function getTopHealers(
+  category?: string,
+  startDate?: string,
+  endDate?: string,
+  limit = 10,
+): Promise<TopHealerEntry[]> {
+  try {
+    logger.info('Getting top healers', { category, startDate, endDate, limit });
+
+    const gamesResult = await getGames({
+      category,
+      startDate,
+      endDate,
+      gameState: 'completed',
+      limit: 10000,
+    });
+
+    const playerStats = new Map<string, {
+      totalHealing: number;
+      selfHealing: number;
+      allyHealing: number;
+      gamesPlayed: number;
+    }>();
+
+    for (const game of gamesResult.games) {
+      const gameWithPlayers = await getGameById(game.id);
+      if (!gameWithPlayers?.players) continue;
+
+      for (const player of gameWithPlayers.players) {
+        const name = player.name.toLowerCase();
+        const existing = playerStats.get(name) || {
+          totalHealing: 0,
+          selfHealing: 0,
+          allyHealing: 0,
+          gamesPlayed: 0,
+        };
+
+        existing.gamesPlayed++;
+        existing.selfHealing += player.selfHealing || 0;
+        existing.allyHealing += player.allyHealing || 0;
+        existing.totalHealing = existing.selfHealing + existing.allyHealing;
+
+        playerStats.set(name, existing);
+      }
+    }
+
+    return Array.from(playerStats.entries())
+      .map(([name, stats]) => ({
+        playerName: name,
+        totalHealing: stats.totalHealing,
+        selfHealing: stats.selfHealing,
+        allyHealing: stats.allyHealing,
+        gamesPlayed: stats.gamesPlayed,
+      }))
+      .filter((p) => p.totalHealing > 0)
+      .sort((a, b) => b.totalHealing - a.totalHealing)
+      .slice(0, limit);
+  } catch (error) {
+    const err = error as Error;
+    logError(err, 'Failed to get top healers', {
+      component: 'analyticsService',
+      operation: 'getTopHealers',
     });
     return [];
   }

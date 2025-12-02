@@ -73,12 +73,25 @@ export interface GamePlayer {
   eloAfter?: number;
   class?: string;
   randomClass?: boolean;
+  // Combat stats
   kills?: number;
   deaths?: number;
   assists?: number;
   gold?: number;
   damageDealt?: number;
   damageTaken?: number;
+  // ITT-specific stats (schema v2+)
+  selfHealing?: number;
+  allyHealing?: number;
+  meatEaten?: number;
+  goldAcquired?: number;
+  // Animal kill counts
+  killsElk?: number;
+  killsHawk?: number;
+  killsSnake?: number;
+  killsWolf?: number;
+  killsBear?: number;
+  killsPanther?: number;
   createdAt: Timestamp | string;
 }
 
@@ -183,12 +196,25 @@ export interface CreateCompletedGame {
     flag: GamePlayerFlag;
     class?: string;
     randomClass?: boolean;
+    // Combat stats
     kills?: number;
     deaths?: number;
     assists?: number;
     gold?: number;
     damageDealt?: number;
     damageTaken?: number;
+    // ITT-specific stats (schema v2+)
+    selfHealing?: number;
+    allyHealing?: number;
+    meatEaten?: number;
+    goldAcquired?: number;
+    // Animal kill counts
+    killsElk?: number;
+    killsHawk?: number;
+    killsSnake?: number;
+    killsWolf?: number;
+    killsBear?: number;
+    killsPanther?: number;
   }>;
   // Optional archive content when archiving
   archiveContent?: GameArchiveContent;
