@@ -68,6 +68,7 @@ describe('GET /api/players', () => {
     // Assert
     expect(mockGetAllPlayers).toHaveBeenCalledWith(50, undefined); // Default limit is 50, not 100
     expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.setHeader).toHaveBeenCalledWith('Cache-Control', 'max-age=120, public, must-revalidate');
     expect(res.json).toHaveBeenCalledWith({
       success: true,
       data: mockPlayers,
@@ -76,15 +77,16 @@ describe('GET /api/players', () => {
 
   it('returns list of players with custom limit', async () => {
     // Arrange
-    const req = createRequest({ limit: '50' });
+    const req = createRequest({ limit: '25' });
     const res = createResponse();
 
     // Act
     await handler(req, res);
 
     // Assert
-    expect(mockGetAllPlayers).toHaveBeenCalledWith(50, undefined);
+    expect(mockGetAllPlayers).toHaveBeenCalledWith(25, undefined);
     expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.setHeader).toHaveBeenCalledWith('Cache-Control', 'max-age=120, public, must-revalidate');
     expect(res.json).toHaveBeenCalledWith({
       success: true,
       data: mockPlayers,
@@ -102,6 +104,7 @@ describe('GET /api/players', () => {
 
     // Assert
     expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.setHeader).toHaveBeenCalledWith('Cache-Control', 'max-age=120, public, must-revalidate');
     expect(res.json).toHaveBeenCalledWith({
       success: true,
       data: [],

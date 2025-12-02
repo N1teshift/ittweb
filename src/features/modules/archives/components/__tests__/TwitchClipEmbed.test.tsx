@@ -12,16 +12,20 @@ jest.mock('@/features/infrastructure/lib/archiveService', () => ({
   }),
 }));
 
-// Setup window.location before tests
-const originalLocation = window.location;
+// Mock window.location.hostname for Twitch embed tests
 beforeAll(() => {
-  // Mocking window.location for tests
-  delete (window as any).location;
-  (window as any).location = { ...originalLocation, hostname: 'localhost' };
+  // Directly modify the hostname property for jsdom compatibility
+  // jsdom allows direct property modification but not redefining the entire location
+  (window.location as any).hostname = 'localhost';
 });
 
 afterAll(() => {
-  (window as any).location = originalLocation;
+  // Reset hostname by directly setting it (ignore jsdom warnings)
+  try {
+    (window.location as any).hostname = 'example.com';
+  } catch (e) {
+    // Ignore jsdom navigation warnings
+  }
 });
 
 describe('TwitchClipEmbed', () => {

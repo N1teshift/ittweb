@@ -31,7 +31,7 @@ const config = {
     "\\.d\\.ts$",
     // Temporarily exclude tests with Firebase Admin SDK mocking issues
     "firestoreHelpers\\.test\\.ts$",
-    "health\\.test\\.ts$",
+    "health\\.test\\.ts$", // Firebase Admin mocking still needs work
     "wipe-test-data\\.test\\.ts$",
   ],
   collectCoverageFrom: [

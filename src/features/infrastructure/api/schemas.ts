@@ -92,7 +92,7 @@ export const CreateScheduledGameSchema = z.object({
   gameType: z.enum(['elo', 'normal']),
   gameVersion: z.string().optional(),
   gameLength: z.number().int().positive().optional(), // Game length in seconds
-  modes: z.array(z.string()).min(1, 'modes must be a non-empty array'),
+  modes: z.array(z.string()).optional(),
   creatorName: z.string().optional(), // Auto-filled from session if not provided
   createdByDiscordId: z.string().optional(), // Auto-filled from session if not provided
   participants: z.array(GameParticipantSchema).optional(),

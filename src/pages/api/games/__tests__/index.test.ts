@@ -378,8 +378,8 @@ describe('POST /api/games', () => {
         gameState: 'scheduled',
         scheduledDateTime: futureDate.toISOString(),
         timezone: 'UTC',
-        teamSize: 2,
-        gameType: '1v1',
+        teamSize: '2v2',
+        gameType: 'normal',
       };
       const req = createRequest(gameData);
       const res = createResponse();
@@ -392,8 +392,8 @@ describe('POST /api/games', () => {
         expect.objectContaining({
           scheduledDateTime: gameData.scheduledDateTime,
           timezone: 'UTC',
-          teamSize: 2,
-          gameType: '1v1',
+          teamSize: '2v2',
+          gameType: 'normal',
           creatorName: 'Test User',
           createdByDiscordId: 'discord123',
         })
@@ -413,8 +413,8 @@ describe('POST /api/games', () => {
       // Act
       await handler(req, res);
 
-      // Assert - createApiHandler catches errors and returns 500
-      expect(res.status).toHaveBeenCalledWith(500);
+      // Assert - validation fails and returns 400
+      expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith(
         expect.objectContaining({
           success: false,
@@ -431,8 +431,8 @@ describe('POST /api/games', () => {
         gameState: 'scheduled',
         scheduledDateTime: pastDate.toISOString(),
         timezone: 'UTC',
-        teamSize: 2,
-        gameType: '1v1',
+        teamSize: '2v2',
+        gameType: 'normal',
       };
       const req = createRequest(gameData);
       const res = createResponse();
@@ -459,8 +459,8 @@ describe('POST /api/games', () => {
         gameState: 'scheduled',
         scheduledDateTime: pastDate.toISOString(),
         timezone: 'UTC',
-        teamSize: 2,
-        gameType: '1v1',
+        teamSize: '2v2',
+        gameType: 'normal',
       };
       const req = createRequest(gameData);
       const res = createResponse();
@@ -481,8 +481,8 @@ describe('POST /api/games', () => {
         gameState: 'scheduled',
         scheduledDateTime: futureDate.toISOString(),
         timezone: 'UTC',
-        teamSize: 2,
-        gameType: '1v1',
+        teamSize: '2v2',
+        gameType: 'normal',
         addCreatorToParticipants: true,
         participants: [],
       };
@@ -513,8 +513,8 @@ describe('POST /api/games', () => {
         gameState: 'scheduled',
         scheduledDateTime: futureDate.toISOString(),
         timezone: 'UTC',
-        teamSize: 2,
-        gameType: '1v1',
+        teamSize: '2v2',
+        gameType: 'normal',
         addCreatorToParticipants: false,
         participants: [],
       };
@@ -544,8 +544,8 @@ describe('POST /api/games', () => {
         gameState: 'scheduled',
         scheduledDateTime: futureDate.toISOString(),
         timezone: 'UTC',
-        teamSize: 2,
-        gameType: '1v1',
+        teamSize: '2v2',
+        gameType: 'normal',
         creatorName: 'Custom Creator',
       };
       const req = createRequest(gameData);
@@ -570,6 +570,9 @@ describe('POST /api/games', () => {
         gameState: 'completed',
         gameId: 123,
         datetime: new Date().toISOString(),
+        duration: 1800,
+        gamename: 'Test Game',
+        map: 'Test Map',
         players: [
           { name: 'Player1', flag: 'winner', pid: 0 },
           { name: 'Player2', flag: 'loser', pid: 1 },
@@ -627,8 +630,8 @@ describe('POST /api/games', () => {
       // Act
       await handler(req, res);
 
-      // Assert - createApiHandler catches errors and returns 500
-      expect(res.status).toHaveBeenCalledWith(500);
+      // Assert - validation fails and returns 400
+      expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith(
         expect.objectContaining({
           success: false,
@@ -643,6 +646,9 @@ describe('POST /api/games', () => {
         gameState: 'completed',
         gameId: 123,
         datetime: new Date().toISOString(),
+        duration: 1800,
+        gamename: 'Test Game',
+        map: 'Test Map',
         players: [{ name: 'Player1', flag: 'winner', pid: 0 }],
       };
       const req = createRequest(gameData);
@@ -651,8 +657,8 @@ describe('POST /api/games', () => {
       // Act
       await handler(req, res);
 
-      // Assert - createApiHandler catches errors and returns 500
-      expect(res.status).toHaveBeenCalledWith(500);
+      // Assert - validation fails and returns 400
+      expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith(
         expect.objectContaining({
           success: false,
@@ -667,6 +673,9 @@ describe('POST /api/games', () => {
         gameState: 'completed',
         gameId: 123,
         datetime: new Date().toISOString(),
+        duration: 1800,
+        gamename: 'Test Game',
+        map: 'Test Map',
         players: [
           { name: 'Player1', flag: 'winner' }, // Missing pid
           { name: 'Player2', flag: 'loser', pid: 1 },
@@ -678,8 +687,8 @@ describe('POST /api/games', () => {
       // Act
       await handler(req, res);
 
-      // Assert - createApiHandler catches errors and returns 500
-      expect(res.status).toHaveBeenCalledWith(500);
+      // Assert - validation fails and returns 400
+      expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith(
         expect.objectContaining({
           success: false,
@@ -694,6 +703,9 @@ describe('POST /api/games', () => {
         gameState: 'completed',
         gameId: 123,
         datetime: new Date().toISOString(),
+        duration: 1800,
+        gamename: 'Test Game',
+        map: 'Test Map',
         players: [
           { name: 'Player1', flag: 'invalid', pid: 0 },
           { name: 'Player2', flag: 'loser', pid: 1 },
@@ -705,8 +717,8 @@ describe('POST /api/games', () => {
       // Act
       await handler(req, res);
 
-      // Assert - createApiHandler catches errors and returns 500
-      expect(res.status).toHaveBeenCalledWith(500);
+      // Assert - validation fails and returns 400
+      expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith(
         expect.objectContaining({
           success: false,
@@ -721,6 +733,9 @@ describe('POST /api/games', () => {
         gameState: 'completed',
         gameId: 123,
         datetime: new Date().toISOString(),
+        duration: 1800,
+        gamename: 'Test Game',
+        map: 'Test Map',
         players: [
           { name: 'Player1', flag: 'winner', pid: 0 },
           { name: 'Player2', flag: 'loser', pid: 1 },
@@ -744,6 +759,9 @@ describe('POST /api/games', () => {
         gameState: 'completed',
         gameId: 123,
         datetime: new Date().toISOString(),
+        duration: 1800,
+        gamename: 'Test Game',
+        map: 'Test Map',
         players: [
           { name: 'Player1', flag: 'winner', pid: 0 },
           { name: 'Player2', flag: 'loser', pid: 1 },
@@ -776,8 +794,8 @@ describe('POST /api/games', () => {
         gameState: 'scheduled',
         scheduledDateTime: futureDate.toISOString(),
         timezone: 'UTC',
-        teamSize: 2,
-        gameType: '1v1',
+        teamSize: '2v2',
+        gameType: 'normal',
       };
       const req = createRequest(gameData);
       const res = createResponse();
@@ -803,6 +821,9 @@ describe('POST /api/games', () => {
         gameState: 'completed',
         gameId: 123,
         datetime: new Date().toISOString(),
+        duration: 1800,
+        gamename: 'Test Game',
+        map: 'Test Map',
         players: [
           { name: 'Player1', flag: 'winner', pid: 0 },
           { name: 'Player2', flag: 'loser', pid: 1 },
@@ -833,8 +854,8 @@ describe('POST /api/games', () => {
         gameState: 'scheduled',
         scheduledDateTime: pastDate.toISOString(),
         timezone: 'UTC',
-        teamSize: 2,
-        gameType: '1v1',
+        teamSize: '2v2',
+        gameType: 'normal',
       };
       const req = createRequest(gameData);
       const res = createResponse();
