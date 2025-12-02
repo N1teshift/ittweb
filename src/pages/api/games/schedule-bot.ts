@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';
 import { createScheduledGame } from '@/features/modules/game-management/games/lib/gameService';
-import type { CreateScheduledGame } from '@/features/modules/game-management/games/types';
+import type { CreateScheduledGame, TeamSize, GameType, GameMode, GameParticipant } from '@/features/modules/game-management/games/types';
 
 const logger = createComponentLogger('api/games/schedule-bot');
 
@@ -60,15 +60,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     }
 
+    // Validate and cast team size
+    const validTeamSizes: TeamSize[] = ['1v1', '2v2', '3v3', '4v4', '5v5', '6v6', 'custom'];
+    if (!validTeamSizes.includes(teamSize as TeamSize)) {
+      return res.status(400).json({
+        success: false,
+        error: `Invalid team size. Must be one of: ${validTeamSizes.join(', ')}`,
+      });
+    }
+
+    // Validate and cast game type
+    const validGameTypes: GameType[] = ['elo', 'normal'];
+    if (!validGameTypes.includes(gameType.toLowerCase() as GameType)) {
+      return res.status(400).json({
+        success: false,
+        error: `Invalid game type. Must be one of: ${validGameTypes.join(', ')}`,
+      });
+    }
+
     // Build CreateScheduledGame payload
     const gameData: CreateScheduledGame = {
       scheduledDateTime,
       timezone,
-      teamSize: teamSize as any,
-      gameType: gameType as any,
+      teamSize: teamSize as TeamSize,
+      gameType: gameType.toLowerCase() as GameType,
       gameVersion,
       gameLength,
-      modes: modes as any[],
+      modes: modes as GameMode[],
       creatorName: displayName,
       createdByDiscordId: discordId,
     };
@@ -80,7 +98,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           name: displayName,
           joinedAt: new Date().toISOString(),
         },
-      ] as any;
+      ] as GameParticipant[];
     }
 
     const gameId = await createScheduledGame(gameData);
