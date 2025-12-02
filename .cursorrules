@@ -1,11 +1,67 @@
 # Cursor Rules
 
-## Date Handling in Documentation
+## Documentation Standards
 
-When writing or updating documentation files (`.md` files) that include dates, the agent MUST:
-1. First check the current date using a terminal command (e.g., `date` on Unix/Mac or `Get-Date` on Windows PowerShell)
-2. Use the actual current date from the system, not an estimated or assumed date
-3. Format dates consistently (preferred format: YYYY-MM-DD or "Month DD, YYYY" depending on context)
+### 📁 Documentation Organization
 
-This ensures all documentation dates are accurate and reflect when the documentation was actually written or updated.
+When creating or updating documentation, agents MUST follow this organized structure:
+
+#### Documentation Structure
+- **`docs/production/`** - 🚀 What stays when the project is finished
+  - Custom business logic, domain-specific functionality, user-facing features
+  - API documentation, data models, security implementations, system architectures
+  - Examples: API specs, database schemas, feature requirements, security docs
+
+- **`docs/development/`** - 🛠️ Internal development docs (safe to delete later)
+  - Learning journey, development processes, testing strategies, operational knowledge
+  - Setup guides, code patterns, deployment procedures, performance optimization
+  - Examples: Development guides, testing docs, CI/CD setup, debugging guides
+
+- **`docs/shared/`** - 📚 Reference materials and standards
+  - Style guides, error handling patterns, general best practices
+  - Documentation about documentation, coding standards
+  - Examples: Error handling guides, documentation style, known issues
+
+#### Placement Guidelines
+1. **New API docs or business logic** → `docs/production/api/` or `docs/production/systems/`
+2. **Development processes, testing, deployment** → `docs/development/operations/` or `docs/development/getting-started/`
+3. **Performance optimization, caching, monitoring** → `docs/development/performance/`
+4. **Code patterns, architecture decisions** → `docs/development/`
+5. **Historical research, resolved issues** → `docs/development/archive/`
+6. **Reference guides, standards** → `docs/shared/`
+
+#### Important Notes
+- When the project reaches production, only `docs/production/` and `docs/shared/` will remain
+- The entire `docs/development/` folder can be safely deleted at that point
+- Always update relevant README files when adding new documentation
+- Maintain consistent file naming and organization within each section
+
+### 📅 Date Handling in Documentation
+
+When writing or updating documentation files (`.md` files), agents MUST:
+
+#### Date Inclusion Requirements
+- **ALWAYS** include a date when creating new documentation files
+- **ALWAYS** update the date when making significant updates to existing files
+- **NEVER** use estimated or assumed dates
+
+#### Date Format Standards
+- **Primary format**: `YYYY-MM-DD` (ISO 8601) for machine readability
+- **Alternative format**: `Month DD, YYYY` for human readability in user-facing docs
+- **Header format**: `> Date: YYYY-MM-DD` or `**Date**: YYYY-MM-DD`
+
+#### Date Verification Process
+1. **Check current date** using system command:
+   - Unix/Mac: `date +"%Y-%m-%d"`
+   - Windows PowerShell: `Get-Date -Format "yyyy-MM-dd"`
+2. **Use actual system date** - never estimate or assume
+3. **Update on significant changes** - not trivial edits
+
+#### Examples
+```markdown
+> Date: 2025-12-02
+**Date**: December 2, 2025
+```
+
+This ensures all documentation has accurate timestamps and reflects when content was actually written or significantly updated.
 
