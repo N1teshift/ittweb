@@ -33,6 +33,7 @@ interface PlayerWithResult extends Player {
 interface ITTPlayerStats {
   slotIndex: number;
   name: string;
+  trollClass?: string;
   damageTroll: number;
   selfHealing: number;
   allyHealing: number;
@@ -119,12 +120,15 @@ function extractITTMetadata(w3mmdActions: unknown[]): ITTMetadata | undefined {
   // Unescape backslashes (WurstMMD escapes spaces)
   const payload = chunks.join('').replace(/\\(.)/g, '$1');
 
+  // Get schema version for parsing
+  const schemaVersion = customData.get('itt_schema') ? parseInt(customData.get('itt_schema')!, 10) : undefined;
+
   // Parse the payload to extract player stats
-  const players = parseITTPayload(payload);
+  const players = parseITTPayload(payload, schemaVersion);
 
   return {
     version: customData.get('itt_version'),
-    schema: customData.get('itt_schema') ? parseInt(customData.get('itt_schema')!, 10) : undefined,
+    schema: schemaVersion,
     payload,
     players,
   };
@@ -132,8 +136,9 @@ function extractITTMetadata(w3mmdActions: unknown[]): ITTMetadata | undefined {
 
 /**
  * Parse ITT metadata payload to extract player stats
+ * Supports both schema v2 and v3 formats
  */
-function parseITTPayload(payload: string): ITTPlayerStats[] {
+function parseITTPayload(payload: string, schemaVersion?: number): ITTPlayerStats[] {
   const players: ITTPlayerStats[] = [];
   const lines = payload.split('\n');
 
@@ -141,8 +146,28 @@ function parseITTPayload(payload: string): ITTPlayerStats[] {
     if (!line.startsWith('player:')) continue;
 
     const parts = line.slice('player:'.length).split('|');
+    
+    // Schema v3 format: slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
+    if (parts.length >= 17 && schemaVersion && schemaVersion >= 3) {
+      players.push({
+        slotIndex: parseInt(parts[0], 10) || 0,
+        name: parts[1] || '',
+        trollClass: parts[3] || undefined,
+        damageTroll: parseInt(parts[6], 10) || 0,
+        selfHealing: parseInt(parts[7], 10) || 0,
+        allyHealing: parseInt(parts[8], 10) || 0,
+        goldAcquired: parseInt(parts[9], 10) || 0,
+        meatEaten: parseInt(parts[10], 10) || 0,
+        killsElk: parseInt(parts[11], 10) || 0,
+        killsHawk: parseInt(parts[12], 10) || 0,
+        killsSnake: parseInt(parts[13], 10) || 0,
+        killsWolf: parseInt(parts[14], 10) || 0,
+        killsBear: parseInt(parts[15], 10) || 0,
+        killsPanther: parseInt(parts[16], 10) || 0,
+      });
+    }
     // Schema v2 format: slot|name|race|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
-    if (parts.length >= 16) {
+    else if (parts.length >= 16) {
       players.push({
         slotIndex: parseInt(parts[0], 10) || 0,
         name: parts[1] || '',
@@ -507,6 +532,7 @@ export async function parseReplayFile(
         
         // Merge ITT stats if found
         const ittStats = ittPlayer ? {
+          class: ittPlayer.trollClass || stats.class,
           damageDealt: ittPlayer.damageTroll || stats.damageDealt,
           selfHealing: ittPlayer.selfHealing,
           allyHealing: ittPlayer.allyHealing,
