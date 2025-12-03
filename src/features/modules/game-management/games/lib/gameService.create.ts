@@ -191,7 +191,7 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
       // Create player documents in subcollection
       const playersCollection = gameDocRef.collection('players');
       for (const player of gameData.players) {
-        await playersCollection.add({
+        const playerData = removeUndefined({
           gameId: gameDocRef.id,
           name: player.name,
           pid: player.pid,
@@ -205,8 +205,21 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
           gold: player.gold,
           damageDealt: player.damageDealt,
           damageTaken: player.damageTaken,
+          // ITT-specific stats (schema v2+)
+          selfHealing: player.selfHealing,
+          allyHealing: player.allyHealing,
+          meatEaten: player.meatEaten,
+          goldAcquired: player.goldAcquired,
+          // Animal kill counts
+          killsElk: player.killsElk,
+          killsHawk: player.killsHawk,
+          killsSnake: player.killsSnake,
+          killsWolf: player.killsWolf,
+          killsBear: player.killsBear,
+          killsPanther: player.killsPanther,
           createdAt: adminTimestamp.now(),
-        });
+        } as Record<string, unknown>);
+        await playersCollection.add(playerData);
       }
 
       // Update ELO scores
@@ -259,7 +272,7 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
       // Create player documents in subcollection
       const playersCollection = collection(db, GAMES_COLLECTION, gameDocRef.id, 'players');
       for (const player of gameData.players) {
-        await addDoc(playersCollection, {
+        const playerData = removeUndefined({
           gameId: gameDocRef.id,
           name: player.name,
           pid: player.pid,
@@ -273,8 +286,21 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
           gold: player.gold,
           damageDealt: player.damageDealt,
           damageTaken: player.damageTaken,
+          // ITT-specific stats (schema v2+)
+          selfHealing: player.selfHealing,
+          allyHealing: player.allyHealing,
+          meatEaten: player.meatEaten,
+          goldAcquired: player.goldAcquired,
+          // Animal kill counts
+          killsElk: player.killsElk,
+          killsHawk: player.killsHawk,
+          killsSnake: player.killsSnake,
+          killsWolf: player.killsWolf,
+          killsBear: player.killsBear,
+          killsPanther: player.killsPanther,
           createdAt: Timestamp.now(),
-        });
+        } as Record<string, unknown>);
+        await addDoc(playersCollection, playerData);
       }
 
       // Update ELO scores

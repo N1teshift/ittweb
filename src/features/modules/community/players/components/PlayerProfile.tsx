@@ -4,6 +4,7 @@ import { Timestamp } from 'firebase/firestore';
 import { Card } from '@/features/infrastructure/components/ui/Card';
 import { EmptyState } from '@/features/infrastructure/components/ui';
 import { usePlayerStats } from '../hooks/usePlayerStats';
+import { PlayerITTStatsCard } from './PlayerITTStatsCard';
 import type { PlayerSearchFilters } from '../types';
 
 interface PlayerProfileProps {
@@ -59,6 +60,9 @@ export function PlayerProfile({ name, filters }: PlayerProfileProps) {
           )}
         </div>
       </Card>
+
+      {/* Lifetime ITT Statistics */}
+      <PlayerITTStatsCard playerName={player.name} />
 
       {categories.length > 0 && (
         <Card variant="medieval" className="p-6">
