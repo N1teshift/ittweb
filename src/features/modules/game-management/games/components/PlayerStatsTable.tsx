@@ -73,9 +73,9 @@ function StatCell({
 }
 
 /**
- * Animal kills breakdown tooltip content
+ * Get animal kills breakdown as a string for tooltip
  */
-function AnimalKillsTooltip({ player }: { player: GamePlayer }) {
+function getAnimalKillsTooltip(player: GamePlayer): string {
   const kills = [
     { name: 'Elk', count: player.killsElk, emoji: '🦌' },
     { name: 'Hawk', count: player.killsHawk, emoji: '🦅' },
@@ -87,13 +87,7 @@ function AnimalKillsTooltip({ player }: { player: GamePlayer }) {
 
   if (kills.length === 0) return 'No animal kills';
 
-  return (
-    <div className="text-xs">
-      {kills.map(k => (
-        <div key={k.name}>{k.emoji} {k.name}: {k.count}</div>
-      ))}
-    </div>
-  );
+  return kills.map(k => `${k.emoji} ${k.name}: ${k.count}`).join(', ');
 }
 
 export function PlayerStatsTable({ players, title = 'Player Statistics' }: PlayerStatsTableProps) {
@@ -212,7 +206,7 @@ export function PlayerStatsTable({ players, title = 'Player Statistics' }: Playe
                   </td>
                   <td className="text-center py-2 px-2">
                     {totalKills > 0 ? (
-                      <Tooltip content={<AnimalKillsTooltip player={player} />}>
+                      <Tooltip content={getAnimalKillsTooltip(player)}>
                         <span className="text-amber-300 cursor-help">{totalKills}</span>
                       </Tooltip>
                     ) : (
