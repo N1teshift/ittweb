@@ -191,6 +191,18 @@ export function convertGamePlayerDoc(docData: Record<string, unknown>, id: strin
     gold: typeof docData.gold === 'number' ? docData.gold : undefined,
     damageDealt: typeof docData.damageDealt === 'number' ? docData.damageDealt : undefined,
     damageTaken: typeof docData.damageTaken === 'number' ? docData.damageTaken : undefined,
+    // ITT-specific stats (schema v2+)
+    selfHealing: typeof docData.selfHealing === 'number' ? docData.selfHealing : undefined,
+    allyHealing: typeof docData.allyHealing === 'number' ? docData.allyHealing : undefined,
+    meatEaten: typeof docData.meatEaten === 'number' ? docData.meatEaten : undefined,
+    goldAcquired: typeof docData.goldAcquired === 'number' ? docData.goldAcquired : undefined,
+    // Animal kill counts
+    killsElk: typeof docData.killsElk === 'number' ? docData.killsElk : undefined,
+    killsHawk: typeof docData.killsHawk === 'number' ? docData.killsHawk : undefined,
+    killsSnake: typeof docData.killsSnake === 'number' ? docData.killsSnake : undefined,
+    killsWolf: typeof docData.killsWolf === 'number' ? docData.killsWolf : undefined,
+    killsBear: typeof docData.killsBear === 'number' ? docData.killsBear : undefined,
+    killsPanther: typeof docData.killsPanther === 'number' ? docData.killsPanther : undefined,
     createdAt: timestampToIso(docData.createdAt as Timestamp | { toDate?: () => Date } | string | Date | undefined),
   };
 }
