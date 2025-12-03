@@ -5,6 +5,7 @@ import { useMetaFilters } from './useMetaFilters';
 import { useMetaData } from './useMetaData';
 import { MetaFilters } from './MetaFilters';
 import { MetaCharts } from './MetaCharts';
+import { ITTStatsOverview } from './ITTStatsOverview';
 
 interface MetaPageProps {
   pageNamespaces: string[];
@@ -78,6 +79,13 @@ export function MetaPage({ pageNamespaces: _pageNamespaces }: MetaPageProps) {
           onStartDateChange={setStartDate}
           onEndDateChange={setEndDate}
           onReset={resetFilters}
+        />
+
+        {/* ITT Community Statistics */}
+        <ITTStatsOverview
+          category={debouncedCategory}
+          startDate={debouncedStartDate}
+          endDate={debouncedEndDate}
         />
 
         {metaData ? (

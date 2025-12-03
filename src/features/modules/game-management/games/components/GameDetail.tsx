@@ -5,6 +5,7 @@ import { Tooltip } from '@/features/infrastructure/components/ui';
 import { formatDuration, formatEloChange } from '../../../shared/utils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import { formatDateTimeInTimezone } from '@/features/modules/game-management/scheduled-games/utils/timezoneUtils';
+import { PlayerStatsTable } from './PlayerStatsTable';
 import type { GameWithPlayers } from '../types';
 
 interface GameDetailProps {
@@ -329,6 +330,11 @@ export function GameDetail({
             ))}
           </div>
         </Card>
+      )}
+
+      {/* Player Statistics Table - shows ITT-specific stats if available */}
+      {!isScheduled && game.players && game.players.length > 0 && (
+        <PlayerStatsTable players={game.players} />
       )}
     </div>
   );

@@ -264,6 +264,18 @@ export default createPostHandler<{ gameId: string; message: string }>(
         gold: player.gold,
         damageDealt: player.damageDealt,
         damageTaken: player.damageTaken,
+        // ITT-specific stats (schema v2+)
+        selfHealing: player.selfHealing,
+        allyHealing: player.allyHealing,
+        meatEaten: player.meatEaten,
+        goldAcquired: player.goldAcquired,
+        // Animal kill counts
+        killsElk: player.killsElk,
+        killsHawk: player.killsHawk,
+        killsSnake: player.killsSnake,
+        killsWolf: player.killsWolf,
+        killsBear: player.killsBear,
+        killsPanther: player.killsPanther,
         createdAt: adminTimestampNow,
       } as Record<string, unknown>);
       
