@@ -115,6 +115,119 @@ export async function getGameById(id: string): Promise<GameWithPlayers | null> {
 }
 
 /**
+ * Batch fetch players for multiple games
+ * Much more efficient than calling getGameById for each game
+ */
+export async function batchGetPlayersForGames(
+  gameIds: string[]
+): Promise<Map<string, GamePlayer[]>> {
+  if (gameIds.length === 0) {
+    return new Map();
+  }
+
+  const result = new Map<string, GamePlayer[]>();
+  
+  try {
+    if (isServerSide()) {
+      const adminDb = getFirestoreAdmin();
+      
+      // Fetch players for all games in parallel
+      const playerPromises = gameIds.map(async (gameId) => {
+        const playersSnapshot = await adminDb
+          .collection(GAMES_COLLECTION)
+          .doc(gameId)
+          .collection('players')
+          .get();
+        
+        const players: GamePlayer[] = [];
+        playersSnapshot.forEach((playerDoc) => {
+          players.push(convertGamePlayerDoc(playerDoc.data(), playerDoc.id));
+        });
+        
+        // Sort by pid
+        players.sort((a, b) => a.pid - b.pid);
+        
+        return { gameId, players };
+      });
+      
+      const results = await Promise.all(playerPromises);
+      results.forEach(({ gameId, players }) => {
+        result.set(gameId, players);
+      });
+    } else {
+      const db = getFirestoreInstance();
+      
+      // Fetch players for all games in parallel
+      const playerPromises = gameIds.map(async (gameId) => {
+        const playersCollection = collection(db, GAMES_COLLECTION, gameId, 'players');
+        const playersSnapshot = await getDocs(playersCollection);
+        
+        const players: GamePlayer[] = [];
+        playersSnapshot.forEach((playerDoc) => {
+          players.push(convertGamePlayerDoc(playerDoc.data(), playerDoc.id));
+        });
+        
+        // Sort by pid
+        players.sort((a, b) => a.pid - b.pid);
+        
+        return { gameId, players };
+      });
+      
+      const results = await Promise.all(playerPromises);
+      results.forEach(({ gameId, players }) => {
+        result.set(gameId, players);
+      });
+    }
+    
+    logger.debug('Batch fetched players', { 
+      gameCount: gameIds.length, 
+      totalPlayers: Array.from(result.values()).reduce((sum, p) => sum + p.length, 0)
+    });
+    
+    return result;
+  } catch (error) {
+    const err = error as Error;
+    logError(err, 'Failed to batch fetch players', {
+      component: 'gameService',
+      operation: 'batchGetPlayersForGames',
+      gameCount: gameIds.length,
+    });
+    throw err;
+  }
+}
+
+/**
+ * Get games with their players included
+ * More efficient than calling getGameById for each game
+ */
+export async function getGamesWithPlayers(
+  filters: GameFilters = {}
+): Promise<{ games: GameWithPlayers[]; nextCursor?: string; hasMore: boolean }> {
+  // Get games first
+  const gamesResult = await getGames(filters);
+  
+  if (gamesResult.games.length === 0) {
+    return { games: [], nextCursor: gamesResult.nextCursor, hasMore: gamesResult.hasMore };
+  }
+  
+  // Batch fetch all players
+  const gameIds = gamesResult.games.map(g => g.id);
+  const playersMap = await batchGetPlayersForGames(gameIds);
+  
+  // Combine games with their players
+  const gamesWithPlayers: GameWithPlayers[] = gamesResult.games.map(game => ({
+    ...game,
+    players: playersMap.get(game.id) || [],
+  }));
+  
+  return {
+    games: gamesWithPlayers,
+    nextCursor: gamesResult.nextCursor,
+    hasMore: gamesResult.hasMore,
+  };
+}
+
+/**
  * Get games with filters
  */
 export async function getGames(filters: GameFilters = {}): Promise<GameListResponse> {

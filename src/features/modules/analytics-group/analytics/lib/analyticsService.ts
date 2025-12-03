@@ -1,5 +1,5 @@
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { getGames } from '../../../game-management/games/lib/gameService';
+import { getGamesWithPlayers } from '../../../game-management/games/lib/gameService';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { 
   ActivityDataPoint, 
@@ -16,12 +16,39 @@ import type {
   TopHealerEntry,
   HealingStatsData,
 } from '../types';
+import type { GameWithPlayers } from '../../../game-management/games/types';
 import { format, eachDayOfInterval, parseISO, startOfMonth, eachMonthOfInterval } from 'date-fns';
+import { 
+  getCachedAnalytics, 
+  filterGamesByTeamFormat,
+  type AnalyticsFilters 
+} from './analyticsCache';
 
 const logger = createComponentLogger('analyticsService');
 
 /**
+ * Helper to fetch completed games with players
+ * Uses the optimized batch fetching
+ */
+async function fetchCompletedGamesWithPlayers(
+  category?: string,
+  startDate?: string,
+  endDate?: string,
+  limit = 10000
+): Promise<GameWithPlayers[]> {
+  const result = await getGamesWithPlayers({
+    category,
+    startDate,
+    endDate,
+    gameState: 'completed',
+    limit,
+  });
+  return result.games;
+}
+
+/**
  * Get activity data (games per day)
+ * Uses Firestore cache for performance
  */
 export async function getActivityData(
   playerName?: string,
@@ -29,98 +56,82 @@ export async function getActivityData(
   endDate?: string,
   category?: string
 ): Promise<ActivityDataPoint[]> {
-  try {
-    logger.info('Getting activity data', { playerName, startDate, endDate, category });
+  const filters: AnalyticsFilters = { category, startDate, endDate, playerName };
+  
+  return getCachedAnalytics('activity', filters, async () => {
+    try {
+      logger.info('Computing activity data', { playerName, startDate, endDate, category });
 
-    // When no date filters provided, don't filter by date in query to get all games
-    // But still generate chart data for a reasonable range
-    const gamesResult = await getGames({
-      player: playerName,
-      startDate: startDate || undefined, // Only pass if provided
-      endDate: endDate || undefined, // Only pass if provided
-      category,
-      gameState: 'completed', // Only analyze completed games
-      limit: 10000, // Get all games for activity
-    });
+      const games = await fetchCompletedGamesWithPlayers(category, startDate, endDate);
 
-    logger.info('Activity data - games found', { 
-      count: gamesResult.games.length,
-      gameIds: gamesResult.games.map(g => g.id),
-      gameDatetimes: gamesResult.games.map(g => g.datetime)
-    });
-
-    // For chart generation, use provided dates or find the actual date range from games
-    let start: Date;
-    let end: Date;
-    
-    if (startDate && endDate) {
-      start = parseISO(startDate);
-      end = parseISO(endDate);
-    } else if (gamesResult.games.length > 0) {
-      // Find the actual date range from the games
-      const gameDates = gamesResult.games
-        .map(g => {
-          if (!g.datetime) return null;
-          try {
-            const datetimeIso = timestampToIso(g.datetime);
-            return new Date(datetimeIso);
-          } catch {
-            return null;
-          }
-        })
-        .filter((d): d is Date => d !== null);
+      // For chart generation, use provided dates or find the actual date range from games
+      let start: Date;
+      let end: Date;
       
-      if (gameDates.length > 0) {
-        const minDate = new Date(Math.min(...gameDates.map(d => d.getTime())));
-        const maxDate = new Date(Math.max(...gameDates.map(d => d.getTime())));
-        // Extend range by 7 days on each side for better visualization
-        start = new Date(minDate.getTime() - 7 * 24 * 60 * 60 * 1000);
-        end = new Date(maxDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+      if (startDate && endDate) {
+        start = parseISO(startDate);
+        end = parseISO(endDate);
+      } else if (games.length > 0) {
+        // Find the actual date range from the games
+        const gameDates = games
+          .map(g => {
+            if (!g.datetime) return null;
+            try {
+              const datetimeIso = timestampToIso(g.datetime);
+              return new Date(datetimeIso);
+            } catch {
+              return null;
+            }
+          })
+          .filter((d): d is Date => d !== null);
+        
+        if (gameDates.length > 0) {
+          const minDate = new Date(Math.min(...gameDates.map(d => d.getTime())));
+          const maxDate = new Date(Math.max(...gameDates.map(d => d.getTime())));
+          // Extend range by 7 days on each side for better visualization
+          start = new Date(minDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+          end = new Date(maxDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+        } else {
+          start = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
+          end = new Date();
+        }
       } else {
-        // Fallback to last year if no valid dates
         start = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
         end = new Date();
       }
-    } else {
-      // No games found, use default range
-      start = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
-      end = new Date();
+      
+      const days = eachDayOfInterval({ start, end });
+
+      const gamesByDate = new Map<string, number>();
+      games.forEach((game) => {
+        if (!game.datetime) return;
+        try {
+          const datetimeIso = timestampToIso(game.datetime);
+          const date = format(new Date(datetimeIso), 'yyyy-MM-dd');
+          gamesByDate.set(date, (gamesByDate.get(date) || 0) + 1);
+        } catch {
+          // Skip games with invalid datetime
+        }
+      });
+
+      return days.map((day) => ({
+        date: format(day, 'yyyy-MM-dd'),
+        games: gamesByDate.get(format(day, 'yyyy-MM-dd')) || 0,
+      }));
+    } catch (error) {
+      const err = error as Error;
+      logError(err, 'Failed to get activity data', {
+        component: 'analyticsService',
+        operation: 'getActivityData',
+      });
+      return [];
     }
-    
-    const days = eachDayOfInterval({ start, end });
-
-    const gamesByDate = new Map<string, number>();
-    gamesResult.games.forEach((game) => {
-      if (!game.datetime) {
-        logger.warn('Game missing datetime field', { gameId: game.id });
-        return;
-      }
-      try {
-        // Handle both Timestamp objects and ISO strings
-        const datetimeIso = timestampToIso(game.datetime);
-        const date = format(new Date(datetimeIso), 'yyyy-MM-dd');
-        gamesByDate.set(date, (gamesByDate.get(date) || 0) + 1);
-      } catch (dateError) {
-        logger.warn('Failed to parse game datetime', { gameId: game.id, datetime: game.datetime, error: dateError });
-      }
-    });
-
-    return days.map((day) => ({
-      date: format(day, 'yyyy-MM-dd'),
-      games: gamesByDate.get(format(day, 'yyyy-MM-dd')) || 0,
-    }));
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to get activity data', {
-      component: 'analyticsService',
-      operation: 'getActivityData',
-    });
-    return [];
-  }
+  });
 }
 
 /**
  * Get ELO history for a player
+ * Uses batch fetching for efficiency
  */
 export async function getEloHistory(
   playerName: string,
@@ -128,66 +139,61 @@ export async function getEloHistory(
   startDate?: string,
   endDate?: string
 ): Promise<EloHistoryDataPoint[]> {
-  try {
-    logger.info('Getting ELO history', { playerName, category, startDate, endDate });
+  const filters: AnalyticsFilters = { category, startDate, endDate, playerName };
+  
+  return getCachedAnalytics('eloHistory', filters, async () => {
+    try {
+      logger.info('Computing ELO history', { playerName, category, startDate, endDate });
 
-    const gamesResult = await getGames({
-      player: playerName,
-      category,
-      startDate,
-      endDate,
-      gameState: 'completed', // Only analyze completed games
-      limit: 10000,
-    });
-
-    // Get starting ELO
-    const playerStats = await getPlayerStats(playerName);
-    const categoryStats = playerStats?.categories[category];
-    let currentElo = categoryStats?.score || 1000;
-
-    // Build ELO history by processing games in chronological order
-    const sortedGames = [...gamesResult.games].sort(
-      (a, b) => new Date(a.datetime as string).getTime() - new Date(b.datetime as string).getTime()
-    );
-
-    const eloHistory: EloHistoryDataPoint[] = [];
-    const start = startDate ? parseISO(startDate) : new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
-    eloHistory.push({
-      date: format(start, 'yyyy-MM-dd'),
-      elo: currentElo,
-    });
-
-    for (const game of sortedGames) {
-      const gameWithPlayers = await getGameById(game.id);
-      if (!gameWithPlayers?.players) continue;
-
-      const playerInGame = gameWithPlayers.players.find(
-        p => p.name.toLowerCase() === playerName.toLowerCase()
+      // Use batch fetching - games already include players
+      const games = await fetchCompletedGamesWithPlayers(category, startDate, endDate);
+      
+      // Filter games that include the player
+      const playerGames = games.filter(game => 
+        game.players?.some(p => p.name.toLowerCase() === playerName.toLowerCase())
       );
-      if (playerInGame?.elochange !== undefined) {
-        currentElo += playerInGame.elochange;
-        const datetimeIso = timestampToIso(game.datetime);
-        eloHistory.push({
-          date: format(new Date(datetimeIso), 'yyyy-MM-dd'),
-          elo: currentElo,
-        });
+
+      // Get starting ELO
+      const playerStats = await getPlayerStats(playerName);
+      const categoryStats = playerStats?.categories[category];
+      let currentElo = categoryStats?.score || 1000;
+
+      // Build ELO history by processing games in chronological order
+      const sortedGames = [...playerGames].sort(
+        (a, b) => new Date(a.datetime as string).getTime() - new Date(b.datetime as string).getTime()
+      );
+
+      const eloHistory: EloHistoryDataPoint[] = [];
+      const start = startDate ? parseISO(startDate) : new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
+      eloHistory.push({
+        date: format(start, 'yyyy-MM-dd'),
+        elo: currentElo,
+      });
+
+      for (const game of sortedGames) {
+        const playerInGame = game.players?.find(
+          p => p.name.toLowerCase() === playerName.toLowerCase()
+        );
+        if (playerInGame?.elochange !== undefined) {
+          currentElo += playerInGame.elochange;
+          const datetimeIso = timestampToIso(game.datetime);
+          eloHistory.push({
+            date: format(new Date(datetimeIso), 'yyyy-MM-dd'),
+            elo: currentElo,
+          });
+        }
       }
+
+      return eloHistory;
+    } catch (error) {
+      const err = error as Error;
+      logError(err, 'Failed to get ELO history', {
+        component: 'analyticsService',
+        operation: 'getEloHistory',
+      });
+      return [];
     }
-
-    return eloHistory;
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to get ELO history', {
-      component: 'analyticsService',
-      operation: 'getEloHistory',
-    });
-    return [];
-  }
-}
-
-async function getGameById(id: string) {
-  const { getGameById: getGame } = await import('../../../game-management/games/lib/gameService');
-  return getGame(id);
+  });
 }
 
 async function getPlayerStats(name: string) {
@@ -197,6 +203,7 @@ async function getPlayerStats(name: string) {
 
 /**
  * Get win rate data
+ * Uses batch fetching for efficiency
  */
 export async function getWinRateData(
   playerName?: string,
@@ -204,207 +211,201 @@ export async function getWinRateData(
   startDate?: string,
   endDate?: string
 ): Promise<WinRateData> {
-  try {
-    logger.info('Getting win rate data', { playerName, category, startDate, endDate });
+  const filters: AnalyticsFilters = { category, startDate, endDate, playerName };
+  
+  return getCachedAnalytics('winRate', filters, async () => {
+    try {
+      logger.info('Computing win rate data', { playerName, category, startDate, endDate });
 
-    if (playerName) {
-      const playerStats = await getPlayerStats(playerName);
-      if (!playerStats) {
-        return { wins: 0, losses: 0, draws: 0 };
+      if (playerName) {
+        const playerStats = await getPlayerStats(playerName);
+        if (!playerStats) {
+          return { wins: 0, losses: 0, draws: 0 };
+        }
+
+        const cat = category || 'default';
+        const stats = playerStats.categories[cat];
+        if (!stats) {
+          return { wins: 0, losses: 0, draws: 0 };
+        }
+
+        return {
+          wins: stats.wins,
+          losses: stats.losses,
+          draws: stats.draws,
+        };
       }
 
-      const cat = category || 'default';
-      const stats = playerStats.categories[cat];
-      if (!stats) {
-        return { wins: 0, losses: 0, draws: 0 };
+      // Aggregate across all players - use batch fetching
+      const games = await fetchCompletedGamesWithPlayers(category, startDate, endDate);
+
+      let wins = 0;
+      let losses = 0;
+      let draws = 0;
+
+      for (const game of games) {
+        if (!game.players) continue;
+
+        game.players.forEach((player) => {
+          if (player.flag === 'winner') wins++;
+          else if (player.flag === 'loser') losses++;
+          else if (player.flag === 'drawer') draws++;
+        });
       }
 
-      return {
-        wins: stats.wins,
-        losses: stats.losses,
-        draws: stats.draws,
-      };
-    }
-
-    // Aggregate across all players
-    const gamesResult = await getGames({
-      category,
-      startDate,
-      endDate,
-      gameState: 'completed', // Only analyze completed games
-      limit: 10000,
-    });
-
-    let wins = 0;
-    let losses = 0;
-    let draws = 0;
-
-    for (const game of gamesResult.games) {
-      const gameWithPlayers = await getGameById(game.id);
-      if (!gameWithPlayers?.players) continue;
-
-      gameWithPlayers.players.forEach((player) => {
-        if (player.flag === 'winner') wins++;
-        else if (player.flag === 'loser') losses++;
-        else if (player.flag === 'drawer') draws++;
+      return { wins, losses, draws };
+    } catch (error) {
+      const err = error as Error;
+      logError(err, 'Failed to get win rate data', {
+        component: 'analyticsService',
+        operation: 'getWinRateData',
       });
+      return { wins: 0, losses: 0, draws: 0 };
     }
-
-    return { wins, losses, draws };
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to get win rate data', {
-      component: 'analyticsService',
-      operation: 'getWinRateData',
-    });
-    return { wins: 0, losses: 0, draws: 0 };
-  }
+  });
 }
 
 /**
  * Get class statistics
+ * Uses batch fetching and caching for efficiency
  */
 export async function getClassStats(category?: string): Promise<import('../types').ClassStats[]> {
-  try {
-    logger.info('Getting class stats', { category });
+  const filters: AnalyticsFilters = { category };
+  
+  return getCachedAnalytics('classStats', filters, async () => {
+    try {
+      logger.info('Computing class stats', { category });
 
-    const { getGames } = await import('../../../game-management/games/lib/gameService');
-    
-    // Get all games with players
-    const gamesResult = await getGames({
-      category,
-      limit: 10000, // Get a large number of games for aggregation
-    });
+      // Use batch fetching - games already include players
+      const games = await fetchCompletedGamesWithPlayers(category);
 
-    // Aggregate class statistics
-    const classStatsMap: { [className: string]: {
-      totalGames: number;
-      totalWins: number;
-      totalLosses: number;
-      playerStats: { [playerName: string]: {
-        wins: number;
-        losses: number;
-        elo: number;
-      } };
-    } } = {};
+      // Aggregate class statistics
+      const classStatsMap: { [className: string]: {
+        totalGames: number;
+        totalWins: number;
+        totalLosses: number;
+        playerStats: { [playerName: string]: {
+          wins: number;
+          losses: number;
+          elo: number;
+        } };
+      } } = {};
 
-    // Process each game
-    for (const game of gamesResult.games) {
-      const gameWithPlayers = await getGameById(game.id);
-      if (!gameWithPlayers?.players) continue;
+      // Process each game - players already included
+      for (const game of games) {
+        if (!game.players) continue;
 
-      for (const player of gameWithPlayers.players) {
-        if (!player.class || player.flag === 'drawer') continue;
+        for (const player of game.players) {
+          if (!player.class || player.flag === 'drawer') continue;
 
-        const className = player.class.toLowerCase().trim();
-        if (!className) continue;
+          const className = player.class.toLowerCase().trim();
+          if (!className) continue;
 
-        // Initialize class stats if needed
-        if (!classStatsMap[className]) {
-          classStatsMap[className] = {
-            totalGames: 0,
-            totalWins: 0,
-            totalLosses: 0,
-            playerStats: {},
-          };
-        }
+          // Initialize class stats if needed
+          if (!classStatsMap[className]) {
+            classStatsMap[className] = {
+              totalGames: 0,
+              totalWins: 0,
+              totalLosses: 0,
+              playerStats: {},
+            };
+          }
 
-        const classStats = classStatsMap[className];
-        classStats.totalGames += 1;
+          const classStats = classStatsMap[className];
+          classStats.totalGames += 1;
 
-        if (player.flag === 'winner') {
-          classStats.totalWins += 1;
-        } else if (player.flag === 'loser') {
-          classStats.totalLosses += 1;
-        }
+          if (player.flag === 'winner') {
+            classStats.totalWins += 1;
+          } else if (player.flag === 'loser') {
+            classStats.totalLosses += 1;
+          }
 
-        // Track player stats for this class
-        const playerName = player.name;
-        if (!classStats.playerStats[playerName]) {
-          classStats.playerStats[playerName] = {
-            wins: 0,
-            losses: 0,
-            elo: 0,
-          };
-        }
+          // Track player stats for this class
+          const playerName = player.name;
+          if (!classStats.playerStats[playerName]) {
+            classStats.playerStats[playerName] = {
+              wins: 0,
+              losses: 0,
+              elo: 0,
+            };
+          }
 
-        const playerClassStats = classStats.playerStats[playerName];
-        if (player.flag === 'winner') {
-          playerClassStats.wins += 1;
-        } else if (player.flag === 'loser') {
-          playerClassStats.losses += 1;
-        }
+          const playerClassStats = classStats.playerStats[playerName];
+          if (player.flag === 'winner') {
+            playerClassStats.wins += 1;
+          } else if (player.flag === 'loser') {
+            playerClassStats.losses += 1;
+          }
 
-        // Accumulate ELO (we'll use average later)
-        if (player.elochange) {
-          playerClassStats.elo += player.elochange;
+          if (player.elochange) {
+            playerClassStats.elo += player.elochange;
+          }
         }
       }
-    }
 
-    // Convert to ClassStats array
-    const classStatsArray: import('../types').ClassStats[] = [];
+      // Convert to ClassStats array
+      const classStatsArray: import('../types').ClassStats[] = [];
 
-    for (const [className, stats] of Object.entries(classStatsMap)) {
-      const totalGames = stats.totalGames;
-      const totalWins = stats.totalWins;
-      const totalLosses = stats.totalLosses;
-      const winRate = totalGames > 0 ? (totalWins / (totalWins + totalLosses)) * 100 : 0;
+      for (const [className, stats] of Object.entries(classStatsMap)) {
+        const totalGames = stats.totalGames;
+        const totalWins = stats.totalWins;
+        const totalLosses = stats.totalLosses;
+        const winRate = totalGames > 0 ? (totalWins / (totalWins + totalLosses)) * 100 : 0;
 
-      // Get top players for this class
-      const topPlayers = Object.entries(stats.playerStats)
-        .map(([playerName, playerStats]) => {
-          const playerGames = playerStats.wins + playerStats.losses;
-          const playerWinRate = playerGames > 0 
-            ? (playerStats.wins / playerGames) * 100 
-            : 0;
-          return {
-            playerName,
-            wins: playerStats.wins,
-            losses: playerStats.losses,
-            winRate: playerWinRate,
-            elo: playerStats.elo,
-          };
-        })
-        .filter(p => p.wins + p.losses > 0) // Only players with games
-        .sort((a, b) => {
-          // Sort by win rate, then by total games, then by ELO
-          if (b.winRate !== a.winRate) return b.winRate - a.winRate;
-          const aGames = a.wins + a.losses;
-          const bGames = b.wins + b.losses;
-          if (bGames !== aGames) return bGames - aGames;
-          return b.elo - a.elo;
-        })
-        .slice(0, 10); // Top 10 players
+        // Get top players for this class
+        const topPlayers = Object.entries(stats.playerStats)
+          .map(([playerName, playerStats]) => {
+            const playerGames = playerStats.wins + playerStats.losses;
+            const playerWinRate = playerGames > 0 
+              ? (playerStats.wins / playerGames) * 100 
+              : 0;
+            return {
+              playerName,
+              wins: playerStats.wins,
+              losses: playerStats.losses,
+              winRate: playerWinRate,
+              elo: playerStats.elo,
+            };
+          })
+          .filter(p => p.wins + p.losses > 0)
+          .sort((a, b) => {
+            if (b.winRate !== a.winRate) return b.winRate - a.winRate;
+            const aGames = a.wins + a.losses;
+            const bGames = b.wins + b.losses;
+            if (bGames !== aGames) return bGames - aGames;
+            return b.elo - a.elo;
+          })
+          .slice(0, 10);
 
-      classStatsArray.push({
-        id: className,
-        category,
-        totalGames,
-        totalWins,
-        totalLosses,
-        winRate,
-        topPlayers,
-        updatedAt: new Date().toISOString(),
+        classStatsArray.push({
+          id: className,
+          category,
+          totalGames,
+          totalWins,
+          totalLosses,
+          winRate,
+          topPlayers,
+          updatedAt: new Date().toISOString(),
+        });
+      }
+
+      classStatsArray.sort((a, b) => b.totalGames - a.totalGames);
+
+      return classStatsArray;
+    } catch (error) {
+      const err = error as Error;
+      logError(err, 'Failed to get class stats', {
+        component: 'analyticsService',
+        operation: 'getClassStats',
       });
+      return [];
     }
-
-    // Sort by total games (most popular first)
-    classStatsArray.sort((a, b) => b.totalGames - a.totalGames);
-
-    return classStatsArray;
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to get class stats', {
-      component: 'analyticsService',
-      operation: 'getClassStats',
-    });
-    return [];
-  }
+  });
 }
 
 /**
  * Get game length data (average duration per day)
+ * Uses batch fetching and caching for efficiency
  */
 export async function getGameLengthData(
   category?: string,
@@ -412,70 +413,60 @@ export async function getGameLengthData(
   endDate?: string,
   teamFormat?: string
 ): Promise<GameLengthDataPoint[]> {
-  try {
-    logger.info('Getting game length data', { category, startDate, endDate, teamFormat });
+  const filters: AnalyticsFilters = { category, startDate, endDate, teamFormat };
+  
+  return getCachedAnalytics('gameLength', filters, async () => {
+    try {
+      logger.info('Computing game length data', { category, startDate, endDate, teamFormat });
 
-    const gamesResult = await getGames({
-      category,
-      startDate,
-      endDate,
-      gameState: 'completed', // Only analyze completed games
-      limit: 10000,
-    });
+      let games = await fetchCompletedGamesWithPlayers(category, startDate, endDate);
 
-    const start = startDate ? parseISO(startDate) : new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
-    const end = endDate ? parseISO(endDate) : new Date();
-    const days = eachDayOfInterval({ start, end });
-
-    // Group games by date and calculate average duration
-    const gamesByDate = new Map<string, { total: number; count: number }>();
-    
-    for (const game of gamesResult.games) {
       // Filter by team format if specified
       if (teamFormat) {
-        const gameWithPlayers = await getGameById(game.id);
-        if (gameWithPlayers?.players) {
-          const winners = gameWithPlayers.players.filter(p => p.flag === 'winner').length;
-          const losers = gameWithPlayers.players.filter(p => p.flag === 'loser').length;
-          const formatStr = `${winners}v${losers}`;
-          if (formatStr !== teamFormat) continue;
-        }
+        games = filterGamesByTeamFormat(games, teamFormat);
       }
 
-      if (!game.datetime) {
-        logger.warn('Game missing datetime field', { gameId: game.id });
-        continue;
+      const start = startDate ? parseISO(startDate) : new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
+      const end = endDate ? parseISO(endDate) : new Date();
+      const days = eachDayOfInterval({ start, end });
+
+      // Group games by date and calculate average duration
+      const gamesByDate = new Map<string, { total: number; count: number }>();
+      
+      for (const game of games) {
+        if (!game.datetime) continue;
+        const datetimeIso = timestampToIso(game.datetime);
+        const date = format(new Date(datetimeIso), 'yyyy-MM-dd');
+        const durationMinutes = (game.duration || 0) / 60;
+        const existing = gamesByDate.get(date) || { total: 0, count: 0 };
+        gamesByDate.set(date, {
+          total: existing.total + durationMinutes,
+          count: existing.count + 1,
+        });
       }
-      const datetimeIso = timestampToIso(game.datetime);
-      const date = format(new Date(datetimeIso), 'yyyy-MM-dd');
-      const durationMinutes = (game.duration || 0) / 60; // Convert seconds to minutes
-      const existing = gamesByDate.get(date) || { total: 0, count: 0 };
-      gamesByDate.set(date, {
-        total: existing.total + durationMinutes,
-        count: existing.count + 1,
+
+      return days.map((day) => {
+        const dateStr = format(day, 'yyyy-MM-dd');
+        const data = gamesByDate.get(dateStr);
+        return {
+          date: dateStr,
+          averageDuration: data && data.count > 0 ? data.total / data.count : 0,
+        };
       });
+    } catch (error) {
+      const err = error as Error;
+      logError(err, 'Failed to get game length data', {
+        component: 'analyticsService',
+        operation: 'getGameLengthData',
+      });
+      return [];
     }
-
-    return days.map((day) => {
-      const dateStr = format(day, 'yyyy-MM-dd');
-      const data = gamesByDate.get(dateStr);
-      return {
-        date: dateStr,
-        averageDuration: data && data.count > 0 ? data.total / data.count : 0,
-      };
-    });
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to get game length data', {
-      component: 'analyticsService',
-      operation: 'getGameLengthData',
-    });
-    return [];
-  }
+  });
 }
 
 /**
  * Get player activity data (active players per month)
+ * Uses batch fetching and caching for efficiency
  */
 export async function getPlayerActivityData(
   category?: string,
@@ -483,74 +474,62 @@ export async function getPlayerActivityData(
   endDate?: string,
   teamFormat?: string
 ): Promise<PlayerActivityDataPoint[]> {
-  try {
-    logger.info('Getting player activity data', { category, startDate, endDate, teamFormat });
+  const filters: AnalyticsFilters = { category, startDate, endDate, teamFormat };
+  
+  return getCachedAnalytics('playerActivity', filters, async () => {
+    try {
+      logger.info('Computing player activity data', { category, startDate, endDate, teamFormat });
 
-    const gamesResult = await getGames({
-      category,
-      startDate,
-      endDate,
-      gameState: 'completed', // Only analyze completed games
-      limit: 10000,
-    });
+      let games = await fetchCompletedGamesWithPlayers(category, startDate, endDate);
 
-    const start = startDate ? parseISO(startDate) : new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
-    const end = endDate ? parseISO(endDate) : new Date();
-    const months = eachMonthOfInterval({ start, end });
-
-    // Group unique players by month
-    const playersByMonth = new Map<string, Set<string>>();
-
-    for (const game of gamesResult.games) {
       // Filter by team format if specified
       if (teamFormat) {
-        const gameWithPlayers = await getGameById(game.id);
-        if (gameWithPlayers?.players) {
-          const winners = gameWithPlayers.players.filter(p => p.flag === 'winner').length;
-          const losers = gameWithPlayers.players.filter(p => p.flag === 'loser').length;
-          const formatStr = `${winners}v${losers}`;
-          if (formatStr !== teamFormat) continue;
+        games = filterGamesByTeamFormat(games, teamFormat);
+      }
+
+      const start = startDate ? parseISO(startDate) : new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
+      const end = endDate ? parseISO(endDate) : new Date();
+      const months = eachMonthOfInterval({ start, end });
+
+      // Group unique players by month
+      const playersByMonth = new Map<string, Set<string>>();
+
+      for (const game of games) {
+        if (!game.players || !game.datetime) continue;
+
+        const datetimeIso = timestampToIso(game.datetime);
+        const month = format(startOfMonth(new Date(datetimeIso)), 'yyyy-MM-dd');
+        if (!playersByMonth.has(month)) {
+          playersByMonth.set(month, new Set());
         }
+
+        game.players.forEach((player) => {
+          playersByMonth.get(month)?.add(player.name.toLowerCase());
+        });
       }
 
-      const gameWithPlayers = await getGameById(game.id);
-      if (!gameWithPlayers?.players) continue;
-
-      if (!game.datetime) {
-        logger.warn('Game missing datetime field', { gameId: game.id });
-        continue;
-      }
-      const datetimeIso = timestampToIso(game.datetime);
-      const month = format(startOfMonth(new Date(datetimeIso)), 'yyyy-MM-dd');
-      if (!playersByMonth.has(month)) {
-        playersByMonth.set(month, new Set());
-      }
-
-      gameWithPlayers.players.forEach((player) => {
-        playersByMonth.get(month)?.add(player.name.toLowerCase());
+      return months.map((month) => {
+        const monthStr = format(startOfMonth(month), 'yyyy-MM-dd');
+        const players = playersByMonth.get(monthStr);
+        return {
+          date: monthStr,
+          players: players ? players.size : 0,
+        };
       });
+    } catch (error) {
+      const err = error as Error;
+      logError(err, 'Failed to get player activity data', {
+        component: 'analyticsService',
+        operation: 'getPlayerActivityData',
+      });
+      return [];
     }
-
-    return months.map((month) => {
-      const monthStr = format(startOfMonth(month), 'yyyy-MM-dd');
-      const players = playersByMonth.get(monthStr);
-      return {
-        date: monthStr,
-        players: players ? players.size : 0,
-      };
-    });
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to get player activity data', {
-      component: 'analyticsService',
-      operation: 'getPlayerActivityData',
-    });
-    return [];
-  }
+  });
 }
 
 /**
  * Get class selection data (for pie chart)
+ * Uses batch fetching and caching for efficiency
  */
 export async function getClassSelectionData(
   category?: string,
@@ -558,59 +537,51 @@ export async function getClassSelectionData(
   endDate?: string,
   teamFormat?: string
 ): Promise<ClassSelectionData[]> {
-  try {
-    logger.info('Getting class selection data', { category, startDate, endDate, teamFormat });
+  const filters: AnalyticsFilters = { category, startDate, endDate, teamFormat };
+  
+  return getCachedAnalytics('classSelection', filters, async () => {
+    try {
+      logger.info('Computing class selection data', { category, startDate, endDate, teamFormat });
 
-    const gamesResult = await getGames({
-      category,
-      startDate,
-      endDate,
-      gameState: 'completed', // Only analyze completed games
-      limit: 10000,
-    });
+      let games = await fetchCompletedGamesWithPlayers(category, startDate, endDate);
 
-    const classCounts = new Map<string, number>();
-
-    for (const game of gamesResult.games) {
       // Filter by team format if specified
       if (teamFormat) {
-        const gameWithPlayers = await getGameById(game.id);
-        if (gameWithPlayers?.players) {
-          const winners = gameWithPlayers.players.filter(p => p.flag === 'winner').length;
-          const losers = gameWithPlayers.players.filter(p => p.flag === 'loser').length;
-          const formatStr = `${winners}v${losers}`;
-          if (formatStr !== teamFormat) continue;
-        }
+        games = filterGamesByTeamFormat(games, teamFormat);
       }
 
-      const gameWithPlayers = await getGameById(game.id);
-      if (!gameWithPlayers?.players) continue;
+      const classCounts = new Map<string, number>();
 
-      gameWithPlayers.players.forEach((player) => {
-        if (player.class && player.flag !== 'drawer') {
-          const className = player.class.toLowerCase().trim();
-          if (className) {
-            classCounts.set(className, (classCounts.get(className) || 0) + 1);
+      for (const game of games) {
+        if (!game.players) continue;
+
+        game.players.forEach((player) => {
+          if (player.class && player.flag !== 'drawer') {
+            const className = player.class.toLowerCase().trim();
+            if (className) {
+              classCounts.set(className, (classCounts.get(className) || 0) + 1);
+            }
           }
-        }
-      });
-    }
+        });
+      }
 
-    return Array.from(classCounts.entries())
-      .map(([className, count]) => ({ className, count }))
-      .sort((a, b) => b.count - a.count);
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to get class selection data', {
-      component: 'analyticsService',
-      operation: 'getClassSelectionData',
-    });
-    return [];
-  }
+      return Array.from(classCounts.entries())
+        .map(([className, count]) => ({ className, count }))
+        .sort((a, b) => b.count - a.count);
+    } catch (error) {
+      const err = error as Error;
+      logError(err, 'Failed to get class selection data', {
+        component: 'analyticsService',
+        operation: 'getClassSelectionData',
+      });
+      return [];
+    }
+  });
 }
 
 /**
  * Get class win rate data (for bar chart)
+ * Uses batch fetching and caching for efficiency
  */
 export async function getClassWinRateData(
   category?: string,
@@ -618,171 +589,160 @@ export async function getClassWinRateData(
   endDate?: string,
   teamFormat?: string
 ): Promise<ClassWinRateData[]> {
-  try {
-    logger.info('Getting class win rate data', { category, startDate, endDate, teamFormat });
+  const filters: AnalyticsFilters = { category, startDate, endDate, teamFormat };
+  
+  return getCachedAnalytics('classWinRate', filters, async () => {
+    try {
+      logger.info('Computing class win rate data', { category, startDate, endDate, teamFormat });
 
-    const gamesResult = await getGames({
-      category,
-      startDate,
-      endDate,
-      gameState: 'completed', // Only analyze completed games
-      limit: 10000,
-    });
+      let games = await fetchCompletedGamesWithPlayers(category, startDate, endDate);
 
-    const classStats = new Map<string, { wins: number; losses: number }>();
-
-    for (const game of gamesResult.games) {
       // Filter by team format if specified
       if (teamFormat) {
-        const gameWithPlayers = await getGameById(game.id);
-        if (gameWithPlayers?.players) {
-          const winners = gameWithPlayers.players.filter(p => p.flag === 'winner').length;
-          const losers = gameWithPlayers.players.filter(p => p.flag === 'loser').length;
-          const formatStr = `${winners}v${losers}`;
-          if (formatStr !== teamFormat) continue;
-        }
+        games = filterGamesByTeamFormat(games, teamFormat);
       }
 
-      const gameWithPlayers = await getGameById(game.id);
-      if (!gameWithPlayers?.players) continue;
+      const classStats = new Map<string, { wins: number; losses: number }>();
 
-      gameWithPlayers.players.forEach((player) => {
-        if (player.class && player.flag !== 'drawer') {
-          const className = player.class.toLowerCase().trim();
-          if (className) {
-            if (!classStats.has(className)) {
-              classStats.set(className, { wins: 0, losses: 0 });
-            }
-            const stats = classStats.get(className)!;
-            if (player.flag === 'winner') {
-              stats.wins += 1;
-            } else if (player.flag === 'loser') {
-              stats.losses += 1;
+      for (const game of games) {
+        if (!game.players) continue;
+
+        game.players.forEach((player) => {
+          if (player.class && player.flag !== 'drawer') {
+            const className = player.class.toLowerCase().trim();
+            if (className) {
+              if (!classStats.has(className)) {
+                classStats.set(className, { wins: 0, losses: 0 });
+              }
+              const stats = classStats.get(className)!;
+              if (player.flag === 'winner') {
+                stats.wins += 1;
+              } else if (player.flag === 'loser') {
+                stats.losses += 1;
+              }
             }
           }
-        }
-      });
-    }
+        });
+      }
 
-    return Array.from(classStats.entries())
-      .map(([className, stats]) => {
-        const total = stats.wins + stats.losses;
-        const winRate = total > 0 ? (stats.wins / total) * 100 : 0;
-        return { className, winRate };
-      })
-      .sort((a, b) => b.winRate - a.winRate);
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to get class win rate data', {
-      component: 'analyticsService',
-      operation: 'getClassWinRateData',
-    });
-    return [];
-  }
+      return Array.from(classStats.entries())
+        .map(([className, stats]) => {
+          const total = stats.wins + stats.losses;
+          const winRate = total > 0 ? (stats.wins / total) * 100 : 0;
+          return { className, winRate };
+        })
+        .sort((a, b) => b.winRate - a.winRate);
+    } catch (error) {
+      const err = error as Error;
+      logError(err, 'Failed to get class win rate data', {
+        component: 'analyticsService',
+        operation: 'getClassWinRateData',
+      });
+      return [];
+    }
+  });
 }
 
 /**
  * Get aggregate ITT stats across all games
+ * Uses batch fetching and caching for efficiency
  */
 export async function getAggregateITTStats(
   category?: string,
   startDate?: string,
   endDate?: string,
 ): Promise<AggregateITTStats> {
-  try {
-    logger.info('Getting aggregate ITT stats', { category, startDate, endDate });
+  const filters: AnalyticsFilters = { category, startDate, endDate };
+  
+  return getCachedAnalytics('ittStats', filters, async () => {
+    try {
+      logger.info('Computing aggregate ITT stats', { category, startDate, endDate });
 
-    const gamesResult = await getGames({
-      category,
-      startDate,
-      endDate,
-      gameState: 'completed',
-      limit: 10000,
-    });
+      const games = await fetchCompletedGamesWithPlayers(category, startDate, endDate);
 
-    const totals = {
-      games: 0,
-      damageDealt: 0,
-      selfHealing: 0,
-      allyHealing: 0,
-      meatEaten: 0,
-      goldAcquired: 0,
-      elk: 0,
-      hawk: 0,
-      snake: 0,
-      wolf: 0,
-      bear: 0,
-      panther: 0,
-    };
+      const totals = {
+        games: 0,
+        damageDealt: 0,
+        selfHealing: 0,
+        allyHealing: 0,
+        meatEaten: 0,
+        goldAcquired: 0,
+        elk: 0,
+        hawk: 0,
+        snake: 0,
+        wolf: 0,
+        bear: 0,
+        panther: 0,
+      };
 
-    for (const game of gamesResult.games) {
-      const gameWithPlayers = await getGameById(game.id);
-      if (!gameWithPlayers?.players) continue;
+      for (const game of games) {
+        if (!game.players) continue;
 
-      totals.games++;
+        totals.games++;
 
-      for (const player of gameWithPlayers.players) {
-        totals.damageDealt += player.damageDealt || 0;
-        totals.selfHealing += player.selfHealing || 0;
-        totals.allyHealing += player.allyHealing || 0;
-        totals.meatEaten += player.meatEaten || 0;
-        totals.goldAcquired += player.goldAcquired || player.gold || 0;
-        totals.elk += player.killsElk || 0;
-        totals.hawk += player.killsHawk || 0;
-        totals.snake += player.killsSnake || 0;
-        totals.wolf += player.killsWolf || 0;
-        totals.bear += player.killsBear || 0;
-        totals.panther += player.killsPanther || 0;
+        for (const player of game.players) {
+          totals.damageDealt += player.damageDealt || 0;
+          totals.selfHealing += player.selfHealing || 0;
+          totals.allyHealing += player.allyHealing || 0;
+          totals.meatEaten += player.meatEaten || 0;
+          totals.goldAcquired += player.goldAcquired || player.gold || 0;
+          totals.elk += player.killsElk || 0;
+          totals.hawk += player.killsHawk || 0;
+          totals.snake += player.killsSnake || 0;
+          totals.wolf += player.killsWolf || 0;
+          totals.bear += player.killsBear || 0;
+          totals.panther += player.killsPanther || 0;
+        }
       }
+
+      const totalAnimalKills = totals.elk + totals.hawk + totals.snake + totals.wolf + totals.bear + totals.panther;
+      const gameCount = totals.games || 1;
+
+      return {
+        totalGames: totals.games,
+        totalDamageDealt: totals.damageDealt,
+        totalHealing: {
+          selfHealing: totals.selfHealing,
+          allyHealing: totals.allyHealing,
+          totalHealing: totals.selfHealing + totals.allyHealing,
+        },
+        totalMeatEaten: totals.meatEaten,
+        totalGoldAcquired: totals.goldAcquired,
+        totalAnimalKills: {
+          elk: totals.elk,
+          hawk: totals.hawk,
+          snake: totals.snake,
+          wolf: totals.wolf,
+          bear: totals.bear,
+          panther: totals.panther,
+          total: totalAnimalKills,
+        },
+        averagesPerGame: {
+          damageDealt: totals.damageDealt / gameCount,
+          selfHealing: totals.selfHealing / gameCount,
+          allyHealing: totals.allyHealing / gameCount,
+          meatEaten: totals.meatEaten / gameCount,
+          goldAcquired: totals.goldAcquired / gameCount,
+          animalKills: totalAnimalKills / gameCount,
+        },
+      };
+    } catch (error) {
+      const err = error as Error;
+      logError(err, 'Failed to get aggregate ITT stats', {
+        component: 'analyticsService',
+        operation: 'getAggregateITTStats',
+      });
+      return {
+        totalGames: 0,
+        totalDamageDealt: 0,
+        totalHealing: { selfHealing: 0, allyHealing: 0, totalHealing: 0 },
+        totalMeatEaten: 0,
+        totalGoldAcquired: 0,
+        totalAnimalKills: { elk: 0, hawk: 0, snake: 0, wolf: 0, bear: 0, panther: 0, total: 0 },
+        averagesPerGame: { damageDealt: 0, selfHealing: 0, allyHealing: 0, meatEaten: 0, goldAcquired: 0, animalKills: 0 },
+      };
     }
-
-    const totalAnimalKills = totals.elk + totals.hawk + totals.snake + totals.wolf + totals.bear + totals.panther;
-    const gameCount = totals.games || 1; // Avoid division by zero
-
-    return {
-      totalGames: totals.games,
-      totalDamageDealt: totals.damageDealt,
-      totalHealing: {
-        selfHealing: totals.selfHealing,
-        allyHealing: totals.allyHealing,
-        totalHealing: totals.selfHealing + totals.allyHealing,
-      },
-      totalMeatEaten: totals.meatEaten,
-      totalGoldAcquired: totals.goldAcquired,
-      totalAnimalKills: {
-        elk: totals.elk,
-        hawk: totals.hawk,
-        snake: totals.snake,
-        wolf: totals.wolf,
-        bear: totals.bear,
-        panther: totals.panther,
-        total: totalAnimalKills,
-      },
-      averagesPerGame: {
-        damageDealt: totals.damageDealt / gameCount,
-        selfHealing: totals.selfHealing / gameCount,
-        allyHealing: totals.allyHealing / gameCount,
-        meatEaten: totals.meatEaten / gameCount,
-        goldAcquired: totals.goldAcquired / gameCount,
-        animalKills: totalAnimalKills / gameCount,
-      },
-    };
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to get aggregate ITT stats', {
-      component: 'analyticsService',
-      operation: 'getAggregateITTStats',
-    });
-    return {
-      totalGames: 0,
-      totalDamageDealt: 0,
-      totalHealing: { selfHealing: 0, allyHealing: 0, totalHealing: 0 },
-      totalMeatEaten: 0,
-      totalGoldAcquired: 0,
-      totalAnimalKills: { elk: 0, hawk: 0, snake: 0, wolf: 0, bear: 0, panther: 0, total: 0 },
-      averagesPerGame: { damageDealt: 0, selfHealing: 0, allyHealing: 0, meatEaten: 0, goldAcquired: 0, animalKills: 0 },
-    };
-  }
+  });
 }
 
 /**
@@ -821,6 +781,7 @@ export async function getAnimalKillsDistribution(
 
 /**
  * Get top hunters leaderboard
+ * Uses batch fetching and caching for efficiency
  */
 export async function getTopHunters(
   category?: string,
@@ -828,87 +789,84 @@ export async function getTopHunters(
   endDate?: string,
   limit = 10,
 ): Promise<TopHunterEntry[]> {
-  try {
-    logger.info('Getting top hunters', { category, startDate, endDate, limit });
+  const filters: AnalyticsFilters = { category, startDate, endDate };
+  
+  return getCachedAnalytics('topHunters', filters, async () => {
+    try {
+      logger.info('Computing top hunters', { category, startDate, endDate, limit });
 
-    const gamesResult = await getGames({
-      category,
-      startDate,
-      endDate,
-      gameState: 'completed',
-      limit: 10000,
-    });
+      const games = await fetchCompletedGamesWithPlayers(category, startDate, endDate);
 
-    const playerStats = new Map<string, {
-      totalKills: number;
-      gamesPlayed: number;
-      animalKills: AnimalKillsData;
-    }>();
+      const playerStats = new Map<string, {
+        totalKills: number;
+        gamesPlayed: number;
+        animalKills: AnimalKillsData;
+      }>();
 
-    for (const game of gamesResult.games) {
-      const gameWithPlayers = await getGameById(game.id);
-      if (!gameWithPlayers?.players) continue;
+      for (const game of games) {
+        if (!game.players) continue;
 
-      for (const player of gameWithPlayers.players) {
-        const name = player.name.toLowerCase();
-        const existing = playerStats.get(name) || {
-          totalKills: 0,
-          gamesPlayed: 0,
-          animalKills: { elk: 0, hawk: 0, snake: 0, wolf: 0, bear: 0, panther: 0, total: 0 },
-        };
+        for (const player of game.players) {
+          const name = player.name.toLowerCase();
+          const existing = playerStats.get(name) || {
+            totalKills: 0,
+            gamesPlayed: 0,
+            animalKills: { elk: 0, hawk: 0, snake: 0, wolf: 0, bear: 0, panther: 0, total: 0 },
+          };
 
-        existing.gamesPlayed++;
-        existing.animalKills.elk += player.killsElk || 0;
-        existing.animalKills.hawk += player.killsHawk || 0;
-        existing.animalKills.snake += player.killsSnake || 0;
-        existing.animalKills.wolf += player.killsWolf || 0;
-        existing.animalKills.bear += player.killsBear || 0;
-        existing.animalKills.panther += player.killsPanther || 0;
-        existing.animalKills.total = 
-          existing.animalKills.elk + existing.animalKills.hawk + 
-          existing.animalKills.snake + existing.animalKills.wolf + 
-          existing.animalKills.bear + existing.animalKills.panther;
-        existing.totalKills = existing.animalKills.total;
+          existing.gamesPlayed++;
+          existing.animalKills.elk += player.killsElk || 0;
+          existing.animalKills.hawk += player.killsHawk || 0;
+          existing.animalKills.snake += player.killsSnake || 0;
+          existing.animalKills.wolf += player.killsWolf || 0;
+          existing.animalKills.bear += player.killsBear || 0;
+          existing.animalKills.panther += player.killsPanther || 0;
+          existing.animalKills.total = 
+            existing.animalKills.elk + existing.animalKills.hawk + 
+            existing.animalKills.snake + existing.animalKills.wolf + 
+            existing.animalKills.bear + existing.animalKills.panther;
+          existing.totalKills = existing.animalKills.total;
 
-        playerStats.set(name, existing);
+          playerStats.set(name, existing);
+        }
       }
+
+      return Array.from(playerStats.entries())
+        .map(([name, stats]) => {
+          const animalCounts = [
+            { animal: 'Elk', count: stats.animalKills.elk },
+            { animal: 'Hawk', count: stats.animalKills.hawk },
+            { animal: 'Snake', count: stats.animalKills.snake },
+            { animal: 'Wolf', count: stats.animalKills.wolf },
+            { animal: 'Bear', count: stats.animalKills.bear },
+            { animal: 'Panther', count: stats.animalKills.panther },
+          ];
+          const favorite = animalCounts.sort((a, b) => b.count - a.count)[0];
+
+          return {
+            playerName: name,
+            totalKills: stats.totalKills,
+            favoriteAnimal: favorite.count > 0 ? favorite.animal : 'None',
+            gamesPlayed: stats.gamesPlayed,
+          };
+        })
+        .filter((p) => p.totalKills > 0)
+        .sort((a, b) => b.totalKills - a.totalKills)
+        .slice(0, limit);
+    } catch (error) {
+      const err = error as Error;
+      logError(err, 'Failed to get top hunters', {
+        component: 'analyticsService',
+        operation: 'getTopHunters',
+      });
+      return [];
     }
-
-    return Array.from(playerStats.entries())
-      .map(([name, stats]) => {
-        // Find favorite animal
-        const animalCounts = [
-          { animal: 'Elk', count: stats.animalKills.elk },
-          { animal: 'Hawk', count: stats.animalKills.hawk },
-          { animal: 'Snake', count: stats.animalKills.snake },
-          { animal: 'Wolf', count: stats.animalKills.wolf },
-          { animal: 'Bear', count: stats.animalKills.bear },
-          { animal: 'Panther', count: stats.animalKills.panther },
-        ];
-        const favorite = animalCounts.sort((a, b) => b.count - a.count)[0];
-
-        return {
-          playerName: name,
-          totalKills: stats.totalKills,
-          favoriteAnimal: favorite.count > 0 ? favorite.animal : 'None',
-          gamesPlayed: stats.gamesPlayed,
-        };
-      })
-      .filter((p) => p.totalKills > 0)
-      .sort((a, b) => b.totalKills - a.totalKills)
-      .slice(0, limit);
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to get top hunters', {
-      component: 'analyticsService',
-      operation: 'getTopHunters',
-    });
-    return [];
-  }
+  });
 }
 
 /**
  * Get top healers leaderboard
+ * Uses batch fetching and caching for efficiency
  */
 export async function getTopHealers(
   category?: string,
@@ -916,64 +874,61 @@ export async function getTopHealers(
   endDate?: string,
   limit = 10,
 ): Promise<TopHealerEntry[]> {
-  try {
-    logger.info('Getting top healers', { category, startDate, endDate, limit });
+  const filters: AnalyticsFilters = { category, startDate, endDate };
+  
+  return getCachedAnalytics('topHealers', filters, async () => {
+    try {
+      logger.info('Computing top healers', { category, startDate, endDate, limit });
 
-    const gamesResult = await getGames({
-      category,
-      startDate,
-      endDate,
-      gameState: 'completed',
-      limit: 10000,
-    });
+      const games = await fetchCompletedGamesWithPlayers(category, startDate, endDate);
 
-    const playerStats = new Map<string, {
-      totalHealing: number;
-      selfHealing: number;
-      allyHealing: number;
-      gamesPlayed: number;
-    }>();
+      const playerStats = new Map<string, {
+        totalHealing: number;
+        selfHealing: number;
+        allyHealing: number;
+        gamesPlayed: number;
+      }>();
 
-    for (const game of gamesResult.games) {
-      const gameWithPlayers = await getGameById(game.id);
-      if (!gameWithPlayers?.players) continue;
+      for (const game of games) {
+        if (!game.players) continue;
 
-      for (const player of gameWithPlayers.players) {
-        const name = player.name.toLowerCase();
-        const existing = playerStats.get(name) || {
-          totalHealing: 0,
-          selfHealing: 0,
-          allyHealing: 0,
-          gamesPlayed: 0,
-        };
+        for (const player of game.players) {
+          const name = player.name.toLowerCase();
+          const existing = playerStats.get(name) || {
+            totalHealing: 0,
+            selfHealing: 0,
+            allyHealing: 0,
+            gamesPlayed: 0,
+          };
 
-        existing.gamesPlayed++;
-        existing.selfHealing += player.selfHealing || 0;
-        existing.allyHealing += player.allyHealing || 0;
-        existing.totalHealing = existing.selfHealing + existing.allyHealing;
+          existing.gamesPlayed++;
+          existing.selfHealing += player.selfHealing || 0;
+          existing.allyHealing += player.allyHealing || 0;
+          existing.totalHealing = existing.selfHealing + existing.allyHealing;
 
-        playerStats.set(name, existing);
+          playerStats.set(name, existing);
+        }
       }
-    }
 
-    return Array.from(playerStats.entries())
-      .map(([name, stats]) => ({
-        playerName: name,
-        totalHealing: stats.totalHealing,
-        selfHealing: stats.selfHealing,
-        allyHealing: stats.allyHealing,
-        gamesPlayed: stats.gamesPlayed,
-      }))
-      .filter((p) => p.totalHealing > 0)
-      .sort((a, b) => b.totalHealing - a.totalHealing)
-      .slice(0, limit);
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to get top healers', {
-      component: 'analyticsService',
-      operation: 'getTopHealers',
-    });
-    return [];
-  }
+      return Array.from(playerStats.entries())
+        .map(([name, stats]) => ({
+          playerName: name,
+          totalHealing: stats.totalHealing,
+          selfHealing: stats.selfHealing,
+          allyHealing: stats.allyHealing,
+          gamesPlayed: stats.gamesPlayed,
+        }))
+        .filter((p) => p.totalHealing > 0)
+        .sort((a, b) => b.totalHealing - a.totalHealing)
+        .slice(0, limit);
+    } catch (error) {
+      const err = error as Error;
+      logError(err, 'Failed to get top healers', {
+        component: 'analyticsService',
+        operation: 'getTopHealers',
+      });
+      return [];
+    }
+  });
 }
 

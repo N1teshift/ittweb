@@ -7,6 +7,7 @@ import {
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { logError } from '@/features/infrastructure/logging';
+import { invalidateAnalyticsCache } from '@/features/infrastructure/lib/analyticsCache';
 
 const GAMES_COLLECTION = 'games';
 
@@ -46,7 +47,8 @@ export async function deleteGame(id: string): Promise<void> {
       // TODO: Rollback ELO changes
     }
 
-    // Game deleted successfully
+    // Invalidate analytics cache
+    invalidateAnalyticsCache().catch(() => {});
   } catch (error) {
     const err = error as Error;
     logError(err, 'Failed to delete game', {

@@ -7,6 +7,7 @@ import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/f
 import { logError } from '@/features/infrastructure/logging';
 import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
 import { createTimestampFactoryAsync } from '@/features/infrastructure/utils/timestampUtils';
+import { invalidateAnalyticsCache } from '@/features/infrastructure/lib/analyticsCache';
 import type { UpdateGame } from '../types';
 import { updateEloScores } from '@/features/infrastructure/game';
 
@@ -52,7 +53,8 @@ export async function updateGame(id: string, updates: UpdateGame): Promise<void>
       }
     }
 
-    // Game updated successfully
+    // Invalidate analytics cache
+    invalidateAnalyticsCache().catch(() => {});
   } catch (error) {
     const err = error as Error;
     logError(err, 'Failed to update game', {

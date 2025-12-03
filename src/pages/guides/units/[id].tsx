@@ -15,7 +15,7 @@ const pageNamespaces = ["common"];
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: ALL_UNITS.map((unit) => ({ 
-      params: { id: unit.id } 
+      params: { id: encodeURIComponent(unit.id) } 
     })),
     fallback: false,
   };

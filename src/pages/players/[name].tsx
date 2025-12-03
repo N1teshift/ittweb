@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { PlayerProfile } from '@/features/modules/community/players/components/PlayerProfile';
 import { ErrorBoundary } from '@/features/infrastructure/components';
@@ -19,9 +20,12 @@ export default function PlayerPage() {
 
   return (
     <ErrorBoundary>
-    <div className="container mx-auto px-4 py-8">
-      <PlayerProfile name={name} />
-    </div>
+      <Head>
+        <title>{name} - Player Profile</title>
+      </Head>
+      <div className="container mx-auto px-4 py-8">
+        <PlayerProfile name={name} />
+      </div>
     </ErrorBoundary>
   );
 }

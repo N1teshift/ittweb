@@ -3,7 +3,9 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Card } from '@/features/infrastructure/components/ui/Card';
+import { AnimalKillsDisplay } from '@/features/modules/shared/components';
 import type { AggregateITTStats, TopHunterEntry, TopHealerEntry } from '../../analytics/types';
 
 interface ITTStatsOverviewProps {
@@ -14,18 +16,33 @@ interface ITTStatsOverviewProps {
 
 function StatCard({ 
   icon, 
+  iconImage,
   label, 
   value, 
   colorClass 
 }: { 
-  icon: string; 
+  icon?: string; 
+  iconImage?: string;
   label: string; 
   value: number; 
   colorClass: string;
 }) {
   return (
     <div className="bg-black/20 rounded-lg p-4 border border-amber-500/10 text-center">
-      <div className="text-2xl mb-1">{icon}</div>
+      {iconImage ? (
+        <div className="flex justify-center mb-1">
+          <Image
+            src={iconImage}
+            alt={label}
+            width={40}
+            height={40}
+            className="w-10 h-10"
+            unoptimized
+          />
+        </div>
+      ) : icon ? (
+        <div className="text-2xl mb-1">{icon}</div>
+      ) : null}
       <div className={`text-xl font-bold ${colorClass}`}>
         {value.toLocaleString()}
       </div>
@@ -145,41 +162,23 @@ export function ITTStatsOverview({ category, startDate, endDate }: ITTStatsOverv
       {/* Aggregate Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
         <StatCard icon="🎮" label="Games" value={stats.totalGames} colorClass="text-amber-300" />
-        <StatCard icon="🗡️" label="Total Damage" value={stats.totalDamageDealt} colorClass="text-red-400" />
+        <StatCard iconImage="/icons/itt/btnspiritwalkeradepttraining.png" label="Total Damage" value={stats.totalDamageDealt} colorClass="text-red-400" />
         <StatCard icon="💚" label="Self Healing" value={stats.totalHealing?.selfHealing || 0} colorClass="text-green-400" />
         <StatCard icon="💙" label="Ally Healing" value={stats.totalHealing?.allyHealing || 0} colorClass="text-blue-400" />
-        <StatCard icon="🥩" label="Meat Eaten" value={stats.totalMeatEaten} colorClass="text-orange-400" />
-        <StatCard icon="🦌" label="Animal Kills" value={stats.totalAnimalKills?.total || 0} colorClass="text-amber-300" />
+        <StatCard iconImage="/icons/itt/btnmonsterlure.png" label="Meat Eaten" value={stats.totalMeatEaten} colorClass="text-orange-400" />
+        <StatCard iconImage="/icons/itt/btnchestofgold.png" label="Gold Acquired" value={stats.totalGoldAcquired || 0} colorClass="text-yellow-400" />
       </div>
 
       {/* Animal Kills Breakdown */}
       {stats.totalAnimalKills && stats.totalAnimalKills.total > 0 && (
         <div className="mb-6">
-          <h3 className="text-sm font-medium text-gray-400 mb-3">Animal Kills Distribution</h3>
-          <div className="flex flex-wrap gap-2">
-            {[
-              { name: 'Elk', count: stats.totalAnimalKills.elk, emoji: '🦌', color: 'bg-amber-500/20' },
-              { name: 'Hawk', count: stats.totalAnimalKills.hawk, emoji: '🦅', color: 'bg-sky-500/20' },
-              { name: 'Snake', count: stats.totalAnimalKills.snake, emoji: '🐍', color: 'bg-green-500/20' },
-              { name: 'Wolf', count: stats.totalAnimalKills.wolf, emoji: '🐺', color: 'bg-gray-500/20' },
-              { name: 'Bear', count: stats.totalAnimalKills.bear, emoji: '🐻', color: 'bg-orange-500/20' },
-              { name: 'Panther', count: stats.totalAnimalKills.panther, emoji: '🐆', color: 'bg-purple-500/20' },
-            ].filter(a => a.count > 0).map(animal => {
-              const percentage = ((animal.count / stats.totalAnimalKills!.total) * 100).toFixed(1);
-              return (
-                <div 
-                  key={animal.name} 
-                  className={`flex items-center gap-2 px-3 py-2 ${animal.color} rounded-lg`}
-                >
-                  <span className="text-lg">{animal.emoji}</span>
-                  <div>
-                    <div className="text-white font-medium">{animal.count.toLocaleString()}</div>
-                    <div className="text-xs text-gray-400">{percentage}%</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <h3 className="text-sm font-medium text-gray-400 mb-3">Individual Animal Kills</h3>
+          <AnimalKillsDisplay
+            kills={stats.totalAnimalKills}
+            showTotal={false}
+            compact={false}
+            showLabels={true}
+          />
         </div>
       )}
 

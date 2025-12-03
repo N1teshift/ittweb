@@ -36,33 +36,20 @@ export function PlayerProfile({ name, filters }: PlayerProfileProps) {
 
   const categories = Object.keys(player.categories);
 
+  // Format last played date
+  const lastPlayedDate = player.lastPlayed ? (() => {
+    const date = typeof player.lastPlayed === 'string' 
+      ? new Date(player.lastPlayed)
+      : (player.lastPlayed as Timestamp)?.toDate?.() || new Date(String(player.lastPlayed));
+    return date.toLocaleDateString();
+  })() : null;
+
   return (
     <div className="space-y-6">
-      <Card variant="medieval" className="p-6">
-        <h1 className="text-2xl md:text-4xl font-bold text-amber-400 mb-4">{player.name}</h1>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-          <div>
-            <span className="text-gray-500">Total Games:</span>
-            <p className="text-amber-300 text-lg font-semibold">{player.totalGames}</p>
-          </div>
-          {player.lastPlayed && (
-            <div>
-              <span className="text-gray-500">Last Played:</span>
-              <p className="text-amber-300">
-                {(() => {
-                  const date = typeof player.lastPlayed === 'string' 
-                    ? new Date(player.lastPlayed)
-                    : (player.lastPlayed as Timestamp)?.toDate?.() || new Date(String(player.lastPlayed));
-                  return date.toLocaleDateString();
-                })()}
-              </p>
-            </div>
-          )}
-        </div>
-      </Card>
+      <h1 className="text-2xl md:text-4xl font-bold text-amber-400">{player.name}</h1>
 
       {/* Lifetime ITT Statistics */}
-      <PlayerITTStatsCard playerName={player.name} />
+      <PlayerITTStatsCard playerName={player.name} lastPlayed={lastPlayedDate} />
 
       {categories.length > 0 && (
         <Card variant="medieval" className="p-6">

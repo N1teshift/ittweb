@@ -38,10 +38,10 @@ export default createApiHandler(
     methods: ['GET'],
     requireAuth: false,
     logRequests: true,
-    // Cache for 2 minutes - analytics data is expensive to compute but changes frequently
+    // Cache for 5 minutes - Firestore cache handles freshness, HTTP cache reduces API calls
     cacheControl: {
       public: true,
-      maxAge: 120,
+      maxAge: 300,
       mustRevalidate: true,
     },
   }

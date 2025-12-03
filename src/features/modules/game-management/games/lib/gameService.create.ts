@@ -7,6 +7,7 @@ import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
+import { invalidateAnalyticsCache } from '@/features/infrastructure/lib/analyticsCache';
 import type { 
   CreateGame, 
   CreateScheduledGame,
@@ -229,6 +230,11 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
         logger.warn('Failed to update ELO scores', { error: eloError });
       }
 
+      // Invalidate analytics cache for this category
+      invalidateAnalyticsCache(gameData.category).catch(() => {
+        // Ignore cache invalidation errors
+      });
+
       logger.info('Completed game created', { id: gameDocRef.id, gameId: gameData.gameId });
       return gameDocRef.id;
     } else {
@@ -309,6 +315,11 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
       } catch (eloError) {
         logger.warn('Failed to update ELO scores', { error: eloError });
       }
+
+      // Invalidate analytics cache for this category
+      invalidateAnalyticsCache(gameData.category).catch(() => {
+        // Ignore cache invalidation errors
+      });
 
       logger.info('Completed game created', { id: gameDocRef.id, gameId: gameData.gameId });
       return gameDocRef.id;
@@ -405,6 +416,9 @@ export async function createGame(gameData: CreateGame): Promise<string> {
       // Update ELO scores for all players
       await updateEloScores(gameDocRef.id);
 
+      // Invalidate analytics cache
+      invalidateAnalyticsCache(gameData.category).catch(() => {});
+
       logger.info('Game created', { id: gameDocRef.id, gameId: gameData.gameId });
       return gameDocRef.id;
     } else {
@@ -466,6 +480,9 @@ export async function createGame(gameData: CreateGame): Promise<string> {
 
       // Update ELO scores for all players
       await updateEloScores(gameDocRef.id);
+
+      // Invalidate analytics cache
+      invalidateAnalyticsCache(gameData.category).catch(() => {});
 
       logger.info('Game created', { id: gameDocRef.id, gameId: gameData.gameId });
       return gameDocRef.id;

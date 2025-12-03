@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Card } from '@/features/infrastructure/components/ui/Card';
-import { Tooltip } from '@/features/infrastructure/components/ui';
+import { AnimalKillsDisplay } from '@/features/modules/shared/components';
 import type { GamePlayer } from '@/features/modules/game-management/games/types';
 
 interface PlayerITTStatsCardProps {
   playerName: string;
+  lastPlayed?: string | null;
 }
 
 interface AggregatedITTStats {
@@ -70,24 +72,37 @@ function aggregatePlayerStats(players: GamePlayer[]): AggregatedITTStats {
 
 function StatBlock({ 
   icon, 
+  iconImage,
   label, 
   value, 
   average, 
   colorClass 
 }: { 
-  icon: string; 
+  icon?: string; 
+  iconImage?: string;
   label: string; 
   value: number; 
   average: number;
   colorClass: string;
 }) {
   return (
-    <div className="bg-black/20 rounded-lg p-3 border border-amber-500/10">
-      <div className="flex items-center gap-2 mb-1">
-        <span className="text-lg">{icon}</span>
-        <span className="text-gray-400 text-sm">{label}</span>
+    <div className="bg-black/20 rounded-lg p-2 border border-amber-500/10">
+      <div className="flex items-center gap-1.5 mb-0.5">
+        {iconImage ? (
+          <Image
+            src={iconImage}
+            alt={label}
+            width={40}
+            height={40}
+            className="w-10 h-10"
+            unoptimized
+          />
+        ) : icon ? (
+          <span className="text-2xl">{icon}</span>
+        ) : null}
+        <span className="text-gray-400 text-xs">{label}</span>
       </div>
-      <div className={`text-xl font-bold ${colorClass}`}>
+      <div className={`text-lg font-bold ${colorClass}`}>
         {value.toLocaleString()}
       </div>
       <div className="text-xs text-gray-500">
@@ -97,7 +112,7 @@ function StatBlock({
   );
 }
 
-export function PlayerITTStatsCard({ playerName }: PlayerITTStatsCardProps) {
+export function PlayerITTStatsCard({ playerName, lastPlayed }: PlayerITTStatsCardProps) {
   const [stats, setStats] = useState<AggregatedITTStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -179,17 +194,26 @@ export function PlayerITTStatsCard({ playerName }: PlayerITTStatsCardProps) {
   const avg = (val: number) => stats.gamesWithStats > 0 ? val / stats.gamesWithStats : 0;
 
   return (
-    <Card variant="medieval" className="p-6">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-amber-400">Lifetime Statistics</h2>
-        <span className="text-sm text-gray-500">
-          Based on {stats.gamesWithStats} games with stats
-        </span>
+    <Card variant="medieval" className="p-4">
+      <div className="flex justify-between items-center mb-3">
+        <h2 className="text-lg font-semibold text-amber-400">Lifetime Statistics</h2>
+        {lastPlayed && (
+          <span className="text-xs text-gray-500">
+            Last Played: {lastPlayed}
+          </span>
+        )}
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
         <StatBlock
-          icon="🗡️"
+          icon="🎮"
+          label="Games"
+          value={stats.gamesWithStats}
+          average={1}
+          colorClass="text-amber-300"
+        />
+        <StatBlock
+          iconImage="/icons/itt/btnspiritwalkeradepttraining.png"
           label="Damage Dealt"
           value={stats.totalDamageDealt}
           average={avg(stats.totalDamageDealt)}
@@ -210,51 +234,31 @@ export function PlayerITTStatsCard({ playerName }: PlayerITTStatsCardProps) {
           colorClass="text-blue-400"
         />
         <StatBlock
-          icon="🥩"
+          iconImage="/icons/itt/btnmonsterlure.png"
           label="Meat Eaten"
           value={stats.totalMeatEaten}
           average={avg(stats.totalMeatEaten)}
           colorClass="text-orange-400"
         />
         <StatBlock
-          icon="💰"
+          iconImage="/icons/itt/btnchestofgold.png"
           label="Gold Acquired"
           value={stats.totalGoldAcquired}
           average={avg(stats.totalGoldAcquired)}
           colorClass="text-yellow-400"
         />
-        <StatBlock
-          icon="🦌"
-          label="Total Kills"
-          value={stats.animalKills.total}
-          average={avg(stats.animalKills.total)}
-          colorClass="text-amber-300"
-        />
       </div>
 
-      {/* Animal Kills Breakdown */}
-      {stats.animalKills.total > 0 && (
-        <div className="mt-4 pt-4 border-t border-amber-500/20">
-          <h3 className="text-sm font-medium text-gray-400 mb-3">Animal Kills Breakdown</h3>
-          <div className="flex flex-wrap gap-3">
-            {[
-              { name: 'Elk', count: stats.animalKills.elk, emoji: '🦌' },
-              { name: 'Hawk', count: stats.animalKills.hawk, emoji: '🦅' },
-              { name: 'Snake', count: stats.animalKills.snake, emoji: '🐍' },
-              { name: 'Wolf', count: stats.animalKills.wolf, emoji: '🐺' },
-              { name: 'Bear', count: stats.animalKills.bear, emoji: '🐻' },
-              { name: 'Panther', count: stats.animalKills.panther, emoji: '🐆' },
-            ].filter(a => a.count > 0).map(animal => (
-              <Tooltip key={animal.name} content={`${animal.name} kills`}>
-                <div className="flex items-center gap-1 px-3 py-1 bg-amber-500/10 rounded-full">
-                  <span>{animal.emoji}</span>
-                  <span className="text-amber-300">{animal.count}</span>
-                </div>
-              </Tooltip>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Animal Kills Breakdown - merged into same section */}
+      <div className="mt-3 pt-3 border-t border-amber-500/20">
+        <h3 className="text-xs font-medium text-gray-400 mb-2">Animal Kills</h3>
+        <AnimalKillsDisplay
+          kills={stats.animalKills}
+          showTotal={false}
+          compact={false}
+          showLabels={true}
+        />
+      </div>
     </Card>
   );
 }

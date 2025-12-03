@@ -25,6 +25,8 @@ export {
 export {
   getGameById,
   getGames,
+  getGamesWithPlayers,
+  batchGetPlayersForGames,
 } from './gameService.read';
 
 // Re-export update operations
