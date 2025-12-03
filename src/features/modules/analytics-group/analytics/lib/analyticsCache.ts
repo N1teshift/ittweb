@@ -50,7 +50,7 @@ export async function getCachedAnalytics<T>(
   filters: AnalyticsFilters,
   computeFn: () => Promise<T>
 ): Promise<T> {
-  return getOrComputeAnalytics(analyticsType, filters, computeFn);
+  return getOrComputeAnalytics(analyticsType, filters as Record<string, unknown>, computeFn);
 }
 
 /**

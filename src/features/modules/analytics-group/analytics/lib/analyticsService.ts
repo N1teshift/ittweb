@@ -14,7 +14,6 @@ import type {
   AggregateITTStats,
   TopHunterEntry,
   TopHealerEntry,
-  HealingStatsData,
 } from '../types';
 import type { GameWithPlayers } from '../../../game-management/games/types';
 import { format, eachDayOfInterval, parseISO, startOfMonth, eachMonthOfInterval } from 'date-fns';

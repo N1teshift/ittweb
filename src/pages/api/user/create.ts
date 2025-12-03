@@ -8,7 +8,7 @@ import { createComponentLogger } from '@/features/infrastructure/logging';
  * POST /api/user/create - Create a new user (public endpoint for Discord bot)
  */
 export default createPostHandler<{ success: boolean }>(
-  async (req: NextApiRequest, res, context) => {
+  async (req: NextApiRequest, _res, _context) => {
     const logger = createComponentLogger('api/user/create');
 
     // Body validation

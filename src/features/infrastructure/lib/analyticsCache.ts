@@ -176,7 +176,7 @@ export async function invalidateAnalyticsCache(
     
     // If category specified, only invalidate caches for that category
     // Otherwise, invalidate all caches
-    let query = collection.limit(500);
+    const query = collection.limit(500);
     
     const snapshot = await query.get();
     
