@@ -9,24 +9,21 @@
 - Authentication options and providers
 
 ### API (`api/`)
+
+See [API README](./api/README.md) for detailed documentation.
+
+- **Handlers** (`api/handlers/`)
+  - `routeHandlers.ts` - Standardized API route handler utilities
+  - Error handling patterns, authentication, caching
+- **Parsing** (`api/parsing/`)
+  - `queryParser.ts` - Query parameter parsing utilities
+- **Schemas** (`api/schemas/`)
+  - `schemas.ts` - Zod schemas for request validation
+- **Zod** (`api/zod/`)
+  - `zodValidation.ts` - Zod validation helpers and integrations
 - **Firebase** (`api/firebase/`)
-  - `admin.ts` - Firebase Admin SDK setup
-  - `config.ts` - Firebase configuration
-  - `firebaseClient.ts` - Client-side Firebase setup
-  - `firestoreHelpers.ts` - Helper utilities for server/client Firestore operations
-    - `withFirestore()` - Abstract server/client Firestore routing
-    - `getDocument()` - Get single document (server/client aware)
-    - `getCollectionSnapshot()` - Get collection snapshot (server/client aware)
-- **Route Handlers** (`api/routeHandlers.ts`)
-  - Standardized API route handler utilities
-  - Error handling patterns
-  - Response formatting
-- **Validation Helpers** (`api/validationHelpers.ts`)
-  - Reusable validation functions for common API request patterns
-  - `validateApiRequest()` - Validate request body against a schema
-  - `validatePaginationParams()` - Validate pagination parameters
-  - `validateDateRange()` - Validate date range parameters
-  - Validator creators: `createStringValidator()`, `createIntValidator()`, `createEnumValidator()`, etc.
+  - Firebase Admin SDK setup and client configuration
+  - Firestore helper utilities
 
 ### Logging (`logging/`)
 - `logger.ts` - Logger implementation
@@ -154,29 +151,6 @@ export default createPostHandler(
 ```
 
 See [Zod Validation Migration Guide](../../../docs/operations/zod-validation-migration.md) for more details.
-
-#### Legacy Validation Helpers (Deprecated)
-
-The old `validateApiRequest` helper is still available but deprecated in favor of Zod:
-
-```typescript
-import { validateApiRequest, createStringValidator, createEnumValidator } from '@/features/infrastructure/api';
-
-// Define validation schema
-const schema = [
-  { name: 'title', required: true, validator: createStringValidator(1, 100) },
-  { name: 'category', required: true, validator: createEnumValidator(['ranked', 'casual']) },
-];
-
-// Validate request body
-const result = validateApiRequest(req.body, schema);
-if (!result.valid) {
-  return res.status(400).json({ error: result.errors?.join(', ') });
-}
-
-// Use validated data
-const { title, category } = result.data;
-```
 
 ### Skeleton Components
 ```typescript
