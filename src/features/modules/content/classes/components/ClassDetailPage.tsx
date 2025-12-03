@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { PageHero } from '@/features/infrastructure/components';
-import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Card } from '@/features/infrastructure/components';
 import type { ClassStats } from '@/features/modules/analytics-group/analytics/types';
 
 interface ClassDetailPageProps {

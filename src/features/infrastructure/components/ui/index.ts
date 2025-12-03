@@ -1,11 +1,6 @@
-export { default as Button } from './Button';
-export { default as Card } from './Card';
-export { default as EmptyState } from './EmptyState';
-export { default as LoadingOverlay } from './LoadingOverlay';
-export { default as LoadingScreen } from './LoadingScreen';
-export { GameCardSkeleton } from './GameCardSkeleton';
-export { PlayerCardSkeleton } from './PlayerCardSkeleton';
-export { LeaderboardSkeleton } from './LeaderboardSkeleton';
-export { Tooltip } from './Tooltip';
-
-
+// Re-export from components level folders
+export { Button, GitHubButton, DiscordButton } from '../buttons';
+export { Card } from '../containers';
+export { LoadingScreen, LoadingOverlay } from '../loading';
+export { GameCardSkeleton, PlayerCardSkeleton, LeaderboardSkeleton } from '../skeletons';
+export { EmptyState, Tooltip } from '../feedback';

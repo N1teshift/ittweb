@@ -4,7 +4,7 @@ import {
   updateEloScores,
   recalculateFromGame,
   STARTING_ELO,
-} from '../eloCalculator';
+} from '../elo';
 
 jest.mock('@/features/infrastructure/logging', () => ({
   createComponentLogger: () => ({

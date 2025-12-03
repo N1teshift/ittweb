@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { Button } from '@/features/infrastructure/components/ui';
+import { Button } from '@/features/infrastructure/components';
 import { getEntryById } from '@/features/modules/game-management/entries/lib/entryService';
 import { Entry } from '@/types/entry';
 import YouTubeEmbed from '@/features/modules/community/archives/media/components/YouTubeEmbed';

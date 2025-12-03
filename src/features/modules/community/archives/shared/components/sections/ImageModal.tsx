@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { useModalAccessibility } from '@/features/infrastructure/hooks/useModalAccessibility';
+import { useModalAccessibility } from '@/features/infrastructure/hooks';
 
 interface ImageModalProps {
   isOpen: boolean;

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useGames } from '../hooks/useGames';
 import { GameCard } from './GameCard';
-import { Card } from '@/features/infrastructure/components/ui/Card';
-import LoadingScreen from '@/features/infrastructure/components/ui/LoadingScreen';
-import { EmptyState } from '@/features/infrastructure/components/ui';
+import { Card } from '@/features/infrastructure/components';
+import { LoadingScreen } from '@/features/infrastructure/components';
+import { EmptyState } from '@/features/infrastructure/components';
 import type { GameFilters } from '../types';
 
 interface GameListProps {

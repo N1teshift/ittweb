@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../../api/auth/[...nextauth]';
 import Head from 'next/head';
-import PageHero from '@/features/infrastructure/components/PageHero';
+import { PageHero } from '@/features/infrastructure/components';
 import { getPostById } from '@/features/modules/content/blog/lib/postService';
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 import EditPostForm from '@/features/modules/content/blog/components/EditPostForm';

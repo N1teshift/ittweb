@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Card } from '@/features/infrastructure/components';
 import { formatDuration } from '@/features/modules/shared/utils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import { formatDateTimeInTimezone } from '@/features/modules/game-management/scheduled-games/utils/timezoneUtils';

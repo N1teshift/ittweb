@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Card } from '@/features/infrastructure/components';
 
 interface MetaFiltersProps {
   category: string;

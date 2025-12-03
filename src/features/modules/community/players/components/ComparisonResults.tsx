@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Card } from '@/features/infrastructure/components';
 import type { PlayerComparison, PlayerStats, CategoryStats } from '../types';
 
 const ELOComparisonChart = dynamic(

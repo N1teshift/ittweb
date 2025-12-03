@@ -4,7 +4,7 @@
 
 import React, { Suspense } from 'react';
 import dynamic from 'next/dynamic';
-import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Card } from '@/features/infrastructure/components';
 import type {
   ActivityDataPoint,
   GameLengthDataPoint,

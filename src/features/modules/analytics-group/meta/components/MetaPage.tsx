@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageHero } from '@/features/infrastructure/components';
-import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Card } from '@/features/infrastructure/components';
 import { useMetaFilters } from './useMetaFilters';
 import { useMetaData } from './useMetaData';
 import { MetaFilters } from './MetaFilters';

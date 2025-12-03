@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import Link from 'next/link';
-import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Card } from '@/features/infrastructure/components';
 import { formatDuration } from '../../../shared/utils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import type { Game } from '../types';

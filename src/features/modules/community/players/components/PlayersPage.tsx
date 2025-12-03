@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { PageHero } from '@/features/infrastructure/components';
-import { Card } from '@/features/infrastructure/components/ui/Card';
-import LoadingScreen from '@/features/infrastructure/components/ui/LoadingScreen';
-import { EmptyState } from '@/features/infrastructure/components/ui';
+import { Card } from '@/features/infrastructure/components';
+import { LoadingScreen } from '@/features/infrastructure/components';
+import { EmptyState } from '@/features/infrastructure/components';
 import type { PlayerStats } from '../types';
 import { PlayerCard } from './PlayerCard';
 import { usePlayerComparison } from '../hooks/usePlayerComparison';

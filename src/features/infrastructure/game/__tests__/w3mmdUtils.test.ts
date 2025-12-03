@@ -1,4 +1,4 @@
-import { buildW3MMDLookup, mapMissionStatsToPlayers } from '../w3mmdUtils';
+import { buildW3MMDLookup, mapMissionStatsToPlayers } from '../w3mmd';
 import type { W3MMDAction } from 'w3gjs/dist/types/parsers/ActionParser';
 import type Player from 'w3gjs/dist/types/Player';
 

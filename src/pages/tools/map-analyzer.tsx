@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
 import { Logger } from '@/features/infrastructure/logging';
-import LoadingScreen from '@/features/infrastructure/components/ui/LoadingScreen';
+import { LoadingScreen } from '@/features/infrastructure/components';
 
 // Lazy load TerrainVisualizerContainer to reduce initial bundle size
 // This component uses w3gjs which is ~200KB

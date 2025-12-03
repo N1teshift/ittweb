@@ -13,7 +13,7 @@ import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { Button } from '@/features/infrastructure/components/ui';
+import { Button } from '@/features/infrastructure/components';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 
 const pageNamespaces = ["common"];

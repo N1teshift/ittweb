@@ -3,10 +3,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import type { GetServerSideProps } from 'next';
 import { PageHero, ErrorBoundary } from '@/features/infrastructure/components';
-import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Card } from '@/features/infrastructure/components';
 import { ClassWinRateChart } from '@/features/modules/analytics-group/analytics/components';
-import LoadingScreen from '@/features/infrastructure/components/ui/LoadingScreen';
-import { EmptyState } from '@/features/infrastructure/components/ui';
+import { LoadingScreen, EmptyState } from '@/features/infrastructure/components';
 import type { ClassStats, ClassWinRateData } from '@/features/modules/analytics-group/analytics/types';
 
 // Mark page as SSR to prevent ISR manifest warnings

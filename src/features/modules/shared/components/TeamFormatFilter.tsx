@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button } from '@/features/infrastructure/components/ui/Button';
-import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Button } from '@/features/infrastructure/components';
+import { Card } from '@/features/infrastructure/components';
 
 interface TeamFormatFilterProps {
   value?: string;

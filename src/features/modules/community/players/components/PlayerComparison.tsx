@@ -3,8 +3,8 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { PageHero } from '@/features/infrastructure/components';
-import { Card } from '@/features/infrastructure/components/ui/Card';
-import { EmptyState } from '@/features/infrastructure/components/ui';
+import { Card } from '@/features/infrastructure/components';
+import { EmptyState } from '@/features/infrastructure/components';
 import type { PlayerComparison as PlayerComparisonType, CategoryStats } from '../types';
 
 // Lazy load Recharts components to reduce initial bundle size

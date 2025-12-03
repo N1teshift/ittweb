@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import type { GetServerSideProps } from 'next';
 import { PageHero, ErrorBoundary } from '@/features/infrastructure/components';
-import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Card } from '@/features/infrastructure/components';
 import { ClassSelectionChart, ClassWinRateChart } from '@/features/modules/analytics-group/analytics/components';
-import LoadingScreen from '@/features/infrastructure/components/ui/LoadingScreen';
-import { EmptyState } from '@/features/infrastructure/components/ui';
+import { LoadingScreen } from '@/features/infrastructure/components';
+import { EmptyState } from '@/features/infrastructure/components';
 import type { ClassSelectionData, ClassWinRateData, ClassStats } from '@/features/modules/analytics-group/analytics/types';
 
 // Mark page as SSR to prevent ISR manifest warnings

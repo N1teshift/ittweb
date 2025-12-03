@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card } from '@/features/infrastructure/components/ui/Card';
-import LoadingScreen from '@/features/infrastructure/components/ui/LoadingScreen';
-import { EmptyState } from '@/features/infrastructure/components/ui';
+import { Card } from '@/features/infrastructure/components';
+import { LoadingScreen } from '@/features/infrastructure/components';
+import { EmptyState } from '@/features/infrastructure/components';
 import { useStandings } from '../hooks/useStandings';
 import { LeaderboardRow } from './LeaderboardRow';
 import type { StandingsFilters } from '../types';

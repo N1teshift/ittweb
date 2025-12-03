@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from 'react';
 import type { Game } from '@/features/modules/game-management/games/types';
-import { useModalAccessibility } from '@/features/infrastructure/hooks/useModalAccessibility';
+import { useModalAccessibility } from '@/features/infrastructure/hooks';
 
 interface ApiResponse {
   success?: boolean;

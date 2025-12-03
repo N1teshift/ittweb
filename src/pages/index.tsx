@@ -6,7 +6,7 @@ import ScheduleGameForm from '@/features/modules/game-management/scheduled-games
 import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
 import type { GetStaticProps } from 'next';
 import type { CreateScheduledGame } from '@/features/modules/game-management/games/types';
-import { Button } from '@/features/infrastructure/components/ui';
+import { Button } from '@/features/infrastructure/components';
 import { HomeTimeline } from '@/features/modules/community/archives/shared/components';
 import type { HomeTimelineHandle } from '@/features/modules/community/archives/timeline/components/HomeTimeline';
 import { useRef } from 'react';

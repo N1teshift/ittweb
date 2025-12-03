@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
 import Head from 'next/head';
-import PageHero from '@/features/infrastructure/components/PageHero';
+import { PageHero } from '@/features/infrastructure/components';
 import NewPostForm from '@/features/modules/content/blog/components/NewPostForm';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 

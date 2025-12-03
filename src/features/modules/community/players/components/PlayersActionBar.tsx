@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Card } from '@/features/infrastructure/components';
 import type { PlayerComparison } from '../types';
 
 interface PlayersActionBarProps {

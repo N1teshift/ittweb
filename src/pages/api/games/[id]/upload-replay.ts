@@ -1,7 +1,7 @@
 import type { NextApiRequest } from 'next';
 import { createPostHandler, requireSession, parseRequiredQueryString } from '@/features/infrastructure/api';
 import { getGameById, updateEloScores } from '@/features/modules/game-management/games/lib/gameService';
-import { parseReplayFile } from '@/features/infrastructure/game/replayParser';
+import { parseReplayFile } from '@/features/infrastructure/game/replay';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import { getFirestoreAdmin, getAdminTimestamp, getStorageAdmin, getStorageBucketName } from '@/features/infrastructure/api/firebase/admin';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';

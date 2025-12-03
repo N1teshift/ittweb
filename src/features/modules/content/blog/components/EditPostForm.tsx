@@ -1,4 +1,4 @@
-import { Button } from '@/features/infrastructure/components/ui';
+import { Button } from '@/features/infrastructure/components';
 import { useEditPostForm } from '../hooks/useEditPostForm';
 import type { PostFormState } from '../hooks/useNewPostForm';
 

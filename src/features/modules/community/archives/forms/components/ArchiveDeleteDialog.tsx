@@ -1,5 +1,5 @@
 import React from 'react';
-import { useModalAccessibility } from '@/features/infrastructure/hooks/useModalAccessibility';
+import { useModalAccessibility } from '@/features/infrastructure/hooks';
 
 interface ArchiveDeleteDialogProps {
   isOpen: boolean;

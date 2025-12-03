@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { PageHero } from '@/features/infrastructure/components';
-import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Card } from '@/features/infrastructure/components';
 import { useClassesData } from '../hooks/useClassesData';
 
 interface ClassesPageProps {

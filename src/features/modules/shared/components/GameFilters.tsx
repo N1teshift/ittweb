@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { DateRangeFilter } from './DateRangeFilter';
 import { PlayerFilter } from './PlayerFilter';
 import { TeamFormatFilter } from './TeamFormatFilter';
-import { Button } from '@/features/infrastructure/components/ui/Button';
-import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Button } from '@/features/infrastructure/components';
+import { Card } from '@/features/infrastructure/components';
 import type { GameFilters } from '@/features/modules/game-management/games/types';
 
 interface GameFiltersProps {

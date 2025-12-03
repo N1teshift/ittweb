@@ -1,5 +1,5 @@
 import React from 'react';
-import PageHero from '@/features/infrastructure/components/PageHero';
+import { PageHero } from '@/features/infrastructure/components';
 
 export default function PrivacyPage() {
   return (

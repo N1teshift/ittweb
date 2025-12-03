@@ -1,5 +1,5 @@
 import type { PlayerProfile, PlayerSearchFilters } from '../types';
-import { createDataFetchHook } from '@/features/infrastructure/hooks/useDataFetch';
+import { createDataFetchHook } from '@/features/infrastructure/hooks';
 
 interface UsePlayerStatsParams {
   name: string;

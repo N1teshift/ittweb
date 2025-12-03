@@ -5,7 +5,7 @@ import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/user
 import { UserData, UserRole } from '@/types/userData';
 import { signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
-import PageHero from '@/features/infrastructure/components/PageHero';
+import { PageHero } from '@/features/infrastructure/components';
 import { Timestamp } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';

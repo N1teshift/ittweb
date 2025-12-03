@@ -1,4 +1,4 @@
-import { parseReplayFile } from '../replayParser';
+import { parseReplayFile } from '../replay';
 import type { W3MMDAction } from 'w3gjs/dist/types/parsers/ActionParser';
 
 jest.mock('@/features/infrastructure/logging', () => ({

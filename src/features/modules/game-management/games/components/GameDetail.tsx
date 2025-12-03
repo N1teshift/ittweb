@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import { Card } from '@/features/infrastructure/components/ui/Card';
-import { Tooltip } from '@/features/infrastructure/components/ui';
+import { Card } from '@/features/infrastructure/components';
+import { Tooltip } from '@/features/infrastructure/components';
 import { formatDuration, formatEloChange } from '../../../shared/utils';
 import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
 import { formatDateTimeInTimezone } from '@/features/modules/game-management/scheduled-games/utils/timezoneUtils';

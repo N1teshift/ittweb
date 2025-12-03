@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Card } from '@/features/infrastructure/components';
 import type { ClassWinRateData } from '../types';
 
 interface ClassWinRateChartProps {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@/features/infrastructure/components/ui/Button';
+import { Button } from '@/features/infrastructure/components';
 
 interface CategorySelectorProps {
   value?: string;

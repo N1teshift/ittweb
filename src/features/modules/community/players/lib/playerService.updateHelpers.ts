@@ -5,7 +5,7 @@
 
 import type { CategoryStats } from '../types';
 import type { GamePlayer } from '../../../game-management/games/types';
-import { STARTING_ELO } from '../../../../infrastructure/game/eloCalculator';
+import { STARTING_ELO } from '../../../../infrastructure/game/elo';
 import type { TimestampFactory } from '@/features/infrastructure/utils/timestampUtils';
 
 /**

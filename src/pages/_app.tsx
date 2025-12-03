@@ -12,7 +12,7 @@ import type { Session } from "next-auth";
 import Head from "next/head";
 import { useEffect } from "react";
 import { SWRConfig } from "swr";
-import Layout from "@/features/infrastructure/components/Layout";
+import { Layout } from "@/features/infrastructure/components";
 import { Logger } from "@/features/infrastructure/logging";
 import { initializeErrorTracking, initializePerformanceMonitoring } from "@/features/infrastructure/monitoring";
 import { swrConfig } from "@/features/infrastructure/lib/swrConfig";

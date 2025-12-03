@@ -4,10 +4,6 @@
 
 ## Exports
 
-### Auth (`auth/`)
-- NextAuth configuration and session management
-- Authentication options and providers
-
 ### API (`api/`)
 
 See [API README](./api/README.md) for detailed documentation.
@@ -56,7 +52,7 @@ See [API README](./api/README.md) for detailed documentation.
 ### Authentication
 ```typescript
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/features/infrastructure/auth';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 
 const session = await getServerSession(req, res, authOptions);
 ```
@@ -154,7 +150,7 @@ See [Zod Validation Migration Guide](../../../docs/operations/zod-validation-mig
 
 ### Skeleton Components
 ```typescript
-import { GameCardSkeleton, PlayerCardSkeleton, LeaderboardSkeleton } from '@/features/infrastructure/components/ui';
+import { GameCardSkeleton, PlayerCardSkeleton, LeaderboardSkeleton } from '@/features/infrastructure/components';
 
 // Show loading placeholders while data loads
 {loading && (

@@ -1,5 +1,4 @@
 // Game infrastructure utilities
-export * from './eloCalculator';
-export * from './replayParser';
-export * from './w3mmdUtils';
-
+export * from './elo';
+export * from './replay';
+export * from './w3mmd';

@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { Timestamp } from 'firebase/firestore';
-import { Card } from '@/features/infrastructure/components/ui/Card';
-import { EmptyState } from '@/features/infrastructure/components/ui';
+import { Card } from '@/features/infrastructure/components';
+import { EmptyState } from '@/features/infrastructure/components';
 import { usePlayerStats } from '../hooks/usePlayerStats';
 import { PlayerITTStatsCard } from './PlayerITTStatsCard';
 import type { PlayerSearchFilters } from '../types';

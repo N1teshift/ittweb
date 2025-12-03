@@ -1,4 +1,4 @@
-import { Button } from '@/features/infrastructure/components/ui';
+import { Button } from '@/features/infrastructure/components';
 import { useNewPostForm } from '../hooks/useNewPostForm';
 
 export default function NewPostForm() {

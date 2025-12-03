@@ -1,5 +1,5 @@
 import type { GameWithPlayers } from '../types';
-import { createUrlDataFetchHook } from '@/features/infrastructure/hooks/useDataFetch';
+import { createUrlDataFetchHook } from '@/features/infrastructure/hooks';
 
 const useGameHook = createUrlDataFetchHook<GameWithPlayers, string>(
   (id: string) => `/api/games/${id}`,

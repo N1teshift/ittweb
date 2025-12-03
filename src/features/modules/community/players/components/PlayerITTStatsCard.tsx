@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Card } from '@/features/infrastructure/components/ui/Card';
+import { Card } from '@/features/infrastructure/components';
 import { AnimalKillsDisplay } from '@/features/modules/shared/components';
 import type { GamePlayer } from '@/features/modules/game-management/games/types';
 
