@@ -1,6 +1,6 @@
 import { readdir } from 'fs/promises';
 import { join } from 'path';
-import { createGetHandler } from '@/features/infrastructure/api/routeHandlers';
+import { createGetHandler } from '@/features/infrastructure/api';
 
 type IconFile = {
   filename: string;

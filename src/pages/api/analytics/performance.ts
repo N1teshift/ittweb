@@ -1,5 +1,5 @@
 import type { NextApiRequest } from 'next';
-import { createPostHandler } from '@/features/infrastructure/api/routeHandlers';
+import { createPostHandler } from '@/features/infrastructure/api';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import type { PerformanceMetric } from '@/features/infrastructure/monitoring/performance';
 

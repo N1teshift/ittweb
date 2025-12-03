@@ -1,8 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
-import { createApiHandler, checkResourceOwnership } from '@/features/infrastructure/api/routeHandlers';
-import { parseRequiredQueryString } from '@/features/infrastructure/api/queryParser';
+import { createApiHandler, checkResourceOwnership, parseRequiredQueryString } from '@/features/infrastructure/api';
 import { getGameById, updateGame, deleteGame } from '@/features/modules/game-management/games/lib/gameService';
 import type { UpdateGame } from '@/features/modules/game-management/games/types';
 import { createComponentLogger } from '@/features/infrastructure/logging';

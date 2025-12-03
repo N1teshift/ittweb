@@ -1,7 +1,6 @@
 import type { NextApiRequest } from 'next';
-import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
+import { createApiHandler, parseQueryString } from '@/features/infrastructure/api';
 import { searchPlayers } from '@/features/modules/community/players/lib/playerService';
-import { parseQueryString } from '@/features/infrastructure/api/queryParser';
 
 /**
  * GET /api/players/search?q=... - Search players

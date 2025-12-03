@@ -176,4 +176,3 @@ export const UpdatePostSchema = z.object({
   published: z.boolean().optional(),
 });
 
-

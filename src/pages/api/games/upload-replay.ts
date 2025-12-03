@@ -1,5 +1,5 @@
 import type { NextApiRequest } from 'next';
-import { createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
+import { createPostHandler, requireSession } from '@/features/infrastructure/api';
 import { createCompletedGame, getGames, updateEloScores } from '@/features/modules/game-management/games/lib/gameService';
 import { parseReplayFile } from '@/features/infrastructure/game/replayParser';
 import { createComponentLogger } from '@/features/infrastructure/logging';

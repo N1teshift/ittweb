@@ -1,5 +1,5 @@
 import type { NextApiRequest } from 'next';
-import { createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
+import { createPostHandler, requireSession } from '@/features/infrastructure/api';
 import { updateDataCollectionNoticeAcceptanceServer } from '@/features/infrastructure/lib/userDataService.server';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 

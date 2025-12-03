@@ -15,7 +15,7 @@ import {
   validateArray,
   validateBoolean,
 } from './validators';
-import { parseQueryString } from './queryParser';
+import { parseQueryString } from '../parsing/queryParser';
 
 /**
  * Validation schema field definition
@@ -347,5 +347,4 @@ export function createArrayValidator<T>(
 ): (value: unknown, fieldName: string) => T[] | string | null {
   return (value: unknown, fieldName: string) => validateArray(value, fieldName, itemValidator, minLength, maxLength);
 }
-
 

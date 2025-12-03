@@ -93,7 +93,7 @@ logError(error, 'Operation failed', { component: 'my-component' });
 
 ### Route Handlers
 ```typescript
-import { createApiHandler, createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
+import { createApiHandler, createPostHandler, requireSession } from '@/features/infrastructure/api';
 
 // Using createApiHandler (supports multiple methods)
 export default createApiHandler(
@@ -127,8 +127,7 @@ export default createPostHandler(
 #### Zod Validation (Recommended)
 
 ```typescript
-import { zodValidator } from '@/features/infrastructure/api/zodValidation';
-import { CreatePostSchema } from '@/features/infrastructure/api/schemas';
+import { zodValidator, CreatePostSchema } from '@/features/infrastructure/api';
 import { z } from 'zod';
 
 // Define Zod schema
@@ -161,7 +160,7 @@ See [Zod Validation Migration Guide](../../../docs/operations/zod-validation-mig
 The old `validateApiRequest` helper is still available but deprecated in favor of Zod:
 
 ```typescript
-import { validateApiRequest, createStringValidator, createEnumValidator } from '@/features/infrastructure/api/validationHelpers';
+import { validateApiRequest, createStringValidator, createEnumValidator } from '@/features/infrastructure/api';
 
 // Define validation schema
 const schema = [

@@ -255,7 +255,7 @@ describe('Security: API Route Authentication Integration', () => {
   describe('createApiHandler requireAuth Integration', () => {
     it('should reject unauthenticated requests when requireAuth is true', async () => {
       mockGetServerSession.mockResolvedValue(null);
-      const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+      const { createApiHandler } = await import('@/features/infrastructure/api');
       
       const handler = createApiHandler(
         async () => ({ success: true }),
@@ -282,7 +282,7 @@ describe('Security: API Route Authentication Integration', () => {
         expires: '2024-12-31',
       };
       mockGetServerSession.mockResolvedValue(mockSession as any);
-      const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+      const { createApiHandler } = await import('@/features/infrastructure/api');
       
       const handler = createApiHandler(
         async () => ({ data: 'success' }),

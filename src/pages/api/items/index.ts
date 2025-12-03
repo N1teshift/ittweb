@@ -1,5 +1,5 @@
 import type { NextApiRequest } from 'next';
-import { createGetHandler } from '@/features/infrastructure/api/routeHandlers';
+import { createGetHandler } from '@/features/infrastructure/api';
 import { ITEMS_DATA } from '@/features/modules/content/guides/data/items';
 import type { ItemCategory, ItemData } from '@/types/items';
 

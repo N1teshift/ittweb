@@ -1,8 +1,5 @@
 import type { NextApiRequest } from 'next';
-import { createGetPostHandler } from '@/features/infrastructure/api/routeHandlers';
-import { parseQueryString, parseQueryInt, parseQueryEnum } from '@/features/infrastructure/api/queryParser';
-import { createCustomValidator, formatZodErrors } from '@/features/infrastructure/api/zodValidation';
-import { CreateScheduledGameSchema, CreateCompletedGameSchema } from '@/features/infrastructure/api/schemas';
+import { createGetPostHandler, parseQueryString, parseQueryInt, parseQueryEnum, createCustomValidator, formatZodErrors, CreateScheduledGameSchema, CreateCompletedGameSchema } from '@/features/infrastructure/api';
 import { createScheduledGame, createCompletedGame, getGames } from '@/features/modules/game-management/games/lib/gameService';
 import type { CreateScheduledGame, CreateCompletedGame, GameFilters } from '@/features/modules/game-management/games/types';
 import { createComponentLogger } from '@/features/infrastructure/logging';

@@ -1,5 +1,5 @@
 import type { NextApiRequest } from 'next';
-import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
+import { createApiHandler } from '@/features/infrastructure/api';
 import { comparePlayers } from '@/features/modules/community/players/lib/playerService';
 import type { PlayerSearchFilters } from '@/features/modules/community/players/types';
 

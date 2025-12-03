@@ -1,9 +1,7 @@
 import type { NextApiRequest } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
-import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
-import { zodValidator } from '@/features/infrastructure/api/zodValidation';
-import { UpdatePostSchema } from '@/features/infrastructure/api/schemas';
+import { createApiHandler, zodValidator, UpdatePostSchema } from '@/features/infrastructure/api';
 import { 
   getPostById, 
   updatePost, 

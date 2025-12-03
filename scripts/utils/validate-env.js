@@ -6,6 +6,55 @@
  * Run: node scripts/validate-env.js
  */
 
+import fs from 'fs';
+import path from 'path';
+
+/**
+ * Load environment variables from .env.local file
+ * Follows Next.js env loading order: .env.local takes precedence
+ */
+function loadEnvFile() {
+  const envLocalPath = path.join(process.cwd(), '.env.local');
+  
+  if (!fs.existsSync(envLocalPath)) {
+    return;
+  }
+  
+  const envContent = fs.readFileSync(envLocalPath, 'utf8');
+  const lines = envContent.split('\n');
+  
+  for (const line of lines) {
+    const trimmedLine = line.trim();
+    
+    // Skip empty lines and comments
+    if (!trimmedLine || trimmedLine.startsWith('#')) {
+      continue;
+    }
+    
+    // Parse KEY=VALUE format (handle values with = in them)
+    const equalIndex = trimmedLine.indexOf('=');
+    if (equalIndex > 0) {
+      const key = trimmedLine.substring(0, equalIndex).trim();
+      let value = trimmedLine.substring(equalIndex + 1).trim();
+      
+      // Remove quotes if present (handles both single and double quotes)
+      if ((value.startsWith('"') && value.endsWith('"')) || 
+          (value.startsWith("'") && value.endsWith("'"))) {
+        value = value.slice(1, -1);
+      }
+      
+      // Set the value from .env.local (Next.js behavior: .env.local takes precedence)
+      // This allows validation to see the same env vars that Next.js will use
+      if (key) {
+        process.env[key] = value;
+      }
+    }
+  }
+}
+
+// Load .env.local before validation
+loadEnvFile();
+
 const requiredVars = {
   // Firebase Client (Public)
   NEXT_PUBLIC_FIREBASE_API_KEY: 'Firebase API Key',
@@ -81,21 +130,8 @@ function validateEnv() {
     process.exit(1);
   }
   
-  // Report optional variables status
-  const missingOptional = [];
-  for (const [varName, description] of Object.entries(optionalVars)) {
-    if (!process.env[varName]) {
-      missingOptional.push({ varName, description });
-    }
-  }
-  
-  if (missingOptional.length > 0) {
-    console.warn('\n⚠️  Optional environment variables not set:');
-    missingOptional.forEach(({ varName, description }) => {
-      console.warn(`  - ${varName} (${description})`);
-    });
-    console.warn('');
-  }
+  // Optional variables are intentionally not reported to reduce noise
+  // They're only needed for specific features (bundle analysis, analytics, etc.)
   
   console.log('✅ All required environment variables are set\n');
   process.exit(0);

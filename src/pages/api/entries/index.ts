@@ -1,8 +1,5 @@
 import type { NextApiRequest } from 'next';
-import { createGetPostHandler } from '@/features/infrastructure/api/routeHandlers';
-import { parseQueryEnum } from '@/features/infrastructure/api/queryParser';
-import { zodValidator } from '@/features/infrastructure/api/zodValidation';
-import { CreateEntrySchema } from '@/features/infrastructure/api/schemas';
+import { createGetPostHandler, parseQueryEnum, zodValidator, CreateEntrySchema } from '@/features/infrastructure/api';
 import { getAllEntries, createEntry } from '@/features/modules/game-management/entries/lib/entryService';
 import { CreateEntry } from '@/types/entry';
 import { createComponentLogger } from '@/features/infrastructure/logging';

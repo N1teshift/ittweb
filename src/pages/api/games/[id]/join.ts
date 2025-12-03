@@ -1,6 +1,5 @@
 import type { NextApiRequest } from 'next';
-import { createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
-import { parseRequiredQueryString } from '@/features/infrastructure/api/queryParser';
+import { createPostHandler, requireSession, parseRequiredQueryString } from '@/features/infrastructure/api';
 import { joinGame } from '@/features/modules/game-management/games/lib/gameService';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 

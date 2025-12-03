@@ -6,7 +6,7 @@ import {
   validateBoolean,
   validateArray,
   validateRequiredFields,
-} from '../validators';
+} from '../validation/validators';
 
 describe('validateString', () => {
   it('should return validated string for valid non-empty string', () => {

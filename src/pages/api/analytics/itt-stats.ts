@@ -1,5 +1,5 @@
 import type { NextApiRequest } from 'next';
-import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
+import { createApiHandler } from '@/features/infrastructure/api';
 import { getAggregateITTStats } from '@/features/modules/analytics-group/analytics/lib/analyticsService';
 
 /**

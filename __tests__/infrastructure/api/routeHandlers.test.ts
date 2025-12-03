@@ -44,7 +44,7 @@ describe('createApiHandler', () => {
   };
 
   it('handles allowed GET requests', async () => {
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => 'ok');
     const res = createResponse();
 
@@ -55,7 +55,7 @@ describe('createApiHandler', () => {
   });
 
   it('rejects disallowed methods with 405', async () => {
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => 'ok', { methods: ['POST'] });
     const res = createResponse();
 
@@ -69,7 +69,7 @@ describe('createApiHandler', () => {
   });
 
   it('validates request body with custom validator', async () => {
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => 'ok', {
       methods: ['POST'],
       validateBody: () => 'invalid body'
@@ -83,7 +83,7 @@ describe('createApiHandler', () => {
   });
 
   it('supports boolean validator results', async () => {
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => 'ok', {
       methods: ['POST'],
       validateBody: () => false
@@ -99,7 +99,7 @@ describe('createApiHandler', () => {
   describe('Authentication', () => {
     it('rejects unauthenticated requests when requireAuth is true', async () => {
       mockGetServerSession.mockResolvedValue(null);
-      const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+      const { createApiHandler } = await import('@/features/infrastructure/api');
       const handler = createApiHandler(async () => 'ok', { requireAuth: true });
       const res = createResponse();
 
@@ -117,7 +117,7 @@ describe('createApiHandler', () => {
     it('allows authenticated requests when requireAuth is true', async () => {
       const mockSession = { user: { name: 'Test User' }, discordId: '123' };
       mockGetServerSession.mockResolvedValue(mockSession);
-      const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+      const { createApiHandler } = await import('@/features/infrastructure/api');
       const handler = createApiHandler(async () => 'ok', { requireAuth: true });
       const res = createResponse();
 
@@ -131,7 +131,7 @@ describe('createApiHandler', () => {
 
     it('allows unauthenticated requests when requireAuth is false', async () => {
       mockGetServerSession.mockResolvedValue(null);
-      const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+      const { createApiHandler } = await import('@/features/infrastructure/api');
       const handler = createApiHandler(async () => 'ok', { requireAuth: false });
       const res = createResponse();
 
@@ -143,7 +143,7 @@ describe('createApiHandler', () => {
   });
 
   it('logs request lifecycle when logging is enabled', async () => {
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => 'ok', { logRequests: true });
     const res = createResponse();
 
@@ -155,7 +155,7 @@ describe('createApiHandler', () => {
   });
 
   it('skips request logging when disabled', async () => {
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => 'ok', { logRequests: false });
     const res = createResponse();
 
@@ -170,7 +170,7 @@ describe('createApiHandler', () => {
       writable: true,
       configurable: true
     });
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => {
       throw new Error('boom');
     });
@@ -184,7 +184,7 @@ describe('createApiHandler', () => {
   });
 
   it('handles POST requests correctly', async () => {
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => ({ created: true }), { methods: ['POST'] });
     const res = createResponse();
 
@@ -195,7 +195,7 @@ describe('createApiHandler', () => {
   });
 
   it('accepts multiple allowed methods', async () => {
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => 'ok', { methods: ['GET', 'POST'] });
     const res = createResponse();
 
@@ -215,7 +215,7 @@ describe('createApiHandler', () => {
   });
 
   it('handles method case variations', async () => {
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => 'ok', { methods: ['GET'] });
     const res = createResponse();
 
@@ -226,7 +226,7 @@ describe('createApiHandler', () => {
   });
 
   it('validates body when validator throws', async () => {
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => 'ok', {
       methods: ['POST'],
       validateBody: () => {
@@ -241,7 +241,7 @@ describe('createApiHandler', () => {
   });
 
   it('handles missing body when validator is provided', async () => {
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => 'ok', {
       methods: ['POST'],
       validateBody: () => true
@@ -255,7 +255,7 @@ describe('createApiHandler', () => {
   });
 
   it('logs timing metrics in request logs', async () => {
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => {
       // Simulate some work
       await new Promise(resolve => setTimeout(resolve, 10));
@@ -271,7 +271,7 @@ describe('createApiHandler', () => {
   });
 
   it('handles very fast requests', async () => {
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => 'ok', { logRequests: true });
     const res = createResponse();
 
@@ -283,7 +283,7 @@ describe('createApiHandler', () => {
   });
 
   it('handles oversized payloads gracefully', async () => {
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async (req) => req.body, { methods: ['POST'] });
     const res = createResponse();
 
@@ -294,7 +294,7 @@ describe('createApiHandler', () => {
   });
 
   it('returns consistent response format for success', async () => {
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => ({ data: 'test' }), { methods: ['GET'] });
     const res = createResponse();
 
@@ -312,7 +312,7 @@ describe('createApiHandler', () => {
       writable: true,
       configurable: true
     });
-    const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+    const { createApiHandler } = await import('@/features/infrastructure/api');
     const handler = createApiHandler(async () => {
       throw new Error('test error');
     });
@@ -330,7 +330,7 @@ describe('createApiHandler', () => {
 
   describe('Cache Control', () => {
     it('sets cache headers for GET requests with cacheControl options', async () => {
-      const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+      const { createApiHandler } = await import('@/features/infrastructure/api');
       const handler = createApiHandler(async () => 'ok', {
         methods: ['GET'],
         cacheControl: {
@@ -351,7 +351,7 @@ describe('createApiHandler', () => {
     });
 
     it('sets private cache headers when private option is true', async () => {
-      const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+      const { createApiHandler } = await import('@/features/infrastructure/api');
       const handler = createApiHandler(async () => 'ok', {
         methods: ['GET'],
         cacheControl: {
@@ -367,7 +367,7 @@ describe('createApiHandler', () => {
     });
 
     it('disables caching when cacheControl is false', async () => {
-      const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+      const { createApiHandler } = await import('@/features/infrastructure/api');
       const handler = createApiHandler(async () => 'ok', {
         methods: ['GET'],
         cacheControl: false
@@ -383,7 +383,7 @@ describe('createApiHandler', () => {
     });
 
     it('does not set cache headers for non-GET requests', async () => {
-      const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+      const { createApiHandler } = await import('@/features/infrastructure/api');
       const handler = createApiHandler(async () => 'ok', {
         methods: ['POST'],
         cacheControl: {
@@ -402,7 +402,7 @@ describe('createApiHandler', () => {
 
   describe('Additional HTTP Methods', () => {
     it('handles PUT requests', async () => {
-      const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+      const { createApiHandler } = await import('@/features/infrastructure/api');
       const handler = createApiHandler(async () => ({ updated: true }), { methods: ['PUT'] });
       const res = createResponse();
 
@@ -413,7 +413,7 @@ describe('createApiHandler', () => {
     });
 
     it('handles DELETE requests', async () => {
-      const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+      const { createApiHandler } = await import('@/features/infrastructure/api');
       const handler = createApiHandler(async () => ({ deleted: true }), { methods: ['DELETE'] });
       const res = createResponse();
 
@@ -424,7 +424,7 @@ describe('createApiHandler', () => {
     });
 
     it('handles PATCH requests', async () => {
-      const { createApiHandler } = await import('@/features/infrastructure/api/routeHandlers');
+      const { createApiHandler } = await import('@/features/infrastructure/api');
       const handler = createApiHandler(async () => ({ patched: true }), { methods: ['PATCH'] });
       const res = createResponse();
 
@@ -437,7 +437,7 @@ describe('createApiHandler', () => {
 
   describe('Helper Functions', () => {
     it('createGetHandler creates GET-only handler', async () => {
-      const { createGetHandler } = await import('@/features/infrastructure/api/routeHandlers');
+      const { createGetHandler } = await import('@/features/infrastructure/api');
       const handler = createGetHandler(async () => 'ok');
       const res = createResponse();
 
@@ -450,7 +450,7 @@ describe('createApiHandler', () => {
     });
 
     it('createPostHandler creates POST-only handler', async () => {
-      const { createPostHandler } = await import('@/features/infrastructure/api/routeHandlers');
+      const { createPostHandler } = await import('@/features/infrastructure/api');
       const handler = createPostHandler(async () => 'ok');
       const res = createResponse();
 
@@ -463,7 +463,7 @@ describe('createApiHandler', () => {
     });
 
     it('createGetPostHandler creates GET and POST handler', async () => {
-      const { createGetPostHandler } = await import('@/features/infrastructure/api/routeHandlers');
+      const { createGetPostHandler } = await import('@/features/infrastructure/api');
       const handler = createGetPostHandler(async () => 'ok');
       const res = createResponse();
 
@@ -480,7 +480,7 @@ describe('createApiHandler', () => {
     });
 
     it('errorResponse helper returns error response', async () => {
-      const { errorResponse } = await import('@/features/infrastructure/api/routeHandlers');
+      const { errorResponse } = await import('@/features/infrastructure/api');
       const res = createResponse();
 
       const result = errorResponse(res, 404, 'Not found');
@@ -494,7 +494,7 @@ describe('createApiHandler', () => {
     });
 
     it('successResponse helper returns success response', async () => {
-      const { successResponse } = await import('@/features/infrastructure/api/routeHandlers');
+      const { successResponse } = await import('@/features/infrastructure/api');
       const res = createResponse();
 
       const result = successResponse(res, { data: 'test' }, 'Success message');
@@ -509,7 +509,7 @@ describe('createApiHandler', () => {
     });
 
     it('successResponse helper works without message', async () => {
-      const { successResponse } = await import('@/features/infrastructure/api/routeHandlers');
+      const { successResponse } = await import('@/features/infrastructure/api');
       const res = createResponse();
 
       successResponse(res, { data: 'test' });

@@ -1,7 +1,5 @@
 import type { NextApiRequest } from 'next';
-import { createPostHandler, requireSession } from '@/features/infrastructure/api/routeHandlers';
-import { zodValidator } from '@/features/infrastructure/api/zodValidation';
-import { RevalidateSchema } from '@/features/infrastructure/api/schemas';
+import { createPostHandler, requireSession, zodValidator, RevalidateSchema } from '@/features/infrastructure/api';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('api/revalidate');

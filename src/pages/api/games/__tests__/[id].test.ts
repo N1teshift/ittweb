@@ -17,8 +17,8 @@ jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
   deleteGame: (...args: unknown[]) => mockDeleteGame(...args),
 }));
 
-jest.mock('@/features/infrastructure/api/routeHandlers', () => {
-  const actual = jest.requireActual('@/features/infrastructure/api/routeHandlers');
+jest.mock('@/features/infrastructure/api', () => {
+  const actual = jest.requireActual('@/features/infrastructure/api');
   return {
     ...actual,
     checkResourceOwnership: (...args: unknown[]) => mockCheckResourceOwnership(...args),

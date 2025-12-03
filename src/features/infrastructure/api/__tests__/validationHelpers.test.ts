@@ -10,7 +10,7 @@ import {
   createDateValidator,
   createBooleanValidator,
   createArrayValidator,
-} from '../validationHelpers';
+} from '../validation/validationHelpers';
 
 describe('validateApiRequest', () => {
   it('validates required fields', () => {

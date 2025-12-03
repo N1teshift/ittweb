@@ -1,5 +1,5 @@
 import type { NextApiRequest } from 'next';
-import { createPostHandler } from '@/features/infrastructure/api/routeHandlers';
+import { createPostHandler } from '@/features/infrastructure/api';
 import { CreateUserData } from '@/types/userData';
 import { saveUserDataServer } from '@/features/infrastructure/lib/userDataService.server';
 import { createComponentLogger } from '@/features/infrastructure/logging';

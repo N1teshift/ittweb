@@ -200,4 +200,3 @@ export function validateRequiredFields(
   return null;
 }
 
-
