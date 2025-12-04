@@ -40,28 +40,39 @@ export default function DataCollectionNotice() {
           
           if (response.ok) {
             const data = await response.json();
-            // Show notice if user hasn't accepted it yet
-            if (!data.accepted) {
+            // Show notice if user hasn't accepted it yet, hide if they have
+            if (data.accepted) {
+              setIsVisible(false);
+            } else {
               setIsVisible(true);
             }
           } else {
-            // If we can't fetch status, show the notice to be safe
-            logError(new Error('Failed to fetch data notice status'), 'Failed to fetch data notice status', {
-              component: 'DataCollectionNotice',
-              operation: 'checkUserData',
-              status: response.status,
-              discordId: session?.discordId,
-            });
-            setIsVisible(true);
+            // If we can't fetch status, only show notice for non-authentication errors
+            // Authentication errors (401/403) might be temporary while session is initializing
+            const isAuthError = response.status === 401 || response.status === 403;
+            if (!isAuthError) {
+              logError(new Error('Failed to fetch data notice status'), 'Failed to fetch data notice status', {
+                component: 'DataCollectionNotice',
+                operation: 'checkUserData',
+                status: response.status,
+                discordId: session?.discordId,
+              });
+              setIsVisible(true);
+            } else {
+              // For auth errors, don't show notice - session might not be ready yet
+              // The useEffect will re-run when session becomes available
+              setIsVisible(false);
+            }
           }
         } catch (error) {
-          // If we can't fetch user data, show the notice to be safe
+          // Network errors or other exceptions - don't show notice to avoid false positives
+          // The component will re-check when session is ready
           logError(error as Error, 'Failed to fetch user data for notice', {
             component: 'DataCollectionNotice',
             operation: 'checkUserData',
             discordId: session?.discordId,
           });
-          setIsVisible(true);
+          setIsVisible(false);
         } finally {
           setIsLoading(false);
         }
