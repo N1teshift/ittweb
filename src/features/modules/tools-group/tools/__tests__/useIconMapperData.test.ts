@@ -7,7 +7,7 @@ const mockItemsData: ItemData[] = [
   { id: 'tower', name: 'Tower', category: 'buildings', description: 'Test tower' },
 ];
 
-jest.mock('@/features/infrastructure/utils/loggerUtils', () => ({
+jest.mock('@/features/infrastructure/logging', () => ({
   createComponentLogger: () => ({
     info: jest.fn(),
     warn: jest.fn(),

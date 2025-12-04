@@ -9,8 +9,8 @@ import {
 } from '@/features/modules/content/blog/lib/postService';
 import { CreatePost } from '@/types/post';
 import { createComponentLogger } from '@/features/infrastructure/logging';
-import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';
-import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
+import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib';
+import { isAdmin } from '@/features/infrastructure/utils';
 import type { Post } from '@/types/post';
 
 const logger = createComponentLogger('api/posts/[id]');

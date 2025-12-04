@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { ArchiveEntry } from '@/types/archive';
-import { sortArchiveEntries } from '@/features/infrastructure/lib/archiveService';
+import { sortArchiveEntries } from '@/features/infrastructure/lib';
 
 interface ArchivesPageState {
   entries: ArchiveEntry[];

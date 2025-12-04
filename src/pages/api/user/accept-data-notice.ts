@@ -1,6 +1,6 @@
 import type { NextApiRequest } from 'next';
 import { createPostHandler, requireSession } from '@/features/infrastructure/api';
-import { updateDataCollectionNoticeAcceptanceServer } from '@/features/infrastructure/lib/userDataService.server';
+import { updateDataCollectionNoticeAcceptanceServer } from '@/features/infrastructure/lib';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('api/user/accept-data-notice');

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
 import { Logger } from '@/features/infrastructure/logging';
 import TrollPanel from '@/features/modules/tools-group/tools/components/TrollPanel';
 import ItemsPalette from '@/features/modules/tools-group/tools/components/ItemsPalette';

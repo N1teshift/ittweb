@@ -8,7 +8,7 @@ import {
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso } from '@/features/infrastructure/utils';
 import { queryWithIndexFallback } from '@/features/infrastructure/api/firebase/queryWithIndexFallback';
 import type { 
   Game, 

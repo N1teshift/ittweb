@@ -7,7 +7,7 @@ import {
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { logError } from '@/features/infrastructure/logging';
-import { invalidateAnalyticsCache } from '@/features/infrastructure/lib/analyticsCache';
+import { invalidateAnalyticsCache } from '@/features/infrastructure/lib';
 
 const GAMES_COLLECTION = 'games';
 

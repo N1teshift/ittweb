@@ -5,8 +5,7 @@
 
 import { Timestamp } from 'firebase/firestore';
 import type { Post, CreatePost } from '@/types/post';
-import { timestampToIso, type TimestampFactory } from '@/features/infrastructure/utils/timestampUtils';
-import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
+import { timestampToIso, type TimestampFactory, removeUndefined } from '@/features/infrastructure/utils';
 
 /**
  * Transform Firestore document data to Post type

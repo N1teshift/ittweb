@@ -1,6 +1,6 @@
 import type { NextApiRequest } from 'next';
 import { createGetHandler, requireSession } from '@/features/infrastructure/api';
-import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';
+import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib';
 
 /**
  * GET /api/user/data-notice-status - Get user's data collection notice acceptance status (requires authentication)

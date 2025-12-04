@@ -3,8 +3,8 @@ import { createGetPostHandler, parseQueryString, parseQueryInt, parseQueryEnum, 
 import { createScheduledGame, createCompletedGame, getGames } from '@/features/modules/game-management/games/lib/gameService';
 import type { CreateScheduledGame, CreateCompletedGame, GameFilters } from '@/features/modules/game-management/games/types';
 import { createComponentLogger } from '@/features/infrastructure/logging';
-import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';
-import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
+import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib';
+import { isAdmin } from '@/features/infrastructure/utils';
 import type { GameListResponse } from '@/features/modules/game-management/games/types';
 
 const logger = createComponentLogger('api/games');

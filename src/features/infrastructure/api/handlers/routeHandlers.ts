@@ -3,8 +3,8 @@ import { getServerSession } from 'next-auth/next';
 import type { Session } from 'next-auth';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';
-import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
+import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib';
+import { isAdmin } from '@/features/infrastructure/utils';
 
 /**
  * Standard API response format

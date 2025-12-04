@@ -2,7 +2,7 @@ import React, { memo, useMemo } from 'react';
 import { ArchiveEntry } from '@/types/archive';
 import type { Game, GameWithPlayers } from '@/features/modules/game-management/games/types';
 import TimelineSection from '../../shared/components/sections/TimelineSection';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso } from '@/features/infrastructure/utils';
 import {
   ArchivesEmptyState,
   ArchivesLoadingState,

@@ -8,8 +8,8 @@
 import { 
   getOrComputeAnalytics, 
   invalidateAnalyticsCache as invalidateCache 
-} from '@/features/infrastructure/lib/analyticsCache';
-import { createRequestCache, type RequestCache } from '@/features/infrastructure/lib/requestCache';
+} from '@/features/infrastructure/lib';
+import { createRequestCache, type RequestCache } from '@/features/infrastructure/lib';
 import { getGamesWithPlayers } from '@/features/modules/game-management/games/lib/gameService';
 import type { GameWithPlayers, GameFilters } from '@/features/modules/game-management/games/types';
 import { createComponentLogger } from '@/features/infrastructure/logging';

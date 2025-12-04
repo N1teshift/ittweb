@@ -6,8 +6,8 @@ import {
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
-import { invalidateAnalyticsCache } from '@/features/infrastructure/lib/analyticsCache';
+import { removeUndefined } from '@/features/infrastructure/utils';
+import { invalidateAnalyticsCache } from '@/features/infrastructure/lib';
 import type { 
   CreateGame, 
   CreateScheduledGame,

@@ -6,7 +6,7 @@
 import type { CategoryStats } from '../types';
 import type { GamePlayer } from '../../../game-management/games/types';
 import { STARTING_ELO } from '../../../../infrastructure/game/elo';
-import type { TimestampFactory } from '@/features/infrastructure/utils/timestampUtils';
+import type { TimestampFactory } from '@/features/infrastructure/utils';
 
 /**
  * Calculate initial category stats for a new player

@@ -1,7 +1,7 @@
 import { Timestamp } from 'firebase/firestore';
 import { ScheduledGame } from '@/types/scheduledGame';
 import type { ParticipantResult, TeamSize, GameType } from '@/features/modules/game-management/games/types';
-import { timestampToIso, type TimestampLike } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso, type TimestampLike } from '@/features/infrastructure/utils';
 import { deriveGameStatus } from './scheduledGameService.utils';
 
 /**

@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from 'react';
 import type { Game } from '@/features/modules/game-management/games/types';
 import { formatDateTimeInTimezone, getUserTimezone } from '../utils/timezoneUtils';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso } from '@/features/infrastructure/utils';
 import { useSession } from 'next-auth/react';
 
 interface ScheduledGameCardProps {

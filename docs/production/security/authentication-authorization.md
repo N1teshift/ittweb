@@ -75,7 +75,7 @@ Check user roles for admin operations:
 
 ```typescript
 import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
-import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
+import { isAdmin } from '@/features/infrastructure/utils/user/userRoleUtils';
 
 const session = await getServerSession(req, res, authOptions);
 if (!session) {

@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { Card } from '@/features/infrastructure/components';
 import { formatDuration } from '@/features/modules/shared/utils';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso } from '@/features/infrastructure/utils';
 import { formatDateTimeInTimezone } from '@/features/modules/game-management/scheduled-games/utils/timezoneUtils';
 import type { ArchiveEntry } from '@/types/archive';
 import type { GameWithPlayers } from '@/features/modules/game-management/games/types';

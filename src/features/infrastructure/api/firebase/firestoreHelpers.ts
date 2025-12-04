@@ -7,7 +7,7 @@
  */
 
 import { getFirestoreInstance } from './firebaseClient';
-import { isServerSide } from '@/features/infrastructure/utils/serverUtils';
+import { isServerSide } from '@/features/infrastructure/utils';
 import type { Firestore as AdminFirestore } from 'firebase-admin/firestore';
 import type { Firestore as ClientFirestore } from 'firebase/firestore';
 

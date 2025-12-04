@@ -1,5 +1,5 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import nextI18NextConfig from '../../../../next-i18next.config';
+import nextI18NextConfig from '../../../../../next-i18next.config';
 import { UserConfig } from 'next-i18next';
 
 /**

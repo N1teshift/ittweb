@@ -3,7 +3,7 @@ import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { ScheduledGame } from '@/types/scheduledGame';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso } from '@/features/infrastructure/utils';
 import { convertGameDataToScheduledGame, shouldIncludeGame } from './scheduledGameService.read.helpers';
 import { queryWithIndexFallback } from '@/features/infrastructure/api/firebase/queryWithIndexFallback';
 

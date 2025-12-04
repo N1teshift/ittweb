@@ -18,7 +18,7 @@ import {
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso } from '@/features/infrastructure/utils';
 import type { PlayerStats, PlayerProfile, PlayerSearchFilters } from '../types';
 import { getGames } from '../../../game-management/games/lib/gameService';
 import { calculateTotalGames, normalizePlayerName } from './playerService.utils';

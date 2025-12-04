@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import Link from 'next/link';
 import { Card } from '@/features/infrastructure/components';
 import { formatDuration } from '../../../shared/utils';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso } from '@/features/infrastructure/utils';
 import type { Game } from '../types';
 
 interface GameCardProps {

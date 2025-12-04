@@ -1,7 +1,7 @@
 import React, { useState, FormEvent, useEffect } from 'react';
 import type { TeamSize, GameType, Game } from '@/features/modules/game-management/games/types';
 import { formatDateTimeInTimezone } from '../utils/timezoneUtils';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso } from '@/features/infrastructure/utils';
 
 interface EditGameFormProps {
   game: Game;

@@ -1,9 +1,9 @@
 import { useSession, signIn } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
 import EntryFormModal from '@/features/modules/game-management/entries/components/EntryFormModal';
 import ScheduleGameForm from '@/features/modules/game-management/scheduled-games/components/ScheduleGameForm';
-import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
+import { isAdmin } from '@/features/infrastructure/utils';
 import type { GetStaticProps } from 'next';
 import type { CreateScheduledGame } from '@/features/modules/game-management/games/types';
 import { Button } from '@/features/infrastructure/components';

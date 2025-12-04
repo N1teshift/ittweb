@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
-import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';
+import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib';
 import { UserData, UserRole } from '@/types/userData';
 import { signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
@@ -9,7 +9,7 @@ import { PageHero } from '@/features/infrastructure/components';
 import { Timestamp } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
+import { isAdmin } from '@/features/infrastructure/utils';
 import { logError } from '@/features/infrastructure/logging';
 
 type SerializedUserData = Record<string, unknown> | null;

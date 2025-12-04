@@ -9,8 +9,7 @@ import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { Entry, CreateEntry, UpdateEntry } from '@/types/entry';
 import { createComponentLogger } from '@/features/infrastructure/logging';
-import { withServiceOperationNullable } from '@/features/infrastructure/utils/serviceOperationWrapper';
-import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
+import { withServiceOperationNullable, removeUndefined } from '@/features/infrastructure/utils';
 import {
   transformEntryDoc,
   prepareEntryDataForFirestore,

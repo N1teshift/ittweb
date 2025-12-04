@@ -1,5 +1,5 @@
 import { useTranslation } from 'next-i18next';
-import { useTranslationNamespace } from '../../lib/TranslationNamespaceContext'; // Adjust path as needed
+import { useTranslationNamespace } from '../../lib';
 import { TFunction, TOptions, i18n as I18nInstanceType } from 'i18next'; // Import TOptions and i18n for type
 import { createComponentLogger } from '@/features/infrastructure/logging';
 

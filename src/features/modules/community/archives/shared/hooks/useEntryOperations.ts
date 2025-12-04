@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { signIn } from 'next-auth/react';
 import type { ArchiveEntry } from '@/types/archive';
 import { convertEntryToArchiveEntry } from '@/features/modules/community/archives/shared/utils/entryToArchiveEntry';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso } from '@/features/infrastructure/utils';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('useEntryOperations');

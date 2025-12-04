@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
 import BlogPost from '@/features/modules/content/blog/components/BlogPost';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
@@ -18,7 +18,7 @@ import { getEntryById } from '@/features/modules/game-management/entries/lib/ent
 import { Entry } from '@/types/entry';
 import YouTubeEmbed from '@/features/modules/community/archives/media/components/YouTubeEmbed';
 import TwitchClipEmbed from '@/features/modules/community/archives/media/components/TwitchClipEmbed';
-import { extractYouTubeId, extractTwitchClipId } from '@/features/infrastructure/lib/archiveService';
+import { extractYouTubeId, extractTwitchClipId } from '@/features/infrastructure/lib';
 import { logError } from '@/features/infrastructure/logging';
 
 const pageNamespaces = ["common"];

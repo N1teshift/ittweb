@@ -3,7 +3,7 @@ import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { CreateScheduledGame } from '@/types/scheduledGame';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { createTimestampFactoryAsync } from '@/features/infrastructure/utils/timestampUtils';
+import { createTimestampFactoryAsync } from '@/features/infrastructure/utils';
 
 const GAMES_COLLECTION = 'games'; // Unified games collection (scheduled and completed)
 const logger = createComponentLogger('scheduledGameService');

@@ -113,7 +113,7 @@ export function getStorageBucketName(): string | undefined {
 }
 
 // Import isServerSide from serverUtils to avoid circular dependencies
-import { isServerSide as checkServerSide } from '@/features/infrastructure/utils/serverUtils';
+import { isServerSide as checkServerSide } from '@/features/infrastructure/utils/server/serverUtils';
 
 /**
  * Check if we're running on the server

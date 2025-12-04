@@ -18,7 +18,7 @@ import {
 } from './postService.helpers';
 import { createFirestoreCrudService } from '@/features/infrastructure/api/firebase/firestoreCrudService';
 import { queryWithIndexFallback } from '@/features/infrastructure/api/firebase/queryWithIndexFallback';
-import { withServiceOperationNullable } from '@/features/infrastructure/utils/serviceOperationWrapper';
+import { withServiceOperationNullable } from '@/features/infrastructure/utils';
 
 const POSTS_COLLECTION = 'posts';
 const logger = createComponentLogger('postService');

@@ -1,4 +1,4 @@
-import { extractYouTubeId, extractTwitchClipId } from '@/features/infrastructure/lib/archiveService';
+import { extractYouTubeId, extractTwitchClipId } from '@/features/infrastructure/lib';
 import { SectionKey } from './useArchiveBaseState';
 import { Dispatch, SetStateAction } from 'react';
 

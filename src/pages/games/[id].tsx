@@ -8,7 +8,7 @@ import EditGameForm from '@/features/modules/game-management/scheduled-games/com
 import GameDeleteDialog from '@/features/modules/game-management/scheduled-games/components/GameDeleteDialog';
 import UploadReplayModal from '@/features/modules/game-management/scheduled-games/components/UploadReplayModal';
 import { Logger } from '@/features/infrastructure/logging';
-import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
+import { isAdmin } from '@/features/infrastructure/utils';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
 

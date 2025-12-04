@@ -177,7 +177,7 @@ export function validateGameData(data: unknown): boolean {
 ### Step 1: Import the wrapper
 
 ```typescript
-import { withServiceOperation, withServiceOperationNullable } from '@/features/infrastructure/utils/serviceOperationWrapper';
+import { withServiceOperation, withServiceOperationNullable } from '@/features/infrastructure/utils/service/serviceOperationWrapper';
 // Or from the utils index:
 import { withServiceOperation } from '@/features/infrastructure/utils';
 ```

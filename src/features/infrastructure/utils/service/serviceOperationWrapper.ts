@@ -12,7 +12,7 @@
  */
 
 import { logError } from '@/features/infrastructure/logging';
-import { createTimestampFactoryAsync, type TimestampFactory } from './timestampUtils';
+import { createTimestampFactoryAsync, type TimestampFactory } from '../time/timestampUtils';
 
 /**
  * Context information for service operations
@@ -246,5 +246,3 @@ export async function withServiceOperationNullable<T>(
     return null;
   }
 }
-
-

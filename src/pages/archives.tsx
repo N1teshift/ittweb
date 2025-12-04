@@ -1,4 +1,4 @@
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
 import { ArchivesPage } from '@/features/modules/community/archives/shared/components';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 

@@ -5,9 +5,8 @@ import {
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { logError } from '@/features/infrastructure/logging';
-import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
-import { createTimestampFactoryAsync } from '@/features/infrastructure/utils/timestampUtils';
-import { invalidateAnalyticsCache } from '@/features/infrastructure/lib/analyticsCache';
+import { removeUndefined, createTimestampFactoryAsync } from '@/features/infrastructure/utils';
+import { invalidateAnalyticsCache } from '@/features/infrastructure/lib';
 import type { UpdateGame } from '../types';
 import { updateEloScores } from '@/features/infrastructure/game';
 

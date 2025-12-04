@@ -1,4 +1,4 @@
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
 import { PlayerComparison } from '@/features/modules/community/players/components/PlayerComparison';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 

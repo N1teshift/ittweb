@@ -10,7 +10,7 @@ import useSWR from 'swr';
 import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
 import type { StandingsResponse, StandingsFilters } from '@/features/modules/community/standings/types';
 import type { ItemData } from '@/types/items';
-import { swrKeys } from '@/features/infrastructure/lib/swrConfig';
+import { swrKeys } from '@/features/infrastructure/lib';
 
 // ============================================================================
 // Example 1: useGame (non-SWR, with cache-busting, handle404)

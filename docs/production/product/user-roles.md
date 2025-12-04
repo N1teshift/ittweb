@@ -42,7 +42,7 @@ Replace `YOUR_DISCORD_ID` with your actual Discord ID (e.g., `257312315265908746
 ### Import the utilities
 
 ```typescript
-import { hasRole, isAdmin, isDeveloper, isModerator, isPremium } from '@/features/infrastructure/utils/userRoleUtils';
+import { hasRole, isAdmin, isDeveloper, isModerator, isPremium } from '@/features/infrastructure/utils/user/userRoleUtils';
 import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
 ```
 
@@ -51,7 +51,7 @@ import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataSe
 ```typescript
 import { useSession } from 'next-auth/react';
 import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
-import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
+import { isAdmin } from '@/features/infrastructure/utils/user/userRoleUtils';
 import { useEffect, useState } from 'react';
 
 function MyComponent() {
@@ -85,7 +85,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';
-import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
+import { isAdmin } from '@/features/infrastructure/utils/user/userRoleUtils';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions);
@@ -108,7 +108,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 ### Example: Conditional rendering based on role
 
 ```typescript
-import { hasRole } from '@/features/infrastructure/utils/userRoleUtils';
+import { hasRole } from '@/features/infrastructure/utils/user/userRoleUtils';
 
 function FeatureComponent({ userRole }: { userRole?: string }) {
   return (

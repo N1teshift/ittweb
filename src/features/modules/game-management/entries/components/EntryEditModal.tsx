@@ -2,7 +2,7 @@ import { useState, FormEvent } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { EntryContentType } from '@/types/entry';
-import { uploadImage } from '@/features/infrastructure/lib/archiveService';
+import { uploadImage } from '@/features/infrastructure/lib';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import type { ArchiveEntry } from '@/types/archive';
 

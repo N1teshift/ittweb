@@ -15,7 +15,7 @@ import { SWRConfig } from "swr";
 import { Layout } from "@/features/infrastructure/components";
 import { Logger } from "@/features/infrastructure/logging";
 import { initializeErrorTracking, initializePerformanceMonitoring } from "@/features/infrastructure/monitoring";
-import { swrConfig } from "@/features/infrastructure/lib/swrConfig";
+import { swrConfig } from "@/features/infrastructure/lib";
 
 // Initialize logging
 if (typeof window !== 'undefined') {

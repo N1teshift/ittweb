@@ -13,7 +13,7 @@ import {
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { createTimestampFactoryAsync } from '@/features/infrastructure/utils/timestampUtils';
+import { createTimestampFactoryAsync } from '@/features/infrastructure/utils';
 import { normalizePlayerName } from '@/features/modules/community/players/lib/playerService';
 import type { PlayerCategoryStats } from '../types';
 import type { GameCategory } from '../../../game-management/games/types';

@@ -4,8 +4,8 @@ import { getGameById, updateEloScores } from '@/features/modules/game-management
 import { parseReplayFile } from '@/features/infrastructure/game/replay';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import { getFirestoreAdmin, getAdminTimestamp, getStorageAdmin, getStorageBucketName } from '@/features/infrastructure/api/firebase/admin';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
-import { removeUndefined } from '@/features/infrastructure/utils/objectUtils';
+import { timestampToIso } from '@/features/infrastructure/utils';
+import { removeUndefined } from '@/features/infrastructure/utils';
 import type { CreateCompletedGame } from '@/features/modules/game-management/games/types';
 import { IncomingForm, Fields, Files, File as FormidableFile } from 'formidable';
 import { promises as fs } from 'fs';

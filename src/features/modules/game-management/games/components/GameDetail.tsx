@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Card } from '@/features/infrastructure/components';
 import { Tooltip } from '@/features/infrastructure/components';
 import { formatDuration, formatEloChange } from '../../../shared/utils';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso } from '@/features/infrastructure/utils';
 import { formatDateTimeInTimezone } from '@/features/modules/game-management/scheduled-games/utils/timezoneUtils';
 import { PlayerStatsTable } from './PlayerStatsTable';
 import type { GameWithPlayers } from '../types';

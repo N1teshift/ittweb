@@ -1,5 +1,5 @@
 import React from 'react';
-import { TranslationNamespaceContext } from '../../lib/TranslationNamespaceContext';
+import { TranslationNamespaceContext } from '../../lib';
 import Header from './Header';
 import Footer from './Footer';
 import DataCollectionNotice from '../notices/DataCollectionNotice';

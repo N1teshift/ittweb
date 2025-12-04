@@ -1,6 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { useArchiveMedia, uploadSelectedMedia } from '../useArchiveMedia';
-import * as archiveService from '@/features/infrastructure/lib/archiveService';
+import * as archiveService from '@/features/infrastructure/lib';
 
 // Mock archiveService
 jest.mock('@/features/infrastructure/lib/archiveService', () => ({

@@ -8,10 +8,10 @@ import {
   isKeyboardFocusable,
   getFocusableElementsInOrder,
 } from '@/features/infrastructure/utils/accessibility/helpers';
-import { logError } from '@/features/infrastructure/utils/loggerUtils';
+import { logError } from '@/features/infrastructure/logging';
 
 // Mock logger
-jest.mock('@/features/infrastructure/utils/loggerUtils');
+jest.mock('@/features/infrastructure/logging');
 
 describe('Keyboard Navigation', () => {
   beforeEach(() => {

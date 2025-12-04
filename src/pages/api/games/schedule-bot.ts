@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createComponentLogger } from '@/features/infrastructure/logging';
-import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';
+import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib';
 import { createScheduledGame } from '@/features/modules/game-management/games/lib/gameService';
 import type { CreateScheduledGame, TeamSize, GameType, GameMode, GameParticipant } from '@/features/modules/game-management/games/types';
 

@@ -4,10 +4,10 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, beforeEach } from '@jest/globals';
 import { getFocusableElementsInOrder } from '@/features/infrastructure/utils/accessibility/helpers';
-import { logError } from '@/features/infrastructure/utils/loggerUtils';
+import { logError } from '@/features/infrastructure/logging';
 
 // Mock logger
-jest.mock('@/features/infrastructure/utils/loggerUtils');
+jest.mock('@/features/infrastructure/logging');
 
 describe('Focus Management', () => {
   beforeEach(() => {

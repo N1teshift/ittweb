@@ -86,7 +86,7 @@ If you're not using `createApiHandler`, check authentication manually:
 ```typescript
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/features/infrastructure/auth';
-import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
+import { isAdmin } from '@/features/infrastructure/utils/user/userRoleUtils';
 import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
 
 const session = await getServerSession(req, res, authOptions);

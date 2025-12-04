@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso } from '@/features/infrastructure/utils';
 import type { ArchiveEntry } from '@/types/archive';
 import YouTubeEmbed from '../../media/components/YouTubeEmbed';
 import TwitchClipEmbed from '../../media/components/TwitchClipEmbed';

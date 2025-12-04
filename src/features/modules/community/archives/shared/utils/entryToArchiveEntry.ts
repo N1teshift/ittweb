@@ -1,6 +1,6 @@
 import type { Entry } from '@/types/entry';
 import type { ArchiveEntry } from '@/types/archive';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso } from '@/features/infrastructure/utils';
 
 /**
  * Convert an Entry (post/memory) to ArchiveEntry format for display in timeline

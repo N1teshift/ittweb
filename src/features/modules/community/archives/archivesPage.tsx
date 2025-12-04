@@ -18,7 +18,7 @@ import ImageModal from '@/features/modules/community/archives/shared/components/
 import { useArchivesPage, useArchivesActions } from '@/features/modules/community/archives/shared/hooks';
 import { useGames } from '@/features/modules/game-management/games/hooks/useGames';
 import { UserRole } from '@/types/userData';
-import { isAdmin } from '@/features/infrastructure/utils/userRoleUtils';
+import { isAdmin } from '@/features/infrastructure/utils';
 import ArchiveDeleteDialog from '@/features/modules/community/archives/forms/components/ArchiveDeleteDialog';
 
 interface ArchivesPageProps {

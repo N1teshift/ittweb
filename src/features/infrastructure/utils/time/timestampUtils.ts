@@ -1,5 +1,5 @@
 import { Timestamp } from 'firebase/firestore';
-import { isServerSide } from '@/features/infrastructure/utils/serverUtils';
+import { isServerSide } from '../server/serverUtils';
 
 /**
  * Interface for timestamp-like objects that have a toDate method
@@ -201,5 +201,4 @@ export function isTimestampLike(obj: unknown): obj is TimestampLike {
     typeof (obj as TimestampLike).toDate === 'function'
   );
 }
-
 

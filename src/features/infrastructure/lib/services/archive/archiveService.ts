@@ -10,7 +10,7 @@ import {
   uploadBytes, 
   getDownloadURL
 } from 'firebase/storage';
-import { timestampToIso } from '@/features/infrastructure/utils/timestampUtils';
+import { timestampToIso } from '@/features/infrastructure/utils';
 import { getFirestoreInstance, getStorageInstance } from '@/features/infrastructure/api/firebase';
 
 // Check if we're on the client side

@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import dynamic from 'next/dynamic';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/getStaticProps';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
 import { Logger } from '@/features/infrastructure/logging';
 import { LoadingScreen } from '@/features/infrastructure/components';
 
