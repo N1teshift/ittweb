@@ -1,5 +1,4 @@
-import { uploadReplay, uploadImage } from '@/features/infrastructure/lib/archiveService';
-import { extractYouTubeId } from '@/features/infrastructure/lib/archiveService';
+import { uploadReplay, uploadImage, extractYouTubeId } from '@/features/modules/community/archives/services/archiveService';
 
 // Mock Firebase Storage
 jest.mock('firebase/storage', () => ({
