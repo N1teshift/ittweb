@@ -12,6 +12,13 @@ const tailwindConfig = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        brand: {
+          DEFAULT: "var(--amber-400, #fbbf24)",
+          light: "var(--amber-300, #fcd34d)",
+          dark: "#d97706",
+          border: "rgba(251, 191, 36, 0.3)",
+          "border-hover": "rgba(251, 191, 36, 0.5)",
+        },
         primary: {
           50: "#eff6ff",
           100: "#dbeafe",
@@ -127,6 +134,12 @@ const tailwindConfig = {
       },
       transitionDuration: {
         400: "400ms",
+      },
+      spacing: {
+        section: "1.5rem",
+        "section-lg": "2rem",
+        card: "1.5rem",
+        "card-sm": "1rem",
       },
       typography: ({ theme }: { theme: (path: string) => any }) => ({
         DEFAULT: {

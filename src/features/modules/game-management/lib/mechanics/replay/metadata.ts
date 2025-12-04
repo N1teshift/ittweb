@@ -1,7 +1,4 @@
-import { createComponentLogger } from '@/features/infrastructure/logging';
 import type { ITTMetadata, ITTPlayerStats } from './types';
-
-const logger = createComponentLogger('games/replay/metadata');
 
 /**
  * Extract ITT-specific metadata from W3MMD custom messages

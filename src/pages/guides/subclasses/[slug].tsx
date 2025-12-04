@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { getDerivedClassBySlug, SUBCLASS_SLUGS, DerivedClassData } from '@/features/modules/content/guides/data/units/derivedClasses';
@@ -32,9 +32,9 @@ export default function SubclassDetail({ cls }: Props) {
     <ErrorBoundary>
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6 space-x-4">
-          <Link href="/guides/troll-classes" className="text-amber-400 hover:text-amber-300">← Troll Classes Overview</Link>
+          <Link href="/guides/troll-classes" className="link-amber">← Troll Classes Overview</Link>
           {parent && (
-            <Link href={`/guides/classes/${parent.slug}`} className="text-amber-400 hover:text-amber-300">{parent.name}</Link>
+            <Link href={`/guides/classes/${parent.slug}`} className="link-amber">{parent.name}</Link>
           )}
         </div>
 

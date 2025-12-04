@@ -1,315 +1,35 @@
 /**
- * Player Service - Read Operations
+ * Player Service - Read Operations (Client Stub)
  * 
- * Handles all player data retrieval operations
+ * This file is a client-side stub. The actual server-only implementation
+ * is in playerService.read.server.ts
+ * 
+ * These functions should only be called from API routes (server-side).
+ * Client code should use API endpoints instead.
  */
 
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-  orderBy,
-  limit as limitQuery,
-  startAfter,
-} from 'firebase/firestore';
-import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
-import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { timestampToIso } from '@/features/infrastructure/utils';
 import type { PlayerStats, PlayerProfile, PlayerSearchFilters } from '../types';
-import { getGames } from '../../../game-management/games/lib/gameService';
-import { calculateTotalGames, normalizePlayerName } from './playerService.utils';
-
-const PLAYER_STATS_COLLECTION = 'playerStats';
-const logger = createComponentLogger('playerService.read');
 
 /**
  * Get player statistics
+ * @throws Error - This function is server-only. Use API routes instead.
  */
-export async function getPlayerStats(
-  name: string,
-  filters?: PlayerSearchFilters
-): Promise<PlayerProfile | null> {
-  try {
-    logger.info('Fetching player stats', { name, filters });
-
-    const normalizedName = normalizePlayerName(name);
-
-    if (isServerSide()) {
-      const adminDb = getFirestoreAdmin();
-      const playerDoc = await adminDb.collection(PLAYER_STATS_COLLECTION).doc(normalizedName).get();
-
-      if (!playerDoc.exists) {
-        logger.info('Player not found', { name: normalizedName });
-        return null;
-      }
-
-      const data = playerDoc.data();
-      if (!data) {
-        return null;
-      }
-
-      const categories = data.categories || {};
-      const profile: PlayerProfile = {
-        id: playerDoc.id,
-        name: data.name || name,
-        categories,
-        totalGames: calculateTotalGames(categories),
-        lastPlayed: timestampToIso(data.lastPlayed),
-        firstPlayed: timestampToIso(data.firstPlayed),
-        createdAt: timestampToIso(data.createdAt),
-        updatedAt: timestampToIso(data.updatedAt),
-      };
-
-      // Get recent games if requested
-      if (filters?.includeGames) {
-        const gamesResult = await getGames({
-          player: name,
-          limit: 10,
-          startDate: filters.startDate,
-          endDate: filters.endDate,
-        });
-        profile.recentGames = gamesResult.games;
-      }
-
-      return profile;
-    } else {
-      const db = getFirestoreInstance();
-      const playerDocRef = doc(db, PLAYER_STATS_COLLECTION, normalizedName);
-      const playerDoc = await getDoc(playerDocRef);
-
-      if (!playerDoc.exists()) {
-        logger.info('Player not found', { name: normalizedName });
-        return null;
-      }
-
-      const data = playerDoc.data();
-      if (!data) {
-        return null;
-      }
-
-      const categories = data.categories || {};
-      const profile: PlayerProfile = {
-        id: playerDoc.id,
-        name: data.name || name,
-        categories,
-        totalGames: calculateTotalGames(categories),
-        lastPlayed: timestampToIso(data.lastPlayed),
-        firstPlayed: timestampToIso(data.firstPlayed),
-        createdAt: timestampToIso(data.createdAt),
-        updatedAt: timestampToIso(data.updatedAt),
-      };
-
-      // Get recent games if requested
-      if (filters?.includeGames) {
-        const gamesResult = await getGames({
-          player: name,
-          limit: 10,
-          startDate: filters.startDate,
-          endDate: filters.endDate,
-        });
-        profile.recentGames = gamesResult.games;
-      }
-
-      return profile;
-    }
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to fetch player stats', {
-      component: 'playerService.read',
-      operation: 'getPlayerStats',
-      name,
-    });
-    throw err;
-  }
+export async function getPlayerStats(_name: string, _filters?: PlayerSearchFilters): Promise<PlayerProfile | null> {
+  throw new Error('getPlayerStats is server-only. Use /api/players/[name] API endpoint instead.');
 }
 
 /**
  * Get all players with basic stats (with pagination support)
+ * @throws Error - This function is server-only. Use API routes instead.
  */
-export async function getAllPlayers(
-  limit: number = 50,
-  lastPlayerName?: string
-): Promise<{ players: PlayerStats[]; hasMore: boolean; lastPlayerName: string | null }> {
-  try {
-    logger.info('Fetching all players', { limit, lastPlayerName });
-
-    if (isServerSide()) {
-      const adminDb = getFirestoreAdmin();
-      let adminQuery = adminDb.collection(PLAYER_STATS_COLLECTION)
-        .orderBy('name')
-        .limit(limit + 1); // Fetch one extra to check if there are more
-
-      // Apply cursor if provided
-      if (lastPlayerName) {
-        const lastDocSnapshot = await adminDb.collection(PLAYER_STATS_COLLECTION)
-          .where('name', '==', lastPlayerName)
-          .limit(1)
-          .get();
-        
-        if (!lastDocSnapshot.empty) {
-          adminQuery = adminQuery.startAfter(lastDocSnapshot.docs[0]);
-        }
-      }
-
-      const snapshot = await adminQuery.get();
-      const hasMore = snapshot.docs.length > limit;
-      const docsToProcess = hasMore ? snapshot.docs.slice(0, limit) : snapshot.docs;
-
-      const players: PlayerStats[] = [];
-      docsToProcess.forEach((doc) => {
-        const data = doc.data();
-        const categories = data.categories || {};
-        players.push({
-          id: doc.id,
-          name: data.name || doc.id,
-          categories,
-          totalGames: calculateTotalGames(categories),
-          lastPlayed: timestampToIso(data.lastPlayed),
-          firstPlayed: timestampToIso(data.firstPlayed),
-          createdAt: timestampToIso(data.createdAt),
-          updatedAt: timestampToIso(data.updatedAt),
-        });
-      });
-
-      const newLastPlayerName = players.length > 0 ? players[players.length - 1].name : null;
-
-      return {
-        players,
-        hasMore,
-        lastPlayerName: newLastPlayerName,
-      };
-    } else {
-      const db = getFirestoreInstance();
-      
-      let playersQuery = query(
-        collection(db, PLAYER_STATS_COLLECTION),
-        orderBy('name'),
-        limitQuery(limit + 1), // Fetch one extra to check if there are more
-      );
-
-      // Apply cursor if provided
-      if (lastPlayerName) {
-        const lastDocQuery = query(
-          collection(db, PLAYER_STATS_COLLECTION),
-          where('name', '==', lastPlayerName),
-          limitQuery(1),
-        );
-        const lastDocSnapshot = await getDocs(lastDocQuery);
-        if (!lastDocSnapshot.empty) {
-          playersQuery = query(
-            collection(db, PLAYER_STATS_COLLECTION),
-            orderBy('name'),
-            startAfter(lastDocSnapshot.docs[0]),
-            limitQuery(limit + 1),
-          );
-        }
-      }
-
-      const snapshot = await getDocs(playersQuery);
-      const hasMore = snapshot.docs.length > limit;
-      const docsToProcess = hasMore ? snapshot.docs.slice(0, limit) : snapshot.docs;
-
-      const players: PlayerStats[] = [];
-      docsToProcess.forEach((doc) => {
-        const data = doc.data();
-        const categories = data.categories || {};
-        players.push({
-          id: doc.id,
-          name: data.name || doc.id,
-          categories,
-          totalGames: calculateTotalGames(categories),
-          lastPlayed: timestampToIso(data.lastPlayed),
-          firstPlayed: timestampToIso(data.firstPlayed),
-          createdAt: timestampToIso(data.createdAt),
-          updatedAt: timestampToIso(data.updatedAt),
-        });
-      });
-
-      const newLastPlayerName = players.length > 0 ? players[players.length - 1].name : null;
-
-      return {
-        players,
-        hasMore,
-        lastPlayerName: newLastPlayerName,
-      };
-    }
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to get all players', {
-      component: 'playerService.read',
-      operation: 'getAllPlayers',
-      limit,
-      lastPlayerName,
-    });
-    throw err;
-  }
+export async function getAllPlayers(_limit: number = 50, _lastPlayerName?: string): Promise<{ players: PlayerStats[]; hasMore: boolean; lastPlayerName: string | null }> {
+  throw new Error('getAllPlayers is server-only. Use /api/players API endpoint instead.');
 }
 
 /**
  * Search players by name
+ * @throws Error - This function is server-only. Use API routes instead.
  */
-export async function searchPlayers(searchQuery: string): Promise<string[]> {
-  try {
-    logger.info('Searching players', { query: searchQuery });
-
-    if (!searchQuery || searchQuery.trim().length < 2) {
-      return [];
-    }
-
-    const searchTerm = normalizePlayerName(searchQuery);
-
-    if (isServerSide()) {
-      const adminDb = getFirestoreAdmin();
-      const snapshot = await adminDb.collection(PLAYER_STATS_COLLECTION)
-        .where('name', '>=', searchTerm)
-        .where('name', '<=', searchTerm + '\uf8ff')
-        .limit(20)
-        .get();
-
-      const players: string[] = [];
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        if (data.name) {
-          players.push(data.name);
-        }
-      });
-
-      return players;
-    } else {
-      const db = getFirestoreInstance();
-      const playersQuery = query(
-        collection(db, PLAYER_STATS_COLLECTION),
-        where('name', '>=', searchTerm),
-        where('name', '<=', searchTerm + '\uf8ff'),
-        orderBy('name'),
-        // limit(20) // Firestore requires orderBy before limit
-      );
-
-      const snapshot = await getDocs(playersQuery);
-      const players: string[] = [];
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        if (data.name) {
-          players.push(data.name);
-        }
-      });
-
-      return players.slice(0, 20);
-    }
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to search players', {
-      component: 'playerService.read',
-      operation: 'searchPlayers',
-      query: searchQuery,
-    });
-    // Return empty array on error (search is non-critical)
-    return [];
-  }
+export async function searchPlayers(_searchQuery: string): Promise<string[]> {
+  throw new Error('searchPlayers is server-only. Use /api/players/search API endpoint instead.');
 }
-
-

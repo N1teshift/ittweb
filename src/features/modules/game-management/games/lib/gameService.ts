@@ -14,34 +14,34 @@
 // Re-export updateEloScores from infrastructure for convenience
 export { updateEloScores } from '@/features/modules/game-management/lib/mechanics';
 
-// Re-export all create operations
+// Re-export all create operations (server-only)
 export {
   createScheduledGame,
   createCompletedGame,
   createGame,
-} from './gameService.create';
+} from './gameService.create.server';
 
-// Re-export all read operations
+// Re-export all read operations (server-only)
 export {
   getGameById,
   getGames,
   getGamesWithPlayers,
   batchGetPlayersForGames,
-} from './gameService.read';
+} from './gameService.read.server';
 
-// Re-export update operations
+// Re-export update operations (server-only)
 export {
   updateGame,
-} from './gameService.update';
+} from './gameService.update.server';
 
-// Re-export delete operations
+// Re-export delete operations (server-only)
 export {
   deleteGame,
-} from './gameService.delete';
+} from './gameService.delete.server';
 
-// Re-export participation operations
+// Re-export participation operations (server-only)
 export {
   joinGame,
   leaveGame,
-} from './gameService.participation';
+} from './gameService.participation.server';
 

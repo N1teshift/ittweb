@@ -1,5 +1,4 @@
 import W3GReplay from 'w3gjs';
-import type Player from 'w3gjs/dist/types/Player';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import type { CreateGame } from '@/features/modules/game-management/games/types';
 import { buildW3MMDLookup, mapMissionStatsToPlayers } from '../w3mmd';

@@ -4,7 +4,7 @@ import { authOptions } from '../../api/auth/[...nextauth]';
 import Head from 'next/head';
 import { PageHero } from '@/features/infrastructure/components';
 import { getPostById } from '@/features/modules/content/blog/lib/postService';
-import { isAdmin } from '@/features/infrastructure/utils';
+import { isAdmin } from '@/features/modules/community/users';
 import EditPostForm from '@/features/modules/content/blog/components/EditPostForm';
 import type { PostFormState } from '@/features/modules/content/blog/hooks/useNewPostForm';
 import { ErrorBoundary } from '@/features/infrastructure/components';

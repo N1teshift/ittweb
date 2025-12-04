@@ -3,7 +3,8 @@ import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import { getAllPosts, getPostBySlug, getLatestPost } from './postService';
+import { getAllPosts, getLatestPost } from './postService.server';
+import { getPostBySlug } from './postService';
 import type { Post } from '@/types/post';
 
 export type PostMeta = {

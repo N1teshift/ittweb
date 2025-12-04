@@ -1,6 +1,8 @@
 import type { NextApiRequest } from 'next';
-import { createGetPostHandler, parseQueryEnum, zodValidator, CreateEntrySchema } from '@/features/infrastructure/api';
-import { getAllEntries, createEntry } from '@/features/modules/game-management/entries/lib/entryService';
+import { createGetPostHandler, parseQueryEnum, zodValidator } from '@/features/infrastructure/api';
+import { CreateEntrySchema } from '@/features/modules/game-management/entries/lib';
+import { getAllEntries } from '@/features/modules/game-management/entries/lib/entryService.server';
+import { createEntry } from '@/features/modules/game-management/entries/lib/entryService';
 import { CreateEntry } from '@/types/entry';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import type { Entry } from '@/types/entry';

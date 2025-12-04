@@ -1,5 +1,6 @@
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
 import { Logger } from '@/features/infrastructure/logging';
+import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import type { GetStaticProps } from 'next';
 
@@ -25,7 +26,8 @@ export default function Tools() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-8rem)]">
+    <ErrorBoundary>
+      <div className="min-h-[calc(100vh-8rem)]">
       <div className="text-center max-w-2xl mx-auto px-6 py-12">
         {/* Main Heading */}
         <h1 className="font-medieval-brand text-5xl md:text-6xl mb-8">
@@ -65,7 +67,8 @@ export default function Tools() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 }
 

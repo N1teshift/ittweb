@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
-import { ErrorBoundary } from '@/features/infrastructure/components';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
+import { ErrorBoundary, Section } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ITEMS_DATA, getItemById } from '@/features/modules/content/guides/data/items';
@@ -56,7 +56,7 @@ export default function ItemDetailPage({ item }: Props) {
     <ErrorBoundary>
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6">
-          <Link href={backHref} className="text-amber-400 hover:text-amber-300">← Items Overview</Link>
+          <Link href={backHref} className="link-amber">← Items Overview</Link>
         </div>
 
         <header className="mb-6">
@@ -73,7 +73,7 @@ export default function ItemDetailPage({ item }: Props) {
         </header>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <section className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+          <Section variant="medieval">
             <h2 className="font-medieval-brand text-2xl mb-3">Details</h2>
             <div className="space-y-2 text-gray-300">
               <div>
@@ -170,9 +170,9 @@ export default function ItemDetailPage({ item }: Props) {
                 </div>
               )}
             </div>
-          </section>
+          </Section>
 
-          <section className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+          <Section variant="medieval">
             <h2 className="font-medieval-brand text-2xl mb-3">Stats</h2>
             {item.stats ? (
               <div className="flex flex-wrap gap-2">
@@ -207,10 +207,10 @@ export default function ItemDetailPage({ item }: Props) {
             ) : (
               <p className="text-gray-400">No stats available.</p>
             )}
-          </section>
+          </Section>
           
           {item.abilities && item.abilities.length > 0 && (
-            <section className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+            <Section variant="medieval">
               <h2 className="font-medieval-brand text-2xl mb-3">Abilities</h2>
               <div className="flex flex-wrap gap-3">
                 {item.abilities.map((rawAbilityId, i) => {
@@ -252,10 +252,10 @@ export default function ItemDetailPage({ item }: Props) {
                   );
                 })}
               </div>
-            </section>
+            </Section>
           )}
 
-          <section className="md:col-span-2 bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+          <Section variant="medieval" className="md:col-span-2">
             <h2 className="font-medieval-brand text-2xl mb-3">Recipe</h2>
             {item.recipe && item.recipe.length > 0 ? (
               <div>
@@ -305,7 +305,7 @@ export default function ItemDetailPage({ item }: Props) {
             ) : (
               <p className="text-gray-400">No recipe required.</p>
             )}
-          </section>
+          </Section>
         </div>
       </div>
     </ErrorBoundary>

@@ -1,12 +1,12 @@
 import { useSession, signIn } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
 import EntryFormModal from '@/features/modules/game-management/entries/components/EntryFormModal';
 import ScheduleGameForm from '@/features/modules/game-management/scheduled-games/components/ScheduleGameForm';
-import { isAdmin } from '@/features/infrastructure/utils';
+import { isAdmin } from '@/features/modules/community/users';
 import type { GetStaticProps } from 'next';
 import type { CreateScheduledGame } from '@/features/modules/game-management/games/types';
-import { Button } from '@/features/infrastructure/components';
+import { Button, ErrorBoundary } from '@/features/infrastructure/components';
 import { HomeTimeline } from '@/features/modules/community/archives/shared/components';
 import type { HomeTimelineHandle } from '@/features/modules/community/archives/timeline/components/HomeTimeline';
 import { useRef } from 'react';
@@ -145,7 +145,8 @@ export default function Home({}: HomeProps) {
 
 
   return (
-    <div className="flex justify-center min-h-[calc(100vh-8rem)]">
+    <ErrorBoundary>
+      <div className="flex justify-center min-h-[calc(100vh-8rem)]">
       <div className="w-full px-6 py-12 max-w-4xl">
         {/* Login Message - Only visible to non-authenticated users */}
         {status !== 'authenticated' && (
@@ -197,7 +198,8 @@ export default function Home({}: HomeProps) {
           />
         )}
       </div>
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 }
 

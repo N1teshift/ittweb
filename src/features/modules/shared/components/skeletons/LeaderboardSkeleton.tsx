@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from '../containers';
+import { Card } from '@/features/infrastructure/components';
 
 /**
  * Skeleton loader for Leaderboard component
@@ -26,5 +26,4 @@ export function LeaderboardSkeleton() {
     </Card>
   );
 }
-
 

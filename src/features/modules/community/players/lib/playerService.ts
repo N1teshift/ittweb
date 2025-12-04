@@ -15,17 +15,17 @@ export {
   calculateTotalGames,
 } from './playerService.utils';
 
-// Re-export all read operations
+// Re-export all read operations (server-only)
 export {
   getPlayerStats,
   getAllPlayers,
   searchPlayers,
-} from './playerService.read';
+} from './playerService.read.server';
 
-// Re-export update operations
+// Re-export update operations (server-only)
 export {
   updatePlayerStats,
-} from './playerService.update';
+} from './playerService.update.server';
 
 // Re-export compare operations
 export {

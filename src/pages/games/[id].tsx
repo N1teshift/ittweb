@@ -1,269 +1,42 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
-import { useSession, signIn } from 'next-auth/react';
 import { useGame } from '@/features/modules/game-management/games/hooks/useGame';
 import { GameDetail } from '@/features/modules/game-management/games/components/GameDetail';
-import { Card } from '@/features/infrastructure/components';
+import { Card, ErrorBoundary } from '@/features/infrastructure/components';
 import EditGameForm from '@/features/modules/game-management/scheduled-games/components/EditGameForm';
 import GameDeleteDialog from '@/features/modules/game-management/scheduled-games/components/GameDeleteDialog';
 import UploadReplayModal from '@/features/modules/game-management/scheduled-games/components/UploadReplayModal';
-import { Logger } from '@/features/infrastructure/logging';
-import { isAdmin } from '@/features/infrastructure/utils';
-import { ErrorBoundary } from '@/features/infrastructure/components';
-import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
+import { useGameActions } from '@/features/modules/game-management/games/hooks/useGameActions';
+import { useGamePermissions } from '@/features/modules/game-management/games/hooks/useGamePermissions';
 
 export default function GameDetailPage() {
   const router = useRouter();
   const { id } = router.query;
   const { game, loading, error, refetch } = useGame(id as string);
-  const { data: session, status } = useSession();
-  const [editingGame, setEditingGame] = useState<GameWithPlayers | null>(null);
-  const [pendingDeleteGame, setPendingDeleteGame] = useState<GameWithPlayers | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isJoining, setIsJoining] = useState(false);
-  const [isLeaving, setIsLeaving] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [userIsAdmin, setUserIsAdmin] = useState(false);
-  const [uploadingReplayGame, setUploadingReplayGame] = useState<GameWithPlayers | null>(null);
+  
+  const {
+    editingGame,
+    pendingDeleteGame,
+    uploadingReplayGame,
+    isSubmitting,
+    isJoining,
+    isLeaving,
+    isDeleting,
+    errorMessage,
+    handleEdit,
+    handleEditSubmit,
+    handleEditCancel,
+    handleDelete,
+    handleDeleteConfirm,
+    handleDeleteCancel,
+    handleJoin,
+    handleLeave,
+    handleUploadReplay,
+    handleUploadReplaySuccess,
+    handleUploadReplayClose,
+  } = useGameActions(refetch);
 
-  // Fetch user role to check if admin
-  useEffect(() => {
-    let isMounted = true;
-
-    const fetchUserRole = async () => {
-      if (status !== 'authenticated' || !session?.discordId) {
-        if (isMounted) {
-          setUserIsAdmin(false);
-        }
-        return;
-      }
-
-      try {
-        const response = await fetch('/api/user/me');
-        if (!response.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-        const result = await response.json();
-        const userData = result.data;
-        if (isMounted) {
-          setUserIsAdmin(isAdmin(userData?.role));
-        }
-      } catch (error) {
-        Logger.warn('Failed to fetch user role for game detail page', {
-          error: error instanceof Error ? error.message : String(error),
-        });
-        if (isMounted) {
-          setUserIsAdmin(false);
-        }
-      }
-    };
-
-    fetchUserRole();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [status, session?.discordId]);
-
-  const isUserCreator = (game: GameWithPlayers): boolean => {
-    if (!session?.discordId) return false;
-    return game.createdByDiscordId === session.discordId;
-  };
-
-  const isUserParticipant = (game: GameWithPlayers): boolean => {
-    if (!session?.discordId || !game.participants) return false;
-    return game.participants.some(p => p.discordId === session.discordId);
-  };
-
-  const handleEdit = (game: GameWithPlayers) => {
-    if (status !== 'authenticated') {
-      signIn('discord');
-      return;
-    }
-    setEditingGame(game);
-  };
-
-  const handleEditSubmit = async (updates: {
-    teamSize: string;
-    customTeamSize?: string;
-    gameType: string;
-    gameVersion?: string;
-    gameLength?: number;
-    modes: string[];
-  }) => {
-    if (!editingGame) return;
-
-    try {
-      setIsSubmitting(true);
-      setErrorMessage(null);
-
-      // Use unified games API
-      const response = await fetch(`/api/games/${editingGame.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updates),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to update game');
-      }
-
-      setEditingGame(null);
-      await refetch?.();
-      router.push(`/games/${editingGame.id}`);
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to update game';
-      setErrorMessage(errorMessage);
-      throw err;
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleEditCancel = () => {
-    setEditingGame(null);
-    setErrorMessage(null);
-  };
-
-  const handleDelete = (game: GameWithPlayers) => {
-    if (status !== 'authenticated') {
-      signIn('discord');
-      return;
-    }
-    setPendingDeleteGame(game);
-  };
-
-  const handleDeleteConfirm = async () => {
-    if (!pendingDeleteGame) return;
-
-    try {
-      setIsDeleting(true);
-      setErrorMessage(null);
-
-      // Use unified games API
-      const response = await fetch(`/api/games/${pendingDeleteGame.id}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ 
-          error: 'Failed to delete game' 
-        }));
-        throw new Error(errorData.error || 'Failed to delete game');
-      }
-
-      setPendingDeleteGame(null);
-      router.push('/');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to delete game';
-      setErrorMessage(errorMessage);
-      Logger.error('Failed to delete game', {
-        component: 'games/[id]',
-        gameId: pendingDeleteGame.id,
-        error: errorMessage,
-      });
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
-  const handleDeleteCancel = () => {
-    setPendingDeleteGame(null);
-  };
-
-  const handleJoin = useCallback(async (gameId: string) => {
-    if (status !== 'authenticated') {
-      signIn('discord');
-      return;
-    }
-
-    if (!session?.discordId || !session?.user?.name) {
-      setErrorMessage('Discord ID or name is missing');
-      return;
-    }
-
-    try {
-      setIsJoining(true);
-      setErrorMessage(null);
-
-      const response = await fetch(`/api/games/${gameId}/join`, {
-        method: 'POST',
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to join game');
-      }
-
-      await refetch?.();
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to join game';
-      setErrorMessage(errorMessage);
-      Logger.error('Failed to join game', {
-        component: 'games/[id]',
-        gameId,
-        error: errorMessage,
-      });
-    } finally {
-      setIsJoining(false);
-    }
-  }, [status, session?.discordId, session?.user?.name, refetch]);
-
-  const handleLeave = useCallback(async (gameId: string) => {
-    if (status !== 'authenticated') {
-      signIn('discord');
-      return;
-    }
-
-    try {
-      setIsLeaving(true);
-      setErrorMessage(null);
-
-      const response = await fetch(`/api/games/${gameId}/leave`, {
-        method: 'POST',
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to leave game');
-      }
-
-      await refetch?.();
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to leave game';
-      setErrorMessage(errorMessage);
-      Logger.error('Failed to leave game', {
-        component: 'games/[id]',
-        gameId,
-        error: errorMessage,
-      });
-    } finally {
-      setIsLeaving(false);
-    }
-  }, [status, refetch]);
-
-  const handleUploadReplay = (game: GameWithPlayers) => {
-    if (status !== 'authenticated') {
-      signIn('discord');
-      return;
-    }
-    setUploadingReplayGame(game);
-  };
-
-  const handleUploadReplaySuccess = async () => {
-    setUploadingReplayGame(null);
-    // Force a full page refresh to get the updated game data
-    // This ensures we get fresh data from the server, bypassing any cache
-    router.reload();
-  };
-
-  const handleUploadReplayClose = () => {
-    setUploadingReplayGame(null);
-  };
+  const { userIsAdmin, isUserCreator, isUserParticipant } = useGamePermissions();
 
   // Early returns must come after all hooks
   // Don't show error if router is not ready yet (query params still loading)
@@ -282,18 +55,20 @@ export default function GameDetailPage() {
   // Only show error if router is ready and we have a definitive error or missing game
   if (error || !game) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <Card variant="medieval" className="p-8">
-          <p className="text-red-400">
-            {error ? `Error: ${error.message}` : 'Game not found'}
-          </p>
-        </Card>
-      </div>
+      <ErrorBoundary>
+        <div className="container mx-auto px-4 py-8">
+          <Card variant="medieval" className="p-8">
+            <p className="text-red-400">
+              {error ? `Error: ${error.message}` : 'Game not found'}
+            </p>
+          </Card>
+        </div>
+      </ErrorBoundary>
     );
   }
 
-  const userIsCreator = isUserCreator(game);
-  const userIsParticipant = isUserParticipant(game);
+  const userIsCreatorFlag = isUserCreator(game);
+  const userIsParticipantFlag = isUserParticipant(game);
 
   return (
     <ErrorBoundary>
@@ -312,8 +87,8 @@ export default function GameDetailPage() {
         onUploadReplay={game.gameState === 'scheduled' ? handleUploadReplay : undefined}
         isJoining={isJoining}
         isLeaving={isLeaving}
-        userIsCreator={userIsCreator}
-        userIsParticipant={userIsParticipant}
+        userIsCreator={userIsCreatorFlag}
+        userIsParticipant={userIsParticipantFlag}
         userIsAdmin={userIsAdmin}
       />
       

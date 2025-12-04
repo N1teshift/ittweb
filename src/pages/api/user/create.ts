@@ -1,7 +1,7 @@
 import type { NextApiRequest } from 'next';
 import { createPostHandler } from '@/features/infrastructure/api';
 import { CreateUserData } from '@/types/userData';
-import { saveUserDataServer } from '@/features/modules/community/users';
+import { saveUserDataServer } from '@/features/modules/community/users/services/userDataService.server';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 
 /**

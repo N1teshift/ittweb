@@ -1,4 +1,5 @@
 import React from 'react';
+import { cn } from '@/features/infrastructure/utils/className';
 
 type BaseButtonProps = {
     variant?: 'primary' | 'secondary' | 'ghost' | 'amber' | 'success' | 'danger';
@@ -35,7 +36,7 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
             lg: "h-10 px-8 text-base"
         };
 
-        const combinedClassName = `${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`;
+        const combinedClassName = cn(baseStyles, variants[variant], sizes[size], className);
 
         if (Component === 'a') {
             return (

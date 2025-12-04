@@ -378,7 +378,7 @@ export async function getClassStats(category?: string): Promise<import('../types
 
         classStatsArray.push({
           id: className,
-          category,
+          category: category ?? null,
           totalGames,
           totalWins,
           totalLosses,

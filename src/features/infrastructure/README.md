@@ -2,6 +2,18 @@
 
 **Purpose**: Core infrastructure systems including authentication, Firebase, logging, and API utilities.
 
+## Infrastructure Principles
+
+This folder contains **generic, reusable code** that:
+- ✅ Can be extracted to a separate package/library
+- ✅ Works across different projects
+- ✅ Has no business logic dependencies
+- ✅ Is framework-aware but domain-agnostic
+
+**If code is project-specific**, it belongs in `modules/` instead.
+
+See [Architecture Documentation](../../../docs/production/architecture/infrastructure-vs-modules.md) for detailed guidelines on when to use infrastructure vs modules.
+
 ## Exports
 
 ### API (`api/`)
@@ -14,7 +26,7 @@ See [API README](./api/README.md) for detailed documentation.
 - **Parsing** (`api/parsing/`)
   - `queryParser.ts` - Query parameter parsing utilities
 - **Schemas** (`api/schemas/`)
-  - `schemas.ts` - Zod schemas for request validation
+  - `schemas.ts` - Generic Zod schemas for request validation (domain-specific schemas are in their respective modules)
 - **Zod** (`api/zod/`)
   - `zodValidation.ts` - Zod validation helpers and integrations
 - **Firebase** (`api/firebase/`)
@@ -27,12 +39,11 @@ See [API README](./api/README.md) for detailed documentation.
 - Error categorization and logging
 
 ### Components (`components/`)
-- **Layout Components**: `Layout`, `Header`, `Footer`, `PageHero`, `DataCollectionNotice`, `DiscordButton`, `GitHubButton`
+- **Layout Components**: `Layout`, `Header`, `PageHero`, `DiscordButton`, `GitHubButton`
 - **Button Components**: `Button`, `GitHubButton`, `DiscordButton`
 - **Container Components**: `Card`
 - **Loading Components**: `LoadingOverlay`, `LoadingScreen`
 - **Feedback Components**: `EmptyState`, `Tooltip`
-- **Skeleton Components**: `GameCardSkeleton`, `PlayerCardSkeleton`, `LeaderboardSkeleton` - Loading placeholders for async content
 
 ### Services (`lib/`)
 - `userDataService` - User data CRUD operations
@@ -43,7 +54,6 @@ See [API README](./api/README.md) for detailed documentation.
 ### Utils (`utils/`)
 - `objectUtils` - Object manipulation utilities
 - `timestampUtils` - Timestamp conversion utilities
-- `userRoleUtils` - User role checking utilities
 - `accessibility/helpers` - Accessibility testing utilities
 - `loggerUtils` - Error logging utilities (deprecated, use `logging/`)
 
@@ -123,47 +133,24 @@ export default createPostHandler(
 #### Zod Validation (Recommended)
 
 ```typescript
-import { zodValidator, CreatePostSchema } from '@/features/infrastructure/api';
-import { z } from 'zod';
-
-// Define Zod schema
-const CreateGameSchema = z.object({
-  gameId: z.number().int().positive(),
-  datetime: z.string().datetime(),
-  players: z.array(z.object({
-    name: z.string().min(1),
-    flag: z.enum(['winner', 'loser', 'drawer']),
-  })).min(2),
-});
+import { zodValidator } from '@/features/infrastructure/api';
+import { CreatePostSchema } from '@/features/modules/content/blog/lib';
 
 // Use with route handler
 export default createPostHandler(
   async (req, res, context) => {
     // Body is already validated
-    const gameData = req.body as z.infer<typeof CreateGameSchema>;
+    const postData = req.body as z.infer<typeof CreatePostSchema>;
     // ... handler logic
   },
   {
-    validateBody: zodValidator(CreateGameSchema),
+    validateBody: zodValidator(CreatePostSchema),
   }
 );
 ```
 
 See [Zod Validation Migration Guide](../../../docs/operations/zod-validation-migration.md) for more details.
 
-### Skeleton Components
-```typescript
-import { GameCardSkeleton, PlayerCardSkeleton, LeaderboardSkeleton } from '@/features/infrastructure/components';
-
-// Show loading placeholders while data loads
-{loading && (
-  <>
-    <GameCardSkeleton />
-    <GameCardSkeleton />
-    <GameCardSkeleton />
-  </>
-)}
-```
 
 ## Related Documentation
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { cn } from '@/features/infrastructure/utils/className';
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     variant?: 'default' | 'glass' | 'medieval';
@@ -12,10 +13,10 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         const variants = {
             default: "bg-white border-gray-200 text-gray-900 shadow-sm",
             glass: "bg-white/60 border-gray-200/50 backdrop-blur-md text-gray-900 shadow-sm",
-            medieval: "bg-black/40 backdrop-blur-sm border border-amber-500/30 text-gray-200 hover:border-amber-400/50 shadow-sm"
+            medieval: "card-medieval-hover text-gray-200"
         };
 
-        const combinedClassName = `${baseStyles} ${variants[variant]} ${className}`.trim();
+        const combinedClassName = cn(baseStyles, variants[variant], className);
 
         return (
             <div

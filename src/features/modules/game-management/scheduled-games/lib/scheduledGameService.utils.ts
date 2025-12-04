@@ -1,11 +1,11 @@
-import { collection, getDocs, query, orderBy, where } from 'firebase/firestore';
-import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
-import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
-import { ScheduledGame } from '@/types/scheduledGame';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+/**
+ * Scheduled Game Service Utilities (Client-Safe)
+ * 
+ * Pure utility functions that are safe to use in both client and server code.
+ * Server-only utilities are in scheduledGameService.utils.server.ts
+ */
 
-const GAMES_COLLECTION = 'games'; // Unified games collection (scheduled and completed)
-const logger = createComponentLogger('scheduledGameService');
+import { ScheduledGame } from '@/types/scheduledGame';
 
 /**
  * Derive game status based on scheduled date/time and current time
@@ -40,95 +40,6 @@ export function deriveGameStatus(data: {
   }
 
   return 'awaiting_replay';
-}
-
-/**
- * Get the next available scheduled game ID
- * Queries all scheduled games and finds the highest ID, then increments by 1
- */
-export async function getNextScheduledGameId(): Promise<number> {
-  try {
-    if (isServerSide()) {
-      const adminDb = getFirestoreAdmin();
-      // Query unified games collection for scheduled games
-      const querySnapshot = await adminDb.collection(GAMES_COLLECTION)
-        .where('gameState', '==', 'scheduled')
-        .orderBy('gameId', 'desc')
-        .limit(1)
-        .get();
-
-      if (querySnapshot.empty) {
-        // No scheduled games exist, start at 1
-        return 1;
-      }
-
-      const lastGame = querySnapshot.docs[0].data();
-      const lastId = typeof lastGame.gameId === 'number' ? lastGame.gameId : Number(lastGame.gameId) || 0;
-      return lastId + 1;
-    } else {
-      const db = getFirestoreInstance();
-      const q = query(
-        collection(db, GAMES_COLLECTION),
-        where('gameState', '==', 'scheduled'),
-        orderBy('gameId', 'desc')
-      );
-      const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        // No scheduled games exist, start at 1
-        return 1;
-      }
-
-      const lastGame = querySnapshot.docs[0].data();
-      const lastId = typeof lastGame.gameId === 'number' ? lastGame.gameId : Number(lastGame.gameId) || 0;
-      return lastId + 1;
-    }
-  } catch (error) {
-    // If there's an error (e.g., index not built), try fetching all and finding max
-    logger.warn('Error getting next scheduled game ID, falling back to full query', { error });
-    
-    try {
-      if (isServerSide()) {
-        const adminDb = getFirestoreAdmin();
-        // Query all scheduled games from unified collection
-        const querySnapshot = await adminDb.collection(GAMES_COLLECTION)
-          .where('gameState', '==', 'scheduled')
-          .get();
-        
-        let maxId = 0;
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          const id = typeof data.gameId === 'number' ? data.gameId : Number(data.gameId) || 0;
-          if (id > maxId) {
-            maxId = id;
-          }
-        });
-        
-        return maxId + 1;
-      } else {
-        const db = getFirestoreInstance();
-        const querySnapshot = await getDocs(
-          query(collection(db, GAMES_COLLECTION), where('gameState', '==', 'scheduled'))
-        );
-        
-        let maxId = 0;
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          const id = typeof data.gameId === 'number' ? data.gameId : Number(data.gameId) || 0;
-          if (id > maxId) {
-            maxId = id;
-          }
-        });
-        
-        return maxId + 1;
-      }
-    } catch (fallbackError) {
-      // If even fallback fails, start at 1
-      const error = fallbackError instanceof Error ? fallbackError : new Error(String(fallbackError));
-      logger.error('Failed to get next scheduled game ID, defaulting to 1', error);
-      return 1;
-    }
-  }
 }
 
 

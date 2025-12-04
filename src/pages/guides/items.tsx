@@ -1,4 +1,4 @@
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';

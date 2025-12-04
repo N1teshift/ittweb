@@ -8,7 +8,6 @@ Utility functions for infrastructure-level operations. This directory contains o
 
 This directory is organized into subfolders by functionality:
 
-- **`user/`** - User role and permission utilities
 - **`time/`** - Timestamp and date/time utilities
 - **`server/`** - Server-side detection and utilities
 - **`object/`** - Object manipulation utilities
@@ -20,27 +19,16 @@ This directory is organized into subfolders by functionality:
 All utilities are exported from the main `index.ts` file, so you can import them directly:
 
 ```typescript
-import { isAdmin, timestampToIso, removeUndefined } from '@/features/infrastructure/utils';
+import { timestampToIso, removeUndefined } from '@/features/infrastructure/utils';
 ```
 
 Or import from specific subfolders if you prefer:
 
 ```typescript
-import { isAdmin } from '@/features/infrastructure/utils/user/userRoleUtils';
 import { timestampToIso } from '@/features/infrastructure/utils/time/timestampUtils';
 ```
 
 ## Modules
-
-### User Utilities (`user/`)
-
-User role and permission checking utilities.
-
-- `hasRole()` - Check if a user has a specific role
-- `isAdmin()` - Check if user is admin or higher
-- `isDeveloper()` - Check if user is a developer
-- `isModerator()` - Check if user is moderator or higher
-- `isPremium()` - Check if user has premium access or higher
 
 ### Time Utilities (`time/`)
 

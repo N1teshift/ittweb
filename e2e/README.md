@@ -10,10 +10,11 @@ E2E tests verify that the application works correctly from the user's perspectiv
 
 ```
 e2e/
-├── homepage.spec.ts    # Homepage and navigation tests
-├── games.spec.ts       # Games page and game detail functionality
-├── auth.spec.ts        # Authentication and responsive design tests
-└── README.md          # This file
+├── homepage.spec.ts       # Homepage and navigation tests
+├── games.spec.ts          # Games page and game detail functionality
+├── auth.spec.ts           # Authentication and responsive design tests
+├── console-errors.spec.ts # Automated console error checking across all pages
+└── README.md             # This file
 ```
 
 ## Running Tests
@@ -130,6 +131,12 @@ await page.locator('.btn-primary').click();
 - ✅ Graceful handling of unauthenticated access
 - ✅ Login prompts for protected actions
 - ✅ Responsive design across viewports (mobile, tablet, desktop)
+
+### Console Error Tests (`console-errors.spec.ts`)
+- ✅ Automated checking for console errors across all public pages
+- ✅ Detection of unhandled JavaScript exceptions
+- ✅ Monitoring of failed network requests
+- ✅ React error boundary detection
 
 ## Test Data
 

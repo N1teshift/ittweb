@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import type { UserRole } from '@/types/userData';
-import { isAdmin } from '@/features/infrastructure/utils';
+import { isAdmin } from '@/features/modules/community/users';
 
 interface UseTimelinePermissionsReturn {
   userRole: UserRole | undefined;

@@ -6,8 +6,11 @@ type DiscordButtonProps = {
   className?: string;
 };
 
+// Get Discord invite URL from environment variable, with fallback
+const DEFAULT_DISCORD_URL = process.env.NEXT_PUBLIC_DISCORD_INVITE_URL || 'https://discord.com/invite/Rh9JdKs';
+
 export default function DiscordButton({
-  href = 'https://discord.com/invite/Rh9JdKs',
+  href = DEFAULT_DISCORD_URL,
   children = 'Join Discord',
   className = ''
 }: DiscordButtonProps) {

@@ -1,166 +1,25 @@
-import {
-  doc,
-  getDoc,
-  updateDoc,
-} from 'firebase/firestore';
-import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
-import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
-import { logError } from '@/features/infrastructure/logging';
-import { createTimestampFactoryAsync } from '@/features/infrastructure/utils';
-import type { GameParticipant } from '../types';
-
-const GAMES_COLLECTION = 'games';
+/**
+ * Game Service - Participation Operations (Client Stub)
+ * 
+ * This file is a client-side stub. The actual server-only implementation
+ * is in gameService.participation.server.ts
+ * 
+ * These functions should only be called from API routes (server-side).
+ * Client code should use API endpoints instead.
+ */
 
 /**
  * Join a scheduled game (add participant)
+ * @throws Error - This function is server-only. Use API routes instead.
  */
-export async function joinGame(
-  gameId: string,
-  discordId: string,
-  name: string
-): Promise<void> {
-  try {
-    // Reduced logging verbosity
-
-    const timestampFactory = await createTimestampFactoryAsync();
-    
-    let gameData: Record<string, unknown> | undefined;
-    
-    if (isServerSide()) {
-      const adminDb = getFirestoreAdmin();
-      const gameRef = adminDb.collection(GAMES_COLLECTION).doc(gameId);
-      const gameDoc = await gameRef.get();
-      if (!gameDoc.exists) {
-        throw new Error('Game not found');
-      }
-      gameData = gameDoc.data();
-    } else {
-      const db = getFirestoreInstance();
-      const gameRef = doc(db, GAMES_COLLECTION, gameId);
-      const gameDoc = await getDoc(gameRef);
-      if (!gameDoc.exists()) {
-        throw new Error('Game not found');
-      }
-      gameData = gameDoc.data();
-    }
-    
-    if (gameData?.gameState !== 'scheduled') {
-      throw new Error('Can only join scheduled games');
-    }
-    
-    const participants = (gameData?.participants || []) as GameParticipant[];
-    
-    // Check if user is already a participant
-    if (participants.some(p => p.discordId === discordId)) {
-      throw new Error('User is already a participant');
-    }
-    
-    // Add user to participants
-    participants.push({
-      discordId,
-      name,
-      joinedAt: new Date().toISOString(),
-    });
-    
-    const now = timestampFactory.now();
-    
-    if (isServerSide()) {
-      const adminDb = getFirestoreAdmin();
-      const gameRef = adminDb.collection(GAMES_COLLECTION).doc(gameId);
-      await gameRef.update({
-        participants,
-        updatedAt: now,
-      });
-    } else {
-      const db = getFirestoreInstance();
-      const gameRef = doc(db, GAMES_COLLECTION, gameId);
-      await updateDoc(gameRef, {
-        participants,
-        updatedAt: now,
-      });
-    }
-
-    // User joined game successfully
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to join game', {
-      component: 'gameService',
-      operation: 'joinGame',
-      gameId,
-      discordId,
-    });
-    throw err;
-  }
+export async function joinGame(_gameId: string, _discordId: string, _name: string): Promise<void> {
+  throw new Error('joinGame is server-only. Use /api/games/[id]/join API endpoint instead.');
 }
 
 /**
  * Leave a scheduled game (remove participant)
+ * @throws Error - This function is server-only. Use API routes instead.
  */
-export async function leaveGame(
-  gameId: string,
-  discordId: string
-): Promise<void> {
-  try {
-    // Reduced logging verbosity
-
-    const timestampFactory = await createTimestampFactoryAsync();
-    
-    let gameData: Record<string, unknown> | undefined;
-    
-    if (isServerSide()) {
-      const adminDb = getFirestoreAdmin();
-      const gameRef = adminDb.collection(GAMES_COLLECTION).doc(gameId);
-      const gameDoc = await gameRef.get();
-      if (!gameDoc.exists) {
-        throw new Error('Game not found');
-      }
-      gameData = gameDoc.data();
-    } else {
-      const db = getFirestoreInstance();
-      const gameRef = doc(db, GAMES_COLLECTION, gameId);
-      const gameDoc = await getDoc(gameRef);
-      if (!gameDoc.exists()) {
-        throw new Error('Game not found');
-      }
-      gameData = gameDoc.data();
-    }
-    
-    if (gameData?.gameState !== 'scheduled') {
-      throw new Error('Can only leave scheduled games');
-    }
-    
-    const participants = (gameData?.participants || []) as GameParticipant[];
-    const updatedParticipants = participants.filter(p => p.discordId !== discordId);
-    
-    const now = timestampFactory.now();
-    
-    if (isServerSide()) {
-      const adminDb = getFirestoreAdmin();
-      const gameRef = adminDb.collection(GAMES_COLLECTION).doc(gameId);
-      await gameRef.update({
-        participants: updatedParticipants,
-        updatedAt: now,
-      });
-    } else {
-      const db = getFirestoreInstance();
-      const gameRef = doc(db, GAMES_COLLECTION, gameId);
-      await updateDoc(gameRef, {
-        participants: updatedParticipants,
-        updatedAt: now,
-      });
-    }
-
-    // User left game successfully
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to leave game', {
-      component: 'gameService',
-      operation: 'leaveGame',
-      gameId,
-      discordId,
-    });
-    throw err;
-  }
+export async function leaveGame(_gameId: string, _discordId: string): Promise<void> {
+  throw new Error('leaveGame is server-only. Use /api/games/[id]/leave API endpoint instead.');
 }
-
-

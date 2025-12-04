@@ -73,6 +73,37 @@ const baseConfig: NextConfig = {
             }
         }
 
+        // Configure webpack to handle ES modules properly
+        // This fixes issues with packages like @reduxjs/toolkit that are ES modules
+        config.module = config.module || {};
+        config.module.rules = config.module.rules || [];
+        
+        // Add rule to handle ES modules in node_modules
+        // fullySpecified: false allows importing without file extensions for ES modules
+        // This is needed for packages like @reduxjs/toolkit that are ES modules
+        config.module.rules.push({
+            test: /\.m?js$/,
+            include: /node_modules/,
+            resolve: {
+                fullySpecified: false,
+            },
+        });
+
+        // Configure resolve to properly handle ES modules
+        config.resolve = config.resolve || {};
+        config.resolve.extensionAlias = {
+            ...config.resolve.extensionAlias,
+            '.js': ['.js', '.ts', '.tsx'],
+            '.mjs': ['.mjs'],
+        };
+        
+        // Ensure webpack handles ES modules correctly
+        // This prevents require() errors for ES module packages
+        config.experiments = {
+            ...config.experiments,
+            topLevelAwait: true,
+        };
+
         return config;
     },
     images: {

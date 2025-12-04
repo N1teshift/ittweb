@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
 import BlogPost from '@/features/modules/content/blog/components/BlogPost';
 import PostDeleteDialog from '@/features/modules/content/blog/components/PostDeleteDialog';
 import { MDXRemote } from 'next-mdx-remote';
@@ -100,7 +100,7 @@ export default function PostPage({ title, date, author, postId, content, canEdit
           <div className="flex items-center justify-between mb-6">
             <Link
               href="/"
-              className="inline-flex items-center text-amber-400 hover:text-amber-300 transition-colors"
+              className="inline-flex items-center link-amber"
             >
               ← Back to Home
             </Link>
@@ -168,7 +168,7 @@ export const getServerSideProps: GetServerSideProps<PostPageProps> = async (cont
     if (session && session.discordId) {
       try {
         const { getUserDataByDiscordIdServer } = await import('@/features/modules/community/users/services/userDataService.server');
-        const { isAdmin } = await import('@/features/infrastructure/utils');
+        const { isAdmin } = await import('@/features/modules/community/users');
         const userData = await getUserDataByDiscordIdServer(session.discordId);
         const userIsAdmin = isAdmin(userData?.role);
         const userIsAuthor = post.meta.createdByDiscordId === session.discordId;

@@ -1,5 +1,5 @@
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
-import { ErrorBoundary } from '@/features/infrastructure/components';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
+import { ErrorBoundary, Section } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { BASE_TROLL_CLASSES } from '@/features/modules/content/guides/data/units/classes';
 import GuideCard from '@/features/modules/content/guides/components/GuideCard';
@@ -14,13 +14,13 @@ export default function TrollClassesGuide() {
     <ErrorBoundary>
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-5xl mx-auto">
       <div className="mb-6">
-        <Link href="/guides" className="text-amber-400 hover:text-amber-300">← Back to Guides</Link>
+        <Link href="/guides" className="link-amber">← Back to Guides</Link>
       </div>
 
       <h1 className="font-medieval-brand text-2xl md:text-4xl mb-6">Troll Classes Overview</h1>
       <p className="text-gray-300 mb-8">An overview of base classes, their subclass paths, and quick tips based on game data.</p>
 
-      <section className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+      <Section variant="medieval">
         <h2 className="font-medieval-brand text-2xl mb-4">Browse Classes</h2>
         {BASE_TROLL_CLASSES.length === 0 ? (
           <p className="text-sm text-amber-200/80">
@@ -39,7 +39,7 @@ export default function TrollClassesGuide() {
             ))}
           </div>
         )}
-      </section>
+      </Section>
     </div>
     </ErrorBoundary>
   );

@@ -1,9 +1,10 @@
 import React from 'react';
-import { PageHero } from '@/features/infrastructure/components';
+import { PageHero, ErrorBoundary } from '@/features/infrastructure/components';
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-[calc(100vh-8rem)]">
+    <ErrorBoundary>
+      <div className="min-h-[calc(100vh-8rem)]">
       <PageHero
         title="Privacy Policy"
         description="How we collect, use, and protect your personal information"
@@ -143,7 +144,8 @@ export default function PrivacyPage() {
           </section>
         </div>
       </div>
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 }
 

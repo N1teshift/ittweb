@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
+import { Section, ErrorBoundary } from '@/features/infrastructure/components';
 import { ITTIconCategory } from '@/features/modules/content/guides/utils/iconUtils';
 import { useIconMapperData } from '@/features/modules/tools-group/tools/hooks/useIconMapperData';
 import { exportMappingsAsCode, exportMappingsAndDeletions } from '@/features/modules/tools-group/tools/utils/icon-mapper.utils';
@@ -81,8 +82,9 @@ export default function IconMapper() {
     : 0;
 
   return (
-    <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-7xl mx-auto">
-      <h1 className="font-medieval-brand text-2xl md:text-4xl mb-6">Icon Mapper</h1>
+    <ErrorBoundary>
+      <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-7xl mx-auto">
+        <h1 className="font-medieval-brand text-2xl md:text-4xl mb-6">Icon Mapper</h1>
       <p className="text-gray-300 mb-8">
         Map icon filenames to their game names. Enter the name as it appears in the game next to each icon.
       </p>
@@ -168,7 +170,7 @@ export default function IconMapper() {
       </div>
 
       {/* Icon Grid */}
-      <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+      <Section variant="medieval">
         {isLoading || itemsLoading ? (
           <p className="text-gray-400 text-center py-8">Loading icons...</p>
         ) : filteredIcons.length === 0 ? (
@@ -197,7 +199,7 @@ export default function IconMapper() {
             })}
           </div>
         )}
-      </div>
+      </Section>
 
       {/* Current Mappings Display */}
       <IconMapperMappingsList 
@@ -209,11 +211,11 @@ export default function IconMapper() {
       {/* Export Code Preview */}
       <div className="mt-8">
         <h2 className="font-medieval-brand text-2xl mb-4">Export Code</h2>
-        <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+        <Section variant="medieval">
           <pre className="text-sm text-gray-300 overflow-x-auto">
             <code>{exportMappingsAsCode(mappings)}</code>
           </pre>
-        </div>
+        </Section>
       </div>
 
       {/* Marked for Deletion Summary */}
@@ -236,7 +238,8 @@ export default function IconMapper() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 }
 

@@ -30,9 +30,10 @@ Caching utilities for optimizing data fetching:
 
 ### `nextjs/`
 
-Next.js-specific utilities:
+Next.js-specific server-only utilities:
 
 - **`getStaticProps.ts`** - Helper for creating `getStaticProps` functions with translations
+  - **Note:** This is server-only code. Import from `lib/server` instead of `lib` when using in pages.
 
 ### `context/`
 
@@ -42,17 +43,30 @@ React context providers:
 
 ## Usage
 
-All exports are available through the main `index.ts` file:
+### Client-Safe Exports
+
+Client-safe exports (for use in React components, hooks, etc.) are available through the main `index.ts` file:
 
 ```typescript
 import { 
-  getUserDataByDiscordId,
-  getArchiveEntries,
   swrConfig,
-  getStaticPropsWithTranslations,
-  TranslationNamespaceContext
+  swrKeys,
+  TranslationNamespaceContext,
+  useTranslationNamespace
 } from '@/features/infrastructure/lib';
 ```
+
+### Server-Only Exports
+
+Server-only exports (for use in `getStaticProps`, `getServerSideProps`, API routes) are available through `server.ts`:
+
+```typescript
+import { 
+  getStaticPropsWithTranslations
+} from '@/features/infrastructure/lib/server';
+```
+
+**Important:** Do not import from `server.ts` in client-side code, as it contains Node.js-only dependencies that will cause build errors.
 
 ## Organization Principles
 
@@ -60,6 +74,7 @@ import {
 - **Cache utilities** are centralized for consistent caching strategies
 - **Framework-specific utilities** (Next.js) are isolated in their own directory
 - **React contexts** are separated for clarity
+- **Client/Server separation:** Server-only code is exported through `server.ts` to prevent bundling Node.js dependencies in client code
 
 
 

@@ -1,8 +1,7 @@
 import React from 'react';
 import { TranslationNamespaceContext } from '../../lib';
 import Header from './Header';
-import Footer from './Footer';
-import DataCollectionNotice from '../notices/DataCollectionNotice';
+import { Footer, DataCollectionNotice } from '@/features/modules/shared/components';
 
 interface LayoutProps {
     children?: React.ReactNode;

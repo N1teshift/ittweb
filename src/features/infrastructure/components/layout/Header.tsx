@@ -30,15 +30,15 @@ export default function Header() {
     const toolsItems = [
         { href: '/classes', label: 'Class Statistics' },
         { href: '/analytics/classes', label: 'Analytics Classes' },
-        { href: '/meta', label: 'Meta Statistics' },
+        { href: '/analytics/meta', label: 'Meta Statistics' },
         { href: '/tools/duel-simulator', label: 'Duel Simulator' },
         { href: '/tools/map-analyzer', label: 'Map Analyzer' },
         { href: '/tools/icon-mapper', label: 'Icon Mapper' },
     ];
 
     return (
-        <header className="bg-black/30 backdrop-blur-sm border-b border-amber-500/30 sticky top-0 z-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <header className="header-glass sticky top-0 z-50">
+            <div className="container-responsive">
                 <div className="flex justify-between items-center h-16">
                     {/* Left side: Mobile menu button on mobile, Navigation Links on desktop */}
                     <div className="flex items-center">

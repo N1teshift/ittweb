@@ -1,6 +1,6 @@
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
 import { Logger } from '@/features/infrastructure/logging';
-import { DiscordButton, GitHubButton } from '@/features/infrastructure/components';
+import { DiscordButton, GitHubButton, Section, ErrorBoundary } from '@/features/infrastructure/components';
 import type { GetStaticProps } from 'next';
 
 const pageNamespaces = ["common"];
@@ -24,13 +24,14 @@ export default function Development() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-8rem)]">
+    <ErrorBoundary>
+      <div className="min-h-[calc(100vh-8rem)]">
       <div className="max-w-3xl w-full mx-auto px-6 py-12">
         <h1 className="font-medieval-brand text-2xl md:text-4xl mb-6 text-center">Development</h1>
 
         <div className="space-y-6">
           {/* Map Development Section */}
-          <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6 md:p-8">
+          <Section variant="medieval" className="md:p-8">
             <h2 className="font-medieval-brand text-2xl mb-4">Map Development</h2>
             <div className="space-y-4">
               <div>
@@ -50,10 +51,10 @@ export default function Development() {
                 </div>
               </div>
             </div>
-          </div>
+          </Section>
 
           {/* Website Development Section */}
-          <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6 md:p-8">
+          <Section variant="medieval" className="md:p-8">
             <h2 className="font-medieval-brand text-2xl mb-4">Website Development</h2>
             <div className="space-y-4">
               <div>
@@ -83,10 +84,11 @@ export default function Development() {
                 </div>
               </div>
             </div>
+          </Section>
           </div>
         </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 }
 

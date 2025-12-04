@@ -8,11 +8,12 @@
 import { 
   getOrComputeAnalytics, 
   invalidateAnalyticsCache as invalidateCache 
-} from '@/features/infrastructure/lib';
+} from '@/features/infrastructure/lib/cache/analyticsCache.server';
 import { createRequestCache, type RequestCache } from '@/features/infrastructure/lib';
 import { getGamesWithPlayers } from '@/features/modules/game-management/games/lib/gameService';
 import type { GameWithPlayers, GameFilters } from '@/features/modules/game-management/games/types';
 import { createComponentLogger } from '@/features/infrastructure/logging';
+import { ANALYTICS_CACHE_CONFIGS } from './analyticsCacheConfig';
 
 const logger = createComponentLogger('analyticsCache');
 
@@ -44,13 +45,19 @@ export async function fetchGamesWithCache(
 
 /**
  * Get cached analytics or compute fresh
+ * Uses ITT-specific cache configurations
  */
 export async function getCachedAnalytics<T>(
   analyticsType: string,
   filters: AnalyticsFilters,
   computeFn: () => Promise<T>
 ): Promise<T> {
-  return getOrComputeAnalytics(analyticsType, filters as Record<string, unknown>, computeFn);
+  return getOrComputeAnalytics(
+    analyticsType, 
+    filters as Record<string, unknown>, 
+    computeFn,
+    ANALYTICS_CACHE_CONFIGS
+  );
 }
 
 /**

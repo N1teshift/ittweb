@@ -14,7 +14,6 @@ components/
 │   ├── index.ts
 │   ├── Layout.tsx              # Main layout wrapper with header/footer
 │   ├── Header.tsx              # Top navigation bar
-│   ├── Footer.tsx              # Bottom footer section
 │   └── PageHero.tsx            # Page title and description hero section
 ├── navigation/                 # Navigation-related components
 │   ├── index.ts
@@ -32,11 +31,6 @@ components/
 │   ├── index.ts
 │   ├── LoadingScreen.tsx       # Full-screen loading component
 │   └── LoadingOverlay.tsx      # Overlay loading component
-├── skeletons/                  # Skeleton loader components
-│   ├── index.ts
-│   ├── GameCardSkeleton.tsx    # Skeleton for game cards
-│   ├── PlayerCardSkeleton.tsx # Skeleton for player cards
-│   └── LeaderboardSkeleton.tsx # Skeleton for leaderboards
 ├── feedback/                   # User feedback components
 │   ├── index.ts
 │   ├── EmptyState.tsx          # Empty state display
@@ -44,9 +38,6 @@ components/
 ├── error/                      # Error handling components
 │   ├── index.ts
 │   └── ErrorBoundary.tsx       # React error boundary component
-├── notices/                    # Notice and banner components
-│   ├── index.ts
-│   └── DataCollectionNotice.tsx # Data collection consent notice
 ```
 
 ## Usage
@@ -58,7 +49,6 @@ All components are exported from the main `index.ts` file, so you can import the
 import { 
   Layout, 
   Header, 
-  Footer, 
   PageHero, 
   Button,
   Card,
@@ -81,7 +71,6 @@ Components that define the overall page structure and layout:
 
 - **Layout**: Main wrapper component that provides the page structure with header, footer, and translation context
 - **Header**: Top navigation bar with menu items, authentication, and mobile menu
-- **Footer**: Bottom footer with copyright and links
 - **PageHero**: Hero section for page titles and descriptions
 
 ### Navigation Components (`navigation/`)
@@ -112,14 +101,6 @@ Components for displaying loading states:
 - **LoadingScreen**: Full-screen loading component for initial page loads
 - **LoadingOverlay**: Overlay component for background processes
 
-### Skeleton Components (`skeletons/`)
-
-Skeleton loaders for content placeholders:
-
-- **GameCardSkeleton**: Skeleton loader for game cards
-- **PlayerCardSkeleton**: Skeleton loader for player cards
-- **LeaderboardSkeleton**: Skeleton loader for leaderboards
-
 ### Feedback Components (`feedback/`)
 
 User feedback and interaction components:
@@ -133,12 +114,6 @@ Error handling components:
 
 - **ErrorBoundary**: React error boundary that catches component errors and displays a fallback UI
 
-### Notice Components (`notices/`)
-
-User-facing notices and banners:
-
-- **DataCollectionNotice**: Banner informing users about data collection when they log in
-
 ## Best Practices
 
 1. **Import from main index**: Always import from `@/features/infrastructure/components` rather than individual files for consistency
@@ -150,7 +125,7 @@ User-facing notices and banners:
 
 When adding a new component:
 
-1. Determine the appropriate category (layout, navigation, buttons, containers, loading, skeletons, feedback, error, or notices)
+1. Determine the appropriate category (layout, navigation, buttons, containers, loading, feedback, or error)
 2. Create the component file in the appropriate subfolder
 3. Export it from the subfolder's `index.ts`
 4. Re-export it from the main `components/index.ts`

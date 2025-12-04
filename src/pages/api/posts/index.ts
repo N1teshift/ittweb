@@ -1,6 +1,8 @@
 import type { NextApiRequest } from 'next';
-import { createGetPostHandler, parseQueryBoolean, zodValidator, CreatePostSchema } from '@/features/infrastructure/api';
-import { getAllPosts, createPost } from '@/features/modules/content/blog/lib/postService';
+import { createGetPostHandler, parseQueryBoolean, zodValidator } from '@/features/infrastructure/api';
+import { CreatePostSchema } from '@/features/modules/content/blog/lib';
+import { getAllPosts } from '@/features/modules/content/blog/lib/postService.server';
+import { createPost } from '@/features/modules/content/blog/lib/postService';
 import { CreatePost } from '@/types/post';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import type { Post } from '@/types/post';

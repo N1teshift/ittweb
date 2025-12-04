@@ -1,63 +1,17 @@
-import {
-  collection,
-  getDocs,
-  doc,
-  deleteDoc,
-} from 'firebase/firestore';
-import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
-import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
-import { logError } from '@/features/infrastructure/logging';
-import { invalidateAnalyticsCache } from '@/features/infrastructure/lib';
-
-const GAMES_COLLECTION = 'games';
+/**
+ * Game Service - Delete Operations (Client Stub)
+ * 
+ * This file is a client-side stub. The actual server-only implementation
+ * is in gameService.delete.server.ts
+ * 
+ * These functions should only be called from API routes (server-side).
+ * Client code should use API endpoints instead.
+ */
 
 /**
  * Delete a game
+ * @throws Error - This function is server-only. Use API routes instead.
  */
-export async function deleteGame(id: string): Promise<void> {
-  try {
-    // Reduced logging verbosity
-
-    if (isServerSide()) {
-      const adminDb = getFirestoreAdmin();
-      const gameRef = adminDb.collection(GAMES_COLLECTION).doc(id);
-
-      // Delete all players in subcollection
-      const playersSnapshot = await gameRef.collection('players').get();
-      const deletePromises = playersSnapshot.docs.map((playerDoc) => playerDoc.ref.delete());
-      await Promise.all(deletePromises);
-
-      // Delete game document
-      await gameRef.delete();
-
-      // TODO: Rollback ELO changes
-    } else {
-      const db = getFirestoreInstance();
-      const gameRef = doc(db, GAMES_COLLECTION, id);
-
-      // Delete all players in subcollection
-      const playersCollection = collection(db, GAMES_COLLECTION, id, 'players');
-      const playersSnapshot = await getDocs(playersCollection);
-      const deletePromises = playersSnapshot.docs.map((playerDoc) => deleteDoc(doc(db, GAMES_COLLECTION, id, 'players', playerDoc.id)));
-      await Promise.all(deletePromises);
-
-      // Delete game document
-      await deleteDoc(gameRef);
-
-      // TODO: Rollback ELO changes
-    }
-
-    // Invalidate analytics cache
-    invalidateAnalyticsCache().catch(() => {});
-  } catch (error) {
-    const err = error as Error;
-    logError(err, 'Failed to delete game', {
-      component: 'gameService',
-      operation: 'deleteGame',
-      id,
-    });
-    throw err;
-  }
+export async function deleteGame(_id: string): Promise<void> {
+  throw new Error('deleteGame is server-only. Use /api/games/[id] API endpoint instead.');
 }
-
-

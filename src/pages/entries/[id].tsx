@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
 import BlogPost from '@/features/modules/content/blog/components/BlogPost';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { Button } from '@/features/infrastructure/components';
+import { Button, ErrorBoundary } from '@/features/infrastructure/components';
 import { getEntryById } from '@/features/modules/game-management/entries/lib/entryService';
 import { Entry } from '@/types/entry';
 import YouTubeEmbed from '@/features/modules/community/archives/media/components/YouTubeEmbed';
@@ -98,12 +98,13 @@ export default function EntryPage({ entry, content, canEdit, canDelete }: EntryP
   };
 
   return (
-    <div className="flex justify-center min-h-[calc(100vh-8rem)]">
+    <ErrorBoundary>
+      <div className="flex justify-center min-h-[calc(100vh-8rem)]">
       <div className="w-full px-6 py-12 max-w-4xl">
         <div className="flex items-center justify-between mb-6">
           <Link
             href="/"
-            className="inline-flex items-center text-amber-400 hover:text-amber-300 transition-colors"
+            className="inline-flex items-center link-amber"
           >
             ← Back to Home
           </Link>
@@ -237,7 +238,8 @@ export default function EntryPage({ entry, content, canEdit, canDelete }: EntryP
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 }
 
@@ -263,7 +265,7 @@ export const getServerSideProps: GetServerSideProps<EntryPageProps> = async (con
     if (session && session.discordId) {
       try {
         const { getUserDataByDiscordIdServer } = await import('@/features/modules/community/users/services/userDataService.server');
-        const { isAdmin } = await import('@/features/infrastructure/utils');
+        const { isAdmin } = await import('@/features/modules/community/users');
         const userData = await getUserDataByDiscordIdServer(session.discordId);
         const userIsAdmin = isAdmin(userData?.role);
         const userIsAuthor = entry.createdByDiscordId === session.discordId;

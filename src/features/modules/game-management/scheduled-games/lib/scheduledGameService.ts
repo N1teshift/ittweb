@@ -12,36 +12,40 @@
  * - scheduledGameService.participation.ts - Join/leave operations
  */
 
-// Re-export all create operations
+// Re-export all create operations (server-only)
 export {
   createScheduledGame,
-} from './scheduledGameService.create';
+} from './scheduledGameService.create.server';
 
-// Re-export all read operations
+// Re-export all read operations (server-only)
 export {
   getAllScheduledGames,
   getScheduledGameById,
-} from './scheduledGameService.read';
+} from './scheduledGameService.read.server';
 
-// Re-export update operations
+// Re-export update operations (server-only)
 export {
   updateScheduledGame,
-} from './scheduledGameService.update';
+} from './scheduledGameService.update.server';
 
-// Re-export delete operations
+// Re-export delete operations (server-only)
 export {
   deleteScheduledGame,
-} from './scheduledGameService.delete';
+} from './scheduledGameService.delete.server';
 
-// Re-export participation operations
+// Re-export participation operations (server-only)
 export {
   joinScheduledGame,
   leaveScheduledGame,
-} from './scheduledGameService.participation';
+} from './scheduledGameService.participation.server';
 
-// Re-export utility functions (if needed externally)
+// Re-export utility functions (client-safe)
 export {
   deriveGameStatus,
-  getNextScheduledGameId,
 } from './scheduledGameService.utils';
+
+// Re-export server-only utility functions
+export {
+  getNextScheduledGameId,
+} from './scheduledGameService.utils.server';
 

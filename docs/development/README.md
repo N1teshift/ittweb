@@ -17,6 +17,7 @@ This section contains internal development documentation that supports the devel
   - [Adding API Routes](./adding-api-routes.md)
   - [Code Conventions](./code-conventions.md)
 - **[Architecture](./architecture.md)** - System architecture and design patterns
+- **[Pages Structure Analysis](./pages-structure-analysis.md)** - Analysis of pages directory structure and improvement recommendations
 - **[Code Patterns](./code-patterns.md)** - Common code patterns and recipes
   - [CRUD Pattern](./patterns/crud-pattern.md)
   - [Form Handling](./patterns/form-handling-pattern.md)

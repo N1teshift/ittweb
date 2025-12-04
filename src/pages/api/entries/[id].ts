@@ -1,7 +1,8 @@
 import type { NextApiRequest } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
-import { createApiHandler, zodValidator, UpdateEntrySchema } from '@/features/infrastructure/api';
+import { createApiHandler, zodValidator } from '@/features/infrastructure/api';
+import { UpdateEntrySchema } from '@/features/modules/game-management/entries/lib';
 import { getEntryById, updateEntry, deleteEntry } from '@/features/modules/game-management/entries/lib/entryService';
 import { UpdateEntry } from '@/types/entry';
 import { createComponentLogger } from '@/features/infrastructure/logging';

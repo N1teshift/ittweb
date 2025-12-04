@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
-import { ErrorBoundary } from '@/features/infrastructure/components';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
+import { ErrorBoundary, Section } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { BASE_TROLL_CLASS_SLUGS, getClassBySlug, TrollClassData } from '@/features/modules/content/guides/data/units/classes';
 import { getSubclassesByParentSlug, getSupersByParentSlug } from '@/features/modules/content/guides/data/units/derivedClasses';
@@ -118,7 +118,7 @@ export default function TrollClassDetail({ cls }: Props) {
     <ErrorBoundary>
     <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6">
-          <Link href="/guides/troll-classes" className="text-amber-400 hover:text-amber-300">← Troll Classes Overview</Link>
+          <Link href="/guides/troll-classes" className="link-amber">← Troll Classes Overview</Link>
         </div>
 
         <ClassHeader slug={cls.slug} name={cls.name} summary={cls.summary} iconSrc={cls.iconSrc} />
@@ -139,55 +139,55 @@ export default function TrollClassDetail({ cls }: Props) {
         />
 
         <div className="grid md:grid-cols-2 gap-6">
-          <section className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+          <Section variant="medieval">
             <h2 className="font-medieval-brand text-2xl mb-3">Subclass paths</h2>
             {subs.length > 0 ? (
               <ul className="text-gray-300 list-disc pl-5 space-y-1">
                 {subs.map((s) => (
                   <li key={s.slug}>
-                    <Link href={`/guides/subclasses/${s.slug}`} className="text-amber-400 hover:text-amber-300">{s.name}</Link>
+                    <Link href={`/guides/subclasses/${s.slug}`} className="link-amber">{s.name}</Link>
                   </li>
                 ))}
               </ul>
             ) : (
               <p className="text-gray-400">None</p>
             )}
-          </section>
+          </Section>
 
-          <section className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+          <Section variant="medieval">
             <h2 className="font-medieval-brand text-2xl mb-3">Superclasses</h2>
             <ul className="text-gray-300 list-disc pl-5 space-y-1">
               {supers.length > 0 ? (
                 supers.map((s) => (
                   <li key={s.slug}>
-                    <Link href={`/guides/supers/${s.slug}`} className="text-amber-400 hover:text-amber-300">{s.name}</Link>
+                    <Link href={`/guides/supers/${s.slug}`} className="link-amber">{s.name}</Link>
                   </li>
                 ))
               ) : (
                 <li>None</li>
               )}
             </ul>
-          </section>
+          </Section>
 
-          <section className="md:col-span-2 bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+          <Section variant="medieval" className="md:col-span-2">
             <h2 className="font-medieval-brand text-2xl mb-3">Tips</h2>
             <ul className="text-gray-300 list-disc pl-5 space-y-1">
               {(cls.tips || []).map((tip, i) => (
                 <li key={i}>{tip}</li>
               ))}
             </ul>
-          </section>
+          </Section>
         </div>
 
         {abilities.length > 0 && (
-          <section className="mt-8 bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+          <Section variant="medieval" className="mt-8">
             <h2 className="font-medieval-brand text-2xl mb-4">Abilities</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {abilities.map((ability) => (
                 <AbilityCard key={ability.id} ability={ability} />
               ))}
             </div>
-          </section>
+          </Section>
         )}
     </div>
     </ErrorBoundary>

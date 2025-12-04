@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
-import { ErrorBoundary } from '@/features/infrastructure/components';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
+import { ErrorBoundary, Section } from '@/features/infrastructure/components';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { AbilityData } from '@/features/modules/content/guides/data/abilities';
@@ -40,20 +40,20 @@ export default function AbilityDetail({ ability }: Props) {
         <div className="mb-6 space-x-4">
           {fromItem && item ? (
             <>
-              <Link href={`/guides/items/${item.id}`} className="text-amber-400 hover:text-amber-300">
+              <Link href={`/guides/items/${item.id}`} className="link-amber">
                 ← Back to {item.name}
               </Link>
               <span className="text-gray-500">•</span>
-              <Link href="/guides/abilities" className="text-amber-400 hover:text-amber-300">All Abilities</Link>
+              <Link href="/guides/abilities" className="link-amber">All Abilities</Link>
             </>
           ) : (
-            <Link href="/guides/abilities" className="text-amber-400 hover:text-amber-300">← Abilities</Link>
+            <Link href="/guides/abilities" className="link-amber">← Abilities</Link>
           )}
           <span className="text-gray-500">•</span>
-          <Link href="/guides" className="text-amber-400 hover:text-amber-300">Guides</Link>
+          <Link href="/guides" className="link-amber">Guides</Link>
         </div>
 
-        <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+        <Section variant="medieval">
           <div className="flex items-start justify-between mb-2">
             <h1 className="font-medieval-brand text-2xl md:text-4xl text-amber-400">
               <ColoredText text={ability.name} />
@@ -213,7 +213,7 @@ export default function AbilityDetail({ ability }: Props) {
               </span>
             </div>
           )}
-        </div>
+        </Section>
       </div>
     </ErrorBoundary>
   );

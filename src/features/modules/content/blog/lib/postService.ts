@@ -2,11 +2,9 @@ import {
   collection,
   getDocs,
   query,
-  orderBy,
   where,
 } from 'firebase/firestore';
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
-import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { Post, CreatePost } from '@/types/post';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import {
@@ -17,7 +15,6 @@ import {
   sortPostsByDate,
 } from './postService.helpers';
 import { createFirestoreCrudService } from '@/features/infrastructure/api/firebase/firestoreCrudService';
-import { queryWithIndexFallback } from '@/features/infrastructure/api/firebase/queryWithIndexFallback';
 import { withServiceOperationNullable } from '@/features/infrastructure/utils';
 
 const POSTS_COLLECTION = 'posts';
@@ -87,77 +84,18 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
 
 /**
  * Get all published posts, sorted by date (newest first)
- * Uses Admin SDK on server-side, Client SDK on client-side
+ * @throws Error - This function is server-only. Use API routes instead.
  */
-export async function getAllPosts(includeUnpublished: boolean = false): Promise<Post[]> {
-  logger.info('Fetching all posts', { includeUnpublished });
-
-  if (isServerSide()) {
-    const adminDb = getFirestoreAdmin();
-    
-    return queryWithIndexFallback({
-      collectionName: POSTS_COLLECTION,
-      executeQuery: async () => {
-        let adminQuery: ReturnType<typeof adminDb.collection> | ReturnType<ReturnType<typeof adminDb.collection>['where']> = adminDb.collection(POSTS_COLLECTION);
-
-        if (!includeUnpublished) {
-          adminQuery = adminQuery.where('published', '==', true) as ReturnType<ReturnType<typeof adminDb.collection>['where']>;
-        }
-        
-        adminQuery = adminQuery.orderBy('date', 'desc') as ReturnType<ReturnType<ReturnType<typeof adminDb.collection>['where']>['orderBy']>;
-        const querySnapshot = await adminQuery.get();
-
-        const docs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
-        querySnapshot.forEach((docSnap) => {
-          docs.push({ data: () => docSnap.data(), id: docSnap.id });
-        });
-        return docs;
-      },
-      fallbackFilter: (docs) => {
-        // Filter in memory when index is missing
-        return docs.filter((doc) => {
-          const data = doc.data();
-          return includeUnpublished || data.published === true;
-        });
-      },
-      transform: (docs) => docs.map((docSnap) => transformPostDoc(docSnap.data()!, docSnap.id)),
-      sort: sortPostsByDate,
-      logger,
-    });
-  } else {
-    // Client-side
-    const db = getFirestoreInstance();
-    let q = query(
-      collection(db, POSTS_COLLECTION),
-      orderBy('date', 'desc')
-    );
-
-    if (!includeUnpublished) {
-      q = query(q, where('published', '==', true));
-    }
-
-    const querySnapshot = await getDocs(q);
-    const docs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
-    querySnapshot.forEach((docSnap) => {
-      docs.push({ data: () => docSnap.data(), id: docSnap.id });
-    });
-    
-    return docs.map((docSnap) => transformPostDoc(docSnap.data()!, docSnap.id));
-  }
+export async function getAllPosts(_includeUnpublished: boolean = false): Promise<Post[]> {
+  throw new Error('getAllPosts is server-only. Use /api/posts API endpoint instead.');
 }
 
 /**
  * Get the latest published post
+ * @throws Error - This function is server-only. Use API routes instead.
  */
 export async function getLatestPost(): Promise<Post | null> {
-  return withServiceOperationNullable(
-    'getLatestPost',
-    'postService',
-    async () => {
-      const posts = await getAllPosts(false);
-      return posts.length > 0 ? posts[0] : null;
-    }
-  );
+  throw new Error('getLatestPost is server-only. Use /api/posts/latest API endpoint instead.');
 }
 
 /**

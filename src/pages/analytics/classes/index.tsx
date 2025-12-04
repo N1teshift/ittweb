@@ -1,78 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import type { GetServerSideProps } from 'next';
 import { PageHero, ErrorBoundary } from '@/features/infrastructure/components';
 import { Card } from '@/features/infrastructure/components';
 import { ClassSelectionChart, ClassWinRateChart } from '@/features/modules/analytics-group/analytics/components';
-import { LoadingScreen } from '@/features/infrastructure/components';
 import { EmptyState } from '@/features/infrastructure/components';
 import type { ClassSelectionData, ClassWinRateData, ClassStats } from '@/features/modules/analytics-group/analytics/types';
+import { getClassSelectionData, getClassWinRateData, getClassStats } from '@/features/modules/analytics-group/analytics/lib/analyticsService';
+import { logError } from '@/features/infrastructure/logging';
 
-// Mark page as SSR to prevent ISR manifest warnings
-export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    props: {},
-  };
+type ClassStatisticsPageProps = {
+  classSelection: ClassSelectionData[];
+  classWinRates: ClassWinRateData[];
+  classStats: ClassStats[];
 };
 
-export default function ClassStatisticsPage() {
-  const [classSelection, setClassSelection] = useState<ClassSelectionData[]>([]);
-  const [classWinRates, setClassWinRates] = useState<ClassWinRateData[]>([]);
-  const [classStats, setClassStats] = useState<ClassStats[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+export const getServerSideProps: GetServerSideProps<ClassStatisticsPageProps> = async () => {
+  try {
+    const [classSelection, classWinRates, classStats] = await Promise.all([
+      getClassSelectionData(),
+      getClassWinRateData(),
+      getClassStats(),
+    ]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        // Fetch analytics data (charts)
-        const analyticsResponse = await fetch('/api/analytics/meta');
-        if (!analyticsResponse.ok) {
-          throw new Error('Failed to load analytics data');
-        }
-        const analyticsData = await analyticsResponse.json();
-        const analytics = analyticsData.data || analyticsData;
-
-        setClassSelection(analytics.classSelection || []);
-        setClassWinRates(analytics.classWinRates || []);
-
-        // Fetch class statistics (for summary)
-        const classesResponse = await fetch('/api/classes');
-        if (!classesResponse.ok) {
-          throw new Error('Failed to load class statistics');
-        }
-        const classesData = await classesResponse.json();
-        const classes = classesData.data || classesData;
-        setClassStats(Array.isArray(classes) ? classes : []);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load class statistics');
-      } finally {
-        setLoading(false);
-      }
+    return {
+      props: {
+        classSelection: classSelection || [],
+        classWinRates: classWinRates || [],
+        classStats: classStats || [],
+      },
     };
-
-    fetchData();
-  }, []);
-
-  if (loading) {
-    return <LoadingScreen message="Loading class statistics..." />;
+  } catch (error) {
+    logError(error as Error, 'Failed to load class statistics', {
+      component: 'ClassStatisticsPage',
+      operation: 'getServerSideProps',
+    });
+    return {
+      props: {
+        classSelection: [],
+        classWinRates: [],
+        classStats: [],
+      },
+    };
   }
+};
 
-  if (error) {
-    return (
-      <div className="min-h-[calc(100vh-8rem)]">
-        <PageHero title="Class Statistics" description="View class performance and popularity" />
-        <div className="container mx-auto px-4 py-8">
-          <Card variant="medieval" className="p-8">
-            <p className="text-red-400">Error: {error}</p>
-          </Card>
-        </div>
-      </div>
-    );
-  }
+export default function ClassStatisticsPage({ classSelection, classWinRates, classStats }: ClassStatisticsPageProps) {
 
   // Calculate summary statistics
   const totalClasses = classStats.length;

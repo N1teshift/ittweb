@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib';
-import { ErrorBoundary } from '@/features/infrastructure/components';
+import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
+import { ErrorBoundary, Section } from '@/features/infrastructure/components';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { ALL_UNITS, getUnitById, UnitData } from '@/features/modules/content/guides/data/units/allUnits';
@@ -73,14 +73,14 @@ export default function UnitDetailPage({ unit }: Props) {
         <div className="mb-6 space-x-4">
           {fromItem && item ? (
             <>
-              <Link href={`/guides/items/${item.id}`} className="text-amber-400 hover:text-amber-300">
+              <Link href={`/guides/items/${item.id}`} className="link-amber">
                 ← Back to {item.name}
               </Link>
               <span className="text-gray-500">•</span>
-              <Link href="/guides/units" className="text-amber-400 hover:text-amber-300">All Units</Link>
+              <Link href="/guides/units" className="link-amber">All Units</Link>
             </>
           ) : (
-            <Link href="/guides/units" className="text-amber-400 hover:text-amber-300">← Units Overview</Link>
+            <Link href="/guides/units" className="link-amber">← Units Overview</Link>
           )}
         </div>
 
@@ -120,7 +120,7 @@ export default function UnitDetailPage({ unit }: Props) {
         </header>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <section className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+          <Section variant="medieval">
             <h2 className="font-medieval-brand text-2xl mb-3">Details</h2>
             <div className="space-y-2 text-gray-300">
               <div>
@@ -146,9 +146,9 @@ export default function UnitDetailPage({ unit }: Props) {
                 </div>
               )}
             </div>
-          </section>
+          </Section>
 
-          <section className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+          <Section variant="medieval">
             <h2 className="font-medieval-brand text-2xl mb-3">Stats</h2>
             {(unit.hp !== undefined || unit.mana !== undefined || 
               (unit.damageMin !== undefined && unit.damageMax !== undefined) || 
@@ -183,10 +183,10 @@ export default function UnitDetailPage({ unit }: Props) {
             ) : (
               <p className="text-gray-400">No stats available.</p>
             )}
-          </section>
+          </Section>
 
           {unit.craftableItems && unit.craftableItems.length > 0 && (
-            <section className="md:col-span-2 bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-6">
+            <Section variant="medieval" className="md:col-span-2">
               <h2 className="font-medieval-brand text-2xl mb-3">Craftable Items</h2>
               <div className="flex flex-wrap gap-2">
                 {unit.craftableItems.map((itemId, i) => (
@@ -199,7 +199,7 @@ export default function UnitDetailPage({ unit }: Props) {
                   </Link>
                 ))}
               </div>
-            </section>
+            </Section>
           )}
         </div>
       </div>

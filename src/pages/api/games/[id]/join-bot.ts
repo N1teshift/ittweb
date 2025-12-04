@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { joinGame } from '@/features/modules/game-management/games/lib/gameService.participation';
-import { getUserDataByDiscordIdServer } from '@/features/modules/community/users';
+import { joinGame } from '@/features/modules/game-management/games/lib/gameService.participation.server';
+import { getUserDataByDiscordIdServer } from '@/features/modules/community/users/services/userDataService.server';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('api/games/[id]/join-bot');

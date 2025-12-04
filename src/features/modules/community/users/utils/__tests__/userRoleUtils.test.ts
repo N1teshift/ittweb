@@ -72,10 +72,9 @@ describe('userRoleUtils', () => {
       expect(hasRole(undefined, 'developer')).toBe(false);
     });
 
-    it('handles role at hierarchy boundaries', () => {
-      expect(hasRole('admin', 'admin')).toBe(true);
-      expect(hasRole('moderator', 'moderator')).toBe(true);
-      expect(hasRole('premium', 'premium')).toBe(true);
+    it('handles role comparison edge cases', () => {
+      expect(hasRole('user', 'user')).toBe(true);
+      expect(hasRole('developer', 'developer')).toBe(true);
     });
   });
 

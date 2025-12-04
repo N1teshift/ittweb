@@ -28,7 +28,7 @@ export interface WinRateData {
  */
 export interface ClassStats {
   id: string; // Class name
-  category?: string;
+  category?: string | null;
   totalGames: number;
   totalWins: number;
   totalLosses: number;
