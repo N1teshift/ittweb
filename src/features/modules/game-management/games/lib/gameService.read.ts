@@ -13,11 +13,11 @@ import {
 import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
 import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import type { 
-  Game, 
-  GamePlayer, 
-  GameWithPlayers, 
-  GameFilters, 
+import type {
+  Game,
+  GamePlayer,
+  GameWithPlayers,
+  GameFilters,
   GameListResponse,
 } from '../types';
 import { convertGameDoc, convertGamePlayerDoc } from './gameService.utils';
@@ -126,11 +126,11 @@ export async function batchGetPlayersForGames(
   }
 
   const result = new Map<string, GamePlayer[]>();
-  
+
   try {
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      
+
       // Fetch players for all games in parallel
       const playerPromises = gameIds.map(async (gameId) => {
         const playersSnapshot = await adminDb
@@ -138,52 +138,52 @@ export async function batchGetPlayersForGames(
           .doc(gameId)
           .collection('players')
           .get();
-        
+
         const players: GamePlayer[] = [];
         playersSnapshot.forEach((playerDoc) => {
           players.push(convertGamePlayerDoc(playerDoc.data(), playerDoc.id));
         });
-        
+
         // Sort by pid
         players.sort((a, b) => a.pid - b.pid);
-        
+
         return { gameId, players };
       });
-      
+
       const results = await Promise.all(playerPromises);
       results.forEach(({ gameId, players }) => {
         result.set(gameId, players);
       });
     } else {
       const db = getFirestoreInstance();
-      
+
       // Fetch players for all games in parallel
       const playerPromises = gameIds.map(async (gameId) => {
         const playersCollection = collection(db, GAMES_COLLECTION, gameId, 'players');
         const playersSnapshot = await getDocs(playersCollection);
-        
+
         const players: GamePlayer[] = [];
         playersSnapshot.forEach((playerDoc) => {
           players.push(convertGamePlayerDoc(playerDoc.data(), playerDoc.id));
         });
-        
+
         // Sort by pid
         players.sort((a, b) => a.pid - b.pid);
-        
+
         return { gameId, players };
       });
-      
+
       const results = await Promise.all(playerPromises);
       results.forEach(({ gameId, players }) => {
         result.set(gameId, players);
       });
     }
-    
-    logger.debug('Batch fetched players', { 
-      gameCount: gameIds.length, 
+
+    logger.debug('Batch fetched players', {
+      gameCount: gameIds.length,
       totalPlayers: Array.from(result.values()).reduce((sum, p) => sum + p.length, 0)
     });
-    
+
     return result;
   } catch (error) {
     const err = error as Error;
@@ -205,21 +205,21 @@ export async function getGamesWithPlayers(
 ): Promise<{ games: GameWithPlayers[]; nextCursor?: string; hasMore: boolean }> {
   // Get games first
   const gamesResult = await getGames(filters);
-  
+
   if (gamesResult.games.length === 0) {
     return { games: [], nextCursor: gamesResult.nextCursor, hasMore: gamesResult.hasMore };
   }
-  
+
   // Batch fetch all players
   const gameIds = gamesResult.games.map(g => g.id);
   const playersMap = await batchGetPlayersForGames(gameIds);
-  
+
   // Combine games with their players
   const gamesWithPlayers: GameWithPlayers[] = gamesResult.games.map(game => ({
     ...game,
     players: playersMap.get(game.id) || [],
   }));
-  
+
   return {
     games: gamesWithPlayers,
     nextCursor: gamesResult.nextCursor,
@@ -247,7 +247,7 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      const { createTimestampFactoryAsync } = await import('@/features/infrastructure/utils/timestampUtils');
+      const { createTimestampFactoryAsync } = await import('@/features/infrastructure/utils');
       const timestampFactory = await createTimestampFactoryAsync();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let gamesQuery: any = adminDb.collection(GAMES_COLLECTION);
@@ -255,10 +255,10 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
       // Apply filters
       // Always filter out deleted games
       gamesQuery = gamesQuery.where('isDeleted', '==', false);
-      
+
       if (gameState) {
         gamesQuery = gamesQuery.where('gameState', '==', gameState);
-        
+
         if (gameState === 'scheduled') {
           // For scheduled games, filter by scheduledDateTime
           if (startDate) {
@@ -342,7 +342,7 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
           throw queryError;
         }
       }
-      
+
       const games: Game[] = [];
       snapshot.forEach((doc: { data: () => Record<string, unknown>; id: string }) => {
         const game = convertGameDoc(doc.data(), doc.id);
@@ -351,47 +351,47 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
           games.push(game);
         }
       });
-      
+
       // Debug logging removed - too verbose for production
-      
+
       // Sort in memory if fallback was used
       if (needsInMemorySort) {
         games.sort((a, b) => {
           if (a.gameState === 'scheduled' && b.gameState === 'scheduled') {
-            const dateA = a.scheduledDateTime 
-              ? (typeof a.scheduledDateTime === 'string' 
-                  ? new Date(a.scheduledDateTime).getTime() 
-                  : a.scheduledDateTime.toMillis())
+            const dateA = a.scheduledDateTime
+              ? (typeof a.scheduledDateTime === 'string'
+                ? new Date(a.scheduledDateTime).getTime()
+                : a.scheduledDateTime.toMillis())
               : 0;
-            const dateB = b.scheduledDateTime 
-              ? (typeof b.scheduledDateTime === 'string' 
-                  ? new Date(b.scheduledDateTime).getTime() 
-                  : b.scheduledDateTime.toMillis())
+            const dateB = b.scheduledDateTime
+              ? (typeof b.scheduledDateTime === 'string'
+                ? new Date(b.scheduledDateTime).getTime()
+                : b.scheduledDateTime.toMillis())
               : 0;
             return dateA - dateB; // Ascending for scheduled games
           }
           if (a.gameState === 'completed' && b.gameState === 'completed') {
-            const dateA = a.datetime 
-              ? (typeof a.datetime === 'string' 
-                  ? new Date(a.datetime).getTime() 
-                  : a.datetime.toMillis())
+            const dateA = a.datetime
+              ? (typeof a.datetime === 'string'
+                ? new Date(a.datetime).getTime()
+                : a.datetime.toMillis())
               : 0;
-            const dateB = b.datetime 
-              ? (typeof b.datetime === 'string' 
-                  ? new Date(b.datetime).getTime() 
-                  : b.datetime.toMillis())
+            const dateB = b.datetime
+              ? (typeof b.datetime === 'string'
+                ? new Date(b.datetime).getTime()
+                : b.datetime.toMillis())
               : 0;
             return dateB - dateA; // Descending for completed games
           }
           // Fallback to createdAt
-          const dateA = typeof a.createdAt === 'string' 
-            ? new Date(a.createdAt).getTime() 
+          const dateA = typeof a.createdAt === 'string'
+            ? new Date(a.createdAt).getTime()
             : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              (a.createdAt as any)?.toMillis?.() || 0;
-          const dateB = typeof b.createdAt === 'string' 
-            ? new Date(b.createdAt).getTime() 
+            (a.createdAt as any)?.toMillis?.() || 0;
+          const dateB = typeof b.createdAt === 'string'
+            ? new Date(b.createdAt).getTime()
             : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              (b.createdAt as any)?.toMillis?.() || 0;
+            (b.createdAt as any)?.toMillis?.() || 0;
           return dateB - dateA;
         });
         // Limit after sorting
@@ -421,10 +421,10 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
       // Apply filters
       // Always filter out deleted games
       constraints.push(where('isDeleted', '==', false));
-      
+
       if (gameState) {
         constraints.push(where('gameState', '==', gameState));
-        
+
         if (gameState === 'scheduled') {
           // For scheduled games, filter by scheduledDateTime
           if (startDate) {
@@ -479,7 +479,7 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
       constraints.push(firestoreLimit(limit));
 
       const gamesQuery = query(collection(db, GAMES_COLLECTION), ...constraints);
-      
+
       let snapshot;
       let needsInMemorySort = false;
       try {
@@ -517,44 +517,44 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
           games.push(game);
         }
       });
-      
+
       // Debug logging removed - too verbose for production
-      
+
       // Sort in memory if fallback was used
       if (needsInMemorySort) {
         games.sort((a, b) => {
           if (a.gameState === 'scheduled' && b.gameState === 'scheduled') {
-            const dateA = a.scheduledDateTime 
-              ? (typeof a.scheduledDateTime === 'string' 
-                  ? new Date(a.scheduledDateTime).getTime() 
-                  : (a.scheduledDateTime as Timestamp).toMillis())
+            const dateA = a.scheduledDateTime
+              ? (typeof a.scheduledDateTime === 'string'
+                ? new Date(a.scheduledDateTime).getTime()
+                : (a.scheduledDateTime as Timestamp).toMillis())
               : 0;
-            const dateB = b.scheduledDateTime 
-              ? (typeof b.scheduledDateTime === 'string' 
-                  ? new Date(b.scheduledDateTime).getTime() 
-                  : (b.scheduledDateTime as Timestamp).toMillis())
+            const dateB = b.scheduledDateTime
+              ? (typeof b.scheduledDateTime === 'string'
+                ? new Date(b.scheduledDateTime).getTime()
+                : (b.scheduledDateTime as Timestamp).toMillis())
               : 0;
             return dateA - dateB; // Ascending for scheduled games
           }
           if (a.gameState === 'completed' && b.gameState === 'completed') {
-            const dateA = a.datetime 
-              ? (typeof a.datetime === 'string' 
-                  ? new Date(a.datetime).getTime() 
-                  : (a.datetime as Timestamp).toMillis())
+            const dateA = a.datetime
+              ? (typeof a.datetime === 'string'
+                ? new Date(a.datetime).getTime()
+                : (a.datetime as Timestamp).toMillis())
               : 0;
-            const dateB = b.datetime 
-              ? (typeof b.datetime === 'string' 
-                  ? new Date(b.datetime).getTime() 
-                  : (b.datetime as Timestamp).toMillis())
+            const dateB = b.datetime
+              ? (typeof b.datetime === 'string'
+                ? new Date(b.datetime).getTime()
+                : (b.datetime as Timestamp).toMillis())
               : 0;
             return dateB - dateA; // Descending for completed games
           }
           // Fallback to createdAt
-          const dateA = typeof a.createdAt === 'string' 
-            ? new Date(a.createdAt).getTime() 
+          const dateA = typeof a.createdAt === 'string'
+            ? new Date(a.createdAt).getTime()
             : (a.createdAt as Timestamp).toMillis();
-          const dateB = typeof b.createdAt === 'string' 
-            ? new Date(b.createdAt).getTime() 
+          const dateB = typeof b.createdAt === 'string'
+            ? new Date(b.createdAt).getTime()
             : (b.createdAt as Timestamp).toMillis();
           return dateB - dateA;
         });

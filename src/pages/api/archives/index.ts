@@ -1,6 +1,6 @@
 import type { NextApiRequest } from 'next';
 import { createGetPostHandler } from '@/features/infrastructure/api';
-import { getAllArchiveEntries } from '@/features/infrastructure/lib';
+import { getAllArchiveEntries } from '@/features/modules/community/archives/services/archiveService.server';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import type { ArchiveEntry } from '@/types/archive';
 

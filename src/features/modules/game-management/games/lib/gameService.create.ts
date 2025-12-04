@@ -8,13 +8,13 @@ import { getFirestoreAdmin, isServerSide, getAdminTimestamp } from '@/features/i
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import { removeUndefined } from '@/features/infrastructure/utils';
 import { invalidateAnalyticsCache } from '@/features/infrastructure/lib';
-import type { 
-  CreateGame, 
+import type {
+  CreateGame,
   CreateScheduledGame,
   CreateCompletedGame,
   GameState,
 } from '../types';
-import { updateEloScores } from '@/features/infrastructure/game';
+import { updateEloScores } from '@/features/modules/game-management/lib/mechanics';
 import { getNextGameId } from './gameService.utils';
 import { getGames } from './gameService.read';
 
@@ -41,15 +41,15 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
     }
 
     const cleanedData = removeUndefined(gameData as unknown as Record<string, unknown>);
-    
+
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
       const adminTimestamp = getAdminTimestamp();
-      
+
       const scheduledDateTime = cleanedData.scheduledDateTime && typeof cleanedData.scheduledDateTime === 'string'
         ? adminTimestamp.fromDate(new Date(cleanedData.scheduledDateTime))
         : adminTimestamp.now();
-      
+
       try {
         const gameDoc = {
           ...cleanedData,
@@ -59,8 +59,8 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
           createdByDiscordId: cleanedData.createdByDiscordId || '',
           scheduledDateTime,
           scheduledDateTimeString: cleanedData.scheduledDateTime,
-          ...(cleanedData.submittedAt ? { 
-            submittedAt: cleanedData.submittedAt instanceof Timestamp 
+          ...(cleanedData.submittedAt ? {
+            submittedAt: cleanedData.submittedAt instanceof Timestamp
               ? adminTimestamp.fromDate(cleanedData.submittedAt.toDate())
               : adminTimestamp.fromDate(new Date(cleanedData.submittedAt as string))
           } : {}),
@@ -69,7 +69,7 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
           updatedAt: adminTimestamp.now(),
           isDeleted: false,
         };
-        
+
         logger.info('Creating scheduled game document', { gameId, scheduledDateTime: cleanedData.scheduledDateTime });
         const docRef = await adminDb.collection(GAMES_COLLECTION).add(gameDoc);
         logger.info('Scheduled game created', { id: docRef.id, gameId });
@@ -86,11 +86,11 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
       }
     } else {
       const db = getFirestoreInstance();
-      
+
       const scheduledDateTime = cleanedData.scheduledDateTime && typeof cleanedData.scheduledDateTime === 'string'
         ? Timestamp.fromDate(new Date(cleanedData.scheduledDateTime))
         : Timestamp.now();
-      
+
       try {
         const gameDoc = {
           ...cleanedData,
@@ -106,7 +106,7 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
           updatedAt: Timestamp.now(),
           isDeleted: false,
         };
-        
+
         logger.info('Creating scheduled game document', { gameId, scheduledDateTime: cleanedData.scheduledDateTime });
         const docRef = await addDoc(collection(db, GAMES_COLLECTION), gameDoc);
         logger.info('Scheduled game created', { id: docRef.id, gameId });
@@ -153,13 +153,13 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
       const adminTimestamp = getAdminTimestamp();
-      
+
       const gameDatetime = adminTimestamp.fromDate(new Date(gameData.datetime));
-      
+
       // Extract player names for quick access
       const playerNames = gameData.players.map(p => p.name);
       const playerCount = gameData.players.length;
-      
+
       // Create game document
       const baseGameDoc = {
         gameId: gameData.gameId,
@@ -176,8 +176,8 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
         ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
         ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
         ...(gameData.createdByDiscordId ? { createdByDiscordId: gameData.createdByDiscordId } : {}),
-        ...(gameData.submittedAt ? { 
-          submittedAt: gameData.submittedAt instanceof Timestamp 
+        ...(gameData.submittedAt ? {
+          submittedAt: gameData.submittedAt instanceof Timestamp
             ? adminTimestamp.fromDate(gameData.submittedAt.toDate())
             : adminTimestamp.fromDate(new Date(gameData.submittedAt))
         } : {}),
@@ -239,13 +239,13 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
       return gameDocRef.id;
     } else {
       const db = getFirestoreInstance();
-      
+
       const gameDatetime = Timestamp.fromDate(new Date(gameData.datetime));
-      
+
       // Extract player names for quick access
       const playerNames = gameData.players.map(p => p.name);
       const playerCount = gameData.players.length;
-      
+
       // Create game document
       const baseGameDoc = {
         gameId: gameData.gameId,
@@ -262,8 +262,8 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
         ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
         ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
         ...(gameData.createdByDiscordId ? { createdByDiscordId: gameData.createdByDiscordId } : {}),
-        ...(gameData.submittedAt ? { 
-          submittedAt: gameData.submittedAt instanceof Timestamp 
+        ...(gameData.submittedAt ? {
+          submittedAt: gameData.submittedAt instanceof Timestamp
             ? gameData.submittedAt
             : Timestamp.fromDate(new Date(gameData.submittedAt))
         } : {}),
@@ -358,13 +358,13 @@ export async function createGame(gameData: CreateGame): Promise<string> {
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
       const adminTimestamp = getAdminTimestamp();
-      
+
       const gameDatetime = adminTimestamp.fromDate(new Date(gameData.datetime));
-      
+
       // Extract player names for quick access
       const playerNames = gameData.players.map(p => p.name);
       const playerCount = gameData.players.length;
-      
+
       // Create game document
       const baseGameDoc = {
         gameId: gameData.gameId,
@@ -380,8 +380,8 @@ export async function createGame(gameData: CreateGame): Promise<string> {
         ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
         ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
         ...(gameData.createdByDiscordId ? { createdByDiscordId: gameData.createdByDiscordId } : {}),
-        ...(gameData.submittedAt ? { 
-          submittedAt: gameData.submittedAt instanceof Timestamp 
+        ...(gameData.submittedAt ? {
+          submittedAt: gameData.submittedAt instanceof Timestamp
             ? adminTimestamp.fromDate(gameData.submittedAt.toDate())
             : adminTimestamp.fromDate(new Date(gameData.submittedAt as string))
         } : {}),
@@ -417,19 +417,19 @@ export async function createGame(gameData: CreateGame): Promise<string> {
       await updateEloScores(gameDocRef.id);
 
       // Invalidate analytics cache
-      invalidateAnalyticsCache(gameData.category).catch(() => {});
+      invalidateAnalyticsCache(gameData.category).catch(() => { });
 
       logger.info('Game created', { id: gameDocRef.id, gameId: gameData.gameId });
       return gameDocRef.id;
     } else {
       const db = getFirestoreInstance();
-      
+
       const gameDatetime = Timestamp.fromDate(new Date(gameData.datetime));
-      
+
       // Extract player names for quick access
       const playerNames = gameData.players.map(p => p.name);
       const playerCount = gameData.players.length;
-      
+
       // Create game document
       const baseGameDoc = {
         gameId: gameData.gameId,
@@ -445,8 +445,8 @@ export async function createGame(gameData: CreateGame): Promise<string> {
         ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
         ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
         ...(gameData.createdByDiscordId ? { createdByDiscordId: gameData.createdByDiscordId } : {}),
-        ...(gameData.submittedAt ? { 
-          submittedAt: gameData.submittedAt instanceof Timestamp 
+        ...(gameData.submittedAt ? {
+          submittedAt: gameData.submittedAt instanceof Timestamp
             ? gameData.submittedAt
             : Timestamp.fromDate(new Date(gameData.submittedAt))
         } : {}),
@@ -482,7 +482,7 @@ export async function createGame(gameData: CreateGame): Promise<string> {
       await updateEloScores(gameDocRef.id);
 
       // Invalidate analytics cache
-      invalidateAnalyticsCache(gameData.category).catch(() => {});
+      invalidateAnalyticsCache(gameData.category).catch(() => { });
 
       logger.info('Game created', { id: gameDocRef.id, gameId: gameData.gameId });
       return gameDocRef.id;

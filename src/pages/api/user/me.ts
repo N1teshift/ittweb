@@ -1,6 +1,6 @@
 import type { NextApiRequest } from 'next';
 import { createGetHandler, requireSession } from '@/features/infrastructure/api';
-import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib';
+import { getUserDataByDiscordIdServer } from '@/features/modules/community/users';
 import type { UserData } from '@/types/userData';
 
 /**

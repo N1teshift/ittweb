@@ -94,13 +94,13 @@ export async function saveUserDataServer(userData: CreateUserData): Promise<void
 
     const adminDb = getFirestoreAdmin();
     const docRef = adminDb.collection(USER_DATA_COLLECTION).doc(userData.discordId);
-    
+
     // Check if document already exists
     const docSnap = await docRef.get();
-    
+
     // Remove undefined values before saving (Firestore doesn't allow undefined)
     const cleanedUserData = removeUndefined(userData as unknown as Record<string, unknown>);
-    const { createAdminTimestampFactoryAsync } = await import('@/features/infrastructure/utils/timestampUtils');
+    const { createAdminTimestampFactoryAsync } = await import('@/features/infrastructure/utils');
     const timestampFactory = await createAdminTimestampFactoryAsync();
     const now = timestampFactory.now();
     const userDataWithTimestamps = {
@@ -112,9 +112,9 @@ export async function saveUserDataServer(userData: CreateUserData): Promise<void
     if (docSnap.exists) {
       // User exists, update the document
       await docRef.update(userDataWithTimestamps);
-      logger.info('User data updated (server-side)', { 
+      logger.info('User data updated (server-side)', {
         discordId: userData.discordId,
-        documentId: userData.discordId 
+        documentId: userData.discordId
       });
     } else {
       // User doesn't exist, create new document
@@ -122,9 +122,9 @@ export async function saveUserDataServer(userData: CreateUserData): Promise<void
         ...userDataWithTimestamps,
         createdAt: now,
       });
-      logger.info('User data created (server-side)', { 
+      logger.info('User data created (server-side)', {
         discordId: userData.discordId,
-        documentId: userData.discordId 
+        documentId: userData.discordId
       });
     }
   } catch (error) {
@@ -155,8 +155,8 @@ export async function updateDataCollectionNoticeAcceptanceServer(
 
     const adminDb = getFirestoreAdmin();
     const docRef = adminDb.collection(USER_DATA_COLLECTION).doc(discordId);
-    
-    const { createAdminTimestampFactoryAsync } = await import('@/features/infrastructure/utils/timestampUtils');
+
+    const { createAdminTimestampFactoryAsync } = await import('@/features/infrastructure/utils');
     const timestampFactory = await createAdminTimestampFactoryAsync();
     await docRef.update({
       dataCollectionNoticeAccepted: accepted,
@@ -189,7 +189,7 @@ export async function deleteUserDataServer(discordId: string): Promise<void> {
 
     const adminDb = getFirestoreAdmin();
     const docRef = adminDb.collection(USER_DATA_COLLECTION).doc(discordId);
-    
+
     // Check if document exists
     const docSnap = await docRef.get();
     if (!docSnap.exists) {

@@ -17,7 +17,7 @@ jest.mock('@/features/infrastructure/components', () => ({
 }));
 
 // Mock Card component
-jest.mock('@/features/infrastructure/components/ui/Card', () => ({
+jest.mock('@/features/infrastructure/components/containers/Card', () => ({
   Card: ({ children, variant, className }: any) => (
     <div data-testid={`card-${variant || 'default'}`} className={className}>
       {children}

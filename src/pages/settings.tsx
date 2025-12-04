@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
-import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib';
+import { getUserDataByDiscordIdServer } from '@/features/modules/community/users';
 import { UserData, UserRole } from '@/types/userData';
 import { signOut } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
@@ -112,20 +112,20 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
 
       const result = await response.json();
       setShowWipeDialog(false);
-      
+
       // Build deletion summary message
       const counts = result.deletedCounts || {};
       const summaryLines = Object.entries(counts)
         .filter(([_, count]) => typeof count === 'number' && count > 0)
         .map(([key, count]) => `${key}: ${count}`)
         .join(', ');
-      
-      const message = summaryLines 
+
+      const message = summaryLines
         ? `All data wiped successfully! Deleted: ${summaryLines}`
         : 'All data wiped successfully!';
-      
+
       setWipeSuccess(message);
-      
+
       // Clear success message after 5 seconds
       setTimeout(() => {
         setWipeSuccess(null);
@@ -156,25 +156,25 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
 
       const result = await response.json();
       setShowWipeEntriesDialog(false);
-      
+
       // Build deletion summary message
       const counts = result.deletedCounts || {};
       const summaryLines = Object.entries(counts)
         .filter(([_, count]) => typeof count === 'number' && count > 0)
         .map(([key, count]) => `${key}: ${count}`)
         .join(', ');
-      
-      const message = summaryLines 
+
+      const message = summaryLines
         ? `All entries and images deleted successfully! Deleted: ${summaryLines}`
         : 'All entries and images deleted successfully!';
-      
+
       setWipeEntriesSuccess(message);
-      
+
       // Clear success message after 5 seconds
       setTimeout(() => {
         setWipeEntriesSuccess(null);
       }, 5000);
-      
+
       // Refresh the page to reflect changes after a short delay
       setTimeout(() => {
         router.reload();
@@ -313,7 +313,7 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
             {userIsAdmin && (
               <div className="pt-6 border-t border-amber-500/20 space-y-4">
                 <h3 className="text-lg font-semibold text-white">Admin Tools</h3>
-                
+
                 {/* Success Messages */}
                 {wipeSuccess && (
                   <div className="rounded-md border border-green-500/40 bg-green-900/20 px-4 py-3 text-sm text-green-200">
@@ -325,7 +325,7 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
                     {wipeEntriesSuccess}
                   </div>
                 )}
-                
+
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button
                     onClick={() => {
@@ -364,8 +364,8 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
         {/* Delete Account Dialog */}
         {showDeleteDialog && (
           <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-            <div 
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
+            <div
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               aria-hidden="true"
               onClick={() => !isDeleting && setShowDeleteDialog(false)}
             />
@@ -409,8 +409,8 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
         {/* Wipe Test Data Dialog */}
         {showWipeDialog && (
           <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-            <div 
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
+            <div
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               aria-hidden="true"
               onClick={() => !isWiping && setShowWipeDialog(false)}
             />
@@ -462,8 +462,8 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
         {/* Wipe All Entries Dialog */}
         {showWipeEntriesDialog && (
           <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-            <div 
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
+            <div
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
               aria-hidden="true"
               onClick={() => !isWipingEntries && setShowWipeEntriesDialog(false)}
             />

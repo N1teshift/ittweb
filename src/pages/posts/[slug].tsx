@@ -98,13 +98,13 @@ export default function PostPage({ title, date, author, postId, content, canEdit
       <div className="flex justify-center min-h-[calc(100vh-8rem)]">
         <div className="w-full px-6 py-12 max-w-4xl">
           <div className="flex items-center justify-between mb-6">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="inline-flex items-center text-amber-400 hover:text-amber-300 transition-colors"
             >
               ← Back to Home
             </Link>
-            
+
             {(canEdit || canDelete) && (
               <div className="flex items-center gap-3">
                 {canEdit && (
@@ -153,7 +153,7 @@ export const getServerSideProps: GetServerSideProps<PostPageProps> = async (cont
 
   try {
     const post = await loadPostBySlug(slug);
-    
+
     if (!post) {
       return {
         notFound: true,
@@ -167,12 +167,12 @@ export const getServerSideProps: GetServerSideProps<PostPageProps> = async (cont
 
     if (session && session.discordId) {
       try {
-        const { getUserDataByDiscordIdServer } = await import('@/features/infrastructure/lib/userDataService.server');
-        const { isAdmin } = await import('@/features/infrastructure/utils/userRoleUtils');
+        const { getUserDataByDiscordIdServer } = await import('@/features/modules/community/users/services/userDataService.server');
+        const { isAdmin } = await import('@/features/infrastructure/utils');
         const userData = await getUserDataByDiscordIdServer(session.discordId);
         const userIsAdmin = isAdmin(userData?.role);
         const userIsAuthor = post.meta.createdByDiscordId === session.discordId;
-        
+
         canEdit = userIsAdmin || userIsAuthor;
         canDelete = userIsAdmin || userIsAuthor;
       } catch (error) {

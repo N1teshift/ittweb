@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { leaveGame } from '@/features/modules/game-management/games/lib/gameService.participation';
-import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib';
+import { getUserDataByDiscordIdServer } from '@/features/modules/community/users';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('api/games/[id]/leave-bot');

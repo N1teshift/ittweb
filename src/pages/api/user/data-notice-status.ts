@@ -1,6 +1,6 @@
 import type { NextApiRequest } from 'next';
 import { createGetHandler, requireSession } from '@/features/infrastructure/api';
-import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib';
+import { getUserDataByDiscordIdServer } from '@/features/modules/community/users';
 
 /**
  * GET /api/user/data-notice-status - Get user's data collection notice acceptance status (requires authentication)
@@ -10,8 +10,8 @@ export default createGetHandler<{ accepted: boolean }>(
     const session = requireSession(context);
     const userData = await getUserDataByDiscordIdServer(session.discordId || '');
 
-    return { 
-      accepted: userData?.dataCollectionNoticeAccepted ?? false 
+    return {
+      accepted: userData?.dataCollectionNoticeAccepted ?? false
     };
   },
   {

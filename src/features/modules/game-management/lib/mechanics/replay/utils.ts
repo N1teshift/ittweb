@@ -1,5 +1,5 @@
 import type Player from 'w3gjs/dist/types/Player';
-import type { GameCategory } from '../../../modules/game-management/games/types';
+import type { GameCategory } from '@/features/modules/game-management/games/types';
 
 export function getDurationSeconds(durationMs?: number): number {
   if (!durationMs || Number.isNaN(durationMs)) {

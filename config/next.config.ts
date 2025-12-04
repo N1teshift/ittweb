@@ -37,7 +37,7 @@ const baseConfig: NextConfig = {
             }
             return entries;
         };
-        
+
         // Ignore optional Sentry module to prevent webpack resolution errors
         // Sentry is optional and loaded dynamically at runtime
         config.resolve.alias = {
@@ -59,7 +59,7 @@ const baseConfig: NextConfig = {
                 'crypto': false,
             };
 
-            // Exclude firebase-admin from client bundles
+            // Exclude firebase-admin and i18next-fs-backend from client bundles
             config.externals = config.externals || [];
             if (Array.isArray(config.externals)) {
                 config.externals.push({
@@ -67,10 +67,12 @@ const baseConfig: NextConfig = {
                     'firebase-admin/app': 'commonjs firebase-admin/app',
                     'firebase-admin/firestore': 'commonjs firebase-admin/firestore',
                     'firebase-admin/storage': 'commonjs firebase-admin/storage',
+                    'i18next-fs-backend': 'commonjs i18next-fs-backend',
+                    'next-i18next/serverSideTranslations': 'commonjs next-i18next/serverSideTranslations',
                 });
             }
         }
-        
+
         return config;
     },
     images: {

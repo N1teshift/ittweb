@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { ArchiveEntry } from '@/types/archive';
-import { sortArchiveEntries } from '@/features/infrastructure/lib';
+import { sortArchiveEntries } from '@/features/modules/community/archives/services';
 
 interface ArchivesPageState {
   entries: ArchiveEntry[];
@@ -18,11 +18,11 @@ interface ArchivesPageState {
 interface UseArchivesPageReturn {
   // State
   state: ArchivesPageState;
-  
+
   // Computed values
   datedEntries: ArchiveEntry[];
   undatedEntries: ArchiveEntry[];
-  
+
   // State setters
   setEntries: (entries: ArchiveEntry[]) => void;
   setLoading: (loading: boolean) => void;
@@ -33,7 +33,7 @@ interface UseArchivesPageReturn {
   setShowImageModal: (show: boolean) => void;
   setModalImage: (image: { url: string; title: string } | null) => void;
   setSortOrder: (order: 'newest' | 'oldest') => void;
-  
+
   // Utility functions
   resetError: () => void;
   resetFormStates: () => void;
@@ -52,18 +52,18 @@ export function useArchivesPage(): UseArchivesPageReturn {
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
 
   // Computed sorted entries
-  const entries = useMemo(() => 
+  const entries = useMemo(() =>
     sortArchiveEntries(unsortedEntries, sortOrder),
     [unsortedEntries, sortOrder]
   );
 
   // Computed values
-  const datedEntries = useMemo(() => 
+  const datedEntries = useMemo(() =>
     entries.filter((entry: ArchiveEntry) => entry.dateInfo.type !== 'undated'),
     [entries]
   );
 
-  const undatedEntries = useMemo(() => 
+  const undatedEntries = useMemo(() =>
     entries.filter((entry: ArchiveEntry) => entry.dateInfo.type === 'undated'),
     [entries]
   );
@@ -109,11 +109,11 @@ export function useArchivesPage(): UseArchivesPageReturn {
   return {
     // State
     state,
-    
+
     // Computed values
     datedEntries,
     undatedEntries,
-    
+
     // State setters
     setEntries: setUnsortedEntries,
     setLoading,
@@ -124,7 +124,7 @@ export function useArchivesPage(): UseArchivesPageReturn {
     setShowImageModal,
     setModalImage,
     setSortOrder,
-    
+
     // Utility functions
     resetError,
     resetFormStates,

@@ -1,7 +1,7 @@
 import type { NextApiRequest } from 'next';
 import { createPostHandler, requireSession } from '@/features/infrastructure/api';
 import { createCompletedGame, getGames, updateEloScores } from '@/features/modules/game-management/games/lib/gameService';
-import { parseReplayFile } from '@/features/infrastructure/game/replay';
+import { parseReplayFile } from '@/features/modules/game-management/lib/mechanics';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import { getFirestoreAdmin, getAdminTimestamp, getStorageAdmin, getStorageBucketName } from '@/features/infrastructure/api/firebase/admin';
 import type { CreateCompletedGame } from '@/features/modules/game-management/games/types';
@@ -44,7 +44,7 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
         resolve({ fields: fieldsResult, files: filesResult });
       });
     });
-    
+
     const replayFileField = Array.isArray(files.replay) ? files.replay[0] : files.replay;
     if (!replayFileField) {
       throw new Error('Replay file is required (field name: replay)');
@@ -55,11 +55,11 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
     const originalName = replayFile.originalFilename || 'replay.w3g';
 
     // Optional: Check if a scheduled game ID was provided
-    const scheduledGameIdField = Array.isArray(fields.scheduledGameId) 
-      ? fields.scheduledGameId[0] 
+    const scheduledGameIdField = Array.isArray(fields.scheduledGameId)
+      ? fields.scheduledGameId[0]
       : fields.scheduledGameId;
-    const scheduledGameId = scheduledGameIdField 
-      ? parseInt(scheduledGameIdField as string, 10) 
+    const scheduledGameId = scheduledGameIdField
+      ? parseInt(scheduledGameIdField as string, 10)
       : undefined;
 
     // Parse replay file
@@ -74,7 +74,7 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
       logger.error('Replay parsing failed', parseErr, {
         scheduledGameId,
       } as Record<string, unknown>);
-      
+
       // Check if gameData was provided manually as fallback
       const gameDataJson = Array.isArray(fields.gameData) ? fields.gameData[0] : fields.gameData;
       if (gameDataJson) {
@@ -83,7 +83,7 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
           if (!manualData.gameId || !manualData.datetime || !manualData.players) {
             throw new Error('Invalid gameData: gameId, datetime, and players are required');
           }
-          
+
           // Use manual data but still need to upload the file
           parsedResult = {
             gameData: {
@@ -114,12 +114,12 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
     const existingGames = await getGames({ gameId, limit: 1 });
     if (existingGames.games.length > 0) {
       const existingGame = existingGames.games[0];
-      
+
       // If it's a scheduled game, tell user to use the update endpoint instead
       if (existingGame.gameState === 'scheduled') {
         throw new Error(`A scheduled game with gameId ${gameId} already exists. Please use /api/games/${existingGame.id}/upload-replay to upload the replay.`);
       }
-      
+
       // If it's already a completed game, reject
       throw new Error(`A completed game with gameId ${gameId} already exists.`);
     }
@@ -141,14 +141,14 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
 
     // Create the game first to get the Firestore document ID
     const createdGameId = await createCompletedGame(gameData);
-    
+
     // Now upload replay to Firebase Storage using the actual game document ID
     const adminDb = getFirestoreAdmin();
     const adminTimestamp = getAdminTimestamp();
     const storage = getStorageAdmin();
     const bucketName = getStorageBucketName();
     const bucket = bucketName ? storage.bucket(bucketName) : storage.bucket();
-    
+
     const filePath = `games/${createdGameId}/replay.w3g`;
     const token = randomUUID();
 
@@ -162,10 +162,10 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
     });
 
     // Remove temporary file
-    await fs.unlink(replayFile.filepath).catch(() => {});
+    await fs.unlink(replayFile.filepath).catch(() => { });
 
     const replayUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(filePath)}?alt=media&token=${token}`;
-    
+
     // Update the game document with the replayUrl and filename
     const gameRef = adminDb.collection('games').doc(createdGameId);
     await gameRef.update({
@@ -190,13 +190,13 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
       });
     }
 
-    logger.info('Replay uploaded and game created', { 
+    logger.info('Replay uploaded and game created', {
       gameId: createdGameId,
       gameIdNum: gameId,
-      discordId: session.discordId 
+      discordId: session.discordId
     });
 
-    return { 
+    return {
       id: createdGameId,
       gameId: gameId,
       message: 'Replay uploaded and game created successfully'

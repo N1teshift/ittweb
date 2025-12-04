@@ -8,7 +8,7 @@ import { logError } from '@/features/infrastructure/logging';
 import { removeUndefined, createTimestampFactoryAsync } from '@/features/infrastructure/utils';
 import { invalidateAnalyticsCache } from '@/features/infrastructure/lib';
 import type { UpdateGame } from '../types';
-import { updateEloScores } from '@/features/infrastructure/game';
+import { updateEloScores } from '@/features/modules/game-management/lib/mechanics';
 
 const GAMES_COLLECTION = 'games';
 
@@ -53,7 +53,7 @@ export async function updateGame(id: string, updates: UpdateGame): Promise<void>
     }
 
     // Invalidate analytics cache
-    invalidateAnalyticsCache().catch(() => {});
+    invalidateAnalyticsCache().catch(() => { });
   } catch (error) {
     const err = error as Error;
     logError(err, 'Failed to update game', {

@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth/next';
 import type { Session } from 'next-auth';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib';
+import { getUserDataByDiscordIdServer } from '@/features/modules/community/users';
 import { isAdmin } from '@/features/infrastructure/utils';
 
 /**
@@ -90,7 +90,7 @@ export const createApiHandler = <T = unknown>(
     validateBody,
     logRequests = true,
   } = options;
-  
+
   // requireAdmin implies requireAuth
   const needsAuth = requireAuth || requireAdmin;
 
@@ -121,21 +121,21 @@ export const createApiHandler = <T = unknown>(
       if (req.method === 'GET' && options.cacheControl !== false && options.cacheControl) {
         const cacheOptions = options.cacheControl;
         const cacheParts: string[] = [];
-        
+
         if (cacheOptions.maxAge !== undefined) {
           cacheParts.push(`max-age=${cacheOptions.maxAge}`);
         }
-        
+
         if (cacheOptions.public) {
           cacheParts.push('public');
         } else if (cacheOptions.private) {
           cacheParts.push('private');
         }
-        
+
         if (cacheOptions.mustRevalidate) {
           cacheParts.push('must-revalidate');
         }
-        
+
         if (cacheParts.length > 0) {
           res.setHeader('Cache-Control', cacheParts.join(', '));
         }
@@ -165,7 +165,7 @@ export const createApiHandler = <T = unknown>(
       // This allows routes with requireAuth: false to still access session for optional auth checks
       let session: Session | null = null;
       session = await getServerSession(req, res, authOptions);
-      
+
       // Only enforce authentication if requireAuth or requireAdmin is true
       if (needsAuth) {
         if (!session) {
@@ -178,7 +178,7 @@ export const createApiHandler = <T = unknown>(
             error: 'Authentication required'
           });
         }
-        
+
         // Admin check if required
         if (requireAdmin) {
           const userData = await getUserDataByDiscordIdServer(session.discordId || '');
@@ -194,7 +194,7 @@ export const createApiHandler = <T = unknown>(
             });
           }
         }
-        
+
         logger.debug('Authentication verified', {
           userId: session.discordId || 'unknown',
           isAdmin: requireAdmin
@@ -240,7 +240,7 @@ export const createApiHandler = <T = unknown>(
       return res.status(statusCode).json({
         success: false,
         error: process.env.NODE_ENV === 'production' && statusCode === 500
-          ? 'Internal server error' 
+          ? 'Internal server error'
           : errorMessage
       });
     }
@@ -258,7 +258,7 @@ export const createGetHandler = <T = unknown>(handler: ApiHandler<T>, options?: 
  * Helper to create POST-only API handlers
  */
 export const createPostHandler = <T = unknown>(
-  handler: ApiHandler<T>, 
+  handler: ApiHandler<T>,
   options?: Omit<ApiHandlerOptions, 'methods'>
 ) => {
   return createApiHandler(handler, { ...options, methods: ['POST'] });
@@ -268,7 +268,7 @@ export const createPostHandler = <T = unknown>(
  * Helper to create handlers that accept both GET and POST
  */
 export const createGetPostHandler = <T = unknown>(
-  handler: ApiHandler<T>, 
+  handler: ApiHandler<T>,
   options?: Omit<ApiHandlerOptions, 'methods'>
 ) => {
   return createApiHandler(handler, { ...options, methods: ['GET', 'POST'] });

@@ -2,7 +2,7 @@ import { useState, FormEvent } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { EntryContentType } from '@/types/entry';
-import { uploadImage } from '@/features/infrastructure/lib';
+import { uploadImage } from '@/features/modules/community/archives/services';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('EntryFormModal');
@@ -29,7 +29,7 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     setImages(files);
-    
+
     // Create preview URLs
     const urls = files.map(file => URL.createObjectURL(file));
     setImagePreviewUrls(urls);
@@ -70,8 +70,8 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
           images: uploadedImageUrls.length > 0 ? uploadedImageUrls : undefined,
           videoUrl: videoUrl.trim() || undefined,
           twitchClipUrl: twitchClipUrl.trim() || undefined,
-          sectionOrder: uploadedImageUrls.length > 0 || videoUrl || twitchClipUrl 
-            ? sectionOrder 
+          sectionOrder: uploadedImageUrls.length > 0 || videoUrl || twitchClipUrl
+            ? sectionOrder
             : undefined,
         }),
       };
@@ -106,9 +106,9 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
       const responseData = await response.json();
       // API returns { success: true, data: { id: "..." } } or { id: "..." }
       const entryId = responseData.data?.id || responseData.id;
-      
+
       logger.info('Entry created', { contentType, title, entryId });
-      
+
       onSuccess(entryId);
     } catch (err) {
       const error = err as Error;

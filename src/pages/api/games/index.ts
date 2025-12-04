@@ -3,7 +3,7 @@ import { createGetPostHandler, parseQueryString, parseQueryInt, parseQueryEnum, 
 import { createScheduledGame, createCompletedGame, getGames } from '@/features/modules/game-management/games/lib/gameService';
 import type { CreateScheduledGame, CreateCompletedGame, GameFilters } from '@/features/modules/game-management/games/types';
 import { createComponentLogger } from '@/features/infrastructure/logging';
-import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib';
+import { getUserDataByDiscordIdServer } from '@/features/modules/community/users';
 import { isAdmin } from '@/features/infrastructure/utils';
 import type { GameListResponse } from '@/features/modules/game-management/games/types';
 
@@ -53,11 +53,11 @@ export default createGetPostHandler<GameListResponse | { id: string }>(
         // Validate scheduledDateTime is in the future (unless admin)
         const scheduledDate = new Date(gameData.scheduledDateTime);
         const isPastDate = scheduledDate < new Date();
-        
+
         if (isPastDate) {
           const userData = await getUserDataByDiscordIdServer(session.discordId || '');
           const userIsAdmin = isAdmin(userData?.role);
-          
+
           if (!userIsAdmin) {
             throw new Error('Scheduled date must be in the future');
           }
@@ -84,7 +84,7 @@ export default createGetPostHandler<GameListResponse | { id: string }>(
 
         const gameId = await createScheduledGame(gameWithUser);
         logger.info('Scheduled game created', { gameId, scheduledDateTime: gameData.scheduledDateTime });
-        
+
         return { id: gameId };
       } else {
         // Completed game
@@ -100,7 +100,7 @@ export default createGetPostHandler<GameListResponse | { id: string }>(
 
         const gameId = await createCompletedGame(gameWithUser);
         logger.info('Completed game created', { gameId, gameIdNum: gameData.gameId });
-        
+
         return { id: gameId };
       }
     }
@@ -119,7 +119,7 @@ export default createGetPostHandler<GameListResponse | { id: string }>(
     validateBody: createCustomValidator((body) => {
       // Determine gameState (defaults to 'completed')
       const gameState = (body as { gameState?: 'scheduled' | 'completed' })?.gameState || 'completed';
-      
+
       if (gameState === 'scheduled') {
         const result = CreateScheduledGameSchema.safeParse(body);
         if (result.success) return true;

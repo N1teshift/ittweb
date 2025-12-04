@@ -1,4 +1,4 @@
-import { extractYouTubeId, extractTwitchClipId } from '@/features/infrastructure/lib';
+import { extractYouTubeId, extractTwitchClipId } from '@/features/modules/community/archives/services';
 import { SectionKey } from './useArchiveBaseState';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -94,13 +94,13 @@ export function useArchiveHandlers({
     const url = e.target.value;
     const youtubeId = extractYouTubeId(url);
     const twitchId = extractTwitchClipId(url);
-    
+
     if (url && !youtubeId && !twitchId) {
       setError('Please enter a valid YouTube or Twitch clip URL');
       setFormData(prev => ({ ...prev, mediaUrl: '', twitchClipUrl: '' }));
       return;
     }
-    
+
     setError('');
     // Set the appropriate URL and clear the other one
     if (youtubeId) {
@@ -121,10 +121,10 @@ export function useArchiveHandlers({
   const handleCombinedFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
-    
+
     const imageFiles: File[] = [];
     const replayFiles: File[] = [];
-    
+
     files.forEach(file => {
       const nameLower = file.name.toLowerCase();
       if (nameLower.endsWith('.w3g')) {
@@ -136,19 +136,19 @@ export function useArchiveHandlers({
         return;
       }
     });
-    
+
     if (replayFiles.length > 1) {
       setError('Please upload only one replay file at a time');
       return;
     }
-    
+
     if (replayFiles.length > 0 && imageFiles.length > 0) {
       setError('Please upload either images or a replay file, not both');
       return;
     }
-    
+
     setError('');
-    
+
     // Handle replays
     if (replayFiles.length > 0) {
       setReplayFile(replayFiles[0]);
@@ -157,7 +157,7 @@ export function useArchiveHandlers({
       setFormData(prev => ({ ...prev, mediaType: 'replay' }));
       return;
     }
-    
+
     // Handle images
     if (imageFiles.length > 0) {
       if (imageFiles.length === 1) {

@@ -9,7 +9,7 @@ jest.mock('next/link', () => ({
 }));
 
 // Mock Card component
-jest.mock('@/features/infrastructure/components/ui/Card', () => ({
+jest.mock('@/features/infrastructure/components/containers/Card', () => ({
   Card: ({ children, className, variant }: any) => (
     <div className={className} data-variant={variant}>{children}</div>
   ),

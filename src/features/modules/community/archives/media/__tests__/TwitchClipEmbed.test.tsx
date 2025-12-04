@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import TwitchClipEmbed from '../components/TwitchClipEmbed';
-import * as archiveService from '@/features/infrastructure/lib';
+import * as archiveService from '@/features/modules/community/archives/services';
 
 // Mock archiveService
 jest.mock('@/features/infrastructure/lib/archiveService', () => ({

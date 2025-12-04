@@ -35,13 +35,13 @@ export function calculateEloChange(
 ): number {
   // Calculate expected score using ELO formula
   const expectedScore = 1 / (1 + Math.pow(10, (opponentElo - playerElo) / 400));
-  
+
   // Determine actual score based on result
   const actualScore = result === 'win' ? 1 : result === 'loss' ? 0 : 0.5;
-  
+
   // Calculate ELO change: K * (actual - expected)
   const eloChange = kFactor * (actualScore - expectedScore);
-  
+
   // Round to 2 decimal places
   return Math.round(eloChange * 100) / 100;
 }
@@ -53,7 +53,7 @@ export function calculateTeamElo(playerElos: number[]): number {
   if (playerElos.length === 0) {
     return STARTING_ELO;
   }
-  
+
   const sum = playerElos.reduce((acc, elo) => acc + elo, 0);
   return Math.round((sum / playerElos.length) * 100) / 100;
 }
@@ -65,9 +65,9 @@ export async function updateEloScores(gameId: string): Promise<void> {
   try {
     logger.info('Updating ELO scores', { gameId });
 
-    const { getGameById } = await import('../../../modules/game-management/games/lib/gameService');
-    const { getPlayerStats, updatePlayerStats } = await import('../../../modules/community/players/lib/playerService');
-    
+    const { getGameById } = await import('@/features/modules/game-management/games/lib/gameService');
+    const { getPlayerStats, updatePlayerStats } = await import('@/features/modules/community/players/lib/playerService');
+
     const game = await getGameById(gameId);
     if (!game || !game.players || game.players.length < 2) {
       logger.warn('Game not found or invalid for ELO update', { gameId });
@@ -191,9 +191,9 @@ export async function recalculateFromGame(gameId: string): Promise<void> {
   try {
     logger.info('Recalculating ELO from game', { gameId });
 
-    const { getGameById, getGames } = await import('../../../modules/game-management/games/lib/gameService');
-    const { getPlayerStats } = await import('../../../modules/community/players/lib/playerService');
-    
+    const { getGameById, getGames } = await import('@/features/modules/game-management/games/lib/gameService');
+    const { getPlayerStats } = await import('@/features/modules/community/players/lib/playerService');
+
     // Get the target game
     const targetGame = await getGameById(gameId);
     if (!targetGame || !targetGame.players || targetGame.players.length < 2) {
@@ -209,7 +209,7 @@ export async function recalculateFromGame(gameId: string): Promise<void> {
       throw new Error('Game must have a datetime to recalculate ELO');
     }
 
-    const targetDate = typeof targetGame.datetime === 'string' 
+    const targetDate = typeof targetGame.datetime === 'string'
       ? new Date(targetGame.datetime)
       : targetGame.datetime.toDate();
 
@@ -243,7 +243,7 @@ export async function recalculateFromGame(gameId: string): Promise<void> {
     for (const playerName of affectedPlayers) {
       // Find the player's last game before the target game
       let lastElo = STARTING_ELO;
-      
+
       // Sort games before by datetime descending to find most recent
       const playerGamesBefore = gamesBefore.games
         .filter(g => g.playerNames?.some(n => n.toLowerCase().trim() === playerName))
@@ -290,42 +290,42 @@ export async function recalculateFromGame(gameId: string): Promise<void> {
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
       const playersCollection = adminDb.collection('players');
-      
+
       for (const [playerName, elo] of playerElosBefore.entries()) {
         const playerQuery = playersCollection.where('name', '==', playerName);
         const playerSnapshot = await playerQuery.get();
-        
+
         if (!playerSnapshot.empty) {
           const playerDoc = playerSnapshot.docs[0];
           const playerData = playerDoc.data();
           const categories = playerData.categories || {};
-          
+
           categories[category] = {
             ...categories[category],
             score: elo,
           };
-          
+
           await playerDoc.ref.update({ categories });
         }
       }
     } else {
       const db = getFirestoreInstance();
       const playersCollection = collection(db, 'players');
-      
+
       for (const [playerName, elo] of playerElosBefore.entries()) {
         const playerQuery = query(playersCollection, where('name', '==', playerName));
         const playerSnapshot = await getDocs(playerQuery);
-        
+
         if (!playerSnapshot.empty) {
           const playerDoc = playerSnapshot.docs[0];
           const playerData = playerDoc.data();
           const categories = playerData.categories || {};
-          
+
           categories[category] = {
             ...categories[category],
             score: elo,
           };
-          
+
           await updateDoc(doc(db, 'players', playerDoc.id), { categories });
         }
       }
@@ -336,11 +336,11 @@ export async function recalculateFromGame(gameId: string): Promise<void> {
       targetGame,
       ...gamesAfter.games.filter(g => g.id !== gameId),
     ].sort((a, b) => {
-      const dateA = typeof a.datetime === 'string' 
-        ? new Date(a.datetime).getTime() 
+      const dateA = typeof a.datetime === 'string'
+        ? new Date(a.datetime).getTime()
         : a.datetime?.toMillis() || 0;
-      const dateB = typeof b.datetime === 'string' 
-        ? new Date(b.datetime).getTime() 
+      const dateB = typeof b.datetime === 'string'
+        ? new Date(b.datetime).getTime()
         : b.datetime?.toMillis() || 0;
       return dateA - dateB; // Ascending order
     });
@@ -353,8 +353,8 @@ export async function recalculateFromGame(gameId: string): Promise<void> {
       }
     }
 
-    logger.info('ELO recalculation completed', { 
-      gameId, 
+    logger.info('ELO recalculation completed', {
+      gameId,
       gamesRecalculated: allGamesToRecalculate.length,
       playersAffected: affectedPlayers.size,
     });

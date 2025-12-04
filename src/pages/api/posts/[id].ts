@@ -2,14 +2,14 @@ import type { NextApiRequest } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
 import { createApiHandler, zodValidator, UpdatePostSchema } from '@/features/infrastructure/api';
-import { 
-  getPostById, 
-  updatePost, 
-  deletePost 
+import {
+  getPostById,
+  updatePost,
+  deletePost
 } from '@/features/modules/content/blog/lib/postService';
 import { CreatePost } from '@/types/post';
 import { createComponentLogger } from '@/features/infrastructure/logging';
-import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib';
+import { getUserDataByDiscordIdServer } from '@/features/modules/community/users';
 import { isAdmin } from '@/features/infrastructure/utils';
 import type { Post } from '@/types/post';
 
@@ -64,7 +64,7 @@ export default createApiHandler<Post | { success: boolean }>(
       const updates: Partial<CreatePost> = req.body;
       await updatePost(id, updates);
       logger.info('Post updated', { id, userId: session.discordId });
-      
+
       return { success: true };
     }
 
@@ -92,7 +92,7 @@ export default createApiHandler<Post | { success: boolean }>(
 
       await deletePost(id);
       logger.info('Post deleted', { id, userId: session.discordId });
-      
+
       return { success: true };
     }
 

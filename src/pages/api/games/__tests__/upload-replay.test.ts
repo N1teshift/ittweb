@@ -20,7 +20,7 @@ jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
   updateEloScores: (...args: unknown[]) => mockUpdateEloScores(...args),
 }));
 
-jest.mock('@/features/infrastructure/game/replay', () => ({
+jest.mock('@/features/modules/game-management/lib/mechanics', () => ({
   parseReplayFile: (...args: unknown[]) => mockParseReplayFile(...args),
 }));
 

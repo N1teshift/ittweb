@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useMemo, useState } from 'react';
-import { extractTwitchClipId } from '@/features/infrastructure/lib';
+import { extractTwitchClipId } from '@/features/modules/community/archives/services';
 
 interface TwitchClipEmbedProps {
   url: string;

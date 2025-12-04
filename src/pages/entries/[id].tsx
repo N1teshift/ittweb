@@ -18,7 +18,7 @@ import { getEntryById } from '@/features/modules/game-management/entries/lib/ent
 import { Entry } from '@/types/entry';
 import YouTubeEmbed from '@/features/modules/community/archives/media/components/YouTubeEmbed';
 import TwitchClipEmbed from '@/features/modules/community/archives/media/components/TwitchClipEmbed';
-import { extractYouTubeId, extractTwitchClipId } from '@/features/infrastructure/lib';
+import { extractYouTubeId, extractTwitchClipId } from '@/features/modules/community/archives/services';
 import { logError } from '@/features/infrastructure/logging';
 
 const pageNamespaces = ["common"];
@@ -101,13 +101,13 @@ export default function EntryPage({ entry, content, canEdit, canDelete }: EntryP
     <div className="flex justify-center min-h-[calc(100vh-8rem)]">
       <div className="w-full px-6 py-12 max-w-4xl">
         <div className="flex items-center justify-between mb-6">
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="inline-flex items-center text-amber-400 hover:text-amber-300 transition-colors"
           >
             ← Back to Home
           </Link>
-          
+
           {(canEdit || canDelete) && (
             <div className="flex items-center gap-3">
               {canEdit && (
@@ -141,8 +141,8 @@ export default function EntryPage({ entry, content, canEdit, canDelete }: EntryP
                   <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                     {entry.images.map((imageUrl, index) => (
                       <div key={index} className="relative w-full aspect-video rounded-lg overflow-hidden">
-                        <Image 
-                          src={imageUrl} 
+                        <Image
+                          src={imageUrl}
                           alt={`${entry.title} - Image ${index + 1}`}
                           fill
                           className="object-cover rounded-lg"
@@ -162,7 +162,7 @@ export default function EntryPage({ entry, content, canEdit, canDelete }: EntryP
                 {entry.videoUrl && (() => {
                   const youtubeId = extractYouTubeId(entry.videoUrl);
                   const twitchId = extractTwitchClipId(entry.videoUrl);
-                  
+
                   if (youtubeId) {
                     return (
                       <div className="mb-6">
@@ -248,7 +248,7 @@ export const getServerSideProps: GetServerSideProps<EntryPageProps> = async (con
 
   try {
     const entry = await getEntryById(id);
-    
+
     if (!entry) {
       return {
         notFound: true,
@@ -262,12 +262,12 @@ export const getServerSideProps: GetServerSideProps<EntryPageProps> = async (con
 
     if (session && session.discordId) {
       try {
-        const { getUserDataByDiscordIdServer } = await import('@/features/infrastructure/lib/userDataService.server');
-        const { isAdmin } = await import('@/features/infrastructure/utils/userRoleUtils');
+        const { getUserDataByDiscordIdServer } = await import('@/features/modules/community/users/services/userDataService.server');
+        const { isAdmin } = await import('@/features/infrastructure/utils');
         const userData = await getUserDataByDiscordIdServer(session.discordId);
         const userIsAdmin = isAdmin(userData?.role);
         const userIsAuthor = entry.createdByDiscordId === session.discordId;
-        
+
         canEdit = userIsAdmin || userIsAuthor;
         canDelete = userIsAdmin || userIsAuthor;
       } catch (error) {

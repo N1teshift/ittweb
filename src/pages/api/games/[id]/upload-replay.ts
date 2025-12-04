@@ -1,7 +1,7 @@
 import type { NextApiRequest } from 'next';
 import { createPostHandler, requireSession, parseRequiredQueryString } from '@/features/infrastructure/api';
 import { getGameById, updateEloScores } from '@/features/modules/game-management/games/lib/gameService';
-import { parseReplayFile } from '@/features/infrastructure/game/replay';
+import { parseReplayFile } from '@/features/modules/game-management/lib/mechanics';
 import { createComponentLogger } from '@/features/infrastructure/logging';
 import { getFirestoreAdmin, getAdminTimestamp, getStorageAdmin, getStorageBucketName } from '@/features/infrastructure/api/firebase/admin';
 import { timestampToIso } from '@/features/infrastructure/utils';
@@ -58,7 +58,7 @@ export default createPostHandler<{ gameId: string; message: string }>(
         resolve({ fields: fieldsResult, files: filesResult });
       });
     });
-    
+
     const replayFileField = Array.isArray(files.replay) ? files.replay[0] : files.replay;
     if (!replayFileField) {
       throw new Error('Replay file is required (field name: replay)');
@@ -74,7 +74,7 @@ export default createPostHandler<{ gameId: string; message: string }>(
     const storage = getStorageAdmin();
     const bucketName = getStorageBucketName();
     const bucket = bucketName ? storage.bucket(bucketName) : storage.bucket();
-    
+
     // Store replay in games/{gameId}/replay.w3g
     const filePath = `games/${gameId}/replay.w3g`;
     const token = randomUUID();
@@ -89,7 +89,7 @@ export default createPostHandler<{ gameId: string; message: string }>(
     });
 
     // Remove temporary file
-    await fs.unlink(replayFile.filepath).catch(() => {});
+    await fs.unlink(replayFile.filepath).catch(() => { });
 
     const replayUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(filePath)}?alt=media&token=${token}`;
 
@@ -97,11 +97,11 @@ export default createPostHandler<{ gameId: string; message: string }>(
     const scheduledCategory = game.teamSize === 'custom'
       ? game.customTeamSize || undefined
       : game.teamSize;
-    
-    const scheduledDateTimeString = game.scheduledDateTime 
-      ? (typeof game.scheduledDateTime === 'string' 
-          ? game.scheduledDateTime 
-          : timestampToIso(game.scheduledDateTime))
+
+    const scheduledDateTimeString = game.scheduledDateTime
+      ? (typeof game.scheduledDateTime === 'string'
+        ? game.scheduledDateTime
+        : timestampToIso(game.scheduledDateTime))
       : new Date().toISOString();
 
     let parsedGameData: CreateCompletedGame | null = null;
@@ -111,7 +111,7 @@ export default createPostHandler<{ gameId: string; message: string }>(
         fallbackDatetime: scheduledDateTimeString,
         fallbackCategory: scheduledCategory,
       });
-      
+
       // Convert parsed data to CreateCompletedGame format
       parsedGameData = {
         gameId: game.gameId,
@@ -134,7 +134,7 @@ export default createPostHandler<{ gameId: string; message: string }>(
         gameId,
         error: parseErr.message,
       });
-      
+
       // Check if gameData was provided manually
       const gameDataJson = Array.isArray(fields.gameData) ? fields.gameData[0] : fields.gameData;
       if (gameDataJson) {
@@ -170,7 +170,7 @@ export default createPostHandler<{ gameId: string; message: string }>(
     // Update the game document to convert from scheduled to completed
     // Keep participants array, add completed game fields, add players subcollection
     const gameRef = adminDb.collection('games').doc(gameId);
-    
+
     // Extract player names for quick access
     const playerNames = parsedGameData.players.map(p => p.name);
     const playerCount = parsedGameData.players.length;
@@ -206,7 +206,7 @@ export default createPostHandler<{ gameId: string; message: string }>(
     try {
       await gameRef.update(updateData);
       logger.info('Game state updated to completed', { gameId });
-      
+
       // Verify the update succeeded
       const updatedGameSnap = await gameRef.get();
       if (!updatedGameSnap.exists) {
@@ -244,9 +244,9 @@ export default createPostHandler<{ gameId: string; message: string }>(
     const existingPlayersSnapshot = await playersCollection.get();
     const deletePromises = existingPlayersSnapshot.docs.map((doc) => doc.ref.delete());
     await Promise.all(deletePromises);
-    
+
     const adminTimestampNow = adminTimestamp.now();
-    
+
     for (const player of parsedGameData.players) {
       // Remove undefined values before writing to Firestore
       const playerData = removeUndefined({
@@ -277,7 +277,7 @@ export default createPostHandler<{ gameId: string; message: string }>(
         killsPanther: player.killsPanther,
         createdAt: adminTimestampNow,
       } as Record<string, unknown>);
-      
+
       await playersCollection.add(playerData);
     }
 
@@ -293,12 +293,12 @@ export default createPostHandler<{ gameId: string; message: string }>(
       });
     }
 
-    logger.info('Replay uploaded and game converted to completed', { 
+    logger.info('Replay uploaded and game converted to completed', {
       gameId,
-      discordId: session.discordId 
+      discordId: session.discordId
     });
 
-    return { 
+    return {
       gameId,
       message: 'Replay uploaded and game completed successfully'
     };

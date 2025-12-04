@@ -1,5 +1,5 @@
 import React from 'react';
-import { updateArchiveEntry } from '@/features/infrastructure/lib';
+import { updateArchiveEntry } from '@/features/modules/community/archives/services';
 import { ArchiveEntry, CreateArchiveEntry } from '@/types/archive';
 import ArchiveFormBase from './ArchiveFormBase';
 

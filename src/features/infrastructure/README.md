@@ -28,8 +28,11 @@ See [API README](./api/README.md) for detailed documentation.
 
 ### Components (`components/`)
 - **Layout Components**: `Layout`, `Header`, `Footer`, `PageHero`, `DataCollectionNotice`, `DiscordButton`, `GitHubButton`
-- **UI Components** (`components/ui/`): `Button`, `Card`, `Input`, `LoadingOverlay`, `LoadingScreen`, `EmptyState`, `Tooltip`
-- **Skeleton Components** (`components/ui/`): `GameCardSkeleton`, `PlayerCardSkeleton`, `LeaderboardSkeleton` - Loading placeholders for async content
+- **Button Components**: `Button`, `GitHubButton`, `DiscordButton`
+- **Container Components**: `Card`
+- **Loading Components**: `LoadingOverlay`, `LoadingScreen`
+- **Feedback Components**: `EmptyState`, `Tooltip`
+- **Skeleton Components**: `GameCardSkeleton`, `PlayerCardSkeleton`, `LeaderboardSkeleton` - Loading placeholders for async content
 
 ### Services (`lib/`)
 - `userDataService` - User data CRUD operations

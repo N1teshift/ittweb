@@ -1,7 +1,7 @@
 import W3GReplay from 'w3gjs';
 import type Player from 'w3gjs/dist/types/Player';
 import { createComponentLogger } from '@/features/infrastructure/logging';
-import type { CreateGame } from '../../../modules/game-management/games/types';
+import type { CreateGame } from '@/features/modules/game-management/games/types';
 import { buildW3MMDLookup, mapMissionStatsToPlayers } from '../w3mmd';
 import { extractITTMetadata } from './metadata';
 import { deriveWinningTeamId, deriveFlag } from './winner';
@@ -23,7 +23,7 @@ export async function parseReplayFile(
     const replay = new W3GReplay();
     const parsed = await replay.parse(buffer) as unknown as ParsedReplay;
     const players = parsed.players || [];
-    
+
     logger.info('Replay parsed - basic info', {
       playerCount: players.length,
       hasWinningTeamId: parsed.winningTeamId !== undefined,
@@ -36,7 +36,7 @@ export async function parseReplayFile(
 
     // Get W3MMD data
     let w3mmdActions: unknown[] = [];
-    
+
     if (Array.isArray(replay.w3mmd)) {
       w3mmdActions = replay.w3mmd;
     } else if (Array.isArray(parsed.w3mmd)) {
@@ -82,14 +82,14 @@ export async function parseReplayFile(
       players: players.map((player) => {
         const stats = derivedStats.get(player.id) || {};
         const flag = deriveFlag(player.teamid, winningTeamId, player, w3mmdData.lookup);
-        
+
         // Find ITT stats for this player by matching slot index or name
         const ittPlayer = ittMetadata?.players.find(
-          (p) => p.slotIndex === player.id || 
-                 p.name.toLowerCase().replace(/[^a-z0-9]/g, '') === 
-                 (player.name || '').toLowerCase().replace(/[^a-z0-9]/g, '')
+          (p) => p.slotIndex === player.id ||
+            p.name.toLowerCase().replace(/[^a-z0-9]/g, '') ===
+            (player.name || '').toLowerCase().replace(/[^a-z0-9]/g, '')
         );
-        
+
         // Merge ITT stats if found
         const ittStats = ittPlayer ? {
           class: ittPlayer.trollClass || stats.class,
@@ -105,7 +105,7 @@ export async function parseReplayFile(
           killsBear: ittPlayer.killsBear,
           killsPanther: ittPlayer.killsPanther,
         } : {};
-        
+
         logger.debug('Player parsed', {
           name: player.name,
           pid: player.id,

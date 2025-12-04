@@ -1,8 +1,6 @@
 @import './modules/vendor.css';
 @import './modules/tokens.css';
 @import './modules/base.css';
-@import './modules/components.css';
-@import './modules/utilities.css';
 
 @tailwind base;
 @tailwind components;

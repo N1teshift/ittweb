@@ -5,7 +5,7 @@
 
 import type { CategoryStats } from '../types';
 import type { GamePlayer } from '../../../game-management/games/types';
-import { STARTING_ELO } from '../../../../infrastructure/game/elo';
+import { STARTING_ELO } from '../../../game-management/lib/mechanics';
 import type { TimestampFactory } from '@/features/infrastructure/utils';
 
 /**
@@ -175,7 +175,7 @@ export async function processPlayerStatsUpdate(
 
   const isNewPlayer = !existingData;
   const categories = existingData?.categories as { [key: string]: CategoryStats } | undefined || {};
-  
+
   let categoryStats: CategoryStats;
 
   if (isNewPlayer) {

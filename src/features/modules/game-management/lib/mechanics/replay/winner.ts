@@ -1,6 +1,6 @@
 import type Player from 'w3gjs/dist/types/Player';
 import { createComponentLogger } from '@/features/infrastructure/logging';
-import type { GamePlayerFlag } from '../../../modules/game-management/games/types';
+import type { GamePlayerFlag } from '@/features/modules/game-management/games/types';
 import type { ParsedReplay, PlayerWithResult } from './types';
 
 const logger = createComponentLogger('games/replay/winner');
@@ -41,11 +41,11 @@ export function deriveWinningTeamId(
   // Check players for result/status properties
   const playersWithResult = players.filter((p): p is PlayerWithResult => {
     const playerWithResult = p as PlayerWithResult;
-    return playerWithResult.result !== undefined || 
-           playerWithResult.status !== undefined || 
-           playerWithResult.won !== undefined;
+    return playerWithResult.result !== undefined ||
+      playerWithResult.status !== undefined ||
+      playerWithResult.won !== undefined;
   });
-  
+
   if (playersWithResult.length > 0) {
     for (const player of playersWithResult) {
       if (player.result === 'win' || player.status === 'winner' || player.won === true) {
@@ -60,33 +60,33 @@ export function deriveWinningTeamId(
 
   // Try to find winner from W3MMD data
   const winnersFound: Array<{ player: Player; missionKey: string; key: string }> = [];
-  
+
   for (const [missionKey, missionData] of Object.entries(w3mmdLookup)) {
     for (const [key, value] of Object.entries(missionData)) {
       const normalizedKey = key.toLowerCase();
       const normalizedValue = String(value).toLowerCase();
-      
+
       // Check for various winner indicators
       if (
-        (normalizedKey.includes('winner') || 
-         normalizedKey.includes('win') ||
-         normalizedKey === 'result' && (normalizedValue.includes('win') || normalizedValue === '1')) &&
+        (normalizedKey.includes('winner') ||
+          normalizedKey.includes('win') ||
+          normalizedKey === 'result' && (normalizedValue.includes('win') || normalizedValue === '1')) &&
         (value > 0 || normalizedValue.includes('win'))
       ) {
         // Try multiple ways to match this to a player
         const matchedPlayer = players.find(p => {
           const normalizedName = (p.name || '').toLowerCase().trim().replace(/[^a-z0-9]/g, '');
           const normalizedMissionKey = missionKey.toLowerCase().replace(/[^a-z0-9]/g, '');
-          
+
           return normalizedName === normalizedMissionKey ||
-                 normalizedMissionKey.includes(normalizedName) ||
-                 normalizedName.includes(normalizedMissionKey) ||
-                 normalizedMissionKey === `player${p.id}` ||
-                 normalizedMissionKey === `p${p.id}` ||
-                 normalizedMissionKey === `slot${p.id}` ||
-                 normalizedMissionKey.includes(String(p.id));
+            normalizedMissionKey.includes(normalizedName) ||
+            normalizedName.includes(normalizedMissionKey) ||
+            normalizedMissionKey === `player${p.id}` ||
+            normalizedMissionKey === `p${p.id}` ||
+            normalizedMissionKey === `slot${p.id}` ||
+            normalizedMissionKey.includes(String(p.id));
         });
-        
+
         if (matchedPlayer) {
           winnersFound.push({ player: matchedPlayer, missionKey, key });
         }
@@ -114,9 +114,9 @@ export function deriveWinningTeamId(
           const normalizedName = (p.name || '').toLowerCase().trim().replace(/[^a-z0-9]/g, '');
           const normalizedMissionKey = missionKey.toLowerCase().replace(/[^a-z0-9]/g, '');
           return normalizedName === normalizedMissionKey ||
-                 normalizedMissionKey.includes(normalizedName) ||
-                 normalizedMissionKey === `player${p.id}` ||
-                 normalizedMissionKey === `p${p.id}`;
+            normalizedMissionKey.includes(normalizedName) ||
+            normalizedMissionKey === `player${p.id}` ||
+            normalizedMissionKey === `p${p.id}`;
         });
         if (matchedPlayer && !losersFound.includes(matchedPlayer)) {
           losersFound.push(matchedPlayer);
@@ -185,7 +185,7 @@ export function deriveFlag(
   // Check all mission keys that might match this player
   for (const [missionKey, missionData] of Object.entries(w3mmdLookup)) {
     const normalizedMissionKey = missionKey.toLowerCase().replace(/[^a-z0-9]/g, '');
-    const matchesPlayer = missionKeys.some(mk => 
+    const matchesPlayer = missionKeys.some(mk =>
       normalizedMissionKey === mk.toLowerCase().replace(/[^a-z0-9]/g, '') ||
       normalizedMissionKey.includes(mk.toLowerCase().replace(/[^a-z0-9]/g, '')) ||
       mk.toLowerCase().replace(/[^a-z0-9]/g, '').includes(normalizedMissionKey)
@@ -197,9 +197,9 @@ export function deriveFlag(
       const normalizedKey = key.toLowerCase();
       const normalizedValue = String(value).toLowerCase();
 
-      if (normalizedKey.includes('winner') || 
-          normalizedKey.includes('win') ||
-          (normalizedKey === 'result' && (normalizedValue.includes('win') || normalizedValue === '1'))) {
+      if (normalizedKey.includes('winner') ||
+        normalizedKey.includes('win') ||
+        (normalizedKey === 'result' && (normalizedValue.includes('win') || normalizedValue === '1'))) {
         if (value > 0 || normalizedValue.includes('win')) {
           logger.debug('Found winner flag in W3MMD for player', {
             player: player.name,
@@ -209,9 +209,9 @@ export function deriveFlag(
           return 'winner';
         }
       }
-      if (normalizedKey.includes('loser') || 
-          normalizedKey.includes('loss') ||
-          (normalizedKey === 'result' && normalizedValue.includes('loss'))) {
+      if (normalizedKey.includes('loser') ||
+        normalizedKey.includes('loss') ||
+        (normalizedKey === 'result' && normalizedValue.includes('loss'))) {
         if (value > 0 || normalizedValue.includes('loss')) {
           logger.debug('Found loser flag in W3MMD for player', {
             player: player.name,

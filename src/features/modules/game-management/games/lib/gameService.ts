@@ -12,7 +12,7 @@
  */
 
 // Re-export updateEloScores from infrastructure for convenience
-export { updateEloScores } from '@/features/infrastructure/game';
+export { updateEloScores } from '@/features/modules/game-management/lib/mechanics';
 
 // Re-export all create operations
 export {

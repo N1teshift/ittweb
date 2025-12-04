@@ -91,7 +91,7 @@ export const getServerSideProps: GetServerSideProps<EditPostPageProps> = async (
 
   try {
     const post = await getPostById(postId);
-    
+
     if (!post) {
       return {
         props: {
@@ -108,11 +108,11 @@ export const getServerSideProps: GetServerSideProps<EditPostPageProps> = async (
 
     if (session && session.discordId) {
       try {
-        const { getUserDataByDiscordIdServer } = await import('@/features/infrastructure/lib/userDataService.server');
+        const { getUserDataByDiscordIdServer } = await import('@/features/modules/community/users/services/userDataService.server');
         const userData = await getUserDataByDiscordIdServer(session.discordId);
         const userIsAdmin = isAdmin(userData?.role);
         const userIsAuthor = post.createdByDiscordId === session.discordId;
-        
+
         canEdit = userIsAdmin || userIsAuthor;
       } catch (error) {
         const { logError } = await import('@/features/infrastructure/logging');

@@ -1,5 +1,5 @@
 import type Player from 'w3gjs/dist/types/Player';
-import type { CreateGame, GameCategory, GamePlayerFlag } from '../../../modules/game-management/games/types';
+import type { CreateGame, GameCategory, GamePlayerFlag } from '@/features/modules/game-management/games/types';
 
 export interface ParsedReplay {
   randomseed?: number;

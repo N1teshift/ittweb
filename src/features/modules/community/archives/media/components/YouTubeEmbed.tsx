@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { extractYouTubeId } from '@/features/infrastructure/lib';
+import { extractYouTubeId } from '@/features/modules/community/archives/services';
 
 interface YouTubeEmbedProps {
   url: string;
@@ -29,9 +29,9 @@ export default function YouTubeEmbed({ url, title }: YouTubeEmbedProps) {
         <div className="w-full h-64 bg-gray-800 rounded-lg border border-amber-500/30 flex items-center justify-center">
           <div className="text-center text-gray-400">
             <p className="text-sm">Video unavailable</p>
-            <a 
-              href={url} 
-              target="_blank" 
+            <a
+              href={url}
+              target="_blank"
               rel="noopener noreferrer"
               className="text-amber-500 hover:text-amber-400 text-xs mt-2 block"
             >

@@ -1,6 +1,6 @@
 import type Player from 'w3gjs/dist/types/Player';
 import type { W3MMDAction } from 'w3gjs/dist/types/parsers/ActionParser';
-import type { CreateGame } from '../../../modules/game-management/games/types';
+import type { CreateGame } from '@/features/modules/game-management/games/types';
 
 export interface ParsedW3MMDEntry {
   missionKey: string;

@@ -8,7 +8,7 @@ jest.mock('../../hooks/useNewPostForm', () => ({
 }));
 
 // Mock the Button component
-jest.mock('@/features/infrastructure/components/ui', () => ({
+jest.mock('@/features/infrastructure/components', () => ({
   Button: ({ children, type, variant, onClick, disabled, className }: any) => (
     <button
       type={type}

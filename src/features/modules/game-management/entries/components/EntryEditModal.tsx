@@ -2,7 +2,7 @@ import { useState, FormEvent } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { EntryContentType } from '@/types/entry';
-import { uploadImage } from '@/features/infrastructure/lib';
+import { uploadImage } from '@/features/modules/community/archives/services';
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 import type { ArchiveEntry } from '@/types/archive';
 
@@ -38,7 +38,7 @@ export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     setImages(files);
-    
+
     // Create preview URLs for new files
     const newUrls = files.map(file => URL.createObjectURL(file));
     setImagePreviewUrls([...imagePreviewUrls, ...newUrls]);
@@ -78,7 +78,7 @@ export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: 
       }
 
       // Separate existing images (URLs) from new blob previews
-      const existingImageUrls = imagePreviewUrls.filter(url => 
+      const existingImageUrls = imagePreviewUrls.filter(url =>
         !url.startsWith('blob:') && typeof url === 'string' && url.length > 0
       );
       const allImageUrls = [...existingImageUrls, ...uploadedImageUrls];
@@ -92,8 +92,8 @@ export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: 
           images: allImageUrls.length > 0 ? allImageUrls : undefined,
           videoUrl: videoUrl.trim() || undefined,
           twitchClipUrl: twitchClipUrl.trim() || undefined,
-          sectionOrder: allImageUrls.length > 0 || videoUrl || twitchClipUrl 
-            ? sectionOrder 
+          sectionOrder: allImageUrls.length > 0 || videoUrl || twitchClipUrl
+            ? sectionOrder
             : undefined,
         }),
       };
@@ -123,7 +123,7 @@ export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: 
       }
 
       logger.info('Entry updated', { entryId, contentType, title });
-      
+
       // Pass entryId to onSuccess so parent can fetch and update the entry
       onSuccess(entryId);
     } catch (err) {
