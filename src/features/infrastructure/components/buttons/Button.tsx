@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '@/features/infrastructure/utils/className';
+import { cn } from '@websites/infrastructure/utils';
 
 type BaseButtonProps = {
     variant?: 'primary' | 'secondary' | 'ghost' | 'amber' | 'success' | 'danger';

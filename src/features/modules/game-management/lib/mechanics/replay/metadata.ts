@@ -10,9 +10,9 @@ export function extractITTMetadata(w3mmdActions: unknown[]): ITTMetadata | undef
   for (const action of w3mmdActions) {
     const actionObj = action as { cache?: { key?: string } };
     const key = actionObj.cache?.key;
-    
+
     if (!key || typeof key !== 'string') continue;
-    
+
     // ITT custom messages format: "custom itt_<identifier> <data>"
     if (key.startsWith('custom itt_')) {
       const content = key.slice('custom '.length);
@@ -74,9 +74,32 @@ function parseITTPayload(payload: string, schemaVersion?: number): ITTPlayerStat
     if (!line.startsWith('player:')) continue;
 
     const parts = line.slice('player:'.length).split('|');
-    
+
+    // Schema v4 format: slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther|items
+    if (parts.length >= 18 && schemaVersion && schemaVersion >= 4) {
+      const itemsStr = parts[17];
+      const items = itemsStr ? itemsStr.split(',').map((id) => parseInt(id, 10) || 0) : [];
+
+      players.push({
+        slotIndex: parseInt(parts[0], 10) || 0,
+        name: parts[1] || '',
+        trollClass: parts[3] || undefined,
+        damageTroll: parseInt(parts[6], 10) || 0,
+        selfHealing: parseInt(parts[7], 10) || 0,
+        allyHealing: parseInt(parts[8], 10) || 0,
+        goldAcquired: parseInt(parts[9], 10) || 0,
+        meatEaten: parseInt(parts[10], 10) || 0,
+        killsElk: parseInt(parts[11], 10) || 0,
+        killsHawk: parseInt(parts[12], 10) || 0,
+        killsSnake: parseInt(parts[13], 10) || 0,
+        killsWolf: parseInt(parts[14], 10) || 0,
+        killsBear: parseInt(parts[15], 10) || 0,
+        killsPanther: parseInt(parts[16], 10) || 0,
+        items,
+      });
+    }
     // Schema v3 format: slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
-    if (parts.length >= 17 && schemaVersion && schemaVersion >= 3) {
+    else if (parts.length >= 17 && schemaVersion && schemaVersion >= 3) {
       players.push({
         slotIndex: parseInt(parts[0], 10) || 0,
         name: parts[1] || '',

@@ -35,10 +35,11 @@ const parsePlayerLine = (line: string, schemaVersion: number): MatchPlayerMetada
     );
   }
 
-  // Schema v3+ format: slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
+  // Schema v4 format: slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther|items
+  // Schema v3 format: slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
   // Schema v2 format: slot|name|race|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
   const hasClass = schemaVersion >= 3;
-  
+
   let slot: string;
   let name: string;
   let race: string;
@@ -76,7 +77,8 @@ const parsePlayerLine = (line: string, schemaVersion: number): MatchPlayerMetada
 
   // Schema v2+: Parse stats if present
   // v2: 16 fields total (slot|name|race|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther)
-  // v3+: 17 fields total (slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther)
+  // v3: 17 fields total (slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther)
+  // v4: 18 fields total (slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther|items)
   const minFieldsForStats = hasClass ? 17 : 16;
   if (parts.length >= minFieldsForStats) {
     const stats: PlayerStats = {
@@ -94,6 +96,12 @@ const parsePlayerLine = (line: string, schemaVersion: number): MatchPlayerMetada
         panther: Number(parts[statsOffset + 10]) || 0,
       },
     };
+
+    if (schemaVersion >= 4 && parts.length >= 18) {
+      const itemsStr = parts[statsOffset + 11];
+      stats.items = itemsStr ? itemsStr.split(',').map(Number) : [];
+    }
+
     player.stats = stats;
   }
 

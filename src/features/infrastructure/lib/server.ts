@@ -9,5 +9,8 @@
  * @fileoverview Server-only infrastructure utilities
  */
 
+// Re-export getStaticProps from shared package (uses local next-i18next.config)
+// Note: The shared package version uses its own config, so we keep the local version
+// for ittweb-specific i18n configuration
 export * from './nextjs';
 

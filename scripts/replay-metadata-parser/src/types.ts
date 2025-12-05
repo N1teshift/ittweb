@@ -12,6 +12,7 @@ export interface PlayerStats {
     bear: number;
     panther: number;
   };
+  items?: number[];
 }
 
 export interface MatchPlayerMetadata {

@@ -8,6 +8,13 @@ import { BUILDINGS_ITEMS } from './buildings';
 import { UNKNOWN_ITEMS } from './unknown';
 
 export { getItemIconPathFromRecord } from './iconUtils';
+export {
+  itemIdToRawCode,
+  rawCodeToItemSlug,
+  itemIdToSlug,
+  getItemByReplayId,
+  getItemsByReplayIds
+} from './replayItemUtils';
 
 export const ITEMS_DATA: ItemData[] = [
   ...(RAW_MATERIALS_ITEMS || []),
@@ -41,7 +48,7 @@ export function getItemsBySubcategory(subcategory: ItemSubcategory): ItemData[] 
 
 export function searchItems(query: string): ItemData[] {
   const lowercaseQuery = query.toLowerCase();
-  return ITEMS_DATA.filter(item => 
+  return ITEMS_DATA.filter(item =>
     item.name.toLowerCase().includes(lowercaseQuery) ||
     item.description.toLowerCase().includes(lowercaseQuery) ||
     item.recipe?.some(ingredient => ingredient.toLowerCase().includes(lowercaseQuery))

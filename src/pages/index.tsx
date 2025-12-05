@@ -10,7 +10,7 @@ import { Button, ErrorBoundary } from '@/features/infrastructure/components';
 import { HomeTimeline } from '@/features/modules/community/archives/shared/components';
 import type { HomeTimelineHandle } from '@/features/modules/community/archives/timeline/components/HomeTimeline';
 import { useRef } from 'react';
-import { logError } from '@/features/infrastructure/logging';
+import { logError } from '@websites/infrastructure/logging';
 
 const pageNamespaces = ["common"];
 

@@ -40,6 +40,7 @@ export interface ITTPlayerStats {
   killsWolf: number;
   killsBear: number;
   killsPanther: number;
+  items?: number[];
 }
 
 /**

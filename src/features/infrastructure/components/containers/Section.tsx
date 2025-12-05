@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '@/features/infrastructure/utils/className';
+import { cn } from '@websites/infrastructure/utils';
 
 interface SectionProps extends React.HTMLAttributes<HTMLElement> {
   variant?: 'default' | 'medieval' | 'glass' | 'minimal';

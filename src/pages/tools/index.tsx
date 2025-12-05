@@ -1,5 +1,5 @@
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
-import { Logger } from '@/features/infrastructure/logging';
+import { Logger } from '@websites/infrastructure/logging';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import type { GetStaticProps } from 'next';

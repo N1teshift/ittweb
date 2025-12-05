@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Card } from '@/features/infrastructure/components';
 import { Tooltip } from '@/features/infrastructure/components';
+import { PlayerItems } from './PlayerItems';
 import type { GamePlayer } from '../types';
 
 interface PlayerStatsTableProps {
@@ -13,8 +14,8 @@ interface PlayerStatsTableProps {
  * Check if any player has ITT-specific stats
  */
 function hasITTStats(players: GamePlayer[]): boolean {
-  return players.some(p => 
-    p.killsElk !== undefined || 
+  return players.some(p =>
+    p.killsElk !== undefined ||
     p.killsHawk !== undefined ||
     p.meatEaten !== undefined ||
     p.selfHealing !== undefined ||
@@ -27,12 +28,12 @@ function hasITTStats(players: GamePlayer[]): boolean {
  * Get total animal kills for a player
  */
 function getTotalAnimalKills(player: GamePlayer): number {
-  return (player.killsElk || 0) + 
-         (player.killsHawk || 0) + 
-         (player.killsSnake || 0) + 
-         (player.killsWolf || 0) + 
-         (player.killsBear || 0) + 
-         (player.killsPanther || 0);
+  return (player.killsElk || 0) +
+    (player.killsHawk || 0) +
+    (player.killsSnake || 0) +
+    (player.killsWolf || 0) +
+    (player.killsBear || 0) +
+    (player.killsPanther || 0);
 }
 
 /**
@@ -46,14 +47,14 @@ function formatStat(value: number | undefined): string {
 /**
  * Stat cell with icon and tooltip
  */
-function StatCell({ 
-  value, 
-  icon, 
-  tooltip, 
-  colorClass = 'text-gray-300' 
-}: { 
-  value: number | undefined; 
-  icon: string; 
+function StatCell({
+  value,
+  icon,
+  tooltip,
+  colorClass = 'text-gray-300'
+}: {
+  value: number | undefined;
+  icon: string;
   tooltip: string;
   colorClass?: string;
 }) {
@@ -61,7 +62,7 @@ function StatCell({
   if (displayValue === '-') {
     return <span className="text-gray-600">-</span>;
   }
-  
+
   return (
     <Tooltip content={tooltip}>
       <span className={`flex items-center gap-1 ${colorClass}`}>
@@ -104,7 +105,7 @@ export function PlayerStatsTable({ players, title = 'Player Statistics' }: Playe
   return (
     <Card variant="medieval" className="p-6">
       <h2 className="text-xl font-semibold text-amber-400 mb-4">{title}</h2>
-      
+
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
@@ -140,22 +141,27 @@ export function PlayerStatsTable({ players, title = 'Player Statistics' }: Playe
                   <span>🦌 Kills</span>
                 </Tooltip>
               </th>
+              <th className="text-center py-2 px-2">
+                <Tooltip content="Player inventory items at end of game">
+                  <span>🎒 Items</span>
+                </Tooltip>
+              </th>
             </tr>
           </thead>
           <tbody>
             {sortedPlayers.map((player) => {
               const totalKills = getTotalAnimalKills(player);
-              const flagColor = player.flag === 'winner' 
-                ? 'bg-green-500/5' 
-                : player.flag === 'loser' 
-                ? 'bg-red-500/5' 
-                : 'bg-yellow-500/5';
-              
+              const flagColor = player.flag === 'winner'
+                ? 'bg-green-500/5'
+                : player.flag === 'loser'
+                  ? 'bg-red-500/5'
+                  : 'bg-yellow-500/5';
+
               return (
                 <tr key={player.id} className={`border-b border-amber-500/10 ${flagColor}`}>
                   <td className="py-2 px-2">
-                    <Link 
-                      href={`/players/${encodeURIComponent(player.name)}`} 
+                    <Link
+                      href={`/players/${encodeURIComponent(player.name)}`}
                       className="text-amber-300 hover:text-amber-200"
                     >
                       {player.name}
@@ -165,41 +171,41 @@ export function PlayerStatsTable({ players, title = 'Player Statistics' }: Playe
                     )}
                   </td>
                   <td className="text-center py-2 px-2">
-                    <StatCell 
-                      value={player.damageDealt} 
-                      icon="" 
+                    <StatCell
+                      value={player.damageDealt}
+                      icon=""
                       tooltip="Damage dealt"
                       colorClass="text-red-400"
                     />
                   </td>
                   <td className="text-center py-2 px-2">
-                    <StatCell 
-                      value={player.selfHealing} 
-                      icon="" 
+                    <StatCell
+                      value={player.selfHealing}
+                      icon=""
                       tooltip="Self healing"
                       colorClass="text-green-400"
                     />
                   </td>
                   <td className="text-center py-2 px-2">
-                    <StatCell 
-                      value={player.allyHealing} 
-                      icon="" 
+                    <StatCell
+                      value={player.allyHealing}
+                      icon=""
                       tooltip="Ally healing"
                       colorClass="text-blue-400"
                     />
                   </td>
                   <td className="text-center py-2 px-2">
-                    <StatCell 
-                      value={player.meatEaten} 
-                      icon="" 
+                    <StatCell
+                      value={player.meatEaten}
+                      icon=""
                       tooltip="Meat eaten"
                       colorClass="text-orange-400"
                     />
                   </td>
                   <td className="text-center py-2 px-2">
-                    <StatCell 
-                      value={player.goldAcquired} 
-                      icon="" 
+                    <StatCell
+                      value={player.goldAcquired}
+                      icon=""
                       tooltip="Gold acquired"
                       colorClass="text-yellow-400"
                     />
@@ -213,28 +219,31 @@ export function PlayerStatsTable({ players, title = 'Player Statistics' }: Playe
                       <span className="text-gray-600">-</span>
                     )}
                   </td>
+                  <td className="text-center py-2 px-2">
+                    <PlayerItems items={player.items} />
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
       </div>
-      
+
       {/* Mobile-friendly card view for small screens */}
       <div className="md:hidden mt-4 space-y-3">
         {sortedPlayers.map((player) => {
           const totalKills = getTotalAnimalKills(player);
-          const flagBorder = player.flag === 'winner' 
-            ? 'border-green-500/30' 
-            : player.flag === 'loser' 
-            ? 'border-red-500/30' 
-            : 'border-yellow-500/30';
-          
+          const flagBorder = player.flag === 'winner'
+            ? 'border-green-500/30'
+            : player.flag === 'loser'
+              ? 'border-red-500/30'
+              : 'border-yellow-500/30';
+
           return (
             <div key={`mobile-${player.id}`} className={`p-3 rounded border ${flagBorder} bg-black/20`}>
               <div className="flex justify-between items-center mb-2">
-                <Link 
-                  href={`/players/${encodeURIComponent(player.name)}`} 
+                <Link
+                  href={`/players/${encodeURIComponent(player.name)}`}
                   className="text-amber-300 hover:text-amber-200 font-medium"
                 >
                   {player.name}
@@ -250,6 +259,12 @@ export function PlayerStatsTable({ players, title = 'Player Statistics' }: Playe
                 <div>💰 {formatStat(player.goldAcquired)}</div>
                 <div>🦌 {totalKills || '-'}</div>
               </div>
+              {player.items && player.items.length > 0 && (
+                <div className="mt-2 pt-2 border-t border-amber-500/10">
+                  <div className="text-xs text-gray-400 mb-1">Items:</div>
+                  <PlayerItems items={player.items} />
+                </div>
+              )}
             </div>
           );
         })}

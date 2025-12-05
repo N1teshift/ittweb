@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { signOut } from 'next-auth/react';
 import { isAdmin } from '@/features/modules/community/users';
-import { logError } from '@/features/infrastructure/logging';
+import { logError } from '@websites/infrastructure/logging';
 import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
 import { serializeUserData } from '@/features/modules/community/users/settings/utils/serializeUserData';
 import { UserProfile } from '@/features/modules/community/users/settings/components/UserProfile';

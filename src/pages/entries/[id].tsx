@@ -19,7 +19,7 @@ import { Entry } from '@/types/entry';
 import YouTubeEmbed from '@/features/modules/community/archives/media/components/YouTubeEmbed';
 import TwitchClipEmbed from '@/features/modules/community/archives/media/components/TwitchClipEmbed';
 import { extractYouTubeId, extractTwitchClipId } from '@/features/modules/community/archives/services';
-import { logError } from '@/features/infrastructure/logging';
+import { logError } from '@websites/infrastructure/logging';
 
 const pageNamespaces = ["common"];
 

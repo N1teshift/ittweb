@@ -14,6 +14,15 @@ This folder contains **generic, reusable code** that:
 
 See [Architecture Documentation](../../../docs/production/architecture/infrastructure-vs-modules.md) for detailed guidelines on when to use infrastructure vs modules.
 
+## Migration to Shared Packages
+
+**Most infrastructure functionality has been migrated to `@websites/infrastructure` and `@websites/ui` packages.**
+
+This folder now primarily contains:
+- **Project-specific wrappers** (e.g., `api/handlers/routeHandlers.ts` - ittweb auth config wrapper)
+- **Project-specific components** (e.g., `Header`, `PageHero`, `DiscordButton`, `GitHubButton`)
+- **Local configuration** (e.g., `lib/nextjs/getStaticProps.ts` - uses local next-i18next.config)
+
 ## Exports
 
 ### API (`api/`)
@@ -21,44 +30,44 @@ See [Architecture Documentation](../../../docs/production/architecture/infrastru
 See [API README](./api/README.md) for detailed documentation.
 
 - **Handlers** (`api/handlers/`)
-  - `routeHandlers.ts` - Standardized API route handler utilities
-  - Error handling patterns, authentication, caching
-- **Parsing** (`api/parsing/`)
-  - `queryParser.ts` - Query parameter parsing utilities
-- **Schemas** (`api/schemas/`)
-  - `schemas.ts` - Generic Zod schemas for request validation (domain-specific schemas are in their respective modules)
-- **Zod** (`api/zod/`)
-  - `zodValidation.ts` - Zod validation helpers and integrations
+  - `routeHandlers.ts` - **ITTWeb-specific wrapper** with auth configuration
+  - Re-exports from `@websites/infrastructure/api` for parsing, zod, schemas
 - **Firebase** (`api/firebase/`)
   - Firebase Admin SDK setup and client configuration
   - Firestore helper utilities
+  - **Note**: Consider migrating to `@websites/infrastructure/firebase` if compatible
 
-### Logging (`logging/`)
-- `logger.ts` - Logger implementation
-- Component-specific logger creation
-- Error categorization and logging
+### Logging (`logging/`) - **MIGRATED**
+- ✅ Now uses `@websites/infrastructure/logging`
+- All imports automatically re-exported from shared package
+
+### Monitoring (`monitoring/`) - **MIGRATED**
+- ✅ Now uses `@websites/infrastructure/monitoring`
+- All imports automatically re-exported from shared package
 
 ### Components (`components/`)
-- **Layout Components**: `Layout`, `Header`, `PageHero`, `DiscordButton`, `GitHubButton`
-- **Button Components**: `Button`, `GitHubButton`, `DiscordButton`
-- **Container Components**: `Card`
-- **Loading Components**: `LoadingOverlay`, `LoadingScreen`
-- **Feedback Components**: `EmptyState`, `Tooltip`
+- **Project-Specific Layout Components**: `Header`, `PageHero`, `DiscordButton`, `GitHubButton`
+- **Generic Components**: `Button`, `Card`, `ErrorBoundary`, `LoadingOverlay`, `LoadingScreen`, `EmptyState`, `Tooltip`
+- **Note**: Generic components available in `@websites/ui` - consider migrating
 
 ### Services (`lib/`)
-- `userDataService` - User data CRUD operations
-- `archiveService` - Archive entry service
-- `getStaticProps` - Next.js static props utilities
+- `getStaticProps` - Next.js static props utilities (uses local next-i18next.config)
 - `TranslationNamespaceContext` - i18n namespace context
+- Cache utilities - re-exported from `@websites/infrastructure/cache`
 
-### Utils (`utils/`)
-- `objectUtils` - Object manipulation utilities
-- `timestampUtils` - Timestamp conversion utilities
-- `accessibility/helpers` - Accessibility testing utilities
-- `loggerUtils` - Error logging utilities (deprecated, use `logging/`)
+### Utils (`utils/`) - **MIGRATED**
+- ✅ Now uses `@websites/infrastructure/utils` for:
+  - `objectUtils` - Object manipulation utilities
+  - `timestampUtils` - Timestamp conversion utilities
+  - `accessibility/helpers` - Accessibility testing utilities
+  - `className` utility (cn function)
+- **Project-specific**: `service/serviceOperationWrapper.ts`
 
-### Hooks (`hooks/`)
-- `useFallbackTranslation` - Translation fallback handling
+### Hooks (`hooks/`) - **MIGRATED**
+- ✅ Now uses `@websites/infrastructure/hooks`:
+  - `useDataFetch` - Data fetching hook
+  - `useFallbackTranslation` - Translation fallback handling
+  - `useModalAccessibility` - Modal accessibility hook
 
 ## Usage
 
@@ -89,6 +98,7 @@ const gamesSnapshot = await getCollectionSnapshot('games');
 
 ### Logging
 ```typescript
+// Now uses @websites/infrastructure/logging (automatically re-exported)
 import { createComponentLogger, logError } from '@/features/infrastructure/logging';
 
 const logger = createComponentLogger('my-component');

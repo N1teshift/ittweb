@@ -92,6 +92,8 @@ export interface GamePlayer {
   killsWolf?: number;
   killsBear?: number;
   killsPanther?: number;
+  // Player inventory items (schema v4+)
+  items?: number[]; // Item IDs from replay metadata
   createdAt: Timestamp | string;
 }
 
@@ -102,14 +104,14 @@ export interface Game {
   id: string; // Firestore document ID
   gameId: number; // Single numeric identifier (same for scheduled and completed)
   gameState: GameState; // 'scheduled' | 'completed'
-  
+
   // Common fields
   creatorName: string;
   createdByDiscordId?: string | null;
   createdAt: Timestamp | string;
   updatedAt: Timestamp | string;
   submittedAt?: Timestamp | string;
-  
+
   // Scheduled game fields (only when gameState === 'scheduled')
   scheduledDateTime?: Timestamp | string; // ISO 8601 string in UTC or Timestamp
   scheduledDateTimeString?: string; // ISO 8601 string (for querying)
@@ -123,7 +125,7 @@ export interface Game {
   participants?: GameParticipant[]; // Discord/website users who joined
   status?: 'scheduled' | 'ongoing' | 'awaiting_replay' | 'archived' | 'cancelled'; // Status for scheduled games
   scheduledGameId?: number; // Unique numeric ID for scheduled games (when gameState === 'scheduled')
-  
+
   // Completed game fields (only when gameState === 'completed')
   datetime?: Timestamp | string; // When the game was played
   duration?: number; // seconds
@@ -136,10 +138,10 @@ export interface Game {
   playerNames?: string[]; // Array of player names for quick access
   playerCount?: number; // Number of players in the game
   verified?: boolean;
-  
+
   // Archive content (only when gameState === 'completed' and game has been archived)
   archiveContent?: GameArchiveContent;
-  
+
   // Soft delete
   isDeleted?: boolean;
   deletedAt?: Timestamp | string | null;
@@ -215,6 +217,8 @@ export interface CreateCompletedGame {
     killsWolf?: number;
     killsBear?: number;
     killsPanther?: number;
+    // Player inventory items (schema v4+)
+    items?: number[]; // Item IDs from replay metadata
   }>;
   // Optional archive content when archiving
   archiveContent?: GameArchiveContent;
@@ -228,7 +232,7 @@ export interface UpdateGame {
   creatorName?: string;
   createdByDiscordId?: string | null;
   updatedAt?: Timestamp | string;
-  
+
   // Scheduled game updates
   scheduledDateTime?: Timestamp | string;
   scheduledDateTimeString?: string;
@@ -240,7 +244,7 @@ export interface UpdateGame {
   gameLength?: number;
   modes?: GameMode[];
   participants?: GameParticipant[];
-  
+
   // Completed game updates
   datetime?: Timestamp | string;
   duration?: number;
@@ -253,7 +257,7 @@ export interface UpdateGame {
   playerNames?: string[];
   playerCount?: number;
   verified?: boolean;
-  
+
   // Archive content updates
   archiveContent?: GameArchiveContent;
 }
