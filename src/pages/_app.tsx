@@ -13,8 +13,7 @@ import Head from "next/head";
 import { useEffect } from "react";
 import { SWRConfig } from "swr";
 import { Layout } from "@/features/infrastructure/components";
-import { Logger } from "@websites/infrastructure/logging";
-import { initializeErrorTracking, initializePerformanceMonitoring } from "@websites/infrastructure/monitoring";
+import { Logger } from "@/features/infrastructure/logging";
 import { swrConfig } from "@/features/infrastructure/lib";
 
 // Initialize logging
@@ -51,8 +50,7 @@ function App({ Component, pageProps }: AppProps) {
     // Initialize monitoring (client-side only)
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            initializeErrorTracking();
-            initializePerformanceMonitoring();
+            // Monitoring initialization removed for standalone project
             
             // Filter known third-party script errors in development and production
             // These errors are harmless but clutter the console

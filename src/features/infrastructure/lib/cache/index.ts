@@ -1,8 +1,4 @@
-// Re-export from shared package
-export * from '@websites/infrastructure/cache';
-
-// Server-only cache utilities - do not export analyticsCache here
-// Import directly from './analyticsCache' in server-side code only
-
-
-
+// Export local cache utilities (standalone project)
+export * from './requestCache';
+export * from './swrConfig';
+// Note: analyticsCache is server-only, import directly when needed

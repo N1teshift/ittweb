@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '@websites/infrastructure/utils';
+import { cn } from '@/features/infrastructure/utils';
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     variant?: 'default' | 'glass' | 'medieval';
