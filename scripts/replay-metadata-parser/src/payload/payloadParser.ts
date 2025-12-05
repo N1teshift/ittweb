@@ -26,7 +26,7 @@ const parseSchemaVersion = (line: string): number => {
   return version;
 };
 
-const parsePlayerLine = (line: string): MatchPlayerMetadata => {
+const parsePlayerLine = (line: string, schemaVersion: number): MatchPlayerMetadata => {
   const parts = line.slice("player:".length).split("|");
   if (parts.length < 5) {
     throw new ReplayMetaError(
@@ -35,7 +35,27 @@ const parsePlayerLine = (line: string): MatchPlayerMetadata => {
     );
   }
 
-  const [slot, name, race, team, result] = parts;
+  // Schema v3+ format: slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
+  // Schema v2 format: slot|name|race|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
+  const hasClass = schemaVersion >= 3;
+  
+  let slot: string;
+  let name: string;
+  let race: string;
+  let team: string;
+  let result: string;
+  let statsOffset: number;
+
+  if (hasClass) {
+    // v3+ format with class field
+    [slot, name, race, , team, result] = parts;
+    statsOffset = 6; // Stats start at index 6 (after slot|name|race|class|team|result)
+  } else {
+    // v2 format without class field
+    [slot, name, race, team, result] = parts;
+    statsOffset = 5; // Stats start at index 5 (after slot|name|race|team|result)
+  }
+
   const slotIndex = Number(slot);
   const teamId = Number(team);
 
@@ -54,22 +74,24 @@ const parsePlayerLine = (line: string): MatchPlayerMetadata => {
     result,
   };
 
-  // Schema v2+: Parse stats if present (16 fields total)
-  // Format: slot|name|race|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
-  if (parts.length >= 16) {
+  // Schema v2+: Parse stats if present
+  // v2: 16 fields total (slot|name|race|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther)
+  // v3+: 17 fields total (slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther)
+  const minFieldsForStats = hasClass ? 17 : 16;
+  if (parts.length >= minFieldsForStats) {
     const stats: PlayerStats = {
-      damageTroll: Number(parts[5]) || 0,
-      selfHealing: Number(parts[6]) || 0,
-      allyHealing: Number(parts[7]) || 0,
-      goldAcquired: Number(parts[8]) || 0,
-      meatEaten: Number(parts[9]) || 0,
+      damageTroll: Number(parts[statsOffset]) || 0,
+      selfHealing: Number(parts[statsOffset + 1]) || 0,
+      allyHealing: Number(parts[statsOffset + 2]) || 0,
+      goldAcquired: Number(parts[statsOffset + 3]) || 0,
+      meatEaten: Number(parts[statsOffset + 4]) || 0,
       kills: {
-        elk: Number(parts[10]) || 0,
-        hawk: Number(parts[11]) || 0,
-        snake: Number(parts[12]) || 0,
-        wolf: Number(parts[13]) || 0,
-        bear: Number(parts[14]) || 0,
-        panther: Number(parts[15]) || 0,
+        elk: Number(parts[statsOffset + 5]) || 0,
+        hawk: Number(parts[statsOffset + 6]) || 0,
+        snake: Number(parts[statsOffset + 7]) || 0,
+        wolf: Number(parts[statsOffset + 8]) || 0,
+        bear: Number(parts[statsOffset + 9]) || 0,
+        panther: Number(parts[statsOffset + 10]) || 0,
       },
     };
     player.stats = stats;
@@ -140,7 +162,7 @@ export const parsePayload = (
     }
 
     if (line.startsWith("player:")) {
-      players.push(parsePlayerLine(line));
+      players.push(parsePlayerLine(line, schemaVersion));
       continue;
     }
 
