@@ -16,7 +16,7 @@ export const UNKNOWN_ITEMS: ItemData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'Hunter can wear an animal hide as a trophy cloak, gaining bonuses depending on the type of the hide:\n\nElk hide: |cff6495ED\n +1 |rarmor.|cff6495ED\n +20 |rmovement speed.\n\nWolf hide: |cff6495ED\n +2 |rarmor.|cff6495ED\n +10% |rattack speed.\n\nBear hide: |cff6495ED\n +4 |rarmor.|cFFFFCC00\nYou can put a hide, Panther Fang or Mammoth Horn in this slot|r',
-    iconPath: 'btntrophyhidedummy.png',
+    iconPath: 'BTNTrophyHideDummy.png',
     stockReplenishInterval: 120,
   },
   {

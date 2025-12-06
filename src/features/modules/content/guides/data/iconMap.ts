@@ -481,6 +481,7 @@ export const ICON_MAP: IconMap = {
     'Honeycomb': 'BTNHoneycomb.png',
     'Horn Of the Mammoth': 'btnhornoffog.png',
     'Hunter\\': 'BTNTrophyHideDummy.png',
+    'Hunter\'s Trophy': 'BTNTrophyHideDummy.png',
     'Hunting Net': 'BTNHuntingNet.png',
     'Iron Axe': 'btnorcmeleeuptwo.png',
     'Iron Boots': 'btnboots.png',

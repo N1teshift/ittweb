@@ -31,13 +31,15 @@ function getRawItemCode(fullId) {
 }
 
 /**
- * Normalize item name for matching (lowercase, strip color codes, trim)
+ * Normalize item name for matching (lowercase, strip color codes, trim, handle apostrophes)
+ * Apostrophes are removed to match slug generation (e.g., "Hunter's Trophy" -> "hunters trophy")
  */
 function normalizeItemName(name) {
   if (!name) return '';
   return stripColorCodes(name)
     .toLowerCase()
     .trim()
+    .replace(/'/g, '')  // Remove apostrophes to match slug generation
     .replace(/\s+/g, ' ');
 }
 

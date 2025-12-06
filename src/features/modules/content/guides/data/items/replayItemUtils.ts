@@ -14,6 +14,7 @@ const RAW_ITEM_CODE_TO_SLUG: Record<string, string> = {
     'I057': 'alligator-gold',
     'I058': 'blink',
     'IM0{': 'panther-fang',
+    'IM0}': 'hunter-s-trophy',
     'IM0~': 'blow-gun',
     'IM02': 'food-slot',
     'IM03': 'scavenged-mushroom',
@@ -277,9 +278,12 @@ export function getItemByReplayId(itemId: number | string): ItemData | undefined
     if (isNaN(numericId) || numericId === 0) return undefined;
     
     const slug = itemIdToSlug(numericId);
-    if (!slug) return undefined;
+    if (!slug) {
+        return undefined;
+    }
 
-    return ITEMS_DATA.find(item => item.id === slug);
+    const item = ITEMS_DATA.find(item => item.id === slug);
+    return item;
 }
 
 /**
