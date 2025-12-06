@@ -64,11 +64,14 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
       clearTimeout(parsingTimeout);
       setStatus('processing');
 
-      const data = (await response.json()) as ApiResponse;
+      const responseData = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to upload replay');
+        throw new Error(responseData.error || 'Failed to upload replay');
       }
+
+      // Extract the nested data property (createApiHandler wraps return value in 'data')
+      const data = (responseData.data || responseData) as ApiResponse;
 
       setStatus('idle');
       setSuccessMessage(data.message || 'Replay uploaded successfully!');
