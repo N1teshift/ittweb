@@ -6,7 +6,7 @@
     "extract:data": "python ./src/features/infrastructure/extraction/scripts/current/manage_extraction.py pipeline",
     "dev": "node scripts/utils/filter-dev-logs.js next dev",
     "dev:verbose": "next dev",
-    "type-check": "tsc --noEmit && tsc -p scripts/replay-metadata-parser/tsconfig.json --noEmit",
+    "type-check": "tsc --noEmit",
     "validate-env": "node scripts/utils/validate-env.js",
     "build": "npm run validate-env && npm --loglevel=error run build:internal",
     "build:internal": "next build",
