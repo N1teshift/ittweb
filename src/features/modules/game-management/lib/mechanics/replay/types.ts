@@ -29,6 +29,8 @@ export interface ITTPlayerStats {
   slotIndex: number;
   name: string;
   trollClass?: string;
+  team?: number;
+  result?: string; // WIN, LOSS, LEAVE, DRAW, etc.
   damageTroll: number;
   selfHealing: number;
   allyHealing: number;

@@ -71,14 +71,18 @@ function parseITTPayload(payload, schemaVersion) {
             const parts = line.slice('player:'.length).split('|');
 
             // Schema v4 format (18+ parts)
+            // Format: slotIndex|name|race|class|team|result|damageTroll|...
             if (parts.length >= 18 && schemaVersion && schemaVersion >= 4) {
                 const itemsStr = parts[17];
                 const items = itemsStr ? itemsStr.split(',').map((id) => parseInt(id, 10) || 0) : [];
+                const result = parts[5] || ''; // WIN, LOSS, LEAVE, etc.
 
                 players.push({
                     slotIndex: parseInt(parts[0], 10) || 0,
                     name: parts[1] || '',
                     trollClass: parts[3] || undefined,
+                    team: parseInt(parts[4], 10) || 0,
+                    result: result.toUpperCase(), // WIN, LOSS, LEAVE, etc.
                     damageTroll: parseInt(parts[6], 10) || 0,
                     selfHealing: parseInt(parts[7], 10) || 0,
                     allyHealing: parseInt(parts[8], 10) || 0,

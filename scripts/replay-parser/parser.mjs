@@ -123,6 +123,8 @@ export async function parseReplayFile(buffer) {
             slotIndex: p.slotIndex,
             name: p.name,
             trollClass: p.trollClass,
+            team: p.team,
+            result: p.result,
             damageTroll: p.damageTroll,
             selfHealing: p.selfHealing,
             allyHealing: p.allyHealing,

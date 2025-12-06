@@ -97,6 +97,24 @@ export function matchPlayers(replayPlayers, ittPlayers) {
             debugLines.push(`[DEBUG] ❌ NO MATCH FOUND for ${player.name} (pid: ${player.id})`);
         }
 
+        // Derive flag from ITT metadata result
+        let flag = 'unknown';
+        if (ittPlayer) {
+            // Check if result field exists (it should be extracted from ITT payload)
+            const result = ittPlayer.result ? ittPlayer.result.toUpperCase() : '';
+            if (result === 'WIN') {
+                flag = 'winner';
+            } else if (result === 'LOSS' || result === 'LEAVE') {
+                flag = 'loser';
+            } else if (result === 'DRAW') {
+                flag = 'drawer';
+            }
+            // Debug: log if result is missing
+            if (debugPlayer && !ittPlayer.result) {
+                debugLines.push(`[DEBUG] ⚠️ No result field for ${ittPlayer.name} (slotIndex: ${ittPlayer.slotIndex})`);
+            }
+        }
+
         // Merge ITT stats if found
         const ittStats = ittPlayer ? {
             class: ittPlayer.trollClass,
@@ -118,7 +136,7 @@ export function matchPlayers(replayPlayers, ittPlayers) {
             name: player.name || `Player ${player.id}`,
             pid: player.id,
             teamid: player.teamid,
-            flag: 'unknown',
+            flag,
             ...ittStats,
         };
     });

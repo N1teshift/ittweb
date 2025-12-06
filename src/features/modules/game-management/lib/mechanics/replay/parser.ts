@@ -1,6 +1,6 @@
 import W3GReplay from 'w3gjs';
 import { createComponentLogger } from '@/features/infrastructure/logging';
-import type { CreateGame } from '@/features/modules/game-management/games/types';
+import type { CreateGame, GamePlayerFlag } from '@/features/modules/game-management/games/types';
 import { buildW3MMDLookup, mapMissionStatsToPlayers } from '../w3mmd';
 import { extractITTMetadata } from './metadata';
 import { deriveWinningTeamId, deriveFlag } from './winner';
@@ -83,7 +83,6 @@ export async function parseReplayFile(
       category: options.fallbackCategory || deriveCategory(players),
       players: players.map((player) => {
         const stats = derivedStats.get(player.id) || {};
-        const flag = deriveFlag(player.teamid, winningTeamId, player, w3mmdData.lookup);
 
         // Find ITT stats for this player using improved matching strategy
         // Priority 1: Match by Exact Name (most reliable)
@@ -117,6 +116,25 @@ export async function parseReplayFile(
             name: player.name,
             id: player.id,
           });
+        }
+
+        // Derive flag: prefer ITT metadata result field, fallback to deriveFlag
+        let flag: GamePlayerFlag;
+        if (ittPlayer?.result) {
+          const result = ittPlayer.result.toUpperCase();
+          if (result === 'WIN') {
+            flag = 'winner';
+          } else if (result === 'LOSS' || result === 'LEAVE') {
+            flag = 'loser';
+          } else if (result === 'DRAW') {
+            flag = 'drawer';
+          } else {
+            // Unknown result value, fall back to deriveFlag
+            flag = deriveFlag(player.teamid, winningTeamId, player, w3mmdData.lookup);
+          }
+        } else {
+          // No ITT result, use deriveFlag
+          flag = deriveFlag(player.teamid, winningTeamId, player, w3mmdData.lookup);
         }
 
         // Merge ITT stats if found
