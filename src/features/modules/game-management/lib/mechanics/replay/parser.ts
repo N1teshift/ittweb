@@ -5,7 +5,7 @@ import { buildW3MMDLookup, mapMissionStatsToPlayers } from '../w3mmd';
 import { extractITTMetadata } from './metadata';
 import { deriveWinningTeamId, deriveFlag } from './winner';
 import { getDurationSeconds, deriveCategory } from './utils';
-import type { ParsedReplay, ReplayParserOptions, ReplayParserResult, ITTPlayerStats } from './types';
+import type { ParsedReplay, ReplayParserOptions, ReplayParserResult, ITTPlayerStats, ParsingSummary } from './types';
 
 const logger = createComponentLogger('games/replayParser');
 
