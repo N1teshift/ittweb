@@ -34,9 +34,12 @@
     "test:validate:quick": "node scripts/test-validation.js --quick",
     "test:validate:ci": "node scripts/test-validation.js --ci",
     "analyze:replay": "node scripts/utils/analyze-replay.mjs",
+    "parse:replay": "node scripts/parse-replay.mjs",
+    "parse:replay:all": "node scripts/parse-replay.mjs --all",
+    "parse:replay:verbose": "node scripts/parse-replay.mjs --verbose",
     "replay-meta:build": "tsc -p scripts/replay-metadata-parser/tsconfig.json",
     "replay-meta:watch": "tsc -p scripts/replay-metadata-parser/tsconfig.json --watch",
-    "replay-meta:decode": "node ./scripts/replay-metadata-parser/dist/cli.js decode"
+    "replay-meta:decode": "node ./scripts/replay-metadata-parser/dist/cli.js mmd"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.16",

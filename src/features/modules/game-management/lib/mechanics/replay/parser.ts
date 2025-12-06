@@ -70,6 +70,7 @@ export async function parseReplayFile(
     });
 
     const matchedIttPlayers = new Set<ITTPlayerStats>();
+    const matchedSlotIndices = new Set<number>();
 
     const gameData: CreateGame = {
       gameId: options.scheduledGameId || parsed.randomseed || Date.now(),
@@ -84,23 +85,25 @@ export async function parseReplayFile(
         const stats = derivedStats.get(player.id) || {};
         const flag = deriveFlag(player.teamid, winningTeamId, player, w3mmdData.lookup);
 
-        // Find ITT stats for this player by matching slot index or name
-        // Find ITT stats for this player
-        // Priority 1: Match by Slot Index (most reliable)
-        let ittPlayer = ittMetadata?.players.find((p) => p.slotIndex === player.id);
+        // Find ITT stats for this player using improved matching strategy
+        // Priority 1: Match by Exact Name (most reliable)
+        let ittPlayer = ittMetadata?.players.find(
+          (p) => p.name === player.name && !matchedIttPlayers.has(p) && !matchedSlotIndices.has(p.slotIndex)
+        );
 
-        // Priority 2: Match by Exact Name (if no slot match)
+        // Priority 2: Match by Name with # replaced by _ (common pattern)
         if (!ittPlayer && ittMetadata?.players) {
+          const playerNameWithUnderscore = player.name?.replace(/#/g, '_');
           ittPlayer = ittMetadata.players.find(
-            (p) => p.name === player.name && !matchedIttPlayers.has(p)
+            (p) => p.name === playerNameWithUnderscore && !matchedIttPlayers.has(p) && !matchedSlotIndices.has(p.slotIndex)
           );
         }
 
-        // Priority 3: Match by Normalized Name (fallback)
+        // Priority 3: Match by Normalized Name (fallback - removes all non-alphanumeric)
         if (!ittPlayer && ittMetadata?.players) {
           const normalizedPlayerName = (player.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
           ittPlayer = ittMetadata.players.find((p) => {
-            if (matchedIttPlayers.has(p)) return false;
+            if (matchedIttPlayers.has(p) || matchedSlotIndices.has(p.slotIndex)) return false;
             const normalizedIttName = p.name.toLowerCase().replace(/[^a-z0-9]/g, '');
             return normalizedIttName === normalizedPlayerName;
           });
@@ -108,6 +111,7 @@ export async function parseReplayFile(
 
         if (ittPlayer) {
           matchedIttPlayers.add(ittPlayer);
+          matchedSlotIndices.add(ittPlayer.slotIndex);
         } else if (ittMetadata) {
           logger.warn('Could not match player to ITT metadata', {
             name: player.name,

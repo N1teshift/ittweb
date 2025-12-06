@@ -2,9 +2,7 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { decodeReplay } from './replay-metadata-parser/dist/decodeReplay.js';
 import { readMMDData } from './replay-metadata-parser/dist/mmd/mmdReader.js';
-import { readChatMessages } from './replay-metadata-parser/dist/chat/chatReader.js';
 import { parsePayload } from './replay-metadata-parser/dist/payload/payloadParser.js';
 import { loadMatchMetadataSpec } from './replay-metadata-parser/dist/spec/specLoader.js';
 import W3GReplay from 'w3gjs';
@@ -116,8 +114,9 @@ function parseITTPayload(payload, schemaVersion) {
 }
 
 const REPLAYS = [
-  'Replay_2025_12_04_2333.w3g',
-  'Replay_2025_12_05_0023.w3g',
+  'Replay_2025_12_05_2315.w3g',
+  // 'Replay_2025_12_04_2333.w3g',
+  // 'Replay_2025_12_05_0023.w3g',
 ];
 
 async function testOldMethod(buffer) {
@@ -190,62 +189,6 @@ async function testMMDMethod(filePath) {
   }
 }
 
-async function testOrderMethod(filePath) {
-  console.log('\n=== Testing ORDER METHOD (order-based encoding) ===');
-  try {
-    const result = await decodeReplay(filePath);
-    
-    console.log('✓ Metadata decoded via order method');
-    console.log('  Match ID:', result.metadata.matchId);
-    console.log('  Map:', result.metadata.mapName, 'v' + result.metadata.mapVersion);
-    console.log('  Players:', result.metadata.playerCount);
-    console.log('  Duration:', result.metadata.durationSeconds, 's');
-    console.log('  Orders found:', result.orders.length);
-    console.log('  Payload length:', result.payload.length);
-    
-    if (result.metadata.players.length > 0) {
-      console.log('  Sample player:', JSON.stringify(result.metadata.players[0], null, 2));
-    }
-    
-    return { success: true, result };
-  } catch (error) {
-    console.log('✗ Error:', error.message);
-    if (error.stack) console.log('  Stack:', error.stack.split('\n').slice(0, 3).join('\n'));
-    return { success: false, error: error.message };
-  }
-}
-
-async function testChatMethod(filePath) {
-  console.log('\n=== Testing CHAT METHOD (chat-based encoding) ===');
-  try {
-    const chatResult = await readChatMessages(filePath);
-    
-    console.log('  Total chat messages:', chatResult.allMessages.length);
-    console.log('  Metadata messages:', chatResult.metadataMessages.length);
-    
-    if (!chatResult.metadataPayload) {
-      console.log('✗ No metadata found in chat messages');
-      return { success: false, reason: 'No metadata in chat' };
-    }
-    
-    console.log('✓ Metadata found via chat');
-    console.log('  Payload length:', chatResult.metadataPayload.length);
-    
-    const spec = await loadMatchMetadataSpec();
-    const metadata = parsePayload(chatResult.metadataPayload, spec);
-    
-    console.log('  Parsed metadata:');
-    console.log('    Match ID:', metadata.matchId);
-    console.log('    Map:', metadata.mapName, 'v' + metadata.mapVersion);
-    console.log('    Players:', metadata.playerCount);
-    
-    return { success: true, metadata, raw: chatResult.metadataPayload };
-  } catch (error) {
-    console.log('✗ Error:', error.message);
-    if (error.stack) console.log('  Stack:', error.stack.split('\n').slice(0, 3).join('\n'));
-    return { success: false, error: error.message };
-  }
-}
 
 async function diagnoseReplay(filePath) {
   console.log('\n' + '='.repeat(60));
@@ -259,30 +202,21 @@ async function diagnoseReplay(filePath) {
   const results = {
     old: await testOldMethod(buffer),
     mmd: await testMMDMethod(fullPath),
-    order: await testOrderMethod(fullPath),
-    chat: await testChatMethod(fullPath),
   };
   
   // Summary
   console.log('\n=== SUMMARY ===');
   console.log('Old method (extractITTMetadata):', results.old.success ? '✓' : '✗');
   console.log('MMD method (w3mmd protocol):', results.mmd.success ? '✓' : '✗');
-  console.log('Order method (order-based):', results.order.success ? '✓' : '✗');
-  console.log('Chat method (chat-based):', results.chat.success ? '✓' : '✗');
   
   // Identify the issue
-  if (results.order.success && !results.old.success) {
-    console.log('\n⚠️  ISSUE IDENTIFIED:');
-    console.log('   Metadata is encoded using ORDER-BASED method,');
-    console.log('   but parseReplayFile() uses the OLD METHOD.');
-    console.log('   Solution: Update parseReplayFile() to use decodeReplay()');
-  } else if (results.mmd.success && !results.old.success) {
+  if (results.mmd.success && !results.old.success) {
     console.log('\n⚠️  ISSUE IDENTIFIED:');
     console.log('   Metadata is in MMD format, but old method is not finding it.');
     console.log('   Check the extractITTMetadata() function logic.');
-  } else if (!results.order.success && !results.mmd.success && !results.chat.success) {
+  } else if (!results.mmd.success) {
     console.log('\n⚠️  ISSUE IDENTIFIED:');
-    console.log('   No metadata found in any format. Check if:');
+    console.log('   No metadata found in MMD format. Check if:');
     console.log('   1. The replay was recorded with metadata enabled');
     console.log('   2. The spec file matches the map version');
   }

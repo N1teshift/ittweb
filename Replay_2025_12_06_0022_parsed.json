@@ -1,0 +1,348 @@
+{
+  "file": "Replay_2025_12_06_0022.w3g",
+  "parsedAt": "2025-12-06T01:53:57.078Z",
+  "checks": {
+    "fileLoaded": true,
+    "gameDataExtracted": true,
+    "playersDetected": true,
+    "w3mmdFound": true,
+    "ittMetadataFound": false,
+    "allPlayersMatched": true,
+    "allPlayersHaveStats": false
+  },
+  "parsingPipeline": {
+    "step1_baseReplayData": {
+      "description": "Base replay data extracted by w3gjs parser",
+      "data": {
+        "gameInfo": {
+          "gameId": 3231716848,
+          "gamename": "Island Troll Tribes rmk2",
+          "map": "Maps/Download/Test/Island.Troll.Tribes.v3.29c.w3x",
+          "creator": "Scatman33#2333",
+          "duration": 2606
+        },
+        "players": [
+          {
+            "pid": 1,
+            "name": "Scatman33#2333",
+            "teamid": 0
+          },
+          {
+            "pid": 4,
+            "name": "Krumz#11944",
+            "teamid": 0
+          },
+          {
+            "pid": 2,
+            "name": "FrodoTbagins#1357",
+            "teamid": 1
+          },
+          {
+            "pid": 3,
+            "name": "bigpimpn#11880",
+            "teamid": 1
+          }
+        ]
+      }
+    },
+    "step2_w3mmdExtraction": {
+      "description": "W3MMD (Warcraft 3 Mapped Data) custom messages extracted",
+      "data": {
+        "actionCount": 14,
+        "sample": [
+          {
+            "id": 107,
+            "cache": {
+              "filename": "MMD.Dat",
+              "missionKey": "val:4",
+              "key": "init pid 7 bigpimpn#11880"
+            },
+            "value": 2269767488
+          },
+          {
+            "id": 107,
+            "cache": {
+              "filename": "MMD.Dat",
+              "missionKey": "chk:4",
+              "key": "4"
+            },
+            "value": 2269767488
+          },
+          {
+            "id": 107,
+            "cache": {
+              "filename": "MMD.Dat",
+              "missionKey": "val:2",
+              "key": "init pid 2 Krumz#11944"
+            },
+            "value": 2774195325
+          },
+          {
+            "id": 107,
+            "cache": {
+              "filename": "MMD.Dat",
+              "missionKey": "chk:2",
+              "key": "2"
+            },
+            "value": 2774195325
+          },
+          {
+            "id": 107,
+            "cache": {
+              "filename": "MMD.Dat",
+              "missionKey": "val:0",
+              "key": "init version 1 1"
+            },
+            "value": 1106691037
+          }
+        ]
+      }
+    },
+    "step3_ittMetadataExtraction": {
+      "description": "ITT metadata parsed from W3MMD custom messages",
+      "data": null
+    },
+    "step4_playerMatching": {
+      "description": "Player matching: replay players (pid) matched with ITT players (slotIndex)",
+      "data": {
+        "replayPlayers": [
+          {
+            "pid": 1,
+            "name": "Scatman33#2333",
+            "teamid": 0
+          },
+          {
+            "pid": 4,
+            "name": "Krumz#11944",
+            "teamid": 0
+          },
+          {
+            "pid": 2,
+            "name": "FrodoTbagins#1357",
+            "teamid": 1
+          },
+          {
+            "pid": 3,
+            "name": "bigpimpn#11880",
+            "teamid": 1
+          }
+        ],
+        "ittPlayers": [],
+        "matches": [
+          {
+            "replayPlayer": {
+              "pid": 1,
+              "name": "Scatman33#2333",
+              "teamid": 0
+            },
+            "ittPlayer": null,
+            "matched": false,
+            "mergedStats": false
+          },
+          {
+            "replayPlayer": {
+              "pid": 4,
+              "name": "Krumz#11944",
+              "teamid": 0
+            },
+            "ittPlayer": null,
+            "matched": false,
+            "mergedStats": false
+          },
+          {
+            "replayPlayer": {
+              "pid": 2,
+              "name": "FrodoTbagins#1357",
+              "teamid": 1
+            },
+            "ittPlayer": null,
+            "matched": false,
+            "mergedStats": false
+          },
+          {
+            "replayPlayer": {
+              "pid": 3,
+              "name": "bigpimpn#11880",
+              "teamid": 1
+            },
+            "ittPlayer": null,
+            "matched": false,
+            "mergedStats": false
+          }
+        ],
+        "debugLog": [
+          "[DEBUG] ========================================",
+          "[DEBUG] Starting player matching",
+          "[DEBUG] Total replay players: 4",
+          "[DEBUG] Total ITT players: 0",
+          "[DEBUG] Replay players: [{\"name\":\"Scatman33#2333\",\"pid\":1},{\"name\":\"Krumz#11944\",\"pid\":4},{\"name\":\"FrodoTbagins#1357\",\"pid\":2},{\"name\":\"bigpimpn#11880\",\"pid\":3}]",
+          "[DEBUG] ITT players: []",
+          "[DEBUG] ========================================",
+          "\n[DEBUG] ========================================",
+          "[DEBUG] Processing player: Scatman33#2333 (pid: 1)",
+          "[DEBUG] Matching player: Scatman33#2333 (pid: 1)",
+          "[DEBUG] Available ITT players:",
+          "[DEBUG] Priority 1 (exact name): NO MATCH",
+          "[DEBUG] Priority 2 (# → _): NO MATCH",
+          "[DEBUG] ❌ NO MATCH FOUND for Scatman33#2333 (pid: 1)",
+          "\n[DEBUG] ========================================",
+          "[DEBUG] Processing player: FrodoTbagins#1357 (pid: 2)",
+          "[DEBUG] Matching player: FrodoTbagins#1357 (pid: 2)",
+          "[DEBUG] Available ITT players:",
+          "[DEBUG] Priority 1 (exact name): NO MATCH",
+          "[DEBUG] Priority 2 (# → _): NO MATCH",
+          "[DEBUG] ❌ NO MATCH FOUND for FrodoTbagins#1357 (pid: 2)"
+        ]
+      }
+    },
+    "step5_finalGameData": {
+      "description": "Final merged game data ready for website use",
+      "data": {
+        "gameId": 3231716848,
+        "datetime": "2025-12-06T01:53:57.073Z",
+        "duration": 2606,
+        "gamename": "Island Troll Tribes rmk2",
+        "map": "Maps/Download/Test/Island.Troll.Tribes.v3.29c.w3x",
+        "creatorName": "Scatman33#2333",
+        "ownername": "Scatman33#2333",
+        "category": "Parsed",
+        "players": [
+          {
+            "name": "Scatman33#2333",
+            "pid": 1,
+            "teamid": 0,
+            "flag": "unknown"
+          },
+          {
+            "name": "Krumz#11944",
+            "pid": 4,
+            "teamid": 0,
+            "flag": "unknown"
+          },
+          {
+            "name": "FrodoTbagins#1357",
+            "pid": 2,
+            "teamid": 1,
+            "flag": "unknown"
+          },
+          {
+            "name": "bigpimpn#11880",
+            "pid": 3,
+            "teamid": 1,
+            "flag": "unknown"
+          }
+        ]
+      }
+    }
+  },
+  "gameData": {
+    "gameId": 3231716848,
+    "datetime": "2025-12-06T01:53:57.073Z",
+    "duration": 2606,
+    "gamename": "Island Troll Tribes rmk2",
+    "map": "Maps/Download/Test/Island.Troll.Tribes.v3.29c.w3x",
+    "creatorName": "Scatman33#2333",
+    "ownername": "Scatman33#2333",
+    "category": "Parsed",
+    "players": [
+      {
+        "name": "Scatman33#2333",
+        "pid": 1,
+        "teamid": 0,
+        "flag": "unknown"
+      },
+      {
+        "name": "Krumz#11944",
+        "pid": 4,
+        "teamid": 0,
+        "flag": "unknown"
+      },
+      {
+        "name": "FrodoTbagins#1357",
+        "pid": 2,
+        "teamid": 1,
+        "flag": "unknown"
+      },
+      {
+        "name": "bigpimpn#11880",
+        "pid": 3,
+        "teamid": 1,
+        "flag": "unknown"
+      }
+    ]
+  },
+  "ittMetadata": null,
+  "w3mmd": {
+    "actionCount": 14,
+    "sample": [
+      {
+        "id": 107,
+        "cache": {
+          "filename": "MMD.Dat",
+          "missionKey": "val:4",
+          "key": "init pid 7 bigpimpn#11880"
+        },
+        "value": 2269767488
+      },
+      {
+        "id": 107,
+        "cache": {
+          "filename": "MMD.Dat",
+          "missionKey": "chk:4",
+          "key": "4"
+        },
+        "value": 2269767488
+      },
+      {
+        "id": 107,
+        "cache": {
+          "filename": "MMD.Dat",
+          "missionKey": "val:2",
+          "key": "init pid 2 Krumz#11944"
+        },
+        "value": 2774195325
+      },
+      {
+        "id": 107,
+        "cache": {
+          "filename": "MMD.Dat",
+          "missionKey": "chk:2",
+          "key": "2"
+        },
+        "value": 2774195325
+      },
+      {
+        "id": 107,
+        "cache": {
+          "filename": "MMD.Dat",
+          "missionKey": "val:0",
+          "key": "init version 1 1"
+        },
+        "value": 1106691037
+      }
+    ]
+  },
+  "debugMatching": [
+    "[DEBUG] ========================================",
+    "[DEBUG] Starting player matching",
+    "[DEBUG] Total replay players: 4",
+    "[DEBUG] Total ITT players: 0",
+    "[DEBUG] Replay players: [{\"name\":\"Scatman33#2333\",\"pid\":1},{\"name\":\"Krumz#11944\",\"pid\":4},{\"name\":\"FrodoTbagins#1357\",\"pid\":2},{\"name\":\"bigpimpn#11880\",\"pid\":3}]",
+    "[DEBUG] ITT players: []",
+    "[DEBUG] ========================================",
+    "\n[DEBUG] ========================================",
+    "[DEBUG] Processing player: Scatman33#2333 (pid: 1)",
+    "[DEBUG] Matching player: Scatman33#2333 (pid: 1)",
+    "[DEBUG] Available ITT players:",
+    "[DEBUG] Priority 1 (exact name): NO MATCH",
+    "[DEBUG] Priority 2 (# → _): NO MATCH",
+    "[DEBUG] ❌ NO MATCH FOUND for Scatman33#2333 (pid: 1)",
+    "\n[DEBUG] ========================================",
+    "[DEBUG] Processing player: FrodoTbagins#1357 (pid: 2)",
+    "[DEBUG] Matching player: FrodoTbagins#1357 (pid: 2)",
+    "[DEBUG] Available ITT players:",
+    "[DEBUG] Priority 1 (exact name): NO MATCH",
+    "[DEBUG] Priority 2 (# → _): NO MATCH",
+    "[DEBUG] ❌ NO MATCH FOUND for FrodoTbagins#1357 (pid: 2)"
+  ]
+}

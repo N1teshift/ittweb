@@ -1,0 +1,999 @@
+{
+  "file": "Replay_2025_12_05_2315.w3g",
+  "parsedAt": "2025-12-06T01:53:56.878Z",
+  "checks": {
+    "fileLoaded": true,
+    "gameDataExtracted": true,
+    "playersDetected": true,
+    "w3mmdFound": true,
+    "ittMetadataFound": true,
+    "allPlayersMatched": true,
+    "allPlayersHaveStats": true
+  },
+  "parsingPipeline": {
+    "step1_baseReplayData": {
+      "description": "Base replay data extracted by w3gjs parser",
+      "data": {
+        "gameInfo": {
+          "gameId": 806674593,
+          "gamename": "Island Troll Tribes",
+          "map": "Maps/Download/Test/Island.Troll.Tribes.v3.29c.w3x",
+          "creator": "Scatman33#2333",
+          "duration": 2241
+        },
+        "players": [
+          {
+            "pid": 1,
+            "name": "Scatman33#2333",
+            "teamid": 0
+          },
+          {
+            "pid": 3,
+            "name": "FrodoTbagins#1357",
+            "teamid": 0
+          },
+          {
+            "pid": 2,
+            "name": "Donki#21980",
+            "teamid": 1
+          },
+          {
+            "pid": 4,
+            "name": "iggsta#2301",
+            "teamid": 1
+          },
+          {
+            "pid": 5,
+            "name": "Pietpuk5#2496",
+            "teamid": 1
+          }
+        ]
+      }
+    },
+    "step2_w3mmdExtraction": {
+      "description": "W3MMD (Warcraft 3 Mapped Data) custom messages extracted",
+      "data": {
+        "actionCount": 26,
+        "sample": [
+          {
+            "id": 107,
+            "cache": {
+              "filename": "MMD.Dat",
+              "missionKey": "val:2",
+              "key": "init pid 1 FrodoTbagins#1357"
+            },
+            "value": 2090087217
+          },
+          {
+            "id": 107,
+            "cache": {
+              "filename": "MMD.Dat",
+              "missionKey": "chk:2",
+              "key": "2"
+            },
+            "value": 2090087217
+          },
+          {
+            "id": 107,
+            "cache": {
+              "filename": "MMD.Dat",
+              "missionKey": "val:4",
+              "key": "init pid 7 Pietpuk5#2496"
+            },
+            "value": 4179760688
+          },
+          {
+            "id": 107,
+            "cache": {
+              "filename": "MMD.Dat",
+              "missionKey": "chk:4",
+              "key": "4"
+            },
+            "value": 4179760688
+          },
+          {
+            "id": 107,
+            "cache": {
+              "filename": "MMD.Dat",
+              "missionKey": "val:5",
+              "key": "init pid 8 iggsta#2301"
+            },
+            "value": 3584043166
+          }
+        ]
+      }
+    },
+    "step3_ittMetadataExtraction": {
+      "description": "ITT metadata parsed from W3MMD custom messages",
+      "data": {
+        "version": "v3.29b",
+        "schema": 4,
+        "payload": "v4\nmapName:Island Troll Tribes\nmapVersion:v3.29b\nmatchId:500946255\nstartTime:0\nendTime:2144\nduration:2144\nplayerCount:5\nplayer:0|Scatman33_2333|NE|Tracker|0|WIN|309|0|0|265|22|10|9|0|0|0|0|1229795453,1229795381,1229795381,1229795683,0,0\nplayer:1|FrodoTbagins_1357|NE|Tiger Form|0|WIN|624|0|0|15|38|34|0|0|4|2|2|1229795381,1229795381,1229795683,1229795683,0,0\nplayer:6|Donki_21980|UD|Scout|1|LEAVE|46|0|0|25|10|3|1|0|1|0|0|0,0,0,0,0,0\nplayer:7|Pietpuk5_2496|UD|Mage|1|LEAVE|19|0|0|0|12|2|0|0|0|0|1|0,0,0,0,0,0\nplayer:8|iggsta_2301|ORC|Beastmaster|1|LEAVE|140|0|0|0|16|8|0|0|1|1|0|0,0,0,0,0,0\nchecksum:220469516\nEND",
+        "players": [
+          {
+            "slotIndex": 0,
+            "name": "Scatman33_2333",
+            "trollClass": "Tracker",
+            "damageTroll": 309,
+            "selfHealing": 0,
+            "allyHealing": 0,
+            "goldAcquired": 265,
+            "meatEaten": 22,
+            "killsElk": 10,
+            "killsHawk": 9,
+            "killsSnake": 0,
+            "killsWolf": 0,
+            "killsBear": 0,
+            "killsPanther": 0,
+            "items": [
+              1229795453,
+              1229795381,
+              1229795381,
+              1229795683,
+              0,
+              0
+            ]
+          },
+          {
+            "slotIndex": 1,
+            "name": "FrodoTbagins_1357",
+            "trollClass": "Tiger Form",
+            "damageTroll": 624,
+            "selfHealing": 0,
+            "allyHealing": 0,
+            "goldAcquired": 15,
+            "meatEaten": 38,
+            "killsElk": 34,
+            "killsHawk": 0,
+            "killsSnake": 0,
+            "killsWolf": 4,
+            "killsBear": 2,
+            "killsPanther": 2,
+            "items": [
+              1229795381,
+              1229795381,
+              1229795683,
+              1229795683,
+              0,
+              0
+            ]
+          },
+          {
+            "slotIndex": 6,
+            "name": "Donki_21980",
+            "trollClass": "Scout",
+            "damageTroll": 46,
+            "selfHealing": 0,
+            "allyHealing": 0,
+            "goldAcquired": 25,
+            "meatEaten": 10,
+            "killsElk": 3,
+            "killsHawk": 1,
+            "killsSnake": 0,
+            "killsWolf": 1,
+            "killsBear": 0,
+            "killsPanther": 0,
+            "items": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "slotIndex": 7,
+            "name": "Pietpuk5_2496",
+            "trollClass": "Mage",
+            "damageTroll": 19,
+            "selfHealing": 0,
+            "allyHealing": 0,
+            "goldAcquired": 0,
+            "meatEaten": 12,
+            "killsElk": 2,
+            "killsHawk": 0,
+            "killsSnake": 0,
+            "killsWolf": 0,
+            "killsBear": 0,
+            "killsPanther": 1,
+            "items": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "slotIndex": 8,
+            "name": "iggsta_2301",
+            "trollClass": "Beastmaster",
+            "damageTroll": 140,
+            "selfHealing": 0,
+            "allyHealing": 0,
+            "goldAcquired": 0,
+            "meatEaten": 16,
+            "killsElk": 8,
+            "killsHawk": 0,
+            "killsSnake": 0,
+            "killsWolf": 1,
+            "killsBear": 1,
+            "killsPanther": 0,
+            "items": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    "step4_playerMatching": {
+      "description": "Player matching: replay players (pid) matched with ITT players (slotIndex)",
+      "data": {
+        "replayPlayers": [
+          {
+            "pid": 1,
+            "name": "Scatman33#2333",
+            "teamid": 0
+          },
+          {
+            "pid": 3,
+            "name": "FrodoTbagins#1357",
+            "teamid": 0
+          },
+          {
+            "pid": 2,
+            "name": "Donki#21980",
+            "teamid": 1
+          },
+          {
+            "pid": 4,
+            "name": "iggsta#2301",
+            "teamid": 1
+          },
+          {
+            "pid": 5,
+            "name": "Pietpuk5#2496",
+            "teamid": 1
+          }
+        ],
+        "ittPlayers": [
+          {
+            "slotIndex": 0,
+            "name": "Scatman33_2333",
+            "trollClass": "Tracker",
+            "damageTroll": 309,
+            "selfHealing": 0,
+            "allyHealing": 0,
+            "goldAcquired": 265,
+            "meatEaten": 22,
+            "killsElk": 10,
+            "killsHawk": 9,
+            "killsSnake": 0,
+            "killsWolf": 0,
+            "killsBear": 0,
+            "killsPanther": 0,
+            "items": [
+              1229795453,
+              1229795381,
+              1229795381,
+              1229795683,
+              0,
+              0
+            ]
+          },
+          {
+            "slotIndex": 1,
+            "name": "FrodoTbagins_1357",
+            "trollClass": "Tiger Form",
+            "damageTroll": 624,
+            "selfHealing": 0,
+            "allyHealing": 0,
+            "goldAcquired": 15,
+            "meatEaten": 38,
+            "killsElk": 34,
+            "killsHawk": 0,
+            "killsSnake": 0,
+            "killsWolf": 4,
+            "killsBear": 2,
+            "killsPanther": 2,
+            "items": [
+              1229795381,
+              1229795381,
+              1229795683,
+              1229795683,
+              0,
+              0
+            ]
+          },
+          {
+            "slotIndex": 6,
+            "name": "Donki_21980",
+            "trollClass": "Scout",
+            "damageTroll": 46,
+            "selfHealing": 0,
+            "allyHealing": 0,
+            "goldAcquired": 25,
+            "meatEaten": 10,
+            "killsElk": 3,
+            "killsHawk": 1,
+            "killsSnake": 0,
+            "killsWolf": 1,
+            "killsBear": 0,
+            "killsPanther": 0,
+            "items": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "slotIndex": 7,
+            "name": "Pietpuk5_2496",
+            "trollClass": "Mage",
+            "damageTroll": 19,
+            "selfHealing": 0,
+            "allyHealing": 0,
+            "goldAcquired": 0,
+            "meatEaten": 12,
+            "killsElk": 2,
+            "killsHawk": 0,
+            "killsSnake": 0,
+            "killsWolf": 0,
+            "killsBear": 0,
+            "killsPanther": 1,
+            "items": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "slotIndex": 8,
+            "name": "iggsta_2301",
+            "trollClass": "Beastmaster",
+            "damageTroll": 140,
+            "selfHealing": 0,
+            "allyHealing": 0,
+            "goldAcquired": 0,
+            "meatEaten": 16,
+            "killsElk": 8,
+            "killsHawk": 0,
+            "killsSnake": 0,
+            "killsWolf": 1,
+            "killsBear": 1,
+            "killsPanther": 0,
+            "items": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ],
+        "matches": [
+          {
+            "replayPlayer": {
+              "pid": 1,
+              "name": "Scatman33#2333",
+              "teamid": 0
+            },
+            "ittPlayer": {
+              "slotIndex": 0,
+              "name": "Scatman33_2333",
+              "trollClass": "Tracker"
+            },
+            "matched": true,
+            "mergedStats": true
+          },
+          {
+            "replayPlayer": {
+              "pid": 3,
+              "name": "FrodoTbagins#1357",
+              "teamid": 0
+            },
+            "ittPlayer": {
+              "slotIndex": 1,
+              "name": "FrodoTbagins_1357",
+              "trollClass": "Tiger Form"
+            },
+            "matched": true,
+            "mergedStats": true
+          },
+          {
+            "replayPlayer": {
+              "pid": 2,
+              "name": "Donki#21980",
+              "teamid": 1
+            },
+            "ittPlayer": {
+              "slotIndex": 6,
+              "name": "Donki_21980",
+              "trollClass": "Scout"
+            },
+            "matched": true,
+            "mergedStats": true
+          },
+          {
+            "replayPlayer": {
+              "pid": 4,
+              "name": "iggsta#2301",
+              "teamid": 1
+            },
+            "ittPlayer": {
+              "slotIndex": 8,
+              "name": "iggsta_2301",
+              "trollClass": "Beastmaster"
+            },
+            "matched": true,
+            "mergedStats": true
+          },
+          {
+            "replayPlayer": {
+              "pid": 5,
+              "name": "Pietpuk5#2496",
+              "teamid": 1
+            },
+            "ittPlayer": {
+              "slotIndex": 7,
+              "name": "Pietpuk5_2496",
+              "trollClass": "Mage"
+            },
+            "matched": true,
+            "mergedStats": true
+          }
+        ],
+        "debugLog": [
+          "[DEBUG] ========================================",
+          "[DEBUG] Starting player matching",
+          "[DEBUG] Total replay players: 5",
+          "[DEBUG] Total ITT players: 5",
+          "[DEBUG] Replay players: [{\"name\":\"Scatman33#2333\",\"pid\":1},{\"name\":\"FrodoTbagins#1357\",\"pid\":3},{\"name\":\"Donki#21980\",\"pid\":2},{\"name\":\"iggsta#2301\",\"pid\":4},{\"name\":\"Pietpuk5#2496\",\"pid\":5}]",
+          "[DEBUG] ITT players: [{\"slotIndex\":0,\"name\":\"Scatman33_2333\"},{\"slotIndex\":1,\"name\":\"FrodoTbagins_1357\"},{\"slotIndex\":6,\"name\":\"Donki_21980\"},{\"slotIndex\":7,\"name\":\"Pietpuk5_2496\"},{\"slotIndex\":8,\"name\":\"iggsta_2301\"}]",
+          "[DEBUG] ========================================",
+          "\n[DEBUG] ========================================",
+          "[DEBUG] Processing player: Scatman33#2333 (pid: 1)",
+          "[DEBUG] Matching player: Scatman33#2333 (pid: 1)",
+          "[DEBUG] Available ITT players:",
+          "  slotIndex:0 name:Scatman33_2333 matched:false slotMatched:false",
+          "  slotIndex:1 name:FrodoTbagins_1357 matched:false slotMatched:false",
+          "  slotIndex:6 name:Donki_21980 matched:false slotMatched:false",
+          "  slotIndex:7 name:Pietpuk5_2496 matched:false slotMatched:false",
+          "  slotIndex:8 name:iggsta_2301 matched:false slotMatched:false",
+          "[DEBUG] Priority 1 (exact name): NO MATCH",
+          "[DEBUG] Final match: Scatman33#2333 (pid: 1) → slotIndex 0 (Scatman33_2333)",
+          "[DEBUG] Matched slot indices so far: 0",
+          "\n[DEBUG] ========================================",
+          "[DEBUG] Processing player: FrodoTbagins#1357 (pid: 3)",
+          "[DEBUG] Matching player: FrodoTbagins#1357 (pid: 3)",
+          "[DEBUG] Available ITT players:",
+          "  slotIndex:0 name:Scatman33_2333 matched:true slotMatched:true",
+          "  slotIndex:1 name:FrodoTbagins_1357 matched:false slotMatched:false",
+          "  slotIndex:6 name:Donki_21980 matched:false slotMatched:false",
+          "  slotIndex:7 name:Pietpuk5_2496 matched:false slotMatched:false",
+          "  slotIndex:8 name:iggsta_2301 matched:false slotMatched:false",
+          "[DEBUG] Priority 1 (exact name): NO MATCH",
+          "[DEBUG] Final match: FrodoTbagins#1357 (pid: 3) → slotIndex 1 (FrodoTbagins_1357)",
+          "[DEBUG] Matched slot indices so far: 0, 1"
+        ]
+      }
+    },
+    "step5_finalGameData": {
+      "description": "Final merged game data ready for website use",
+      "data": {
+        "gameId": 806674593,
+        "datetime": "2025-12-06T01:53:56.870Z",
+        "duration": 2241,
+        "gamename": "Island Troll Tribes",
+        "map": "Maps/Download/Test/Island.Troll.Tribes.v3.29c.w3x",
+        "creatorName": "Scatman33#2333",
+        "ownername": "Scatman33#2333",
+        "category": "Parsed",
+        "players": [
+          {
+            "name": "Scatman33#2333",
+            "pid": 1,
+            "teamid": 0,
+            "flag": "unknown",
+            "class": "Tracker",
+            "damageTroll": 309,
+            "selfHealing": 0,
+            "allyHealing": 0,
+            "goldAcquired": 265,
+            "meatEaten": 22,
+            "killsElk": 10,
+            "killsHawk": 9,
+            "killsSnake": 0,
+            "killsWolf": 0,
+            "killsBear": 0,
+            "killsPanther": 0,
+            "items": [
+              1229795453,
+              1229795381,
+              1229795381,
+              1229795683,
+              0,
+              0
+            ]
+          },
+          {
+            "name": "FrodoTbagins#1357",
+            "pid": 3,
+            "teamid": 0,
+            "flag": "unknown",
+            "class": "Tiger Form",
+            "damageTroll": 624,
+            "selfHealing": 0,
+            "allyHealing": 0,
+            "goldAcquired": 15,
+            "meatEaten": 38,
+            "killsElk": 34,
+            "killsHawk": 0,
+            "killsSnake": 0,
+            "killsWolf": 4,
+            "killsBear": 2,
+            "killsPanther": 2,
+            "items": [
+              1229795381,
+              1229795381,
+              1229795683,
+              1229795683,
+              0,
+              0
+            ]
+          },
+          {
+            "name": "Donki#21980",
+            "pid": 2,
+            "teamid": 1,
+            "flag": "unknown",
+            "class": "Scout",
+            "damageTroll": 46,
+            "selfHealing": 0,
+            "allyHealing": 0,
+            "goldAcquired": 25,
+            "meatEaten": 10,
+            "killsElk": 3,
+            "killsHawk": 1,
+            "killsSnake": 0,
+            "killsWolf": 1,
+            "killsBear": 0,
+            "killsPanther": 0,
+            "items": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "name": "iggsta#2301",
+            "pid": 4,
+            "teamid": 1,
+            "flag": "unknown",
+            "class": "Beastmaster",
+            "damageTroll": 140,
+            "selfHealing": 0,
+            "allyHealing": 0,
+            "goldAcquired": 0,
+            "meatEaten": 16,
+            "killsElk": 8,
+            "killsHawk": 0,
+            "killsSnake": 0,
+            "killsWolf": 1,
+            "killsBear": 1,
+            "killsPanther": 0,
+            "items": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "name": "Pietpuk5#2496",
+            "pid": 5,
+            "teamid": 1,
+            "flag": "unknown",
+            "class": "Mage",
+            "damageTroll": 19,
+            "selfHealing": 0,
+            "allyHealing": 0,
+            "goldAcquired": 0,
+            "meatEaten": 12,
+            "killsElk": 2,
+            "killsHawk": 0,
+            "killsSnake": 0,
+            "killsWolf": 0,
+            "killsBear": 0,
+            "killsPanther": 1,
+            "items": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "gameData": {
+    "gameId": 806674593,
+    "datetime": "2025-12-06T01:53:56.870Z",
+    "duration": 2241,
+    "gamename": "Island Troll Tribes",
+    "map": "Maps/Download/Test/Island.Troll.Tribes.v3.29c.w3x",
+    "creatorName": "Scatman33#2333",
+    "ownername": "Scatman33#2333",
+    "category": "Parsed",
+    "players": [
+      {
+        "name": "Scatman33#2333",
+        "pid": 1,
+        "teamid": 0,
+        "flag": "unknown",
+        "class": "Tracker",
+        "damageTroll": 309,
+        "selfHealing": 0,
+        "allyHealing": 0,
+        "goldAcquired": 265,
+        "meatEaten": 22,
+        "killsElk": 10,
+        "killsHawk": 9,
+        "killsSnake": 0,
+        "killsWolf": 0,
+        "killsBear": 0,
+        "killsPanther": 0,
+        "items": [
+          1229795453,
+          1229795381,
+          1229795381,
+          1229795683,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "FrodoTbagins#1357",
+        "pid": 3,
+        "teamid": 0,
+        "flag": "unknown",
+        "class": "Tiger Form",
+        "damageTroll": 624,
+        "selfHealing": 0,
+        "allyHealing": 0,
+        "goldAcquired": 15,
+        "meatEaten": 38,
+        "killsElk": 34,
+        "killsHawk": 0,
+        "killsSnake": 0,
+        "killsWolf": 4,
+        "killsBear": 2,
+        "killsPanther": 2,
+        "items": [
+          1229795381,
+          1229795381,
+          1229795683,
+          1229795683,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "Donki#21980",
+        "pid": 2,
+        "teamid": 1,
+        "flag": "unknown",
+        "class": "Scout",
+        "damageTroll": 46,
+        "selfHealing": 0,
+        "allyHealing": 0,
+        "goldAcquired": 25,
+        "meatEaten": 10,
+        "killsElk": 3,
+        "killsHawk": 1,
+        "killsSnake": 0,
+        "killsWolf": 1,
+        "killsBear": 0,
+        "killsPanther": 0,
+        "items": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "iggsta#2301",
+        "pid": 4,
+        "teamid": 1,
+        "flag": "unknown",
+        "class": "Beastmaster",
+        "damageTroll": 140,
+        "selfHealing": 0,
+        "allyHealing": 0,
+        "goldAcquired": 0,
+        "meatEaten": 16,
+        "killsElk": 8,
+        "killsHawk": 0,
+        "killsSnake": 0,
+        "killsWolf": 1,
+        "killsBear": 1,
+        "killsPanther": 0,
+        "items": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "name": "Pietpuk5#2496",
+        "pid": 5,
+        "teamid": 1,
+        "flag": "unknown",
+        "class": "Mage",
+        "damageTroll": 19,
+        "selfHealing": 0,
+        "allyHealing": 0,
+        "goldAcquired": 0,
+        "meatEaten": 12,
+        "killsElk": 2,
+        "killsHawk": 0,
+        "killsSnake": 0,
+        "killsWolf": 0,
+        "killsBear": 0,
+        "killsPanther": 1,
+        "items": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "ittMetadata": {
+    "version": "v3.29b",
+    "schema": 4,
+    "payload": "v4\nmapName:Island Troll Tribes\nmapVersion:v3.29b\nmatchId:500946255\nstartTime:0\nendTime:2144\nduration:2144\nplayerCount:5\nplayer:0|Scatman33_2333|NE|Tracker|0|WIN|309|0|0|265|22|10|9|0|0|0|0|1229795453,1229795381,1229795381,1229795683,0,0\nplayer:1|FrodoTbagins_1357|NE|Tiger Form|0|WIN|624|0|0|15|38|34|0|0|4|2|2|1229795381,1229795381,1229795683,1229795683,0,0\nplayer:6|Donki_21980|UD|Scout|1|LEAVE|46|0|0|25|10|3|1|0|1|0|0|0,0,0,0,0,0\nplayer:7|Pietpuk5_2496|UD|Mage|1|LEAVE|19|0|0|0|12|2|0|0|0|0|1|0,0,0,0,0,0\nplayer:8|iggsta_2301|ORC|Beastmaster|1|LEAVE|140|0|0|0|16|8|0|0|1|1|0|0,0,0,0,0,0\nchecksum:220469516\nEND",
+    "players": [
+      {
+        "slotIndex": 0,
+        "name": "Scatman33_2333",
+        "trollClass": "Tracker",
+        "damageTroll": 309,
+        "selfHealing": 0,
+        "allyHealing": 0,
+        "goldAcquired": 265,
+        "meatEaten": 22,
+        "killsElk": 10,
+        "killsHawk": 9,
+        "killsSnake": 0,
+        "killsWolf": 0,
+        "killsBear": 0,
+        "killsPanther": 0,
+        "items": [
+          1229795453,
+          1229795381,
+          1229795381,
+          1229795683,
+          0,
+          0
+        ]
+      },
+      {
+        "slotIndex": 1,
+        "name": "FrodoTbagins_1357",
+        "trollClass": "Tiger Form",
+        "damageTroll": 624,
+        "selfHealing": 0,
+        "allyHealing": 0,
+        "goldAcquired": 15,
+        "meatEaten": 38,
+        "killsElk": 34,
+        "killsHawk": 0,
+        "killsSnake": 0,
+        "killsWolf": 4,
+        "killsBear": 2,
+        "killsPanther": 2,
+        "items": [
+          1229795381,
+          1229795381,
+          1229795683,
+          1229795683,
+          0,
+          0
+        ]
+      },
+      {
+        "slotIndex": 6,
+        "name": "Donki_21980",
+        "trollClass": "Scout",
+        "damageTroll": 46,
+        "selfHealing": 0,
+        "allyHealing": 0,
+        "goldAcquired": 25,
+        "meatEaten": 10,
+        "killsElk": 3,
+        "killsHawk": 1,
+        "killsSnake": 0,
+        "killsWolf": 1,
+        "killsBear": 0,
+        "killsPanther": 0,
+        "items": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "slotIndex": 7,
+        "name": "Pietpuk5_2496",
+        "trollClass": "Mage",
+        "damageTroll": 19,
+        "selfHealing": 0,
+        "allyHealing": 0,
+        "goldAcquired": 0,
+        "meatEaten": 12,
+        "killsElk": 2,
+        "killsHawk": 0,
+        "killsSnake": 0,
+        "killsWolf": 0,
+        "killsBear": 0,
+        "killsPanther": 1,
+        "items": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "slotIndex": 8,
+        "name": "iggsta_2301",
+        "trollClass": "Beastmaster",
+        "damageTroll": 140,
+        "selfHealing": 0,
+        "allyHealing": 0,
+        "goldAcquired": 0,
+        "meatEaten": 16,
+        "killsElk": 8,
+        "killsHawk": 0,
+        "killsSnake": 0,
+        "killsWolf": 1,
+        "killsBear": 1,
+        "killsPanther": 0,
+        "items": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "chunks": [
+      "v4\nmapName:Island\\ Troll\\ Tribes\nmapVersion:v3.29b\nmatchId:500946255\nstartTime:0\nendTime:2144\nduration:2144\nplayerCount:5\nplayer:0|Scatman33_2333|NE|Tracker|0|WIN|309|0|0|265|22|10|9|0|0|0|0|1229795453,",
+      "1229795381,1229795381,1229795683,0,0\nplayer:1|FrodoTbagins_1357|NE|Tiger\\ Form|0|WIN|624|0|0|15|38|34|0|0|4|2|2|1229795381,1229795381,1229795683,1229795683,0,0\nplayer:6|Donki_21980|UD|Scout|1|LEAVE|46|",
+      "0|0|25|10|3|1|0|1|0|0|0,0,0,0,0,0\nplayer:7|Pietpuk5_2496|UD|Mage|1|LEAVE|19|0|0|0|12|2|0|0|0|0|1|0,0,0,0,0,0\nplayer:8|iggsta_2301|ORC|Beastmaster|1|LEAVE|140|0|0|0|16|8|0|0|1|1|0|0,0,0,0,0,0\nchecksum:",
+      "220469516\nEND"
+    ]
+  },
+  "w3mmd": {
+    "actionCount": 26,
+    "sample": [
+      {
+        "id": 107,
+        "cache": {
+          "filename": "MMD.Dat",
+          "missionKey": "val:2",
+          "key": "init pid 1 FrodoTbagins#1357"
+        },
+        "value": 2090087217
+      },
+      {
+        "id": 107,
+        "cache": {
+          "filename": "MMD.Dat",
+          "missionKey": "chk:2",
+          "key": "2"
+        },
+        "value": 2090087217
+      },
+      {
+        "id": 107,
+        "cache": {
+          "filename": "MMD.Dat",
+          "missionKey": "val:4",
+          "key": "init pid 7 Pietpuk5#2496"
+        },
+        "value": 4179760688
+      },
+      {
+        "id": 107,
+        "cache": {
+          "filename": "MMD.Dat",
+          "missionKey": "chk:4",
+          "key": "4"
+        },
+        "value": 4179760688
+      },
+      {
+        "id": 107,
+        "cache": {
+          "filename": "MMD.Dat",
+          "missionKey": "val:5",
+          "key": "init pid 8 iggsta#2301"
+        },
+        "value": 3584043166
+      }
+    ]
+  },
+  "debugMatching": [
+    "[DEBUG] ========================================",
+    "[DEBUG] Starting player matching",
+    "[DEBUG] Total replay players: 5",
+    "[DEBUG] Total ITT players: 5",
+    "[DEBUG] Replay players: [{\"name\":\"Scatman33#2333\",\"pid\":1},{\"name\":\"FrodoTbagins#1357\",\"pid\":3},{\"name\":\"Donki#21980\",\"pid\":2},{\"name\":\"iggsta#2301\",\"pid\":4},{\"name\":\"Pietpuk5#2496\",\"pid\":5}]",
+    "[DEBUG] ITT players: [{\"slotIndex\":0,\"name\":\"Scatman33_2333\"},{\"slotIndex\":1,\"name\":\"FrodoTbagins_1357\"},{\"slotIndex\":6,\"name\":\"Donki_21980\"},{\"slotIndex\":7,\"name\":\"Pietpuk5_2496\"},{\"slotIndex\":8,\"name\":\"iggsta_2301\"}]",
+    "[DEBUG] ========================================",
+    "\n[DEBUG] ========================================",
+    "[DEBUG] Processing player: Scatman33#2333 (pid: 1)",
+    "[DEBUG] Matching player: Scatman33#2333 (pid: 1)",
+    "[DEBUG] Available ITT players:",
+    "  slotIndex:0 name:Scatman33_2333 matched:false slotMatched:false",
+    "  slotIndex:1 name:FrodoTbagins_1357 matched:false slotMatched:false",
+    "  slotIndex:6 name:Donki_21980 matched:false slotMatched:false",
+    "  slotIndex:7 name:Pietpuk5_2496 matched:false slotMatched:false",
+    "  slotIndex:8 name:iggsta_2301 matched:false slotMatched:false",
+    "[DEBUG] Priority 1 (exact name): NO MATCH",
+    "[DEBUG] Final match: Scatman33#2333 (pid: 1) → slotIndex 0 (Scatman33_2333)",
+    "[DEBUG] Matched slot indices so far: 0",
+    "\n[DEBUG] ========================================",
+    "[DEBUG] Processing player: FrodoTbagins#1357 (pid: 3)",
+    "[DEBUG] Matching player: FrodoTbagins#1357 (pid: 3)",
+    "[DEBUG] Available ITT players:",
+    "  slotIndex:0 name:Scatman33_2333 matched:true slotMatched:true",
+    "  slotIndex:1 name:FrodoTbagins_1357 matched:false slotMatched:false",
+    "  slotIndex:6 name:Donki_21980 matched:false slotMatched:false",
+    "  slotIndex:7 name:Pietpuk5_2496 matched:false slotMatched:false",
+    "  slotIndex:8 name:iggsta_2301 matched:false slotMatched:false",
+    "[DEBUG] Priority 1 (exact name): NO MATCH",
+    "[DEBUG] Final match: FrodoTbagins#1357 (pid: 3) → slotIndex 1 (FrodoTbagins_1357)",
+    "[DEBUG] Matched slot indices so far: 0, 1"
+  ]
+}
