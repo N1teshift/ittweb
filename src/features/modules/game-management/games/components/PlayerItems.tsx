@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tooltip } from '@/features/infrastructure/components';
-import { getItemsByReplayIds } from '@/features/modules/content/guides/data/items';
+import { getItemsByReplayIds, getItemByReplayId } from '@/features/modules/content/guides/data/items';
 import { getItemIconPathFromRecord } from '@/features/modules/content/guides/data/items';
 
 interface PlayerItemsProps {
@@ -28,30 +28,46 @@ export function PlayerItems({ items, className = '', showEmptySlots = false }: P
                     const isEmpty = !itemId || itemId === 0;
                     
                     if (isEmpty) {
+                        // Show empty slot icon
+                        const emptySlotIconUrl = '/icons/itt/nightelf-inventory-slotfiller.png';
                         return (
-                            <div
-                                key={`empty-${index}`}
-                                className="w-8 h-8 bg-gray-800/30 border border-gray-600/30 rounded flex items-center justify-center"
-                                title="Empty slot"
-                            />
+                            <Tooltip key={`empty-${index}`} content="Empty slot">
+                                <div className="w-8 h-8 bg-gray-800/30 border border-gray-600/30 rounded flex items-center justify-center overflow-hidden">
+                                    <img
+                                        src={emptySlotIconUrl}
+                                        alt="Empty slot"
+                                        className="w-full h-full object-cover opacity-50"
+                                        onError={(e) => {
+                                            // Fallback to gray box if icon fails to load
+                                            const target = e.target as HTMLImageElement;
+                                            target.style.display = 'none';
+                                        }}
+                                    />
+                                </div>
+                            </Tooltip>
                         );
                     }
 
-                    const itemData = getItemsByReplayIds([itemId]);
-                    const item = itemData[0];
+                    // Use getItemByReplayId to get individual item (doesn't filter zeros)
+                    const item = getItemByReplayId(itemId);
                     
                     if (!item) {
+                        // Unknown item - show placeholder
                         return (
-                            <div
-                                key={`unknown-${index}`}
-                                className="w-8 h-8 bg-gray-800/30 border border-gray-600/30 rounded flex items-center justify-center"
-                                title="Unknown item"
-                            />
+                            <Tooltip key={`unknown-${index}`} content={`Unknown item (ID: ${itemId})`}>
+                                <div className="w-8 h-8 bg-gray-800/30 border border-gray-600/30 rounded flex items-center justify-center">
+                                    <span className="text-xs text-gray-500">?</span>
+                                </div>
+                            </Tooltip>
                         );
                     }
 
                     const iconPath = item.iconPath || getItemIconPathFromRecord(item);
-                    const iconUrl = iconPath ? `/images/icons/${iconPath}` : null;
+                    // iconPath from getItemIconPathFromRecord already includes /icons/itt/ prefix
+                    // If item.iconPath is just a filename, we need to construct the full path
+                    const iconUrl = iconPath 
+                        ? (iconPath.startsWith('/') ? iconPath : `/icons/itt/${iconPath}`)
+                        : null;
 
                     return (
                         <Tooltip key={`${item.id}-${index}`} content={item.name}>
@@ -100,7 +116,11 @@ export function PlayerItems({ items, className = '', showEmptySlots = false }: P
         <div className={`flex gap-1 flex-wrap ${className}`}>
             {itemData.map((item, index) => {
                 const iconPath = item.iconPath || getItemIconPathFromRecord(item);
-                const iconUrl = iconPath ? `/images/icons/${iconPath}` : null;
+                // iconPath from getItemIconPathFromRecord already includes /icons/itt/ prefix
+                // If item.iconPath is just a filename, we need to construct the full path
+                const iconUrl = iconPath 
+                    ? (iconPath.startsWith('/') ? iconPath : `/icons/itt/${iconPath}`)
+                    : null;
 
                 return (
                     <Tooltip key={`${item.id}-${index}`} content={item.name}>
