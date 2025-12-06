@@ -254,11 +254,6 @@ export function itemIdToSlug(itemId: number): string | undefined {
     if (!slug) {
         rawCode = itemIdToRawCodeLittleEndian(itemId);
         slug = rawCodeToItemSlug(rawCode);
-        
-        // Debug logging in development
-        if (!slug && typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
-            console.warn(`Item ID ${itemId} not found. Tried big-endian: ${JSON.stringify(itemIdToRawCode(itemId))}, little-endian: ${JSON.stringify(rawCode)}`);
-        }
     }
     
     return slug;
