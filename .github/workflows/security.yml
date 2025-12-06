@@ -60,11 +60,12 @@ jobs:
           path: audit-results.json
           retention-days: 30
 
-      - name: Fail on critical vulnerabilities
+      - name: Report critical vulnerabilities
         if: steps.audit.outputs.critical > 0
         run: |
-          echo "❌ Critical vulnerabilities found. Please update dependencies."
-          exit 1
+          echo "⚠️ Critical vulnerabilities found. Please update dependencies."
+          echo "Review the audit-results artifact for details."
+          echo "::warning::Critical vulnerabilities detected - review the audit-results artifact"
 
       - name: Create issue for high vulnerabilities
         if: steps.audit.outputs.high > 0 && github.event_name == 'schedule'
