@@ -25,7 +25,7 @@ export const UNKNOWN_ITEMS: ItemData[] = [
     category: 'unknown',
     description: '',
     tooltip: 'You can carry almost all raw and crafted materials in this slot.',
-    iconPath: 'btnresourcespack.png',
+    iconPath: 'BTNResourcesPack.png',
     stockReplenishInterval: 120,
   },
   {
