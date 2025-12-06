@@ -195,11 +195,25 @@ const RAW_ITEM_CODE_TO_SLUG: Record<string, string> = {
  */
 export function itemIdToRawCode(itemId: number): string {
     // Convert integer to 4-character code (big-endian)
+    // Warcraft 3 stores item IDs as 4-byte integers in big-endian format
     return String.fromCharCode(
         (itemId >> 24) & 0xFF,
         (itemId >> 16) & 0xFF,
         (itemId >> 8) & 0xFF,
         itemId & 0xFF
+    );
+}
+
+/**
+ * Alternative conversion trying little-endian byte order
+ * This is a fallback if big-endian doesn't work
+ */
+function itemIdToRawCodeLittleEndian(itemId: number): string {
+    return String.fromCharCode(
+        itemId & 0xFF,
+        (itemId >> 8) & 0xFF,
+        (itemId >> 16) & 0xFF,
+        (itemId >> 24) & 0xFF
     );
 }
 
@@ -232,8 +246,22 @@ export function rawCodeToItemSlug(rawCode: string): string | undefined {
  * ```
  */
 export function itemIdToSlug(itemId: number): string | undefined {
-    const rawCode = itemIdToRawCode(itemId);
-    return rawCodeToItemSlug(rawCode);
+    // Try big-endian first (standard Warcraft 3 format)
+    let rawCode = itemIdToRawCode(itemId);
+    let slug = rawCodeToItemSlug(rawCode);
+    
+    // If not found, try little-endian as fallback
+    if (!slug) {
+        rawCode = itemIdToRawCodeLittleEndian(itemId);
+        slug = rawCodeToItemSlug(rawCode);
+        
+        // Debug logging in development
+        if (!slug && typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+            console.warn(`Item ID ${itemId} not found. Tried big-endian: ${JSON.stringify(itemIdToRawCode(itemId))}, little-endian: ${JSON.stringify(rawCode)}`);
+        }
+    }
+    
+    return slug;
 }
 
 /**
@@ -248,8 +276,12 @@ export function itemIdToSlug(itemId: number): string | undefined {
  * console.log(item?.name); // "Mana Crystal"
  * ```
  */
-export function getItemByReplayId(itemId: number): ItemData | undefined {
-    const slug = itemIdToSlug(itemId);
+export function getItemByReplayId(itemId: number | string): ItemData | undefined {
+    // Handle string IDs (convert to number)
+    const numericId = typeof itemId === 'string' ? parseInt(itemId, 10) : itemId;
+    if (isNaN(numericId) || numericId === 0) return undefined;
+    
+    const slug = itemIdToSlug(numericId);
     if (!slug) return undefined;
 
     return ITEMS_DATA.find(item => item.id === slug);
