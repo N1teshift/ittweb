@@ -21,7 +21,12 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          for i in 1 2 3; do
+            echo "Attempt $i: Installing dependencies..."
+            npm cache clean --force || true
+            npm ci && break || sleep 5
+          done
 
       - name: Run build check
         run: npm run build:check
