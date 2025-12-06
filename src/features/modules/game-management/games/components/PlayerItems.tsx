@@ -28,8 +28,8 @@ export function PlayerItems({ items, className = '', showEmptySlots = false }: P
                     const isEmpty = !itemId || itemId === 0;
                     
                     if (isEmpty) {
-                        // Show empty slot icon
-                        const emptySlotIconUrl = '/icons/itt/nightelf-inventory-slotfiller.png';
+                        // Show empty material slot icon
+                        const emptySlotIconUrl = '/icons/itt/BTNResourcesPack.png';
                         return (
                             <Tooltip key={`empty-${index}`} content="Empty slot">
                                 <div className="w-8 h-8 bg-gray-800/30 border border-gray-600/30 rounded flex items-center justify-center overflow-hidden">
