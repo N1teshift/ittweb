@@ -151,6 +151,7 @@ export async function parseReplayFile(
           killsWolf: ittPlayer.killsWolf ?? 0,
           killsBear: ittPlayer.killsBear ?? 0,
           killsPanther: ittPlayer.killsPanther ?? 0,
+          items: ittPlayer.items,
         } : {};
 
         logger.debug('Player parsed', {
