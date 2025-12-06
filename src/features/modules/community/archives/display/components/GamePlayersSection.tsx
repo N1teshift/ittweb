@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { formatEloChange } from '@/features/modules/shared/utils';
 import { AnimalKillsDisplay } from '@/features/modules/shared/components';
+import { PlayerItems } from '@/features/modules/game-management/games/components/PlayerItems';
 import type { GameWithPlayers, GamePlayer } from '@/features/modules/game-management/games/types';
 
 interface GamePlayersSectionProps {
@@ -108,6 +109,13 @@ function PlayerCard({ player, isWinner }: { player: GamePlayer; isWinner: boolea
                 compact={true}
                 showLabels={false}
               />
+            </div>
+          )}
+
+          {/* Player items - show even if empty (with empty slots) */}
+          {player.items !== undefined && (
+            <div className="mt-1.5">
+              <PlayerItems items={player.items} showEmptySlots={true} />
             </div>
           )}
         </div>
