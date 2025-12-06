@@ -8,11 +8,12 @@ import { fileURLToPath } from 'url';
 import crypto from 'crypto';
 
 /**
- * Get the root directory of the project (2 levels up from scripts/data/)
+ * Get the root directory of the project (3 levels up from scripts/data/lib/)
  */
 export function getRootDir() {
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
-  return path.join(__dirname, '..', '..');
+  // scripts/data/lib/ -> scripts/data/ -> scripts/ -> project root
+  return path.join(__dirname, '..', '..', '..');
 }
 
 /**
