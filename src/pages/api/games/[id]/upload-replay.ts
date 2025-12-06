@@ -280,6 +280,8 @@ export default createPostHandler<{ gameId: string; message: string; parsingSumma
         killsWolf: player.killsWolf,
         killsBear: player.killsBear,
         killsPanther: player.killsPanther,
+        // Player inventory items (schema v4+)
+        items: player.items,
         createdAt: adminTimestampNow,
       } as Record<string, unknown>);
 

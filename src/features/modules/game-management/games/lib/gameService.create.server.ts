@@ -177,6 +177,8 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
         killsWolf: player.killsWolf,
         killsBear: player.killsBear,
         killsPanther: player.killsPanther,
+        // Player inventory items (schema v4+)
+        items: player.items,
         createdAt: adminTimestamp.now(),
       } as Record<string, unknown>);
       await playersCollection.add(playerData);
