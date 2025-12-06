@@ -1,6 +1,8 @@
 import React, { useState, FormEvent } from 'react';
 import type { Game } from '@/features/modules/game-management/games/types';
 import { useModalAccessibility } from '@/features/infrastructure/hooks';
+import type { ParsingSummary } from '@/features/modules/game-management/lib/mechanics/replay/types';
+import { ParsingSummaryCard } from './ParsingSummaryCard';
 
 interface ApiResponse {
   success?: boolean;
@@ -8,6 +10,7 @@ interface ApiResponse {
   message?: string;
   gameId?: string;
   archiveId?: string;
+  parsingSummary?: ParsingSummary;
 }
 
 interface UploadReplayModalProps {
@@ -22,6 +25,7 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
   const [status, setStatus] = useState<'idle' | 'uploading' | 'parsing' | 'processing'>('idle');
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [parsingSummary, setParsingSummary] = useState<ParsingSummary | null>(null);
 
   const modalRef = useModalAccessibility({
     isOpen: true,
@@ -41,6 +45,7 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
       setSubmitting(true);
       setError(null);
       setSuccessMessage(null);
+      setParsingSummary(null);
       setStatus('uploading');
 
       const formData = new FormData();
@@ -67,15 +72,19 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
 
       setStatus('idle');
       setSuccessMessage(data.message || 'Replay uploaded successfully!');
+      if (data.parsingSummary) {
+        setParsingSummary(data.parsingSummary);
+      }
       setFile(null);
 
-      // Close modal and refresh after a short delay
+      // Close modal and refresh after a delay (longer if we have parsing summary to show)
+      const delay = data.parsingSummary ? 4000 : 1500;
       setTimeout(() => {
         if (onSuccess) {
           onSuccess();
         }
         onClose();
-      }, 1500);
+      }, delay);
     } catch (err) {
       setStatus('idle');
       setError(err instanceof Error ? err.message : 'Failed to upload replay');
@@ -157,8 +166,13 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
           )}
 
           {successMessage && (
-            <div className="bg-green-900/40 border border-green-500 rounded px-4 py-2 text-green-200">
-              {successMessage}
+            <div className="space-y-3">
+              <div className="bg-green-900/40 border border-green-500 rounded px-4 py-2 text-green-200">
+                {successMessage}
+              </div>
+              {parsingSummary && (
+                <ParsingSummaryCard summary={parsingSummary} />
+              )}
             </div>
           )}
 

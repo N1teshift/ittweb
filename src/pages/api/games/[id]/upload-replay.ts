@@ -7,6 +7,7 @@ import { getFirestoreAdmin, getAdminTimestamp, getStorageAdmin, getStorageBucket
 import { timestampToIso } from '@/features/infrastructure/utils';
 import { removeUndefined } from '@/features/infrastructure/utils';
 import type { CreateCompletedGame } from '@/features/modules/game-management/games/types';
+import type { ParsingSummary } from '@/features/modules/game-management/lib/mechanics/replay/types';
 import { IncomingForm, Fields, Files, File as FormidableFile } from 'formidable';
 import { promises as fs } from 'fs';
 import os from 'os';
@@ -24,7 +25,7 @@ export const config = {
 /**
  * POST /api/games/[id]/upload-replay - Upload replay for a scheduled game and convert it to completed (requires authentication)
  */
-export default createPostHandler<{ gameId: string; message: string }>(
+export default createPostHandler<{ gameId: string; message: string; parsingSummary?: ParsingSummary }>(
   async (req: NextApiRequest, res, context) => {
     // Session is guaranteed due to requireAuth: true
     const session = requireSession(context);
@@ -105,12 +106,16 @@ export default createPostHandler<{ gameId: string; message: string }>(
       : new Date().toISOString();
 
     let parsedGameData: CreateCompletedGame | null = null;
+    let parsingSummary: ParsingSummary | undefined;
     try {
       const parsed = await parseReplayFile(fileBuffer, {
         scheduledGameId: game.gameId,
         fallbackDatetime: scheduledDateTimeString,
         fallbackCategory: scheduledCategory,
       });
+
+      // Store parsing summary for response
+      parsingSummary = parsed.summary;
 
       // Convert parsed data to CreateCompletedGame format
       parsedGameData = {
@@ -300,7 +305,8 @@ export default createPostHandler<{ gameId: string; message: string }>(
 
     return {
       gameId,
-      message: 'Replay uploaded and game completed successfully'
+      message: 'Replay uploaded and game completed successfully',
+      parsingSummary,
     };
   },
   {

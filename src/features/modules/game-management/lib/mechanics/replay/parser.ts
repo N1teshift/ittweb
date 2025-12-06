@@ -178,6 +178,55 @@ export async function parseReplayFile(
     }, {} as Record<string, number>);
     logger.info('Game flags distribution', flagCounts);
 
+    // Generate parsing summary
+    const playersWithStats = gameData.players.filter(p => 
+      p.damageDealt !== undefined || 
+      p.kills !== undefined || 
+      p.deaths !== undefined
+    ).length;
+
+    const playersWithITTStats = gameData.players.filter(p =>
+      p.damageDealt !== undefined ||
+      p.selfHealing !== undefined ||
+      p.killsElk !== undefined
+    ).length;
+
+    const warnings: string[] = [];
+    
+    if (!ittMetadata) {
+      warnings.push('ITT metadata not found - using fallback data for player stats');
+    } else if (ittMetadata.players.length !== gameData.players.length) {
+      warnings.push(`ITT metadata found for ${ittMetadata.players.length} players, but replay has ${gameData.players.length} players`);
+    }
+
+    if (playersWithITTStats < gameData.players.length) {
+      warnings.push(`${gameData.players.length - playersWithITTStats} player(s) missing ITT-specific stats`);
+    }
+
+    if (w3mmdActions.length === 0) {
+      warnings.push('W3MMD data not found - some stats may be unavailable');
+    }
+
+    const summary: ParsingSummary = {
+      success: true,
+      gameData: {
+        playersDetected: gameData.players.length,
+        playersWithStats,
+        playersWithITTStats,
+        winners: flagCounts.winner || 0,
+        losers: flagCounts.loser || 0,
+        drawers: flagCounts.drawer || 0,
+      },
+      metadata: {
+        w3mmdFound: w3mmdActions.length > 0,
+        w3mmdActionCount: w3mmdActions.length,
+        ittMetadataFound: !!ittMetadata,
+        ittSchemaVersion: ittMetadata?.schema,
+        ittVersion: ittMetadata?.version,
+      },
+      warnings,
+    };
+
     return {
       gameData,
       w3mmd: {
@@ -185,6 +234,7 @@ export async function parseReplayFile(
         lookup: w3mmdData.lookup,
       },
       ittMetadata,
+      summary,
     };
   } catch (error) {
     const err = error as Error;

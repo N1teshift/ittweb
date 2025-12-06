@@ -61,6 +61,26 @@ export interface ReplayParserOptions {
   fallbackCategory?: GameCategory;
 }
 
+export interface ParsingSummary {
+  success: boolean;
+  gameData: {
+    playersDetected: number;
+    playersWithStats: number;
+    playersWithITTStats: number;
+    winners: number;
+    losers: number;
+    drawers: number;
+  };
+  metadata: {
+    w3mmdFound: boolean;
+    w3mmdActionCount: number;
+    ittMetadataFound: boolean;
+    ittSchemaVersion?: number;
+    ittVersion?: string;
+  };
+  warnings: string[];
+}
+
 export interface ReplayParserResult {
   gameData: CreateGame;
   w3mmd: {
@@ -73,5 +93,6 @@ export interface ReplayParserResult {
     lookup: Record<string, Record<string, number>>;
   };
   ittMetadata?: ITTMetadata;
+  summary?: ParsingSummary;
 }
 
